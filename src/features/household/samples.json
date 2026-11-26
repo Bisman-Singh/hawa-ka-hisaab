@@ -1,0 +1,272 @@
+[
+  {
+    "id": "family-car-asthma",
+    "description": "Two parents, our son of 9 who has asthma, and his grandmother who has a heart condition. One parent drives a petrol car 14 km to the office at 8:30 and back. Our son has football at 6 in the evening, which can move. His grandmother walks in the park at 7 in the morning for 40 minutes and can go later. We cook on LPG, burn a mosquito coil at night and have a purifier in the living room.",
+    "household": {
+      "members": [
+        {
+          "id": "m1",
+          "ageGroup": "adult",
+          "flags": []
+        },
+        {
+          "id": "m2",
+          "ageGroup": "adult",
+          "flags": []
+        },
+        {
+          "id": "m3",
+          "ageGroup": "child",
+          "flags": ["asthma_or_lung"]
+        },
+        {
+          "id": "m4",
+          "ageGroup": "older_adult",
+          "flags": ["heart_condition"]
+        }
+      ],
+      "activities": [
+        {
+          "id": "a1",
+          "memberIds": ["m1"],
+          "kind": "commute",
+          "label": "office commute",
+          "start": "08:30",
+          "durationMinutes": 45,
+          "timing": "fixed",
+          "setting": "in_transit",
+          "travel": {
+            "mode": "car",
+            "fuel": "petrol",
+            "distanceKm": 14,
+            "occupancy": 1,
+            "roundTrip": true
+          }
+        },
+        {
+          "id": "a2",
+          "memberIds": ["m3"],
+          "kind": "outdoor_play",
+          "label": "football practice",
+          "start": "18:00",
+          "durationMinutes": 60,
+          "timing": "flexible",
+          "setting": "outdoor",
+          "travel": null
+        },
+        {
+          "id": "a3",
+          "memberIds": ["m4"],
+          "kind": "outdoor_exercise",
+          "label": "walk in the park",
+          "start": "07:00",
+          "durationMinutes": 40,
+          "timing": "flexible",
+          "setting": "outdoor",
+          "travel": null
+        }
+      ],
+      "home": {
+        "rooms": [
+          {
+            "id": "r1",
+            "kind": "bedroom",
+            "areaSqFt": 140,
+            "purifier": null
+          },
+          {
+            "id": "r2",
+            "kind": "living",
+            "areaSqFt": 220,
+            "purifier": {
+              "cadrM3PerHour": 250
+            }
+          }
+        ],
+        "cookingFuel": "lpg",
+        "indoorSources": ["mosquito_coil"]
+      }
+    }
+  },
+  {
+    "id": "older-couple-chulha",
+    "description": "An older couple living on our own. One of us has a lung condition. We cook on a wood chulha and light incense in the morning. We walk to the market 1 km away at 7 in the morning for about an hour, and any time is fine. In the evening we sit in the park from 5:30 for 45 minutes.",
+    "household": {
+      "members": [
+        {
+          "id": "m1",
+          "ageGroup": "older_adult",
+          "flags": ["asthma_or_lung"]
+        },
+        {
+          "id": "m2",
+          "ageGroup": "older_adult",
+          "flags": []
+        }
+      ],
+      "activities": [
+        {
+          "id": "a1",
+          "memberIds": ["m1", "m2"],
+          "kind": "errand",
+          "label": "walk to the market",
+          "start": "07:00",
+          "durationMinutes": 60,
+          "timing": "flexible",
+          "setting": "outdoor",
+          "travel": {
+            "mode": "walk",
+            "fuel": null,
+            "distanceKm": 1,
+            "occupancy": 1,
+            "roundTrip": true
+          }
+        },
+        {
+          "id": "a2",
+          "memberIds": ["m1", "m2"],
+          "kind": "social",
+          "label": "evening in the park",
+          "start": "17:30",
+          "durationMinutes": 45,
+          "timing": "flexible",
+          "setting": "outdoor",
+          "travel": null
+        }
+      ],
+      "home": {
+        "rooms": [
+          {
+            "id": "r1",
+            "kind": "bedroom",
+            "areaSqFt": 150,
+            "purifier": null
+          },
+          {
+            "id": "r2",
+            "kind": "kitchen",
+            "areaSqFt": 80,
+            "purifier": null
+          }
+        ],
+        "cookingFuel": "biomass",
+        "indoorSources": ["incense"]
+      }
+    }
+  },
+  {
+    "id": "delivery-rider",
+    "description": "I work as a delivery rider on a petrol scooter from 11 in the morning to 9 at night and ride about 60 km a day. I live alone in a rented room of about 100 sq ft, cook on LPG and smoke.",
+    "household": {
+      "members": [
+        {
+          "id": "m1",
+          "ageGroup": "adult",
+          "flags": ["outdoor_worker"]
+        }
+      ],
+      "activities": [
+        {
+          "id": "a1",
+          "memberIds": ["m1"],
+          "kind": "outdoor_work",
+          "label": "delivery shift",
+          "start": "11:00",
+          "durationMinutes": 600,
+          "timing": "fixed",
+          "setting": "outdoor",
+          "travel": {
+            "mode": "two_wheeler",
+            "fuel": "petrol",
+            "distanceKm": 60,
+            "occupancy": 1,
+            "roundTrip": false
+          }
+        }
+      ],
+      "home": {
+        "rooms": [
+          {
+            "id": "r1",
+            "kind": "other",
+            "areaSqFt": 100,
+            "purifier": null
+          }
+        ],
+        "cookingFuel": "lpg",
+        "indoorSources": ["smoking"]
+      }
+    }
+  },
+  {
+    "id": "students-cycle",
+    "description": "Three students sharing a flat. Two of us cycle 5 km to college at 8:40 and back in the evening. The third goes for a run at 6:30 in the morning for 45 minutes and can run at any time. We cook on induction and sometimes burn incense.",
+    "household": {
+      "members": [
+        {
+          "id": "m1",
+          "ageGroup": "adult",
+          "flags": []
+        },
+        {
+          "id": "m2",
+          "ageGroup": "adult",
+          "flags": []
+        },
+        {
+          "id": "m3",
+          "ageGroup": "adult",
+          "flags": []
+        }
+      ],
+      "activities": [
+        {
+          "id": "a1",
+          "memberIds": ["m1", "m2"],
+          "kind": "commute",
+          "label": "college commute",
+          "start": "08:40",
+          "durationMinutes": 25,
+          "timing": "fixed",
+          "setting": "in_transit",
+          "travel": {
+            "mode": "cycle",
+            "fuel": null,
+            "distanceKm": 5,
+            "occupancy": 1,
+            "roundTrip": true
+          }
+        },
+        {
+          "id": "a2",
+          "memberIds": ["m3"],
+          "kind": "outdoor_exercise",
+          "label": "morning run",
+          "start": "06:30",
+          "durationMinutes": 45,
+          "timing": "flexible",
+          "setting": "outdoor",
+          "travel": null
+        }
+      ],
+      "home": {
+        "rooms": [
+          {
+            "id": "r1",
+            "kind": "bedroom",
+            "areaSqFt": 160,
+            "purifier": null
+          },
+          {
+            "id": "r2",
+            "kind": "living",
+            "areaSqFt": 180,
+            "purifier": null
+          }
+        ],
+        "cookingFuel": "induction",
+        "indoorSources": ["incense"]
+      }
+    }
+  }
+]

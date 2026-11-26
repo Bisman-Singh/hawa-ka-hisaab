@@ -3,7 +3,7 @@
 import type { CommunityInput } from '../../src/features/community/types.js';
 import type { Household } from '../../src/features/household/types.js';
 import type { Effect, Working } from '../../src/features/ledger/types.js';
-import type { Plan, PlanItem } from '../../src/features/planner/types.js';
+import type { CandidateAction, Plan, PlanItem } from '../../src/features/planner/types.js';
 import type { Source, Trace } from '../../src/lib/types.js';
 
 /** Two adults, a child with asthma and a grandmother with a heart condition; one car. */
@@ -139,5 +139,21 @@ export function sampleCommunity(): CommunityInput {
     gateIdling: { vehiclesPerDay: 400, idleMinutes: 2 },
     assembly: null,
     outdoorPeriods: [],
+  };
+}
+
+/** A candidate swap for activity a1, with template text and no effects. */
+export function sampleCandidate(): CandidateAction {
+  return {
+    id: 'swap-a1',
+    kind: 'swap_mode',
+    slot: 'morning',
+    activityId: 'a1',
+    memberIds: ['m1'],
+    start: '08:30',
+    effects: [],
+    factIds: [],
+    template: { title: 'Office commute: take the bus', why: 'A bus carries many people.', tradeOff: null },
+    whatIfs: [],
   };
 }

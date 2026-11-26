@@ -34,3 +34,13 @@ export const RATE_WINDOW_MS = 60_000;
 
 /** Most distinct clients the in-memory rate limiter tracks before it evicts the oldest. */
 export const RATE_MAX_CLIENTS = 10_000;
+
+/**
+ * IST clock hours at which the morning, afternoon and evening slots of a plan begin. Hours before the morning
+ * start count as evening, so a late night activity sits with the evening.
+ */
+export const SLOT_START_HOURS: Readonly<Record<'morning' | 'afternoon' | 'evening', number>> = {
+  morning: 5,
+  afternoon: 12,
+  evening: 17,
+};

@@ -4,6 +4,7 @@ import type { airBasisSchema, planRequestSchema, planResponseSchema } from './co
 import type { actionKindSchema, actionTextSchema, alternativeSchema } from './schemas.js';
 import type { candidateActionSchema, indoorStepSchema, planItemSchema } from './schemas.js';
 import type { planSchema, slotSchema, whatIfSchema } from './schemas.js';
+import type { planWordingSchema } from './wording.js';
 
 /** A part of the day. */
 export type Slot = z.infer<typeof slotSchema>;
@@ -40,3 +41,6 @@ export type PlanRequest = z.infer<typeof planRequestSchema>;
 
 /** Body of the plan response. */
 export type PlanResponse = z.infer<typeof planResponseSchema>;
+
+/** The model's wording reply for a plan. */
+export type PlanWording = z.infer<typeof planWordingSchema>;

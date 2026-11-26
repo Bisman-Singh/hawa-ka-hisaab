@@ -1,7 +1,12 @@
 // Tests for the shared limits.
 import { describe, expect, it } from 'vitest';
 import { FEED_STALE_AFTER_MINUTES, INDIA_BOUNDS, MAX_BODY_BYTES } from '../../src/config/limits.js';
-import { MAX_INTAKE_TEXT_CHARS, MAX_QUESTION_CHARS, STATION_RADIUS_KM } from '../../src/config/limits.js';
+import {
+  MAX_INTAKE_TEXT_CHARS,
+  MAX_QUESTION_CHARS,
+  SLOT_START_HOURS,
+  STATION_RADIUS_KM,
+} from '../../src/config/limits.js';
 
 const inIndia = (lat: number, lon: number) =>
   lat >= INDIA_BOUNDS.minLat &&
@@ -32,5 +37,11 @@ describe('limits', () => {
   it('keeps text fields well inside the body limit', () => {
     expect(MAX_INTAKE_TEXT_CHARS * 4).toBeLessThan(MAX_BODY_BYTES);
     expect(MAX_QUESTION_CHARS).toBeLessThan(MAX_INTAKE_TEXT_CHARS);
+  });
+
+  it('starts the morning, afternoon and evening slots in order within one day', () => {
+    expect(SLOT_START_HOURS.morning).toBeLessThan(SLOT_START_HOURS.afternoon);
+    expect(SLOT_START_HOURS.afternoon).toBeLessThan(SLOT_START_HOURS.evening);
+    expect(SLOT_START_HOURS.evening).toBeLessThan(24);
   });
 });
