@@ -1,0 +1,36 @@
+// Tests for the shared limits.
+import { describe, expect, it } from 'vitest';
+import { FEED_STALE_AFTER_MINUTES, INDIA_BOUNDS, MAX_BODY_BYTES } from '../../src/config/limits.js';
+import { MAX_INTAKE_TEXT_CHARS, MAX_QUESTION_CHARS, STATION_RADIUS_KM } from '../../src/config/limits.js';
+
+const inIndia = (lat: number, lon: number) =>
+  lat >= INDIA_BOUNDS.minLat &&
+  lat <= INDIA_BOUNDS.maxLat &&
+  lon >= INDIA_BOUNDS.minLon &&
+  lon <= INDIA_BOUNDS.maxLon;
+
+describe('limits', () => {
+  it('uses the stale and radius rules the product states', () => {
+    expect(FEED_STALE_AFTER_MINUTES).toBe(180);
+    expect(STATION_RADIUS_KM).toBe(50);
+  });
+
+  it('covers the far corners of India in the bounding box', () => {
+    const corners: [number, number][] = [
+      [34.16, 77.58],
+      [6.75, 93.84],
+      [8.08, 77.55],
+      [23.24, 68.75],
+      [27.95, 96.97],
+      [11.62, 92.72],
+    ];
+    for (const [lat, lon] of corners) {
+      expect(inIndia(lat, lon)).toBe(true);
+    }
+  });
+
+  it('keeps text fields well inside the body limit', () => {
+    expect(MAX_INTAKE_TEXT_CHARS * 4).toBeLessThan(MAX_BODY_BYTES);
+    expect(MAX_QUESTION_CHARS).toBeLessThan(MAX_INTAKE_TEXT_CHARS);
+  });
+});

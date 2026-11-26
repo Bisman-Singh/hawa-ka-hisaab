@@ -1,0 +1,17 @@
+/* Design tokens. A minimal neutral set; the visual design stream replaces these values. */
+:root {
+  --color-ink: #1f2326;
+  --color-paper: #f3f1ec;
+  --color-muted: #545a5f;
+  --color-focus: #0a4f94;
+  --color-alert: #8f1d14;
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', sans-serif;
+  --font-hindi: 'Noto Sans Devanagari', 'Nirmala UI', Mangal, sans-serif;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2.5rem;
+  --target-min: 44px;
+  --measure: 40rem;
+}

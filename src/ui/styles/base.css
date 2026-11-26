@@ -1,0 +1,74 @@
+/* Base rules: box model, body text, the skip link, visible focus, Hindi text and reduced motion. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+:lang(hi) {
+  font-family: var(--font-hindi);
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-2);
+  top: calc(-1 * var(--space-5));
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.skip-link:focus {
+  top: var(--space-2);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+button {
+  min-height: var(--target-min);
+  min-width: var(--target-min);
+  font: inherit;
+}
+
+.site-header,
+.site-main,
+.site-footer {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: var(--space-3);
+}
+
+.site-name {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.site-footer {
+  color: var(--color-muted);
+}
+
+.error-panel {
+  color: var(--color-alert);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

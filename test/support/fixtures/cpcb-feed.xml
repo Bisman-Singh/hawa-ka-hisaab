@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<AqIndex>
+<Country id="India">
+<State id="Andaman and Nicobar"/>
+<State id="Delhi">
+<City id="Delhi">
+<Station id="JNU, Delhi - DPCC" lastupdate="24-11-2026 22:00:00" latitude="28.540721" longitude="77.168544">
+<Pollutant_Index id="PM2.5" Min="89" Max="321" Avg="246" Hourly_sub_index="293"/>
+<Pollutant_Index id="PM10" Min="96" Max="185" Avg="153" Hourly_sub_index="178"/>
+<Pollutant_Index id="NO2" Min="20" Max="55" Avg="38" Hourly_sub_index="44"/>
+<Pollutant_Index id="NH3" Min="4" Max="6" Avg="5" Hourly_sub_index="4"/>
+<Pollutant_Index id="SO2" Min="1" Max="3" Avg="2" Hourly_sub_index="1"/>
+<Pollutant_Index id="CO" Min="48" Max="70" Avg="56" Hourly_sub_index="70"/>
+<Pollutant_Index id="OZONE" Min="18" Max="29" Avg="22" Hourly_sub_index="19"/>
+<Air_Quality_Index Value="246" Predominant_Parameter="PM2.5"/>
+</Station>
+<Station id="R K Puram, Delhi - DPCC" lastupdate="24-11-2026 22:00:00" latitude="28.563262" longitude="77.186937">
+<Pollutant_Index id="PM2.5" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="327"/>
+<Pollutant_Index id="PM10" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="187"/>
+<Pollutant_Index id="NO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="133"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="8"/>
+<Pollutant_Index id="SO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="10"/>
+<Pollutant_Index id="CO" Min="39" Max="122" Avg="82" Hourly_sub_index="115"/>
+<Pollutant_Index id="OZONE" Min="6" Max="60" Avg="26" Hourly_sub_index="6"/>
+<Air_Quality_Index Value="" Predominant_Parameter=""/>
+</Station>
+</City>
+</State>
+<State id="Karnataka">
+<City id="Bengaluru">
+<Station id="Bapuji Nagar, Bengaluru - KSPCB" lastupdate="24-11-2026 22:00:00" latitude="12.951913" longitude="77.539784">
+<Pollutant_Index id="PM2.5" Min="3" Max="30" Avg="17" Hourly_sub_index="18"/>
+<Pollutant_Index id="PM10" Min="5" Max="46" Avg="25" Hourly_sub_index="25"/>
+<Pollutant_Index id="NO2" Min="21" Max="36" Avg="28" Hourly_sub_index="36"/>
+<Pollutant_Index id="NH3" Min="1" Max="3" Avg="2" Hourly_sub_index="1"/>
+<Pollutant_Index id="SO2" Min="9" Max="32" Avg="20" Hourly_sub_index="23"/>
+<Pollutant_Index id="CO" Min="7" Max="61" Avg="29" Hourly_sub_index="56"/>
+<Pollutant_Index id="OZONE" Min="29" Max="32" Avg="31" Hourly_sub_index="31"/>
+<Air_Quality_Index Value="31" Predominant_Parameter="OZONE"/>
+</Station>
+</City>
+</State>
+<State id="Maharashtra">
+<City id="Mumbai">
+<Station id="Borivali East, Mumbai - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.2243333" longitude="72.8658113">
+<Pollutant_Index id="PM2.5" Min="43" Max="71" Avg="60" Hourly_sub_index="59"/>
+<Pollutant_Index id="PM10" Min="47" Max="75" Avg="64" Hourly_sub_index="63"/>
+<Pollutant_Index id="NO2" Min="10" Max="10" Avg="10" Hourly_sub_index="10"/>
+<Pollutant_Index id="NH3" Min="2" Max="2" Avg="2" Hourly_sub_index="2"/>
+<Pollutant_Index id="SO2" Min="10" Max="15" Avg="13" Hourly_sub_index="11"/>
+<Pollutant_Index id="CO" Min="5" Max="6" Avg="6" Hourly_sub_index="5"/>
+<Pollutant_Index id="OZONE" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Air_Quality_Index Value="64" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+</State>
+<State id="Meghalaya">
+<City id="Shillong">
+<Station id="Lumpyngngad, Shillong - Meghalaya PCB" lastupdate="24-11-2026 22:00:00" latitude="25.5586" longitude="91.8985">
+<Pollutant_Index id="PM2.5" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="PM10" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="NO2" Min="0" Max="0" Avg="0" Hourly_sub_index="0"/>
+<Pollutant_Index id="NH3" Min="0" Max="0" Avg="0" Hourly_sub_index="0"/>
+<Pollutant_Index id="SO2" Min="12" Max="14" Avg="13" Hourly_sub_index="13"/>
+<Pollutant_Index id="CO" Min="22" Max="31" Avg="27" Hourly_sub_index="26"/>
+<Pollutant_Index id="OZONE" Min="15" Max="21" Avg="18" Hourly_sub_index="18"/>
+<Air_Quality_Index Value="" Predominant_Parameter=""/>
+</Station>
+</City>
+</State>
+<State id="Tamil Nadu">
+<City id="Chennai">
+<Station id="Perungudi, Chennai - TNPCB" lastupdate="24-11-2026 22:00:00" latitude="12.9533" longitude="80.2357">
+<Pollutant_Index id="PM2.5" Min="2" Max="145" Avg="28" Hourly_sub_index="145"/>
+<Pollutant_Index id="PM10" Min="4" Max="95" Avg="24" Hourly_sub_index="95"/>
+<Pollutant_Index id="NO2" Min="12" Max="15" Avg="14" Hourly_sub_index="14"/>
+<Pollutant_Index id="NH3" Min="4" Max="4" Avg="4" Hourly_sub_index="4"/>
+<Pollutant_Index id="SO2" Min="2" Max="3" Avg="2" Hourly_sub_index="3"/>
+<Pollutant_Index id="CO" Min="23" Max="31" Avg="26" Hourly_sub_index="31"/>
+<Pollutant_Index id="OZONE" Min="17" Max="18" Avg="18" Hourly_sub_index="17"/>
+<Air_Quality_Index Value="28" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+</State>
+<State id="West Bengal">
+<City id="Kolkata">
+<Station id="Bidhannagar, Kolkata - WBPCB" lastupdate="24-11-2026 22:00:00" latitude="22.58157048" longitude="88.41002457">
+<Pollutant_Index id="PM2.5" Min="17" Max="58" Avg="33" Hourly_sub_index="50"/>
+<Pollutant_Index id="PM10" Min="34" Max="106" Avg="56" Hourly_sub_index="101"/>
+<Pollutant_Index id="NO2" Min="13" Max="43" Avg="23" Hourly_sub_index="27"/>
+<Pollutant_Index id="NH3" Min="6" Max="8" Avg="7" Hourly_sub_index="7"/>
+<Pollutant_Index id="SO2" Min="7" Max="10" Avg="8" Hourly_sub_index="8"/>
+<Pollutant_Index id="CO" Min="56" Max="71" Avg="65" Hourly_sub_index="70"/>
+<Pollutant_Index id="OZONE" Min="30" Max="67" Avg="45" Hourly_sub_index="33"/>
+<Air_Quality_Index Value="65" Predominant_Parameter="CO"/>
+</Station>
+</City>
+</State>
+</Country>
+</AqIndex>

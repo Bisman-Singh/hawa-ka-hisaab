@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gate:
+    name: Gate on Node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22, 24, 26]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - run: npm audit --audit-level=low
+      - run: npm run gate
+
+  e2e:
+    name: End to end
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: gate
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - id: specs
+        run: |
+          if compgen -G "e2e/*.spec.ts" > /dev/null; then echo "found=true" >> "$GITHUB_OUTPUT"; fi
+      - if: steps.specs.outputs.found == 'true'
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 26
+          cache: npm
+      - if: steps.specs.outputs.found == 'true'
+        run: npm ci
+      - if: steps.specs.outputs.found == 'true'
+        run: npx playwright install --with-deps chromium
+      - if: steps.specs.outputs.found == 'true'
+        run: npm run e2e
