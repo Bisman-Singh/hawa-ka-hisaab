@@ -1,7 +1,7 @@
 // Builders for the labelled numbers in a fact set: cited facts, clock times, shown effects and figures.
 import { findFact } from '../../config/facts/index.js';
 import type { FactValue } from '../../lib/types.js';
-import { displayNumbers, displayValue, minutesOf } from '../ledger/format.js';
+import { displayNumbers, displayValue, figureValue, minutesOf } from '../ledger/format.js';
 import type { Effect, Figure } from '../ledger/types.js';
 
 const NUMERAL = /\d+(?:\.\d+)?/g;
@@ -55,7 +55,7 @@ export function shown(id: string, effect: Effect): FactValue[] {
 
 /** The numbers a computed figure shows, signed and unsigned, and its working inputs. */
 export function figure(id: string, found: Figure): FactValue[] {
-  const rounded = Math.round(found.value);
+  const rounded = figureValue(found);
   return [
     value({ id, label: found.label, unit: found.unit }, rounded),
     value({ id, label: found.label, unit: found.unit }, Math.abs(rounded)),

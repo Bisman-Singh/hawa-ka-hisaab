@@ -1,5 +1,5 @@
-// A scripted model port. Each call takes the next step; replies are checked with the request's schema
-// and scripted tool calls run through the request's real tools, as a real adapter would.
+// A scripted model port. Each call takes the next step; replies are checked with the request's schema, a reply
+// that fails it keeps its raw text, and scripted tool calls run through the request's real tools, as the adapter does.
 import type { JsonValue } from '../../src/lib/json.js';
 import type { ModelPort, ModelRequest } from '../../src/lib/model.js';
 import { err, ok } from '../../src/lib/result.js';
@@ -52,7 +52,9 @@ export function createFakeModel(steps: readonly ModelStep[], modelId = 'fake-mod
       const toolCalls = runTools(request, step.toolCalls ?? []);
       const parsed = request.schema.safeParse(step.reply);
       if (!parsed.success) {
-        return Promise.resolve(err({ kind: 'invalid_reply' }));
+        return Promise.resolve(
+          err({ kind: 'invalid_reply', reply: { rawText: JSON.stringify(step.reply), modelId } }),
+        );
       }
       return Promise.resolve(
         ok({ value: parsed.data, rawText: JSON.stringify(step.reply), modelId, toolCalls }),

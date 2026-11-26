@@ -38,7 +38,10 @@ export const numberCheckSchema = z.strictObject({
   unmatched: z.array(z.string().max(40)).max(50),
 });
 
-/** How an output was made: by the model, by the rules fallback or as a fixed reply written in code. */
+/**
+ * How an output was made: by the model, by the rules fallback or as a fixed reply written in code. cached is true
+ * when a checked model reply to an identical request was reused from the last few minutes instead of a new call.
+ */
 export const traceSchema = z.strictObject({
   producedBy: z.enum(['model', 'rules', 'fixed_reply']),
   modelId: z.string().max(80).nullable(),
@@ -47,4 +50,5 @@ export const traceSchema = z.strictObject({
   modelReply: z.string().max(80_000).nullable(),
   toolCalls: z.array(toolCallSchema).max(20),
   numberCheck: numberCheckSchema,
+  cached: z.boolean().optional(),
 });

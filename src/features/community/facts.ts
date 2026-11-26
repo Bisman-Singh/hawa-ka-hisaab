@@ -1,23 +1,19 @@
-// Looks up community facts by id, so templates and figures take every number and quote from the fact table,
-// and names the fact numbers templates use.
-import { COMMUNITY_FACTS } from '../../config/facts/community.js';
-import type { Fact, FactValue } from '../../lib/types.js';
+// Reads facts for the community view from the one registry, so templates and figures take every number and quote
+// from the fact tables, and names the fact numbers templates use.
+import { findFact } from '../../config/facts/index.js';
+import type { FactValue } from '../../lib/types.js';
 import { formatNumber } from './format.js';
 import { shown, type TemplateValue } from './template-value.js';
-
-const BY_ID: ReadonlyMap<string, Fact> = new Map(
-  COMMUNITY_FACTS.map((fact): [string, Fact] => [fact.id, fact]),
-);
 
 /** Which number of a number fact to take: its value or one end of its range. */
 export type FactPick = 'value' | 'low' | 'high';
 
 /**
- * A number from a community fact, as a fact value. A fact without a range gives its value for any pick. An id
+ * A number from a fact, as a fact value. A fact without a range gives its value for any pick. An id
  * that is not a number fact is a coding error and throws.
  */
 export function factValue(id: string, pick: FactPick): FactValue {
-  const fact = BY_ID.get(id);
+  const fact = findFact(id);
   if (fact?.kind !== 'number') {
     throw new Error(`not a community number fact: ${id}`);
   }
@@ -25,9 +21,9 @@ export function factValue(id: string, pick: FactPick): FactValue {
   return { id, label: fact.title, value, unit: fact.unit };
 }
 
-/** The verbatim text of a community fact. An id that is not a text fact is a coding error and throws. */
+/** The verbatim text of a fact. An id that is not a text fact is a coding error and throws. */
 export function factText(id: string): string {
-  const fact = BY_ID.get(id);
+  const fact = findFact(id);
   if (fact?.kind !== 'text') {
     throw new Error(`not a community text fact: ${id}`);
   }

@@ -52,7 +52,10 @@ export function defineTool<A>(spec: ToolSpec<A>): ModelTool {
   };
 }
 
-/** One request to the model. The reply must parse with schema or the call fails as invalid_reply. */
+/**
+ * One request to the model. The reply must parse with schema or the call fails as invalid_reply. deadline, in
+ * epoch milliseconds, is when the caller stops waiting; the adapter ends the call by then or sooner.
+ */
 export interface ModelRequest<T> {
   readonly task: ModelTask;
   readonly instructions: string;
@@ -60,6 +63,7 @@ export interface ModelRequest<T> {
   readonly facts: readonly FactValue[];
   readonly schema: z.ZodType<T>;
   readonly tools: readonly ModelTool[];
+  readonly deadline?: number;
 }
 
 /** A validated model reply with the raw text and the tool calls that led to it. */
@@ -70,9 +74,13 @@ export interface ModelReply<T> {
   readonly toolCalls: readonly ToolCallRecord[];
 }
 
-/** A failed model call. Callers fall back to the rules path and say why. */
+/**
+ * A failed model call. Callers fall back to the rules path and say why. A reply that did not fit the schema keeps
+ * its raw text and the model that wrote it, so the trace can show what came back.
+ */
 export interface ModelFailure {
   readonly kind: ModelFailureKind;
+  readonly reply?: { readonly rawText: string; readonly modelId: string };
 }
 
 /** The model port. modelId is null when no model is configured. */

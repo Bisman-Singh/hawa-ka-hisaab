@@ -4,13 +4,16 @@ import { boundedText, rangeSchema } from '../../lib/schemas/common.js';
 import { factIdSchema } from '../../lib/schemas/facts.js';
 import { localIdSchema } from '../household/schemas.js';
 
-/** One input to a calculation. A factor taken from a fact must name that fact. */
+/**
+ * One input to a calculation. A factor taken from a fact must name that fact. from says where the value came from:
+ * the household's own entries, a society's or school's own entries, a fact, the air reading or the forecast.
+ */
 export const workingInputSchema = z
   .strictObject({
     label: boundedText(120),
     value: z.number(),
     unit: z.string().max(40),
-    from: z.enum(['household', 'fact', 'air', 'forecast']),
+    from: z.enum(['household', 'community', 'fact', 'air', 'forecast']),
     factId: factIdSchema.nullable(),
   })
   .refine((input) => input.from !== 'fact' || input.factId !== null, {

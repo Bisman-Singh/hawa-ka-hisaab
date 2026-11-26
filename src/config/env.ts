@@ -17,12 +17,14 @@ const envSchema = z.object({
   MODEL_DAILY_CALL_CAP: wholeNumber(200, 0),
   API_RATE_LIMIT_PER_MINUTE: wholeNumber(60, 1),
   MODEL_RATE_LIMIT_PER_MINUTE: wholeNumber(6, 0),
+  CPCB_DIRECT_FEED: z.preprocess(blankToUndefined, z.enum(['on', 'off']).default('on')),
 });
 
 /**
  * Server settings read from the environment. A missing key means the rules path is used. A model limit or daily
  * cap of 0 turns model calls off; the request limit must be at least 1. Without a data.gov.in key, station data
- * comes only from the CPCB feed itself.
+ * comes only from the CPCB feed itself. cpcbDirectFeed false skips the direct CPCB feed, for hosts it does not
+ * answer, so station data comes from data.gov.in alone.
  */
 export interface ServerEnv {
   readonly geminiApiKey: string | null;
@@ -31,6 +33,7 @@ export interface ServerEnv {
   readonly modelDailyCallCap: number;
   readonly apiRateLimitPerMinute: number;
   readonly modelRateLimitPerMinute: number;
+  readonly cpcbDirectFeed: boolean;
 }
 
 /** Raw environment variables, such as process.env. */
@@ -50,5 +53,6 @@ export function readServerEnv(source: EnvSource): Result<ServerEnv, readonly str
     modelDailyCallCap: env.MODEL_DAILY_CALL_CAP,
     apiRateLimitPerMinute: env.API_RATE_LIMIT_PER_MINUTE,
     modelRateLimitPerMinute: env.MODEL_RATE_LIMIT_PER_MINUTE,
+    cpcbDirectFeed: env.CPCB_DIRECT_FEED === 'on',
   });
 }

@@ -33,8 +33,8 @@ describe('buildFigures', () => {
     );
     expect(idling?.figure.value).toBe(583.5);
     expect(idling?.figure.working.inputs.map((input) => [input.value, input.from, input.factId])).toEqual([
-      [389, 'household', null],
-      [1.5, 'household', null],
+      [389, 'community', null],
+      [1.5, 'community', null],
       [28, 'fact', 'community-share-transport'],
       [2016, 'fact', 'community-study-winter'],
     ]);

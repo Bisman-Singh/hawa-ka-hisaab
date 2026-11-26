@@ -13,6 +13,7 @@ describe('readServerEnv', () => {
         modelDailyCallCap: 200,
         apiRateLimitPerMinute: 60,
         modelRateLimitPerMinute: 6,
+        cpcbDirectFeed: true,
       },
     });
   });
@@ -38,6 +39,7 @@ describe('readServerEnv', () => {
       MODEL_DAILY_CALL_CAP: '50',
       API_RATE_LIMIT_PER_MINUTE: '30',
       MODEL_RATE_LIMIT_PER_MINUTE: '3',
+      CPCB_DIRECT_FEED: 'off',
       PATH: '/bin',
     });
     expect(result).toEqual({
@@ -49,6 +51,7 @@ describe('readServerEnv', () => {
         modelDailyCallCap: 50,
         apiRateLimitPerMinute: 30,
         modelRateLimitPerMinute: 3,
+        cpcbDirectFeed: false,
       },
     });
   });
@@ -62,6 +65,12 @@ describe('readServerEnv', () => {
       ok: true,
       value: { modelRateLimitPerMinute: 0, modelDailyCallCap: 0 },
     });
+  });
+
+  it('turns the direct CPCB feed off only for off, and refuses any other value', () => {
+    expect(readServerEnv({ CPCB_DIRECT_FEED: ' ' })).toMatchObject({ value: { cpcbDirectFeed: true } });
+    expect(readServerEnv({ CPCB_DIRECT_FEED: 'on' })).toMatchObject({ value: { cpcbDirectFeed: true } });
+    expect(readServerEnv({ CPCB_DIRECT_FEED: 'no' })).toEqual({ ok: false, error: ['CPCB_DIRECT_FEED'] });
   });
 
   it('names bad variables without echoing their values', () => {

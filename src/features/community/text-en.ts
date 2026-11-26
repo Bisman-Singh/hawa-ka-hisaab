@@ -42,7 +42,7 @@ export const BAND_EN: Readonly<Record<AqiBand, string>> = {
   severe: 'Severe',
 };
 
-const BAND_FACTS = ['community-advice-{bandSlug}-general', 'community-advice-{bandSlug}-vulnerable'];
+const BAND_FACTS = ['advice-{bandSlug}-general', 'advice-{bandSlug}-vulnerable'];
 const STAY_IN = 'The health ministry advises staying indoors on days with poor to severe AQI.';
 
 /** English text for the day's actions: advice, timing, windows. */

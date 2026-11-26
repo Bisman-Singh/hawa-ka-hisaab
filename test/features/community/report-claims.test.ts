@@ -1,7 +1,7 @@
 // Headline claims swept over every reading, kind and GRAP case: no derived mass figures, every number traced,
 // mild days unrestricted, GRAP only in Delhi NCR, the same actions in Hindi, and each notice to its own readers.
 import { describe, expect, it } from 'vitest';
-import { COMMUNITY_FACTS } from '../../../src/config/facts/community.js';
+import { FACT_LIST } from '../../../src/config/facts/index.js';
 import { noticeResponseSchema } from '../../../src/features/community/contract.js';
 import { buildCommunityReport } from '../../../src/features/community/report.js';
 import type { CommunityContext, CommunityReport } from '../../../src/features/community/types.js';
@@ -82,7 +82,7 @@ function computedNumbers({ community }: CommunityContext): number[] {
 }
 
 const FACT_NUMBERS = new Map<string, readonly (number | undefined)[]>();
-for (const fact of COMMUNITY_FACTS) {
+for (const fact of FACT_LIST) {
   if (fact.kind === 'number') {
     FACT_NUMBERS.set(fact.id, [fact.value, fact.range?.low, fact.range?.high]);
   }
@@ -127,13 +127,13 @@ describe('community report, headline claims', () => {
   });
 
   it('cites only facts that exist', () => {
-    const known = new Set(COMMUNITY_FACTS.map((fact) => fact.id));
-    for (const { ctx, report } of cases) {
+    const known = new Set(FACT_LIST.map((fact) => fact.id));
+    for (const { report } of cases) {
       const cited = [
         ...report.actions.flatMap((action) => action.factIds),
         ...report.facts.flatMap((fact) => fact.working.factIds),
       ];
-      expect(cited.filter((id) => !known.has(id) && id !== ctx.grap?.factId)).toEqual([]);
+      expect(cited.filter((id) => !known.has(id))).toEqual([]);
     }
   });
 

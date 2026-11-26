@@ -55,13 +55,16 @@ export function roundTo(value: number, decimals: number): number {
   return Math.round(value * factor) / factor;
 }
 
-/** The value of a number fact by id. It throws when the fact is missing or not a number, a fault in the data. */
+/**
+ * The value of a number fact by id, or the top of its range when it has one, as for a band or a breakpoint row.
+ * It throws when the fact is missing or not a number, a fault in the data.
+ */
 export function numberFactValue(facts: readonly Fact[], id: string): number {
   const fact = facts.find((candidate) => candidate.id === id);
   if (fact?.kind !== 'number') {
     throw new Error(`Missing number fact ${id}`);
   }
-  return fact.value;
+  return fact.range?.high ?? fact.value;
 }
 
 interface BandEntry {

@@ -1,6 +1,7 @@
 // Tests for the community fact table: valid facts with public sources, unique ids and known answers.
 import { describe, expect, it } from 'vitest';
 import { COMMUNITY_FACTS } from '../../../src/config/facts/community.js';
+import { findFact } from '../../../src/config/facts/index.js';
 import { factSchema, factValueSchema } from '../../../src/lib/schemas/facts.js';
 
 const byId = (id: string) => COMMUNITY_FACTS.find((fact) => fact.id === id);
@@ -28,12 +29,13 @@ describe('COMMUNITY_FACTS', () => {
     expect(asValues.filter((value) => !factValueSchema.safeParse(value).success)).toEqual([]);
   });
 
-  it('quotes the health ministry advice for every band and both groups', () => {
+  it('leaves the band advice to the shared advice table, which holds every band and both groups', () => {
     for (const band of ['good', 'satisfactory', 'moderate', 'poor', 'very-poor', 'severe']) {
-      expect(byId(`community-advice-${band}-general`)?.kind).toBe('text');
-      expect(byId(`community-advice-${band}-vulnerable`)?.kind).toBe('text');
+      expect(byId(`community-advice-${band}-general`)).toBeUndefined();
+      expect(findFact(`advice-${band}-general`)?.kind).toBe('text');
+      expect(findFact(`advice-${band}-vulnerable`)?.kind).toBe('text');
     }
-    expect(byId('community-advice-very-poor-vulnerable')).toMatchObject({
+    expect(findFact('advice-very-poor-vulnerable')).toMatchObject({
       text: 'Remain indoors and keep activity levels low',
     });
   });

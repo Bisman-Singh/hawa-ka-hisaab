@@ -1,13 +1,16 @@
 // The exact list of numbers the model may use for a plan. It goes with the request and into the trace, so the
 // number check has one source of truth: cited facts, every shown figure as shown, clock times and household inputs.
 import type { FactValue } from '../../lib/types.js';
-import type { Household } from '../household/types.js';
+import type { Activity, Household } from '../household/types.js';
 import { clockOf, minutesOf } from '../ledger/format.js';
 import type { CandidateSet, PlanContext } from './context.js';
 import { cited, clock, figure, shown, value } from './fact-values.js';
+import type { CandidateAction, IndoorStep } from './types.js';
 
 const MAX_FACTS = 500;
-import type { CandidateAction, IndoorStep } from './types.js';
+
+const endOf = (candidate: CandidateAction, activity: Activity): string =>
+  clockOf(minutesOf(candidate.start ?? activity.start) + activity.durationMinutes);
 
 function activityNumbers(household: Household, candidate: CandidateAction): FactValue[] {
   const activity = household.activities.find((found) => found.id === candidate.activityId);
@@ -15,7 +18,7 @@ function activityNumbers(household: Household, candidate: CandidateAction): Fact
     return [];
   }
   const travel = activity.travel;
-  const end = clockOf(minutesOf(candidate.start ?? activity.start) + activity.durationMinutes);
+  const end = endOf(candidate, activity);
   return [
     ...clock(candidate.id, 'Usual start time', activity.start),
     ...clock(candidate.id, 'End time', end),
@@ -88,4 +91,21 @@ export function buildFactSet(ctx: PlanContext, set: CandidateSet): FactValue[] {
       return first;
     })
     .slice(0, MAX_FACTS);
+}
+
+/**
+ * Every clock time the fact set holds, as HH:MM: candidate starts, the usual start and the end of their activities,
+ * toggle times and indoor windows. A model reply may write these times; their hours and minutes are in the set.
+ */
+export function factSetTimes(ctx: PlanContext, set: CandidateSet): string[] {
+  const forAction = (candidate: CandidateAction): string[] => {
+    const activity = ctx.household.activities.find((found) => found.id === candidate.activityId);
+    const toggles = candidate.whatIfs.flatMap((toggle) =>
+      toggle.patch.op === 'set_start' ? [toggle.patch.start] : [],
+    );
+    const own = activity ? [activity.start, endOf(candidate, activity)] : [];
+    return [...(candidate.start === null ? [] : [candidate.start]), ...own, ...toggles];
+  };
+  const windows = set.indoor.flatMap((step) => (step.window ? [step.window.start, step.window.end] : []));
+  return [...new Set([...set.actions.flatMap(forAction), ...windows])];
 }

@@ -44,3 +44,15 @@ export const SLOT_START_HOURS: Readonly<Record<'morning' | 'afternoon' | 'evenin
   afternoon: 12,
   evening: 17,
 };
+
+/**
+ * Time a model route may take from the request to its answer, air reads and model calls included. The host
+ * stops a function at 30 seconds; this leaves room for the rest of the request.
+ */
+export const ROUTE_DEADLINE_MS = 20_000;
+
+/** With less time than this left before the deadline, no model call is started and the rules path answers. */
+export const MIN_MODEL_CALL_MS = 3000;
+
+/** With less time than this left after a rejected reply, the one retry is skipped. */
+export const MIN_RETRY_MS = 5000;

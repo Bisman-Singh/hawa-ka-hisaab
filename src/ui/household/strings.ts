@@ -1,6 +1,6 @@
 // Words of the household intake and the household form. Option labels follow the household schema's values.
 import { MAX_INTAKE_TEXT_CHARS } from '../../config/limits.js';
-import type { ModelFailureKind } from '../../lib/types.js';
+import type { FallbackReason } from '../../lib/types.js';
 
 const MAX = String(MAX_INTAKE_TEXT_CHARS);
 
@@ -30,7 +30,7 @@ export const INTAKE = {
 };
 
 /** Why the model did not read the text, in plain words. */
-export const MODEL_DOWN: Readonly<Record<ModelFailureKind, string>> = {
+export const MODEL_DOWN: Readonly<Record<FallbackReason, string>> = {
   disabled: 'Reading by the model is switched off here.',
   quota: 'The model has used its free quota for now.',
   daily_cap: 'The app has used its model calls for today.',
@@ -38,6 +38,7 @@ export const MODEL_DOWN: Readonly<Record<ModelFailureKind, string>> = {
   timeout: 'The model took too long to answer.',
   invalid_reply: 'The model gave an answer that could not be used.',
   upstream: 'The model did not answer.',
+  number_check_failed: 'The model used a number that was not in your text, so its reading was not used.',
 };
 
 /** Fixed text of the household view. */

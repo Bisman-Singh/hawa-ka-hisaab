@@ -6,6 +6,7 @@ import { consoleSink, createLogger } from '../lib/logger.js';
 import { createFixedWindowLimiter } from '../lib/rate-limit.js';
 import { createAirSources } from './air/sources.js';
 import type { ServerDeps } from './deps.js';
+import { createModelFromEnv } from './model-config.js';
 
 /** Builds the runtime dependencies. A bad variable stops startup with its name only, never its value. */
 export function createRuntimeDeps(source: EnvSource): ServerDeps {
@@ -21,6 +22,10 @@ export function createRuntimeDeps(source: EnvSource): ServerDeps {
     logger: createLogger(consoleSink, clock),
     requestLimiter: limiter(env.value.apiRateLimitPerMinute),
     modelLimiter: limiter(env.value.modelRateLimitPerMinute),
-    air: createAirSources(globalThis.fetch, clock, env.value.dataGovInApiKey),
+    air: createAirSources(globalThis.fetch, clock, {
+      directFeed: env.value.cpcbDirectFeed,
+      dataGovKey: env.value.dataGovInApiKey,
+    }),
+    model: createModelFromEnv(env.value, clock),
   };
 }

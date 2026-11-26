@@ -1,6 +1,7 @@
 // Tests for the shared limits.
 import { describe, expect, it } from 'vitest';
 import { FEED_STALE_AFTER_MINUTES, INDIA_BOUNDS, MAX_BODY_BYTES } from '../../src/config/limits.js';
+import { MIN_MODEL_CALL_MS, MIN_RETRY_MS, ROUTE_DEADLINE_MS } from '../../src/config/limits.js';
 import {
   MAX_INTAKE_TEXT_CHARS,
   MAX_QUESTION_CHARS,
@@ -32,6 +33,12 @@ describe('limits', () => {
     for (const [lat, lon] of corners) {
       expect(inIndia(lat, lon)).toBe(true);
     }
+  });
+
+  it('keeps a model route well inside the 30 second function limit, with a retry only when time allows', () => {
+    expect(ROUTE_DEADLINE_MS).toBeLessThanOrEqual(20_000);
+    expect(MIN_MODEL_CALL_MS).toBeLessThan(MIN_RETRY_MS);
+    expect(MIN_RETRY_MS).toBeLessThan(ROUTE_DEADLINE_MS);
   });
 
   it('keeps text fields well inside the body limit', () => {

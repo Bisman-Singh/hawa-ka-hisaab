@@ -40,7 +40,7 @@ describe('factsFor', () => {
       community.id,
       'no-such-fact',
     ]);
-    expect(factsFor([community.id])).toEqual([community.id]);
+    expect(factsFor([community.id])).toEqual([community]);
   });
 });
 

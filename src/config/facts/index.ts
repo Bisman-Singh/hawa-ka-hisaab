@@ -2,12 +2,15 @@
 import type { Fact, Range } from '../../lib/types.js';
 import { HOME_ADVICE_FACTS } from './advice-home.js';
 import { ADVICE_FACTS } from './advice.js';
+import { AIR_FACTS } from './air.js';
+import { COMMUNITY_FACTS } from './community.js';
+import { EMERGENCY_FACTS } from './emergency.js';
 import { EXPOSURE_FACTS } from './exposure.js';
 import { INDOOR_FACTS } from './indoor.js';
 import { MASK_FACTS } from './masks.js';
 import { TRAVEL_FACTS } from './travel.js';
 
-/** Every fact in one list, in table order. */
+/** Every fact in one list, in table order: advice, travel, exposure, masks, indoor, air, community, emergency. */
 export const FACT_LIST: readonly Fact[] = [
   ...ADVICE_FACTS,
   ...HOME_ADVICE_FACTS,
@@ -15,7 +18,9 @@ export const FACT_LIST: readonly Fact[] = [
   ...EXPOSURE_FACTS,
   ...MASK_FACTS,
   ...INDOOR_FACTS,
-  // The air facts, with the NAQI table, health statements, GRAP and data credits, join on the next line.
+  ...AIR_FACTS,
+  ...COMMUNITY_FACTS,
+  ...EMERGENCY_FACTS,
 ];
 
 const BY_ID: ReadonlyMap<string, Fact> = new Map(FACT_LIST.map((fact) => [fact.id, fact]));

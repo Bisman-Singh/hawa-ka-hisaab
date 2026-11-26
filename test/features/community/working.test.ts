@@ -8,7 +8,7 @@ describe('terms', () => {
       label: 'homes',
       value: 120,
       unit: 'homes',
-      from: 'household',
+      from: 'community',
       factId: null,
     });
     expect(forecastHour('cleaner window starts', 13).fact).toMatchObject({

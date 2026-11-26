@@ -21,8 +21,8 @@ function bandValues(band: AqiBand | null): Values {
   return {
     band: plain(BAND_EN[band], BAND_HI[band]),
     bandSlug: plain(slug),
-    gen: plain(factText(`community-advice-${slug}-general`), ADVICE_HI[band].general),
-    vuln: plain(factText(`community-advice-${slug}-vulnerable`), ADVICE_HI[band].vulnerable),
+    gen: plain(factText(`advice-${slug}-general`), ADVICE_HI[band].general),
+    vuln: plain(factText(`advice-${slug}-vulnerable`), ADVICE_HI[band].vulnerable),
   };
 }
 

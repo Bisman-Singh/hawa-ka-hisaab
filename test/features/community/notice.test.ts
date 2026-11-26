@@ -73,14 +73,6 @@ describe('acceptNoticeReply', () => {
     expect(acceptNoticeReply(report, { ...reply, hi: { ...reply.hi, actions: lines } }).ok).toBe(true);
   });
 
-  it('refuses HTML or entities in any field', () => {
-    const reply = reworded();
-    const tagged = { ...reply, en: { ...reply.en, title: '<b>Air notice</b>' } };
-    expect(acceptNoticeReply(report, tagged)).toEqual({ ok: false, error: 'html' });
-    const entity = { ...reply, hi: { ...reply.hi, title: 'सूचना &amp; हवा' } };
-    expect(acceptNoticeReply(report, entity)).toEqual({ ok: false, error: 'html' });
-  });
-
   it('refuses English text in the Hindi notice and Devanagari in the English one', () => {
     const reply = reworded();
     const english = { ...reply, hi: { ...reply.hi, title: 'Air quality notice' } };

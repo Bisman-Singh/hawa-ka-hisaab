@@ -95,7 +95,7 @@ export function dayCurve(): HourCurve {
 
 /** A GRAP notice for Delhi NCR from an order of 17 Nov 2026. */
 export function grapNotice(stage: GrapNotice['stage'] = 'II'): GrapNotice {
-  return { region: 'delhi_ncr', stage, orderDate: '2026-11-17', factId: 'grap-order-2026-11-17' };
+  return { region: 'delhi_ncr', stage, orderDate: '2026-11-17', factId: 'grap-stage-order' };
 }
 
 /** A school with every input filled, using numbers that appear nowhere in the facts. */

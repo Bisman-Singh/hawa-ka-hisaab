@@ -9,7 +9,7 @@ describe('NAQI_FACTS', () => {
     expect(NAQI_FACTS).toHaveLength(6 + 6 + 42 + 5);
     expect(byId('naqi-band-very-poor')).toMatchObject({
       title: 'Very Poor',
-      value: 400,
+      value: 301,
       range: { low: 301, high: 400 },
     });
     expect(byId('naqi-health-good')).toMatchObject({ kind: 'text', text: 'Minimal Impact' });
@@ -17,11 +17,15 @@ describe('NAQI_FACTS', () => {
 
   it('stores each printed cell and an open Severe row above the Very poor top', () => {
     expect(byId('naqi-pm25-satisfactory')).toMatchObject({
-      value: 60,
+      value: 31,
       range: { low: 31, high: 60 },
       unit: 'µg/m³',
     });
-    expect(byId('naqi-co-poor')).toMatchObject({ value: 17, range: { low: 10.1, high: 17 }, unit: 'mg/m³' });
+    expect(byId('naqi-co-poor')).toMatchObject({
+      value: 10.1,
+      range: { low: 10.1, high: 17 },
+      unit: 'mg/m³',
+    });
     expect(byId('naqi-pm25-severe')).toMatchObject({
       title: 'PM2.5 24 hour mean for Severe, above 250',
       value: 250,

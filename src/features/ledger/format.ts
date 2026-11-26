@@ -1,7 +1,7 @@
 // Display rounding and wording for effects. Values are kept exact; rounding happens only here, at the edge.
 // The page, the rules text and the fact set sent to the model all use these, so a shown number is a sent number.
 import type { Range } from '../../lib/types.js';
-import type { Effect, WorkingInput } from './types.js';
+import type { Effect, Figure, WorkingInput } from './types.js';
 
 /** Minutes since midnight for an HH:MM clock time. */
 export function minutesOf(clock: string): number {
@@ -30,6 +30,16 @@ export function roundKg(kg: number): number {
   const size = Math.abs(kg);
   const places = size < 1 ? 100 : size < 10 ? 10 : 1;
   return Math.round(kg * places) / places;
+}
+
+/** A computed figure's value as shown: a whole number, the same value the fact set sends. */
+export function figureValue(figure: Figure): number {
+  return Math.round(figure.value);
+}
+
+/** A computed figure as the page shows it, such as 243 m³/h. */
+export function formatFigure(figure: Figure): string {
+  return `${String(figureValue(figure))} ${figure.unit}`;
 }
 
 /** A working input as shown: factors exactly as their source prints them, other inputs to one decimal. */

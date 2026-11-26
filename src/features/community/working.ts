@@ -28,9 +28,9 @@ export interface FigureSpec {
   readonly factIds: readonly string[];
 }
 
-/** A term the community entered. The working schema calls every such input household. */
+/** A term the society or school entered, marked as its own entry in the working. */
 export function entered(id: string, [label, unit]: readonly [string, string], value: number): Term {
-  return { input: { label, value, unit, from: 'household', factId: null }, fact: { id, label, value, unit } };
+  return { input: { label, value, unit, from: 'community', factId: null }, fact: { id, label, value, unit } };
 }
 
 /** An hour of the cleaner window, taken from the model forecast. */

@@ -24,7 +24,7 @@ export const ACTIONS_EN_TIME = {
     detail: same(
       'On a Moderate day the health ministry advises children, older people and others at risk to avoid prolonged or strenuous outdoor exertion.',
     ),
-    factIds: same(['community-advice-moderate-vulnerable']),
+    factIds: same(['advice-moderate-vulnerable']),
   },
   windows: {
     title: same('Keep windows shut except at midday'),
@@ -39,16 +39,12 @@ export const ACTIONS_EN_TIME = {
     },
     factIds: {
       school: [
-        'community-advice-ventilation',
+        'advice-ventilate',
         'community-ventilation-from',
         'community-ventilation-until',
         'community-advice-school-windows',
       ],
-      housing_society: [
-        'community-advice-ventilation',
-        'community-ventilation-from',
-        'community-ventilation-until',
-      ],
+      housing_society: ['advice-ventilate', 'community-ventilation-from', 'community-ventilation-until'],
     },
   },
   'wet-mopping': {
@@ -61,8 +57,8 @@ export const ACTIONS_EN_TIME = {
       'The health ministry advises wet mopping instead of sweeping to reduce exposure to air pollution.',
     ),
     factIds: {
-      school: ['community-advice-wet-mopping', 'community-advice-school-mopping'],
-      housing_society: ['community-advice-wet-mopping'],
+      school: ['advice-wet-mopping', 'community-advice-school-mopping'],
+      housing_society: ['advice-wet-mopping'],
     },
   },
   masks: {
@@ -77,7 +73,7 @@ export const ACTIONS_EN_TIME = {
       'Worn by people in a lab test, an N{n95} filtered {n95Low} to {n95High}% of small particles without a fit test, and cloth masks {clothLow} to {clothHigh}%. Retail masks worn at rest let in {leakLow} to {leakHigh}%, mostly through poor fit.',
     ),
     factIds: same([
-      'community-advice-masks',
+      'advice-masks',
       'community-mask-class',
       'community-mask-n95-filtration',
       'community-mask-cloth-filtration',

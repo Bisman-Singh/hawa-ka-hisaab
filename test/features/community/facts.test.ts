@@ -22,14 +22,14 @@ describe('factValue', () => {
   });
 
   it('throws for an id that is not a number fact, which is a coding error', () => {
-    expect(() => factValue('community-advice-masks', 'value')).toThrow('not a community number fact');
+    expect(() => factValue('advice-masks', 'value')).toThrow('not a community number fact');
     expect(() => factValue('no-such-fact', 'value')).toThrow('not a community number fact');
   });
 });
 
 describe('factText', () => {
   it('returns the quoted text and throws for a number fact', () => {
-    expect(factText('community-advice-poor-general')).toBe('Avoid outdoor physical exertion');
+    expect(factText('advice-poor-general')).toBe('Avoid outdoor physical exertion');
     expect(() => factText('community-share-dg-sets')).toThrow('not a community text fact');
   });
 });

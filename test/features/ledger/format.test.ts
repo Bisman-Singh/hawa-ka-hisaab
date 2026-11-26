@@ -1,12 +1,16 @@
 // Tests for display rounding and the wording of effects.
 import { describe, expect, it } from 'vitest';
+import { purifierNeed } from '../../../src/features/ledger/purifier.js';
+import { figure } from '../../../src/features/planner/fact-values.js';
 import type { Effect } from '../../../src/features/ledger/types.js';
 import {
   clockOf,
   describeChange,
   displayNumbers,
   displayValue,
+  figureValue,
   formatEffect,
+  formatFigure,
   minutesOf,
   percentOf,
   roundKg,
@@ -82,5 +86,14 @@ describe('formatEffect and displayNumbers', () => {
     expect(displayNumbers(sampleExposureEffect())).toEqual([60, 0.4, 30, 0.7]);
     expect(displayNumbers(co2)).toEqual([2.7, 3.6, 1.8, 2]);
     expect(displayNumbers(sampleCo2Effect())).toEqual([2.8, 1]);
+  });
+});
+
+describe('formatFigure', () => {
+  it('shows a computed figure as a whole number with its unit, the value the fact set sends', () => {
+    const need = purifierNeed(220);
+    expect(formatFigure(need)).toBe('243 m³/h');
+    expect(figureValue(need)).toBe(243);
+    expect(figure('size-r2', need)[0]?.value).toBe(figureValue(need));
   });
 });

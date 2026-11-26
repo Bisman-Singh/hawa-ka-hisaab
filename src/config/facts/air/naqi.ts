@@ -73,7 +73,7 @@ function bandFacts([id, name, low, high]: Band): Fact[] {
       kind: 'number',
       id: `naqi-band-${id}`,
       title: name,
-      value: high,
+      value: low,
       range: { low, high },
       unit: 'index',
       source,
@@ -97,7 +97,8 @@ function breakpointFacts([id, label, unit, hours, cells]: Pollutant): Fact[] {
     const above = index === rows.length;
     const title = `${label} ${String(hours)} hour mean for ${name}${above ? `, above ${String(top)}` : ''}`;
     const range = above ? null : { low, high };
-    return { kind: 'number', id: `naqi-${id}-${band}`, title, value: high, range, unit, source: NAQI_REPORT };
+    const value = above ? top : low;
+    return { kind: 'number', id: `naqi-${id}-${band}`, title, value, range, unit, source: NAQI_REPORT };
   });
 }
 

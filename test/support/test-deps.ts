@@ -1,4 +1,5 @@
 // Server dependencies for tests: a fake clock, a capturing logger and generous rate limits.
+import { disabledModel } from '../../src/lib/model.js';
 import { createFixedWindowLimiter } from '../../src/lib/rate-limit.js';
 import type { ServerDeps } from '../../src/server/deps.js';
 import { createCaptureLogger, type CapturedLine } from './capture-logger.js';
@@ -24,6 +25,7 @@ export function createTestDeps(overrides: Partial<ServerDeps> = {}): TestDeps {
     requestLimiter: limiter,
     modelLimiter: limiter,
     air: createFakeAirSources(),
+    model: disabledModel,
     ...overrides,
   };
   return { deps, clock, logLines: capture.lines, logText: capture.text };

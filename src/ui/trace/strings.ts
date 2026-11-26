@@ -56,6 +56,7 @@ export const CHECK: Readonly<Record<NumberCheck['status'], string>> = {
 /** Where a working input came from. */
 export const INPUT_FROM: Readonly<Record<WorkingInput['from'], string>> = {
   household: 'from your form',
+  community: 'from your form',
   fact: 'a published factor',
   air: 'from the air reading',
   forecast: 'from the model forecast',

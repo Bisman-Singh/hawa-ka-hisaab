@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { MAX_INTAKE_TEXT_CHARS } from '../../config/limits.js';
 import { definePostRoute } from '../../lib/contract.js';
 import { boundedText } from '../../lib/schemas/common.js';
-import { modelFailureKindSchema, traceSchema } from '../../lib/schemas/trace.js';
+import { fallbackReasonSchema, traceSchema } from '../../lib/schemas/trace.js';
 import { householdSchema } from './schemas.js';
 
 /** Body of POST /api/intake: the user's own description of who is at home and how the day goes. */
@@ -21,13 +21,14 @@ export const intakeReplySchema = z.strictObject({
 
 /**
  * Body of the intake response. parsed carries the household for the user to check and edit.
- * unavailable means the model could not be used; the form still works and the user fills it in.
+ * unavailable means the model could not be used or its reply failed a check; the form still works and the user
+ * fills it in. reason is the same as the trace's fallbackReason.
  */
 export const intakeResponseSchema = z.discriminatedUnion('outcome', [
   intakeReplySchema.extend({ outcome: z.literal('parsed'), trace: traceSchema }),
   z.strictObject({
     outcome: z.literal('unavailable'),
-    reason: modelFailureKindSchema,
+    reason: fallbackReasonSchema,
     trace: traceSchema,
   }),
 ]);

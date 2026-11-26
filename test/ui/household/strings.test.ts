@@ -19,6 +19,7 @@ describe('household words', () => {
   });
 
   it('has plain words for every reason the model can be unavailable', () => {
-    expect(Object.keys(MODEL_DOWN).sort()).toEqual([...modelFailureKindSchema.options].sort());
+    const reasons = [...modelFailureKindSchema.options, 'number_check_failed'];
+    expect(Object.keys(MODEL_DOWN).sort()).toEqual(reasons.sort());
   });
 });

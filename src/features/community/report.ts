@@ -1,8 +1,8 @@
 // Builds the community report: computed facts, ranked actions and the rules notice in English and Hindi, all
 // from the inputs, the air reading, the forecast and GRAP. No model is involved; a model may only reword it later.
 import type { Language } from '../../lib/types.js';
+import { readingBand } from '../air/reading-facts.js';
 import type { AirReading } from '../air/types.js';
-import type { AqiBand } from '../naqi/types.js';
 import { dayKindForBand } from '../planner/day-kind.js';
 import { buildFigures } from './figures.js';
 import { istParts } from './format.js';
@@ -33,18 +33,11 @@ const ACTIONS_EN: Readonly<Record<ActionId, ActionText>> = {
 const ACTIONS_HI: Readonly<Record<ActionId, PerKind>> = { ...ACTIONS_HI_DAY, ...ACTIONS_HI_MORE };
 const FRAMES: Readonly<Record<Language, FrameText>> = { en: FRAME_EN, hi: FRAME_HI };
 
-function bandOf(reading: AirReading): AqiBand | null {
-  if (reading.path === 'station') {
-    return reading.aqi?.band ?? null;
-  }
-  return reading.path === 'modelled' && reading.estimate.status === 'computed' ? reading.estimate.band : null;
-}
-
 function readingState(reading: AirReading): ReadingState {
   if (reading.path === 'station') {
     return reading.aqi === null ? 'station_no_aqi' : 'station';
   }
-  return bandOf(reading) === null ? 'none' : 'modelled';
+  return readingBand(reading) === null ? 'none' : 'modelled';
 }
 
 function frameIn(lang: Language, context: CommunityContext, { fill }: Renderer): NoticeFrame {
@@ -85,7 +78,7 @@ function wordingIn(lang: Language, { ids, kind, renderer }: Draft): NoticeWordin
  */
 export function buildCommunityReport(context: CommunityContext): CommunityReport {
   const today = istParts(context.now);
-  const band = bandOf(context.reading);
+  const band = readingBand(context.reading);
   const kind = context.community.kind;
   const timing = analyseTiming(context.community, context.forecast, today.date);
   const renderer = createRenderer(templateValues(context, { band, timing, date: today.date }));

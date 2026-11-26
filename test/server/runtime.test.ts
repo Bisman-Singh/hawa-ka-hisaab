@@ -20,6 +20,14 @@ describe('createRuntimeDeps', () => {
     expect(await deps.modelLimiter.take('a')).toMatchObject({ allowed: false });
   });
 
+  it('builds the disabled model with no key and the measured order with one', () => {
+    expect(createRuntimeDeps({}).model.modelId).toBeNull();
+    expect(createRuntimeDeps({ GEMINI_API_KEY: 'k', GEMINI_MODEL: 'gemini-a,gemini-b' }).model.modelId).toBe(
+      'gemini-a',
+    );
+    expect(() => createRuntimeDeps({ GEMINI_MODEL: 'not a model' })).toThrow('GEMINI_MODEL');
+  });
+
   it('stops startup on a bad variable, naming it without its value', () => {
     expect(() => createRuntimeDeps({ MODEL_RATE_LIMIT_PER_MINUTE: 'many' })).toThrow(
       'Invalid environment variables: MODEL_RATE_LIMIT_PER_MINUTE',

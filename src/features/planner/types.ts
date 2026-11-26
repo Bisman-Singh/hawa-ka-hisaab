@@ -1,6 +1,11 @@
 // Types for the planner feature, inferred from its schemas.
 import type { z } from 'zod';
-import type { airBasisSchema, planRequestSchema, planResponseSchema } from './contract.js';
+import type {
+  airBasisSchema,
+  planRequestSchema,
+  planResponseSchema,
+  whatIfContextSchema,
+} from './contract.js';
 import type { actionKindSchema, actionTextSchema, alternativeSchema } from './schemas.js';
 import type { candidateActionSchema, indoorStepSchema, planItemSchema } from './schemas.js';
 import type { planSchema, slotSchema, whatIfSchema } from './schemas.js';
@@ -35,6 +40,9 @@ export type Plan = z.infer<typeof planSchema>;
 
 /** The air a plan was built on. */
 export type AirBasis = z.infer<typeof airBasisSchema>;
+
+/** What the browser needs to recompute a what-if. */
+export type WhatIfContext = z.infer<typeof whatIfContextSchema>;
 
 /** Body of POST /api/plan. */
 export type PlanRequest = z.infer<typeof planRequestSchema>;

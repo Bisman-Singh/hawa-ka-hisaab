@@ -3,6 +3,7 @@ import type { Hono } from 'hono';
 import type { AirSources } from '../features/air/types.js';
 import type { Clock } from '../lib/clock.js';
 import type { Logger } from '../lib/logger.js';
+import type { ModelPort } from '../lib/model.js';
 import type { RateLimiter } from '../lib/rate-limit.js';
 
 /**
@@ -16,6 +17,7 @@ export interface ServerDeps {
   readonly requestLimiter: RateLimiter;
   readonly modelLimiter: RateLimiter;
   readonly air: AirSources;
+  readonly model: ModelPort;
 }
 
 /** What a route module receives: the app to register on and the dependencies to close over. */

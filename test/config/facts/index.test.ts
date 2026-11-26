@@ -11,6 +11,16 @@ describe('the fact registry', () => {
     expect(FACT_LIST.filter((fact) => fact.title.length > 120).map((fact) => fact.id)).toEqual([]);
   });
 
+  it('holds the air, community and emergency facts too, and quotes no passage twice except band advice', () => {
+    for (const id of ['grap-stage-order', 'community-share-dg-sets', 'india-emergency-number']) {
+      expect(findFact(id)?.id).toBe(id);
+    }
+    const quoted = FACT_LIST.flatMap((fact) => (fact.kind === 'text' ? [fact] : []));
+    const keys = quoted.map((fact) => `${fact.source.url} ${fact.text}`);
+    const repeats = quoted.filter((_, index) => keys.indexOf(keys[index] ?? '') !== index);
+    expect(repeats.filter((fact) => !/^advice-[a-z-]+-(general|vulnerable)$/.test(fact.id))).toEqual([]);
+  });
+
   it('keeps ranges as ranges, with the value at the low end', () => {
     for (const fact of FACT_LIST) {
       if (fact.kind === 'number' && fact.range) {
