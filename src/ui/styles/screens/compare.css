@@ -1,0 +1,103 @@
+/* Compare: two households under the same air, each row marked as differing or the same, with the reason. */
+.cmp-head {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-3);
+  border-bottom: var(--bw-ctl) solid var(--ink);
+  padding-bottom: var(--s-3);
+}
+
+.cmp-head h2 {
+  font-size: var(--t-18);
+  margin: 0 0 var(--s-1);
+}
+
+.cmp-head p {
+  font-size: var(--t-16);
+  margin: 0;
+}
+
+.cmp {
+  list-style: none;
+}
+
+.cmp > li {
+  padding: var(--s-3) 0 var(--s-4);
+  border-bottom: var(--bw-rule) solid var(--rule);
+}
+
+.cmp h3 {
+  font-size: var(--t-18);
+  margin-bottom: var(--s-2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1) var(--s-3);
+  align-items: baseline;
+}
+
+.differs,
+.same {
+  font-size: var(--t-14);
+  padding: 0 var(--s-2);
+  line-height: 1.6;
+}
+
+.differs {
+  font-weight: var(--w-strong);
+  border: var(--bw-ctl) solid var(--ink);
+}
+
+.same {
+  font-weight: var(--w-mid);
+  color: var(--ink-2);
+  border: var(--bw-rule) dashed var(--ink-2);
+}
+
+.cmp-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-3);
+  font-size: var(--t-16);
+}
+
+.cmp-cols > div + div {
+  border-left: var(--bw-rule) solid var(--rule);
+  padding-left: var(--s-3);
+}
+
+.cmp-cols p {
+  margin-bottom: var(--s-1);
+}
+
+.cmp-cols .fig {
+  font-size: var(--t-21);
+  font-weight: var(--w-strong);
+  display: block;
+}
+
+.cmp-cols .small {
+  display: block;
+  margin-bottom: var(--s-2);
+}
+
+.cmp .because {
+  font-size: var(--t-16);
+  margin: var(--s-2) 0 0;
+  padding-top: var(--s-2);
+  border-top: var(--bw-rule) dashed var(--rule);
+  max-width: none;
+}
+
+@media (max-width: 22.49rem) {
+  .cmp-cols,
+  .cmp-head {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cmp-cols > div + div {
+    border-left: 0;
+    padding-left: 0;
+    border-top: var(--bw-rule) solid var(--rule);
+    padding-top: var(--s-2);
+  }
+}

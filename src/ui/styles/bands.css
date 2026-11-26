@@ -1,0 +1,200 @@
+/* Air bands: hatch density is the band, the word always sits beside it, colour appears only as today's chip. */
+.glyph {
+  display: inline-block;
+  width: 1.05em;
+  height: 1.05em;
+  border: 2px solid currentColor;
+  vertical-align: -0.16em;
+  flex: none;
+}
+
+.g-sat {
+  --hatch: var(--hatch-sat);
+}
+
+.g-mod {
+  --hatch: var(--hatch-mod);
+}
+
+.g-poor {
+  --hatch: var(--hatch-poor);
+}
+
+.g-vpoor {
+  --hatch: var(--hatch-vpoor);
+}
+
+.g-sat::before,
+.g-mod::before,
+.g-poor::before,
+.g-vpoor::before {
+  content: '';
+  display: block;
+  height: 100%;
+  background: var(--ink);
+  mask: var(--hatch);
+  print-color-adjust: exact;
+}
+
+.g-severe {
+  background: currentColor;
+  print-color-adjust: exact;
+}
+
+.band {
+  font-weight: var(--w-strong);
+  white-space: nowrap;
+}
+
+.band .glyph {
+  margin-right: 0.35em;
+}
+
+.scale {
+  position: relative;
+  margin: var(--s-3) 0 var(--s-4);
+  padding-top: 1.9rem;
+  container-type: inline-size;
+}
+
+.scale ol {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.scale li {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--t-14);
+  line-height: 1.2;
+  min-width: 0;
+}
+
+.scale .cell {
+  height: 1.5rem;
+  border: var(--bw-rule) solid var(--ink-2);
+  border-right-width: 0;
+}
+
+.scale li:last-child .cell {
+  border-right-width: var(--bw-rule);
+}
+
+.scale .chip {
+  height: 0.375rem;
+  margin-bottom: 2px;
+  print-color-adjust: exact;
+}
+
+.chip.c-good {
+  background: var(--band-good);
+}
+
+.chip.c-satisfactory {
+  background: var(--band-sat);
+}
+
+.chip.c-moderate {
+  background: var(--band-mod);
+}
+
+.chip.c-poor {
+  background: var(--band-poor);
+}
+
+.chip.c-very_poor {
+  background: var(--band-vpoor);
+}
+
+.chip.c-severe {
+  background: var(--band-severe);
+}
+
+.scale li.today .cell {
+  border: var(--bw-heavy) solid var(--ink);
+}
+
+.scale .lo {
+  font-stretch: var(--wd-fig);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-2);
+  padding-top: var(--s-1);
+}
+
+.scale .nm {
+  display: none;
+}
+
+.scale-pointer {
+  position: absolute;
+  top: 0;
+  left: calc(var(--at, 0) * 100%);
+  transform: translateX(-50%);
+  font-size: var(--t-16);
+  font-weight: var(--w-strong);
+  font-stretch: var(--wd-fig);
+  line-height: 1;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.scale-pointer::after {
+  content: '';
+  margin-top: 2px;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid var(--ink);
+}
+
+@container (min-width: 34rem) {
+  .scale .nm {
+    display: block;
+    font-weight: var(--w-mid);
+  }
+}
+
+.legend-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--t-16);
+  margin-top: var(--s-2);
+}
+
+.legend-table th,
+.legend-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: var(--s-2) var(--s-2) var(--s-2) 0;
+  border-bottom: var(--bw-rule) solid var(--rule);
+}
+
+.legend-table th {
+  font-weight: var(--w-mid);
+}
+
+@container (max-width: 30rem) {
+  .legend-table thead {
+    display: none;
+  }
+
+  .legend-table tr {
+    display: block;
+    padding: var(--s-2) 0;
+    border-bottom: var(--bw-rule) solid var(--rule);
+  }
+
+  .legend-table th,
+  .legend-table td {
+    display: inline;
+    border: 0;
+    padding: 0 var(--s-2) 0 0;
+  }
+
+  .legend-table td:last-child {
+    display: block;
+    padding-top: var(--s-1);
+  }
+}

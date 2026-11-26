@@ -1,0 +1,180 @@
+/* Controls: buttons, text links that act, fields with hint and error, and the segmented choice on native radios. */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.btn {
+  font-weight: var(--w-strong);
+  min-height: var(--target);
+  padding: var(--s-2) var(--s-5);
+  border-radius: var(--r-ctl);
+  border: var(--bw-ctl) solid var(--royal);
+  background: var(--royal);
+  color: var(--on-royal);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  text-decoration: none;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.btn:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+.btn-quiet {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--ink-2);
+}
+
+.btn-wide {
+  width: 100%;
+}
+
+.btn[disabled],
+.btn[aria-disabled='true'] {
+  background: var(--paper);
+  color: var(--ink-2);
+  border-color: var(--ink-2);
+  border-style: dashed;
+  cursor: not-allowed;
+}
+
+.btn svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: none;
+}
+
+.linkbtn {
+  font-weight: var(--w-mid);
+  color: var(--royal);
+  background: none;
+  border: 0;
+  padding: 0;
+  min-height: var(--target);
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  cursor: pointer;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  align-items: center;
+}
+
+.field {
+  display: grid;
+  gap: var(--s-2);
+  margin-bottom: var(--s-4);
+}
+
+.field label,
+.label {
+  font-weight: var(--w-mid);
+}
+
+.input,
+textarea,
+select {
+  color: var(--ink);
+  background: var(--leaf);
+  border: var(--bw-ctl) solid var(--ink-2);
+  border-radius: var(--r-ctl);
+  min-height: var(--target);
+  padding: var(--s-2) var(--s-3);
+  width: 100%;
+  min-width: 0;
+}
+
+textarea {
+  min-height: 9rem;
+  line-height: var(--lh-body);
+  resize: vertical;
+}
+
+[aria-invalid='true'] {
+  border-width: var(--bw-heavy);
+  border-color: var(--ink);
+}
+
+.hint {
+  font-size: var(--t-16);
+  color: var(--ink-2);
+  margin: 0;
+}
+
+.hint b {
+  font-weight: var(--w-strong);
+  color: var(--ink);
+}
+
+.seg {
+  border: 0;
+  margin: 0 0 var(--s-3);
+  padding: 0;
+  min-width: 0;
+}
+
+.seg legend {
+  font-weight: var(--w-mid);
+  font-size: var(--t-16);
+  padding: 0;
+  margin-bottom: var(--s-2);
+}
+
+.seg-opts {
+  display: inline-flex;
+  flex-wrap: wrap;
+  max-width: 100%;
+  border: var(--bw-ctl) solid var(--ink-2);
+  border-radius: var(--r-ctl);
+}
+
+.seg-opts label {
+  position: relative;
+  min-height: var(--target);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--s-4);
+  cursor: pointer;
+  font-size: var(--t-16);
+  font-weight: var(--w-mid);
+}
+
+.seg-opts label + label {
+  border-left: var(--bw-ctl) solid var(--ink-2);
+}
+
+.seg-opts input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.seg-opts label:has(input:checked) {
+  background: var(--ink);
+  color: var(--leaf);
+  font-weight: var(--w-strong);
+}
+
+.seg-opts label:has(input:focus-visible) {
+  outline: var(--bw-heavy) solid var(--focus);
+  outline-offset: 2px;
+  z-index: 1;
+}

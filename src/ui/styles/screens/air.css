@@ -1,0 +1,174 @@
+/* Place search and the air card. A solid edge is a measured reading, a dashed edge a modelled estimate. */
+.place-row {
+  display: flex;
+  gap: var(--s-2);
+}
+
+.place-row .input {
+  flex: 1;
+}
+
+.place-set {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--s-3);
+  padding: var(--s-2) 0;
+  border-bottom: var(--bw-rule) solid var(--rule);
+  margin-bottom: var(--s-4);
+}
+
+.place-set strong {
+  font-size: var(--t-21);
+  font-weight: var(--w-strong);
+}
+
+.slip {
+  background: var(--leaf);
+  border: var(--bw-ctl) solid var(--ink);
+  padding: var(--s-4);
+  margin-bottom: var(--s-5);
+}
+
+.slip.modelled {
+  border-style: dashed;
+}
+
+.slip.dim {
+  border-color: var(--ink-2);
+}
+
+.slip-kind {
+  display: inline-block;
+  font-size: var(--t-14);
+  font-weight: var(--w-strong);
+  border: var(--bw-rule) solid currentColor;
+  padding: 0 var(--s-2);
+  margin-bottom: var(--s-2);
+  line-height: 1.6;
+}
+
+.station {
+  font-size: var(--t-21);
+  font-weight: var(--w-strong);
+  margin-bottom: var(--s-1);
+}
+
+.slip .meta {
+  font-size: var(--t-16);
+  color: var(--ink-2);
+  margin-bottom: var(--s-3);
+}
+
+.slip .meta b {
+  color: var(--ink);
+  font-weight: var(--w-mid);
+}
+
+.reading {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0 var(--s-4);
+  align-items: center;
+  padding: var(--s-3) 0;
+  border-top: var(--bw-rule) solid var(--rule);
+  border-bottom: var(--bw-rule) solid var(--rule);
+}
+
+.reading .aqi {
+  margin: 0;
+  font-size: var(--t-72);
+  font-weight: var(--w-figure);
+  line-height: 0.9;
+  font-stretch: 76%;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.reading .aqi small {
+  display: block;
+  font-size: var(--t-16);
+  font-weight: var(--w-mid);
+  font-stretch: 100%;
+  letter-spacing: 0;
+  margin-top: var(--s-1);
+}
+
+.reading .band {
+  font-size: var(--t-24);
+}
+
+.reading .band .glyph {
+  width: 1.4em;
+  height: 1.4em;
+}
+
+.reading p {
+  margin: var(--s-1) 0 0;
+  font-size: var(--t-16);
+}
+
+.reading .aqi-none {
+  margin: 0;
+  font-size: var(--t-21);
+  font-weight: var(--w-strong);
+  line-height: 1.3;
+  max-width: 16rem;
+}
+
+.subidx h3 {
+  font-size: var(--t-16);
+  font-weight: var(--w-mid);
+  margin: var(--s-4) 0 var(--s-1);
+}
+
+.subidx dl {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  margin: 0;
+  font-size: var(--t-16);
+}
+
+.subidx dt,
+.subidx dd {
+  padding: var(--s-1) 0;
+  border-bottom: var(--bw-rule) solid var(--rule);
+  margin: 0;
+}
+
+.subidx dd {
+  text-align: right;
+  font-stretch: var(--wd-fig);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--t-18);
+  font-weight: var(--w-mid);
+}
+
+.subidx .main {
+  font-weight: var(--w-strong);
+}
+
+.source {
+  font-size: var(--t-16);
+  color: var(--ink-2);
+  margin: var(--s-3) 0 0;
+  max-width: none;
+}
+
+.grap {
+  margin: var(--s-3) 0 0;
+  padding-top: var(--s-3);
+  border-top: var(--bw-rule) solid var(--rule);
+  font-size: var(--t-16);
+  max-width: none;
+}
+
+.grap b {
+  font-weight: var(--w-strong);
+}
+
+@media (max-width: 22.49rem) {
+  .place-row {
+    flex-direction: column;
+  }
+}

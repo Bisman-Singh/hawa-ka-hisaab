@@ -1,0 +1,294 @@
+/* The day plan: its head, the severe-day bulletin, the forecast strip and the ask box with its calls. */
+.plan-head {
+  border-bottom: var(--bw-ctl) solid var(--ink);
+  padding-bottom: var(--s-3);
+  margin-bottom: var(--s-4);
+}
+
+.plan-head h1,
+.plan-head .plan-h {
+  font-size: var(--t-36);
+  margin-bottom: var(--s-2);
+}
+
+.plan-head .for {
+  margin-bottom: var(--s-3);
+}
+
+.bulletin {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--s-3) var(--s-4);
+  align-items: center;
+  border: var(--bw-heavy) solid var(--ink);
+  border-bottom-width: 6px;
+  padding: var(--s-4);
+  margin-bottom: var(--s-5);
+  background: var(--leaf);
+}
+
+.bulletin .glyph {
+  width: 3rem;
+  height: 3rem;
+}
+
+.bulletin h1 {
+  font-size: var(--t-36);
+  margin: 0;
+}
+
+.bulletin p {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.path {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-1) var(--s-3);
+  font-size: var(--t-16);
+  margin: 0 0 var(--s-2);
+}
+
+.plan-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3) var(--s-5);
+  align-items: end;
+  margin-top: var(--s-3);
+}
+
+.plan-tools .seg {
+  margin: 0;
+}
+
+/* Forecast strip: a model forecast by hour, told by bar length only. Set --v, --at, --from and --to from code. */
+.ds {
+  margin: var(--s-5) 0 var(--s-4);
+}
+
+.ds h2 {
+  font-size: var(--t-18);
+  margin-bottom: var(--s-1);
+}
+
+.ds > p {
+  font-size: var(--t-16);
+  color: var(--ink-2);
+}
+
+.ds-chart {
+  position: relative;
+  margin-top: var(--s-3);
+  padding-top: 1.5rem;
+}
+
+.ds-bars,
+.ds-axis,
+.ds-slots {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(var(--hours, 19), minmax(0, 1fr));
+  column-gap: 2px;
+}
+
+.ds-bars {
+  height: 6.5rem;
+  align-items: end;
+  border-bottom: var(--bw-ctl) solid var(--ink);
+}
+
+.ds-bars li {
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.ds-bars .bar {
+  width: max(5px, 34%);
+  height: calc(var(--v) / 350 * 100%);
+  background: var(--ink-2);
+}
+
+.ds-bars .sel .bar {
+  outline: var(--bw-ctl) solid var(--ink);
+  outline-offset: 2px;
+}
+
+.ds-axis {
+  font-size: var(--t-14);
+  font-stretch: var(--wd-fig);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  color: var(--ink-2);
+  padding-top: 2px;
+}
+
+.ds-axis .odd {
+  visibility: hidden;
+}
+
+.ds-axis .sel {
+  visibility: visible;
+  color: var(--ink);
+  font-weight: var(--w-strong);
+}
+
+.ds-slots {
+  font-size: var(--t-14);
+  font-weight: var(--w-mid);
+  margin-top: var(--s-1);
+}
+
+.ds-slots span {
+  grid-column: span var(--span, 7);
+  border-top: var(--bw-ctl) solid var(--ink-2);
+  padding-top: 2px;
+}
+
+.ds-win,
+.ds-now {
+  position: absolute;
+  top: 0;
+  height: 1.5rem;
+  font-size: var(--t-14);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.ds-win {
+  left: calc(var(--from) / var(--hours, 19) * 100%);
+  width: calc((var(--to) - var(--from)) / var(--hours, 19) * 100%);
+  border-bottom: var(--bw-ctl) solid var(--ink);
+  font-weight: var(--w-strong);
+  display: flex;
+  justify-content: center;
+}
+
+.ds-win::before,
+.ds-win::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  height: 0.5rem;
+  border-left: var(--bw-ctl) solid var(--ink);
+}
+
+.ds-win::before {
+  left: 0;
+}
+
+.ds-win::after {
+  right: 0;
+}
+
+.ds-now {
+  left: calc(var(--at) / var(--hours, 19) * 100%);
+  font-weight: var(--w-mid);
+  padding-left: var(--s-1);
+  border-left: var(--bw-ctl) solid var(--ink);
+}
+
+.ds-step {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-top: var(--s-3);
+}
+
+.ds-step output {
+  flex: 1;
+  text-align: center;
+  font-size: var(--t-16);
+  font-weight: var(--w-mid);
+  border-bottom: var(--bw-rule) solid var(--rule);
+  padding: var(--s-2) 0;
+}
+
+.ds-step .btn {
+  padding: 0;
+  width: var(--target);
+}
+
+.ask form {
+  margin-bottom: var(--s-4);
+}
+
+.ask textarea {
+  min-height: 5.5rem;
+}
+
+.qa {
+  border-top: var(--bw-ctl) solid var(--ink);
+  padding-top: var(--s-3);
+  margin-bottom: var(--s-6);
+}
+
+.qa .q {
+  font-weight: var(--w-mid);
+  margin-bottom: var(--s-3);
+}
+
+.qa .q span {
+  display: block;
+  font-size: var(--t-14);
+  color: var(--ink-2);
+}
+
+.trace {
+  list-style: none;
+  counter-reset: call;
+  border-top: var(--bw-rule) solid var(--rule);
+  margin-bottom: var(--s-3);
+}
+
+.trace li {
+  counter-increment: call;
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+  gap: 0 var(--s-2);
+  padding: var(--s-2) 0;
+  border-bottom: var(--bw-rule) solid var(--rule);
+  font-size: var(--t-16);
+}
+
+.trace li::before {
+  content: counter(call);
+  font-weight: var(--w-strong);
+  font-stretch: var(--wd-fig);
+  font-size: var(--t-18);
+  grid-row: span 3;
+}
+
+.trace .call {
+  font-weight: var(--w-mid);
+}
+
+.trace code {
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
+
+.trace .result {
+  font-weight: var(--w-strong);
+}
+
+.fixed-reply {
+  border: var(--bw-heavy) solid var(--ink);
+  background: var(--leaf);
+  padding: var(--s-4);
+}
+
+.fixed-reply blockquote {
+  margin: var(--s-2) 0 var(--s-3) var(--s-4);
+  padding: 0;
+  font-weight: var(--w-mid);
+}
+
+@media (min-width: 48rem) {
+  .bulletin p {
+    grid-column: 2;
+  }
+}

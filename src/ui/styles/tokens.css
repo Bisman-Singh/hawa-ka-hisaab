@@ -1,17 +1,76 @@
-/* Design tokens. A minimal neutral set; the visual design stream replaces these values. */
+/* Design tokens. Each colour holds its light and dark value; the colour scheme of an element picks one. */
+/* Warm colour belongs to the air bands only. Everything else is blue-black ink on a haze-grey page. */
 :root {
-  --color-ink: #1f2326;
-  --color-paper: #f3f1ec;
-  --color-muted: #545a5f;
-  --color-focus: #0a4f94;
-  --color-alert: #8f1d14;
-  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', sans-serif;
-  --font-hindi: 'Noto Sans Devanagari', 'Nirmala UI', Mangal, sans-serif;
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 1rem;
-  --space-4: 1.5rem;
-  --space-5: 2.5rem;
-  --target-min: 44px;
-  --measure: 40rem;
+  color-scheme: light dark;
+  --paper: light-dark(#e4e8e7, #18202e);
+  --leaf: light-dark(#f0f2f1, #1f2a3c);
+  --ink: light-dark(#131e36, #e4e8ee);
+  --ink-2: light-dark(#43506a, #a9b4c6);
+  --rule: light-dark(#9eb1c7, #3d4d68);
+  --royal: light-dark(#1b3da3, #9cc0ff);
+  --on-royal: light-dark(#f0f2f1, #131e36);
+  --focus: light-dark(#1b3da3, #9cc0ff);
+  --pencil: light-dark(#c3ccd3, #34425a);
+  --scrim: light-dark(rgb(19 30 54 / 0.6), rgb(8 12 20 / 0.7));
+
+  --band-good: #00b050;
+  --band-sat: #92d050;
+  --band-mod: #ffff00;
+  --band-poor: #ff6500;
+  --band-vpoor: #ff0000;
+  --band-severe: #c00000;
+
+  --hatch-sat: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Cpath d='M0 14L14 0M-2 2L2 -2M12 16L16 12' stroke='%23000' stroke-width='1.5'/%3E%3C/svg%3E");
+  --hatch-mod: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M0 8L8 0M-2 2L2 -2M6 10L10 6' stroke='%23000' stroke-width='1.5'/%3E%3C/svg%3E");
+  --hatch-poor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='5' height='5'%3E%3Cpath d='M0 5L5 0M-1 1L1 -1M4 6L6 4' stroke='%23000' stroke-width='1.3'/%3E%3C/svg%3E");
+  --hatch-vpoor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Cpath d='M0 6L6 0M-1 1L1 -1M5 7L7 5M0 0L6 6M-1 5L1 7M5 -1L7 1' stroke='%23000' stroke-width='1.2'/%3E%3C/svg%3E");
+
+  --font: 'Anek Latin', 'Anek Hindi', 'Noto Sans Devanagari', 'Noto Sans', system-ui, sans-serif;
+  --font-mark: 'Anek Mark', var(--font);
+  --font-code: ui-monospace, 'Cascadia Mono', 'Roboto Mono', monospace;
+  --t-14: 0.875rem;
+  --t-16: 1rem;
+  --t-18: 1.125rem;
+  --t-21: 1.3125rem;
+  --t-24: 1.5rem;
+  --t-36: 2.25rem;
+  --t-48: 3rem;
+  --t-72: 4.5rem;
+  --w-body: 430;
+  --w-mid: 560;
+  --w-head: 640;
+  --w-strong: 680;
+  --w-figure: 700;
+  --wd-fig: 78%;
+  --wd-body: 100%;
+  --wd-mark: 108%;
+  --lh-tight: 1.15;
+  --lh-body: 1.5;
+  --lh-hi: 1.75;
+
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+
+  --r-ctl: 2px;
+  --bw-rule: 1px;
+  --bw-ctl: 2px;
+  --bw-heavy: 3px;
+  --bw-double: 5px;
+  --target: 2.75rem;
+  --measure: 38rem;
+}
+
+/* A fixed scheme for a page or a part of one, used by the component reference and print. */
+[data-theme='light'] {
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
 }

@@ -1,0 +1,105 @@
+/* Society or school: computed facts, the action list and the notice, which survives a black and white photocopy. */
+.notice {
+  background: var(--leaf);
+  border: var(--bw-ctl) solid var(--ink);
+  padding: var(--s-5) var(--s-4);
+  margin-bottom: var(--s-4);
+}
+
+.notice p {
+  max-width: none;
+}
+
+.notice-title {
+  text-align: center;
+  font-size: var(--t-36);
+  font-weight: var(--w-figure);
+  font-stretch: var(--wd-mark);
+  line-height: 1.1;
+  border-bottom: var(--bw-double) double var(--ink);
+  padding-bottom: var(--s-2);
+  margin-bottom: var(--s-3);
+}
+
+.notice[lang='hi'] .notice-title {
+  font-stretch: 100%;
+}
+
+.notice-meta {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--s-1) var(--s-4);
+  font-size: var(--t-16);
+  margin-bottom: var(--s-3);
+}
+
+.notice-air {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--s-3);
+  align-items: center;
+  border-top: var(--bw-rule) solid var(--ink);
+  border-bottom: var(--bw-rule) solid var(--ink);
+  padding: var(--s-3) 0;
+  margin-bottom: var(--s-3);
+}
+
+.notice-air .glyph {
+  width: 3rem;
+  height: 3rem;
+  border-width: 3px;
+}
+
+.notice-air p {
+  margin: 0;
+}
+
+.notice ol,
+.acts {
+  padding-left: 1.5rem;
+  margin-bottom: var(--s-4);
+}
+
+.notice ol li,
+.acts li {
+  padding: var(--s-1) 0;
+}
+
+.notice .sign {
+  text-align: right;
+  font-weight: var(--w-mid);
+  margin: 0 0 var(--s-2) auto;
+}
+
+.notice .src {
+  font-size: var(--t-14);
+  color: var(--ink-2);
+  margin: 0;
+}
+
+.facts-list {
+  list-style: none;
+  border-top: var(--bw-ctl) solid var(--ink);
+  margin-bottom: var(--s-4);
+}
+
+.facts-list li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--s-1) var(--s-3);
+  padding: var(--s-3) 0;
+  border-bottom: var(--bw-rule) solid var(--rule);
+  font-size: var(--t-16);
+}
+
+.facts-list .fig {
+  font-size: var(--t-24);
+  font-weight: var(--w-strong);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.facts-list .cite {
+  grid-column: 1 / -1;
+}

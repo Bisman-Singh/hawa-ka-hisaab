@@ -1,0 +1,71 @@
+/* Indoor air and swaps: notes with sources, "instead of" pairs, and claims the evidence does not back. */
+.notes {
+  list-style: none;
+  border-top: var(--bw-ctl) solid var(--ink);
+  margin-bottom: var(--s-4);
+}
+
+.notes > li {
+  padding: var(--s-3) 0;
+  border-bottom: var(--bw-rule) solid var(--rule);
+}
+
+.notes h3 {
+  font-size: var(--t-18);
+  margin-bottom: var(--s-1);
+}
+
+.notes p {
+  margin-bottom: var(--s-1);
+}
+
+.swap {
+  list-style: none;
+  border-top: var(--bw-ctl) solid var(--ink);
+}
+
+.swap > li {
+  padding: var(--s-3) 0 var(--s-4);
+  border-bottom: var(--bw-rule) solid var(--rule);
+}
+
+.swap .pair {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: var(--s-1) var(--s-3);
+  margin-bottom: var(--s-2);
+}
+
+.swap .pair dt {
+  font-size: var(--t-16);
+  color: var(--ink-2);
+  font-weight: var(--w-mid);
+  padding-top: 0.1rem;
+}
+
+.swap .pair dd {
+  margin: 0;
+  font-weight: var(--w-mid);
+}
+
+.swap .pair .from,
+.myth .claim {
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+  color: var(--ink-2);
+}
+
+.swap .sums {
+  margin: var(--s-2) 0;
+  max-width: 26rem;
+}
+
+.myth {
+  display: grid;
+  gap: var(--s-1);
+}
+
+.myth .claim {
+  font-weight: var(--w-mid);
+  margin: 0;
+}

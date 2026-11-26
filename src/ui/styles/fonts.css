@@ -1,0 +1,37 @@
+/* Self-hosted Anek Devanagari 1.003 under SIL OFL 1.1, subset for this app. The licence sits beside the files. */
+/* Latin keeps the weight and width axes; Hindi is two static weights; the mark face draws only the masthead. */
+@font-face {
+  font-family: 'Anek Latin';
+  src: url('../fonts/anek-latin.woff2') format('woff2');
+  font-weight: 400 700;
+  font-stretch: 75% 110%;
+  font-display: swap;
+  unicode-range:
+    U+0020-007E, U+00A0, U+00B0, U+00B2-00B3, U+00B5, U+00D7, U+00F7, U+2013, U+2018-2019, U+201C-201D,
+    U+2026, U+2082-2083, U+20B9, U+2212;
+}
+
+@font-face {
+  font-family: 'Anek Hindi';
+  src: url('../fonts/anek-hindi-430.woff2') format('woff2');
+  font-weight: 430;
+  font-display: swap;
+  unicode-range: U+0900-097F, U+200C-200D, U+25CC;
+}
+
+@font-face {
+  font-family: 'Anek Hindi';
+  src: url('../fonts/anek-hindi-680.woff2') format('woff2');
+  font-weight: 680;
+  font-display: swap;
+  unicode-range: U+0900-097F, U+200C-200D, U+25CC;
+}
+
+@font-face {
+  font-family: 'Anek Mark';
+  src: url('../fonts/anek-mark.woff2?no-inline') format('woff2');
+  font-weight: 640;
+  font-stretch: 108%;
+  font-display: swap;
+  unicode-range: U+0020, U+0915, U+0938, U+0939, U+092C, U+0935, U+093E, U+093F;
+}

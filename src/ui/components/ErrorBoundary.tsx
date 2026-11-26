@@ -1,5 +1,8 @@
-// Catches a rendering error in its children and offers a retry instead of a blank page.
-import { Component, type ReactNode } from 'react';
+// Catches a rendering error in a view and offers a retry instead of a blank page. The frame stays usable.
+import { Component } from 'react';
+import type { ReactNode } from 'react';
+import { UI } from '../i18n/strings.js';
+import { StateMessage } from './StateMessage.js';
 
 /** Props of the error boundary. */
 export interface ErrorBoundaryProps {
@@ -10,7 +13,7 @@ interface ErrorBoundaryState {
   readonly failed: boolean;
 }
 
-/** Shows a short message and a retry button when a child view throws while rendering. */
+/** Shows a short alert and a retry button when a child view throws while rendering. */
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   override state: ErrorBoundaryState = { failed: false };
 
@@ -23,17 +26,18 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       return this.props.children;
     }
     return (
-      <div role="alert" className="error-panel">
-        <p>This part of the page stopped working.</p>
+      <StateMessage tone="alert" glyph="broken" title={UI.broken.title}>
+        <p>{UI.broken.body}</p>
         <button
+          className="btn btn-quiet"
           type="button"
           onClick={() => {
             this.setState({ failed: false });
           }}
         >
-          Try again
+          {UI.retry}
         </button>
-      </div>
+      </StateMessage>
     );
   }
 }

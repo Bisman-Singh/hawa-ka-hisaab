@@ -1,9 +1,9 @@
-// Browser entry: loads the styles and mounts the app into the root element.
+// Browser entry: sets zod up first, then loads the styles and mounts the app into the root element.
+import './zod-setup.js';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './App.js';
-import './styles/tokens.css';
-import './styles/base.css';
+import './styles/app.css';
 
 /** Mounts the app into the element with the given id. It throws if the element is missing. */
 export function mount(rootId: string): void {

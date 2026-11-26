@@ -1,0 +1,79 @@
+/* Print: black ink on white paper. A page with a notice prints only the notices, English then Hindi, on A4. */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm 14mm;
+  }
+
+  :root {
+    color-scheme: light;
+    --paper: #fff;
+    --leaf: #fff;
+    --ink: #000;
+    --ink-2: #222;
+    --rule: #555;
+  }
+
+  html,
+  body {
+    background: #fff;
+    color: #000;
+    font-size: 11pt;
+  }
+
+  .skip {
+    display: none;
+  }
+
+  :root:has(.notice)
+    :is(
+      .masthead,
+      .colophon,
+      .page-left,
+      .page-right > .sec:not(:has(.notice)),
+      .sec-head,
+      .notice ~ p,
+      .small
+    ) {
+    display: none;
+  }
+
+  :root:has(.notice) :is(.wrap, .spread, .page-right, .sec) {
+    display: block;
+    margin: 0;
+    padding: 0;
+    max-width: none;
+    border: 0;
+  }
+
+  .notice {
+    break-inside: avoid;
+    border: 1.5pt solid #000;
+    padding: 6mm 8mm;
+    margin: 0 0 6mm;
+    background: none;
+  }
+
+  .notice-title {
+    font-size: 26pt;
+    border-bottom: 4pt double #000;
+  }
+
+  .notice-air .glyph {
+    width: 14mm;
+    height: 14mm;
+    border: 2pt solid #000;
+  }
+
+  .notice ol {
+    margin-bottom: 3mm;
+  }
+
+  .notice ol li {
+    padding: 0.6mm 0;
+  }
+
+  .notice .src {
+    font-size: 8pt;
+  }
+}

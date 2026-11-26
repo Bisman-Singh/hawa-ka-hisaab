@@ -1,0 +1,100 @@
+/* The sheet over the page for how an answer was made: full screen on a phone, a side sheet from 64rem. */
+.made {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  max-height: none;
+  height: 100%;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.made::backdrop {
+  background: var(--scrim);
+}
+
+.made-in {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: var(--s-4);
+}
+
+.made-top {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  border-bottom: var(--bw-double) double var(--ink);
+  padding-bottom: var(--s-3);
+  margin-bottom: var(--s-4);
+}
+
+.made-top h2 {
+  margin: 0;
+}
+
+.made-top form {
+  margin-left: auto;
+}
+
+.facts {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--t-16);
+  margin-bottom: var(--s-3);
+}
+
+.facts th,
+.facts td {
+  text-align: left;
+  padding: var(--s-2) var(--s-2) var(--s-2) 0;
+  border-bottom: var(--bw-rule) solid var(--rule);
+  vertical-align: top;
+}
+
+.facts th {
+  font-weight: var(--w-mid);
+}
+
+.facts td.num {
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--w-mid);
+}
+
+.raw {
+  font-family: var(--font-code);
+  font-size: var(--t-14);
+  line-height: 1.5;
+  background: var(--leaf);
+  border: var(--bw-rule) solid var(--ink-2);
+  padding: var(--s-3);
+  overflow-x: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 0 0 var(--s-4);
+}
+
+.check {
+  border-top: var(--bw-ctl) solid var(--ink);
+  border-bottom: var(--bw-double) double var(--ink);
+  padding: var(--s-3) 0;
+  margin: var(--s-3) 0 var(--s-5);
+  max-width: none;
+}
+
+.check b {
+  font-weight: var(--w-strong);
+}
+
+@media (min-width: 64rem) {
+  .made {
+    width: 46rem;
+    margin-left: auto;
+    border-left: var(--bw-double) double var(--ink);
+  }
+
+  .made-in {
+    padding: var(--s-5) var(--s-6);
+  }
+}

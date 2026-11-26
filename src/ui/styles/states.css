@@ -1,0 +1,139 @@
+/* States: messages for empty, error and notice states, the written-by stamp, progress steps and the skeleton. */
+/* Shape and words carry the state, never colour. A dashed edge is a quiet state, the rules path or work in progress. */
+.msg {
+  border: var(--bw-ctl) solid var(--ink);
+  background: var(--leaf);
+  padding: var(--s-4);
+  margin-bottom: var(--s-4);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--s-1) var(--s-3);
+  align-items: start;
+}
+
+.msg > svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: 0.15rem;
+  color: var(--ink);
+}
+
+.msg > div > :last-child {
+  margin-bottom: 0;
+}
+
+.msg h2,
+.msg h3,
+.msg h4 {
+  font-size: var(--t-18);
+  margin-bottom: var(--s-1);
+}
+
+.msg.quiet {
+  border-style: dashed;
+  border-color: var(--ink-2);
+}
+
+.status {
+  font-weight: var(--w-mid);
+  display: flex;
+  gap: var(--s-2);
+  align-items: center;
+  margin-bottom: var(--s-3);
+}
+
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  border: var(--bw-ctl) solid var(--ink);
+  padding: 0 var(--s-2);
+  font-weight: var(--w-strong);
+  line-height: 1.8;
+}
+
+.stamp.rules {
+  border-style: dashed;
+}
+
+.steps {
+  list-style: none;
+  margin: 0 0 var(--s-4);
+}
+
+.steps li {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-2) 0;
+  border-bottom: var(--bw-rule) solid var(--rule);
+}
+
+.steps .st {
+  font-size: var(--t-14);
+  font-weight: var(--w-strong);
+  border: var(--bw-ctl) solid var(--ink);
+  padding: 0 var(--s-2);
+  min-width: 3.5rem;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.steps .now .st {
+  border-style: dashed;
+}
+
+.steps .now {
+  font-weight: var(--w-mid);
+}
+
+.skel {
+  display: block;
+  height: 0.9em;
+  background: var(--pencil);
+  margin: 0.35em 0;
+}
+
+.skel.w30 {
+  width: 30%;
+}
+
+.skel.w45 {
+  width: 45%;
+}
+
+.skel.w60 {
+  width: 60%;
+}
+
+.skel.w80 {
+  width: 80%;
+}
+
+.skel.tall {
+  height: 1.3em;
+}
+
+.skel.big {
+  height: 3.5rem;
+  width: 6rem;
+}
+
+.skel.num {
+  width: 5rem;
+  height: 1.3em;
+  margin-left: auto;
+}
+
+/* The one motion in the app: ruled lines waiting for ink, in two steps, and only when motion is welcome. */
+@media (prefers-reduced-motion: no-preference) {
+  .skel {
+    animation: wait 1.6s steps(2, jump-none) infinite;
+  }
+}
+
+@keyframes wait {
+  50% {
+    opacity: 0.55;
+  }
+}

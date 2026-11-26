@@ -1,29 +1,69 @@
-// The page frame: skip link, header, main landmark and footer. Feature views sit inside main.
-import type { ReactElement, ReactNode } from 'react';
+// The page frame: skip link, masthead, offline notice, the current view inside main, footer and live region.
+// Each view is wrapped so a failing or loading view never takes the frame down with it.
+import { Suspense, useEffect } from 'react';
+import type { ReactElement } from 'react';
 import { APP_NAME } from '../../config/app.js';
+import { Announcer } from '../hooks/announcer.js';
+import { useOnline } from '../hooks/useOnline.js';
+import { UI } from '../i18n/strings.js';
+import { useRoute } from '../router.js';
+import type { ViewDef } from '../view-types.js';
 import { ErrorBoundary } from './ErrorBoundary.js';
+import { Footer } from './Footer.js';
+import { Masthead } from './Masthead.js';
+import { NOT_FOUND } from './NotFound.js';
+import { StateMessage } from './StateMessage.js';
 
-/** Props of the shell. children are the feature views. */
+/** Props of the frame: the registered views and the time used for the masthead date. */
 export interface AppShellProps {
-  readonly children?: ReactNode;
+  readonly views: readonly ViewDef[];
+  readonly now: Date;
 }
 
-/** The frame every view sits in. A failing view is caught inside main so the frame stays usable. */
-export function AppShell({ children }: AppShellProps): ReactElement {
+function Waiting(): ReactElement {
   return (
-    <>
-      <a className="skip-link" href="#main">
-        Skip to main content
+    <p className="status" role="status">
+      {UI.loadingView}
+    </p>
+  );
+}
+
+function CurrentView({ views }: { readonly views: readonly ViewDef[] }): ReactElement {
+  const { view } = useRoute();
+  const current = views.find((candidate) => candidate.id === view) ?? NOT_FOUND;
+  useEffect(() => {
+    document.title = `${current.title}. ${APP_NAME}`;
+  }, [current.title]);
+  const View = current.Component;
+  return (
+    <ErrorBoundary key={current.id}>
+      <Suspense fallback={<Waiting />}>
+        <View />
+      </Suspense>
+    </ErrorBoundary>
+  );
+}
+
+/** The frame every view sits in. */
+export function AppShell({ views, now }: AppShellProps): ReactElement {
+  const online = useOnline();
+  return (
+    <Announcer>
+      <a className="skip" href="#main">
+        {UI.skip}
       </a>
-      <header className="site-header">
-        <h1 className="site-name">{APP_NAME}</h1>
-      </header>
-      <main id="main" tabIndex={-1} className="site-main">
-        <ErrorBoundary>{children}</ErrorBoundary>
-      </main>
-      <footer className="site-footer">
-        <p>Sample households are made up.</p>
-      </footer>
-    </>
+      <div className="wrap">
+        <Masthead now={now} />
+        {online ? null : (
+          <StateMessage tone="status" glyph="offline" title={UI.offline.title} quiet level={2}>
+            <p>{UI.offline.body}</p>
+          </StateMessage>
+        )}
+        <main id="main" tabIndex={-1}>
+          <CurrentView views={views} />
+        </main>
+        <Footer links={views.filter((view) => view.footer === true)} />
+      </div>
+    </Announcer>
   );
 }

@@ -1,0 +1,399 @@
+/* The ledger: slots, entries with a time column and a sums column, dot leaders, double-ruled totals, the working. */
+.slot {
+  margin-top: var(--s-6);
+}
+
+.slot-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--s-3);
+  padding-bottom: var(--s-2);
+  border-bottom: var(--bw-ctl) solid var(--ink);
+}
+
+.slot-head h2 {
+  font-size: var(--t-24);
+  margin: 0;
+}
+
+.slot-head .hours {
+  font-size: var(--t-16);
+  color: var(--ink-2);
+}
+
+.slot-head .air {
+  margin-left: auto;
+  font-size: var(--t-16);
+}
+
+.ledger {
+  list-style: none;
+}
+
+.entry {
+  display: grid;
+  grid-template-columns: 3.25rem minmax(0, 1fr);
+  grid-template-areas:
+    'when what'
+    'when sums'
+    'more more';
+  column-gap: var(--s-3);
+  padding: var(--s-4) 0;
+  border-bottom: var(--bw-rule) solid var(--rule);
+}
+
+.entry > .when {
+  grid-area: when;
+  border-right: var(--bw-rule) solid var(--rule);
+  padding-right: var(--s-2);
+}
+
+.when .t {
+  display: block;
+  font-size: var(--t-21);
+  font-weight: var(--w-head);
+  font-stretch: var(--wd-fig);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.when .fixity {
+  display: block;
+  font-size: var(--t-14);
+  color: var(--ink-2);
+  line-height: 1.25;
+  margin-top: var(--s-1);
+}
+
+.entry > .what {
+  grid-area: what;
+  min-width: 0;
+}
+
+.what h3 {
+  font-size: var(--t-21);
+  font-weight: var(--w-head);
+  margin-bottom: var(--s-1);
+}
+
+.what .who {
+  font-size: var(--t-16);
+  color: var(--ink-2);
+  margin-bottom: var(--s-2);
+}
+
+.what .do {
+  font-weight: var(--w-mid);
+  margin-bottom: var(--s-2);
+}
+
+.entry > .sums {
+  grid-area: sums;
+  margin: var(--s-1) 0 var(--s-2);
+}
+
+.entry > .more {
+  grid-area: more;
+  min-width: 0;
+}
+
+.tradeoff {
+  border-top: var(--bw-rule) solid var(--rule);
+  padding-top: var(--s-2);
+  margin-top: var(--s-2);
+}
+
+.entry.moved .t,
+.entry.moved h3 {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  color: var(--ink-2);
+}
+
+.carry {
+  display: inline-block;
+  font-weight: var(--w-strong);
+  border-bottom: var(--bw-ctl) solid var(--ink);
+  margin-bottom: var(--s-2);
+}
+
+/* Leader rows: a label, a dotted leader and a sum, as in an account book. */
+.leaders {
+  margin: 0;
+}
+
+.leaders > div {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-2);
+  padding: var(--s-1) 0;
+}
+
+.leaders dt {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-2);
+  font-size: var(--t-16);
+}
+
+.leaders dt::after {
+  content: '';
+  flex: 1;
+  border-bottom: var(--bw-ctl) dotted var(--ink-2);
+  min-width: 1rem;
+}
+
+.leaders dd {
+  margin: 0;
+  text-align: right;
+}
+
+.sums .fig {
+  display: block;
+  font-size: var(--t-24);
+  font-weight: var(--w-strong);
+  line-height: 1.1;
+}
+
+.sums .range,
+.sums .none {
+  display: block;
+  font-size: var(--t-14);
+  color: var(--ink-2);
+}
+
+.sums .none {
+  font-size: var(--t-16);
+}
+
+.sums > div:has(.none) {
+  display: block;
+}
+
+.sums > div:has(.none) dt::after {
+  display: none;
+}
+
+.sums > div:has(.none) dd {
+  text-align: left;
+}
+
+.calc {
+  border-top: var(--bw-ctl) solid var(--ink);
+  margin-bottom: var(--s-4);
+}
+
+.calc > div {
+  padding: var(--s-2) 0;
+  border-bottom: var(--bw-rule) solid var(--rule);
+}
+
+.calc dd {
+  font-stretch: var(--wd-fig);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--t-21);
+  font-weight: var(--w-mid);
+  white-space: nowrap;
+}
+
+/* The double rule under a total, shared by leader rows and tables. */
+.calc > .total,
+.reckon tr.total > * {
+  font-weight: var(--w-strong);
+  border-top: var(--bw-ctl) solid var(--ink);
+  border-bottom: var(--bw-double) double var(--ink);
+}
+
+.calc > .total dt,
+.calc > .total dd {
+  font-weight: var(--w-strong);
+}
+
+.reckon {
+  margin-top: var(--s-6);
+}
+
+.reckon table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.reckon caption {
+  text-align: left;
+  font-size: var(--t-24);
+  font-weight: var(--w-strong);
+  padding-bottom: var(--s-2);
+  border-bottom: var(--bw-ctl) solid var(--ink);
+}
+
+.reckon th,
+.reckon td {
+  text-align: left;
+  font-weight: var(--w-body);
+  padding: var(--s-2) var(--s-2) var(--s-2) 0;
+  border-bottom: var(--bw-rule) solid var(--rule);
+  vertical-align: baseline;
+}
+
+.reckon .num {
+  text-align: right;
+  font-stretch: var(--wd-fig);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--t-21);
+  font-weight: var(--w-mid);
+  white-space: nowrap;
+  padding-right: 0;
+}
+
+.reckon tr.total .num {
+  font-size: var(--t-24);
+  font-weight: var(--w-strong);
+}
+
+.reckon .note {
+  font-size: var(--t-16);
+  color: var(--ink-2);
+  margin-top: var(--s-2);
+  max-width: none;
+}
+
+/* The working: one tap away, a native disclosure. */
+.working {
+  margin-top: var(--s-2);
+}
+
+.working summary {
+  min-height: var(--target);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  cursor: pointer;
+  color: var(--royal);
+  font-weight: var(--w-mid);
+  list-style: none;
+}
+
+.working summary::-webkit-details-marker {
+  display: none;
+}
+
+.working summary::before {
+  content: '+';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: var(--bw-ctl) solid currentColor;
+  font-weight: var(--w-strong);
+  line-height: 1;
+}
+
+.working[open] summary::before {
+  content: '\2212';
+}
+
+.sheet {
+  background: var(--leaf);
+  border: var(--bw-rule) solid var(--ink-2);
+  padding: var(--s-3) var(--s-4) var(--s-4);
+  font-size: var(--t-16);
+  container-type: inline-size;
+}
+
+.sheet h4 {
+  font-size: var(--t-16);
+  margin: var(--s-3) 0 var(--s-1);
+}
+
+.sheet h4:first-child {
+  margin-top: 0;
+}
+
+.sheet p,
+.sheet ul {
+  margin-bottom: var(--s-2);
+}
+
+.sheet ul {
+  list-style: none;
+}
+
+.sheet li {
+  padding: var(--s-1) 0;
+  border-bottom: var(--bw-rule) solid var(--rule);
+}
+
+.formula {
+  font-stretch: 92%;
+  font-variant-numeric: tabular-nums;
+  padding: var(--s-2) 0;
+  margin: 0 0 var(--s-2);
+  border-top: var(--bw-rule) solid var(--rule);
+  border-bottom: var(--bw-rule) solid var(--rule);
+}
+
+.formula + .formula {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.formula div {
+  padding: 2px 0;
+}
+
+.formula .res {
+  font-weight: var(--w-strong);
+}
+
+@media (min-width: 48rem) {
+  .entry {
+    grid-template-columns: 4.5rem minmax(0, 1fr) 12.5rem;
+    grid-template-areas:
+      'when what sums'
+      'when more more';
+  }
+
+  .entry > .sums {
+    margin: 0;
+    padding-left: var(--s-3);
+    border-left: var(--bw-rule) solid var(--rule);
+  }
+
+  .entry > .sums > div {
+    display: block;
+    text-align: right;
+  }
+
+  .entry > .sums dt {
+    display: block;
+    text-align: right;
+    color: var(--ink-2);
+  }
+
+  .entry > .sums dt::after {
+    display: none;
+  }
+}
+
+/* Large text and zoom: rows breathe instead of squeezing. */
+@media (max-width: 22.49rem) {
+  .entry {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'when' 'what' 'sums' 'more';
+  }
+
+  .entry > .when {
+    border-right: 0;
+    display: flex;
+    gap: var(--s-3);
+    align-items: baseline;
+    padding: 0 0 var(--s-1);
+  }
+
+  .when .fixity {
+    margin: 0;
+  }
+}
