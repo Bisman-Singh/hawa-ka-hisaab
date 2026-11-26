@@ -13,7 +13,7 @@ export function istClock(iso: string): string {
   return clockText(parts.hour, parts.minute);
 }
 
-/** The text of an air fact, such as the data.gov.in AQI rule. Empty when the id is not an air quote. */
+/** The text of an air fact, such as the CPCB rule for the AQI. Empty when the id is not an air quote. */
 export function airQuote(id: string): string {
   const fact = AIR_FACTS.find((found) => found.id === id);
   return fact?.kind === 'text' ? fact.text : '';
@@ -27,7 +27,7 @@ export interface AirBasisLineProps {
 
 /** A station reading in words: AQI, station, hour and source, with the AQI rule when data.gov.in served it. */
 export function StationLine({ reading }: { readonly reading: StationReading }): ReactElement {
-  const rule = reading.provider === 'data_gov_in' ? ` ${airQuote('data-gov-in-aqi-rule')}` : '';
+  const rule = reading.provider === 'data_gov_in' ? ` ${airQuote('naqi-worst-sub-index')}` : '';
   const blank = reading.aqi === null ? ` ${PLAN.noAqi}` : '';
   return (
     <>

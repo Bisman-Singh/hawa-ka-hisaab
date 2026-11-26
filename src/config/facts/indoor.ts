@@ -27,7 +27,7 @@ export const INDOOR_FACTS: readonly Fact[] = [
   numberFact(
     {
       id: 'coil-cigarettes',
-      title: 'PM2.5 from one mosquito coil, in cigarettes',
+      title: 'PM2.5 from one coil, in cigarettes, six Chinese and Malaysian brands',
       value: 75,
       unit: 'cigarettes',
     },
@@ -53,8 +53,8 @@ export const INDOOR_FACTS: readonly Fact[] = [
   quoteFact(
     {
       id: 'solid-fuel-quote',
-      title: 'PM2.5 measured in Indian homes that cook with solid fuel',
-      text: 'The measured mean 24-hr concentration of PM2.5 in solid cookfuel using households ranged from 163 μg/m3 ... in the living area to 609 μg/m3 ... in the kitchen area.',
+      title: 'PM2.5 in 617 rural homes in 4 states that cook with solid fuel, 2004-05',
+      text: 'The measured mean 24-hr concentration of PM2.5 in solid cookfuel using households ranged from 163 μg/m3 [...] in the living area to 609 μg/m3 [...] in the kitchen area.',
     },
     BALAKRISHNAN_2013,
   ),
@@ -69,7 +69,7 @@ export const INDOOR_FACTS: readonly Fact[] = [
   quoteFact(
     {
       id: 'plants-quote',
-      title: 'How many potted plants it would take to matter',
+      title: 'Potted plants needed to match ventilation at removing volatile organic compounds',
       text: "necessitating the placement of 10-1000 plants/m2 of a building's floor space for the combined VOC-removing ability by potted plants to achieve the same removal rate that outdoor-to-indoor air exchange already provides in typical buildings",
     },
     CUMMINGS_2020,

@@ -6,7 +6,7 @@ import { sourceSchema } from '../../../../src/lib/schemas/facts.js';
 describe('air sources', () => {
   it('are valid public https documents with a retrieval date', () => {
     const all = Object.values(sources);
-    expect(all).toHaveLength(9);
+    expect(all).toHaveLength(10);
     for (const source of all) {
       expect(sourceSchema.safeParse(source).success, source.title).toBe(true);
     }

@@ -5,7 +5,7 @@ import { AIR_FACTS } from '../../../src/config/facts/air.js';
 import { ModelledSource, PROVIDER_WORDS, StationSource } from '../../../src/ui/place/SourceLine.js';
 import { jnuReading, modelledReading } from './air-fixtures.js';
 
-const ruleText = AIR_FACTS.find((fact) => fact.id === 'data-gov-in-aqi-rule');
+const ruleText = AIR_FACTS.find((fact) => fact.id === 'naqi-worst-sub-index');
 
 describe('source line', () => {
   it('names the CPCB feed, the hour, and that the AQI is as CPCB published it', () => {
@@ -22,7 +22,7 @@ describe('source line', () => {
   it('words the data.gov.in path with the rule from the facts and links its licence', () => {
     expect(ruleText?.kind === 'text' ? ruleText.text : null).toBe(PROVIDER_WORDS.data_gov_in.after);
     render(<StationSource reading={jnuReading({ provider: 'data_gov_in' })} />);
-    expect(screen.getByText(/AQI is the highest sub-index, CPCB's own rule\./)).toBeInTheDocument();
+    expect(screen.getByText(/The worst sub-index determines the overall AQI\./)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Government Open Data License India/ })).toBeInTheDocument();
   });
 

@@ -1,5 +1,5 @@
 // The health ministry advisory as only the community view quotes it: who is vulnerable, rescheduling, burning,
-// schools and workers, and the airing hours as numbers. Text is verbatim; ... marks a passage left out.
+// schools and workers, and the airing hours as numbers. Text is verbatim; [...] marks a passage left out.
 import type { Fact, Range, Source } from '../../lib/types.js';
 import { ADVISORY } from './sources.js';
 
@@ -23,7 +23,7 @@ const QUOTES: readonly QuoteRow[] = [
   [
     'community-advice-vulnerable-groups',
     'Who the advisory counts as vulnerable',
-    'Age group: Children particularly under 5 years and old age groups. Pregnant women: Exposure during pregnancy may have consequences for child in womb. Predisposed health conditions: Those with pre-existing illnesses of respiratory cardiovascular and cerebrovascular systems are at higher risk. ... Outdoor working groups: Those with possibility of prolonged exposures such as traffic policemen, traffic volunteers, construction workers, road sweepers, rickshaw pullers, auto-rickshaw drivers, roadside vendors, and others working outdoors in air polluted settings are at higher risk.',
+    'i. Age group: Children particularly under 5 years and old age groups ii. Pregnant women: Exposure during pregnancy may have consequences for child in womb. iii. Predisposed health conditions: Those with pre-existing illnesses of respiratory cardiovascular and cerebrovascular systems are at higher risk [...] v. Outdoor working groups: Those with possibility of prolonged exposures such as traffic policemen, traffic volunteers, construction workers, road sweepers, rickshaw pullers, auto-rickshaw drivers, roadside vendors, and others working outdoors in air polluted settings, labours working near boilers or furnace smelters, miners etc. are at higher risk. [...]',
   ],
   [
     'community-advice-reschedule',
@@ -37,8 +37,8 @@ const QUOTES: readonly QuoteRow[] = [
   ],
   [
     'community-advice-school-outdoor',
-    'Outdoor activities in school when the AQI is poor or worse',
-    'Precautions and avoidance of outdoor activities in school if AQI levels is poor and above: ... Schools to limit outdoor activities during days of higher pollution levels. During break sessions, stay indoors and minimize outdoor exposure. Physical activities like running, jogging, playing may be avoided or postponed. ...',
+    'School outdoor activity when the AQI is poor or worse, annexure for schools',
+    'Precautions and avoidance of outdoor activities in school if AQI levels is poor and above [...] ii) Schools to limit outdoor activities during days of higher pollution levels iii) During break sessions, stay indoors and minimize outdoor exposure iv) Physical activities like running, jogging, playing may be avoided or postponed [...]',
   ],
   [
     'community-advice-school-windows',
@@ -52,20 +52,21 @@ const QUOTES: readonly QuoteRow[] = [
   ],
   [
     'community-advice-school-gates',
-    'School gates and transit',
-    'Sites for precautions - transit from home to school, near school gates, and outdooring. ... To stay away from polluted sources like vehicular exhausts during transit to school.',
+    'School gates and transit, annexure for schools',
+    'Sites for precautions - transit from home to school, near school gates, and outdooring [...] To stay away from polluted sources like vehicular exhausts during transit to school or dusty environments at school by covering nose with cloth or mask',
   ],
   [
     'community-advice-workers',
-    'Employer steps for workers exposed outdoors',
-    'Workers should be equipped with appropriate PPE, such as face masks and respirators, to protect themselves from airborne pollutants ... The workers need to be shifted/rotated in different job operations or different tasks to minimize extended exposure to high-dust environments. ... Provide regular breaks depending upon the assigned task for workers to reduce the harmful impact of air pollution on health.',
+    'Employer steps for construction and demolition workers',
+    'Workers should be equipped with appropriate PPE, such as face masks and respirators, to protect themselves from airborne pollutants [...] The workers need to be shifted/rotated in different job operations or different tasks to minimize extended exposure to high-dust environments. [...] Provide regular breaks depending upon the assigned task for workers to reduce the harmful impact of air pollution on health.',
   ],
 ];
 
 const NUMBERS: readonly NumberRow[] = [
   ['community-ventilation-from', 'Ventilation window opens', 12, 'hour, p.m.'],
   ['community-ventilation-until', 'Ventilation window closes', 4, 'hour, p.m.'],
-  ['community-mask-class', 'Mask classes the advisory names', 95, 'mask class', { low: 95, high: 99 }],
+  ['community-mask-class-n95', 'Mask class the advisory names, N95', 95, 'mask class'],
+  ['community-mask-class-n99', 'Mask class the advisory names, N99', 99, 'mask class'],
 ];
 
 /**

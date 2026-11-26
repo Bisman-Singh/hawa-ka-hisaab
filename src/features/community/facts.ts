@@ -33,8 +33,8 @@ export function factText(id: string): string {
 const FROM_FACTS: Readonly<Record<string, readonly [string, FactPick]>> = {
   ventFrom: ['community-ventilation-from', 'value'],
   ventTo: ['community-ventilation-until', 'value'],
-  n95: ['community-mask-class', 'low'],
-  n99: ['community-mask-class', 'high'],
+  n95: ['community-mask-class-n95', 'value'],
+  n99: ['community-mask-class-n99', 'value'],
   n95Low: ['community-mask-n95-filtration', 'low'],
   n95High: ['community-mask-n95-filtration', 'high'],
   clothLow: ['community-mask-cloth-filtration', 'low'],

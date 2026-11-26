@@ -34,6 +34,23 @@ describe('NAQI_FACTS', () => {
     expect(byId('naqi-o3-good')?.title).toBe('O3 8 hour mean for Good');
   });
 
+  it('says where the cells come from and labels the two ozone rows the report marks as one hour values', () => {
+    expect(byId('naqi-pm25-good')?.source.title).toMatch(/Tables 3\.11 and 3\.12, lead not included/);
+    expect(byId('naqi-o3-poor')?.title).toBe('O3 8 hour mean for Poor');
+    expect(byId('naqi-o3-very-poor')).toMatchObject({
+      title: 'O3 one hour value for Very Poor, table footnote',
+      range: { low: 209, high: 748 },
+    });
+    expect(byId('naqi-o3-severe')).toMatchObject({
+      title: 'O3 one hour value for Severe, above 748, table footnote',
+      value: 748,
+    });
+    expect(NAQI_FACTS.filter((fact) => fact.title.includes('one hour')).map((fact) => fact.id)).toEqual([
+      'naqi-o3-very-poor',
+      'naqi-o3-severe',
+    ]);
+  });
+
   it('quotes the worked example from the one page summary and the formula from the report', () => {
     expect(byId('naqi-worked-example')?.source.title).toBe('About National Air Quality Index');
     expect(byId('naqi-formula')?.source.title).toMatch(/final report/);

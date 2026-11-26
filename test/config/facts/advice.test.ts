@@ -26,6 +26,8 @@ describe('band advice', () => {
     const ids = ADVICE_FACTS.map((fact) => fact.id);
     expect(ids).toContain('advice-severe-general');
     expect(ids).toContain('advice-vulnerable-groups');
+    const letter = ADVICE_FACTS.find((fact) => fact.id === 'advice-vulnerable-groups');
+    expect(letter?.kind === 'text' && letter.text).toMatch(/^Vulnerable populations including /);
     for (const fact of ADVICE_FACTS) {
       expect(fact.source.url).toBe('https://ncdc.mohfw.gov.in/uploads/pdf/air2.pdf');
     }

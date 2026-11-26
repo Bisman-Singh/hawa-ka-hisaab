@@ -27,7 +27,7 @@ export const PROVIDER_WORDS: Readonly<Record<StationProvider, ProviderWords>> = 
     noAqiNote: "This app shows CPCB's AQI as published and never works one out for a station.",
   },
   data_gov_in: {
-    after: quoted('data-gov-in-aqi-rule'),
+    after: quoted('naqi-worst-sub-index'),
     licence: GODL_INDIA,
     noAqi: 'No AQI for this station this hour.',
     noAqiNote:

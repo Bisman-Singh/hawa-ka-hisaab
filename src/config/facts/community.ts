@@ -12,7 +12,7 @@ const TERI: Source = {
 };
 
 const PIB_CHARTER: Source = {
-  title: 'CAQM revokes GRAP Stage III in Delhi NCR, release 2337619',
+  title: 'CAQM Revokes GRAP III in Delhi-NCR, Moves to GRAP II as AQI improves, release 2337619',
   publisher: 'Press Information Bureau',
   url: 'https://www.pib.gov.in/PressReleasePage.aspx?PRID=2337619',
   published: '17 Nov 2026',
@@ -20,7 +20,8 @@ const PIB_CHARTER: Source = {
 };
 
 const PIB_SCHEDULE: Source = {
-  title: 'CAQM approves revised GRAP schedule, release 2316597',
+  title:
+    'CAQM Approves Revised GRAP Schedule; Tightens Measures for Vehicles, Dust and Pollution Control, release 2316597',
   publisher: 'Press Information Bureau',
   url: 'https://www.pib.gov.in/PressReleasePage.aspx?PRID=2316597',
   published: '29 Sep 2026',
@@ -56,21 +57,21 @@ export const COMMUNITY_FACTS: readonly Fact[] = [
   ...SHARES.map((row) => counted(TERI, row)),
   counted(TOMKINS, [
     'community-mask-n95-filtration',
-    'N95 filtration when worn, no fit test',
+    'N95 and CaN99 filtration together, worn in a lab test, no fit test',
     97,
     '% filtered',
     { low: 97, high: 98 },
   ]),
   counted(TOMKINS, [
     'community-mask-cloth-filtration',
-    'Cloth mask filtration when worn',
+    'Cloth mask filtration worn in a lab test',
     47,
     '% filtered',
     { low: 47, high: 55 },
   ]),
   counted(CHERRIE, [
     'community-mask-fit-leakage',
-    'Inward leakage of retail masks worn at rest',
+    'Black carbon leaking into 4 mask types worn at rest, chamber test',
     3,
     '% leakage',
     { low: 3, high: 68 },
@@ -78,7 +79,7 @@ export const COMMUNITY_FACTS: readonly Fact[] = [
   quoted(PIB_CHARTER, [
     'community-grap-charter',
     'GRAP citizen charter, Stages I and II',
-    'Do not idle your vehicle, also turn off the engine at red lights. ... Avoid using DG sets except for essential activities. ... Avoid accumulation and open burning of solid waste and biomass.',
+    'Do not idle your vehicle, also turn off the engine at red lights. [...] Avoid using DG sets except for essential activities. [...] Avoid accumulation and open burning of solid waste and biomass.',
   ]),
   quoted(PIB_SCHEDULE, [
     'community-grap-sports',

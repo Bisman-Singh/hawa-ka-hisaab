@@ -1,4 +1,4 @@
-// NAQI facts: band ranges and CPCB health statements, the breakpoint table and the rules for the index.
+// NAQI facts from Table 3.11 of the full report, not the one page summary that differs in four cells. Lead has no row.
 // Ids are naqi-band-<band>, naqi-health-<band> and naqi-<pollutant>-<band>; the NAQI code reads its table from them.
 import type { Fact } from '../../../lib/types.js';
 import { ABOUT_AQI, NAQI_REPORT } from './sources.js';
@@ -30,6 +30,9 @@ const BANDS: readonly Band[] = [
 type Pollutant = readonly [id: string, label: string, unit: string, hours: number, cells: string];
 
 const UG = 'µg/m³';
+
+// The report marks these cells with an asterisk: one hourly monitoring, for mathematical calculation only.
+const ONE_HOUR_CELLS: ReadonlyMap<string, number> = new Map([['o3', 4]]);
 
 // Table 3.11 cells as printed, Good to Very poor. Severe has no upper concentration: it is above the last cell.
 const BREAKPOINTS: readonly Pollutant[] = [
@@ -89,13 +92,19 @@ function bandFacts([id, name, low, high]: Band): Fact[] {
   ];
 }
 
+const basisText = (hours: number, oneHour: boolean): string =>
+  oneHour ? 'one hour value' : `${String(hours)} hour mean`;
+
+const aboveText = (above: boolean, top: number): string => (above ? `, above ${String(top)}` : '');
+
 function breakpointFacts([id, label, unit, hours, cells]: Pollutant): Fact[] {
   const rows = cells.split(' ').map((cell) => cell.split('-').map(Number));
   const top = Math.max(...rows.flat());
   return BANDS.map(([band, name], index): Fact => {
     const [low = 0, high = top] = rows[index] ?? [];
     const above = index === rows.length;
-    const title = `${label} ${String(hours)} hour mean for ${name}${above ? `, above ${String(top)}` : ''}`;
+    const oneHour = index >= (ONE_HOUR_CELLS.get(id) ?? rows.length + 1);
+    const title = `${label} ${basisText(hours, oneHour)} for ${name}${aboveText(above, top)}${oneHour ? ', table footnote' : ''}`;
     const range = above ? null : { low, high };
     const value = above ? top : low;
     return { kind: 'number', id: `naqi-${id}-${band}`, title, value, range, unit, source: NAQI_REPORT };

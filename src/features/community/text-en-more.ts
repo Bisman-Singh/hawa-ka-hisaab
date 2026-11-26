@@ -18,7 +18,11 @@ export const ACTIONS_EN_MORE = {
     detail: same(
       'You entered {staff} outdoor staff. The health ministry counts outdoor workers as vulnerable, and its advice to employers of construction workers asks for masks, rotation between tasks and regular breaks.',
     ),
-    factIds: same(['community-advice-vulnerable-groups', 'community-advice-workers', 'community-mask-class']),
+    factIds: same([
+      'community-advice-vulnerable-groups',
+      'community-advice-workers',
+      'community-mask-class-n95',
+    ]),
   },
   'no-idling': {
     title: same('Engines off at the gate'),

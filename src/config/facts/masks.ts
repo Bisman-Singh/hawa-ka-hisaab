@@ -8,7 +8,7 @@ export const MASK_FACTS: readonly Fact[] = [
   numberFact(
     {
       id: 'mask-n95-filtered',
-      title: 'Share of particles an N95 filtered when worn',
+      title: 'Share of particles filtered, N95 and CaN99 together, worn in a lab test',
       value: 0.97,
       unit: 'share',
     },
@@ -26,7 +26,7 @@ export const MASK_FACTS: readonly Fact[] = [
   numberFact(
     {
       id: 'mask-leakage',
-      title: 'Share of particles that leaked into masks worn by volunteers',
+      title: 'Share of diesel black carbon that leaked into 4 mask types worn at rest, chamber test',
       value: 0.03,
       unit: 'share',
     },
@@ -37,14 +37,14 @@ export const MASK_FACTS: readonly Fact[] = [
     {
       id: 'mask-leakage-quote',
       title: 'How much leaked into masks sold in Beijing, and why',
-      text: 'In the volunteer tests, the average total inward leakage (TIL) of BC ranged from 3% to 68% in the sedentary tests and from 7% to 66% in the active tests. Only one mask type tested showed an average TIL of less than 10%, under both test conditions. Many commercially available face masks may not provide adequate protection, primarily due to poor facial fit.',
+      text: 'In the volunteer tests, the average total inward leakage (TIL) of BC ranged from 3% to 68% in the sedentary tests and from 7% to 66% in the active tests. Only one mask type tested showed an average TIL of less than 10%, under both test conditions. [...] Many commercially available face masks may not provide adequate protection, primarily due to poor facial fit.',
     },
     CHERRIE_2018,
   ),
   quoteFact(
     {
       id: 'mask-cloth-quote',
-      title: 'Cloth masks against fine particles',
+      title: 'Cloth masks against particles under 2.5 μm, laboratory test',
       text: 'our results suggest that cloth masks are only marginally beneficial in protecting individuals from particles<2.5 μm.',
     },
     SHAKYA_2017,

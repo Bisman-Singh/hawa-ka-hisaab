@@ -16,6 +16,19 @@ describe('exposure factors', () => {
     expect(valueOf('exposure-cycle-per-km')).toBe(9);
   });
 
+  it('say the study scope in every ratio title and that the breathing rates are means', () => {
+    const ratios = EXPOSURE_FACTS.filter((fact) => fact.id.startsWith('exposure-ratio-'));
+    expect(ratios).toHaveLength(8);
+    expect(
+      ratios.filter(
+        (fact) =>
+          !fact.title.endsWith('Delhi morning rush hour 2014, ambient measured mostly in a green space'),
+      ),
+    ).toEqual([]);
+    const rates = EXPOSURE_FACTS.filter((fact) => fact.id.startsWith('breathing-'));
+    expect(rates.filter((fact) => !fact.title.endsWith(', mean'))).toEqual([]);
+  });
+
   it('carry the breathing rates used by the study and by EPA', () => {
     expect([
       valueOf('ventilation-vehicle'),

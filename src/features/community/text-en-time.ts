@@ -74,7 +74,8 @@ export const ACTIONS_EN_TIME = {
     ),
     factIds: same([
       'advice-masks',
-      'community-mask-class',
+      'community-mask-class-n95',
+      'community-mask-class-n99',
       'community-mask-n95-filtration',
       'community-mask-cloth-filtration',
       'community-mask-fit-leakage',

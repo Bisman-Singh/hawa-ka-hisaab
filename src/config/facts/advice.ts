@@ -74,8 +74,8 @@ export const ADVICE_FACTS: readonly Fact[] = [
   quoteFact(
     {
       id: 'advice-vulnerable-groups',
-      title: 'Who the health ministry counts as vulnerable to air pollution',
-      text: 'vulnerable populations including children, pregnant women, the elderly, individuals with pre-existing conditions, and workers exposed to pollution are particularly at risk.',
+      title: 'Who the health ministry counts as vulnerable, from its covering letter',
+      text: 'Vulnerable populations including children, pregnant women, the elderly, individuals with pre-existing conditions, and workers exposed to pollution are particularly at risk.',
     },
     ADVISORY,
   ),

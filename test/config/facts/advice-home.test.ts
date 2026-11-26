@@ -8,6 +8,7 @@ describe('home advice', () => {
       HOME_ADVICE_FACTS.map((fact) => [fact.id, fact.kind === 'text' ? fact.text : '']),
     );
     expect(text['advice-ventilate']).toContain('between 12 p.m. to 4 p.m.');
+    expect(text['advice-ventilate']).toContain('physical exercise. Do not open external doors');
     expect(text['advice-wet-mopping']).toContain('wet mopping instead of sweeping');
     expect(text['advice-masks']).toContain(
       'Paper masks, handkerchiefs, scarves and cloth are not effective.',

@@ -26,7 +26,7 @@ export const GOEL_2015: Source = {
 export const EPA_BREATHING: Source = {
   title: 'Exposure Factors Handbook 2011, chapter 6, Table 6-2',
   publisher: 'US Environmental Protection Agency',
-  url: 'https://www.epa.gov/sites/production/files/2015-09/documents/efh-chapter06.pdf',
+  url: 'https://www.epa.gov/sites/default/files/2015-09/documents/efh-chapter06.pdf',
   published: 'September 2011',
   retrieved: RETRIEVED,
 };
@@ -52,7 +52,8 @@ export const NIST_UNITS: Source = {
 
 /** India GHG Program factors for road vehicles and city buses. */
 export const GHG_ROAD: Source = {
-  title: 'India Specific Road Transport Emission Factors, version 1.0',
+  title:
+    'India Specific Road Transport Emission Factors, version 1.0, for stakeholder consultation, tables without the 10% uplift column',
   publisher: 'India GHG Program',
   url: 'https://indiaghgp.org/sites/default/files/Road%20Transport%20Technical%20Paper.pdf',
   published: '2015',
@@ -61,7 +62,7 @@ export const GHG_ROAD: Source = {
 
 /** India GHG Program factors for rail. */
 export const GHG_RAIL: Source = {
-  title: 'India Specific Rail Transport Emission Factors',
+  title: 'India Specific Rail Transport Emission Factors, version 1.0, for stakeholder consultation',
   publisher: 'India GHG Program',
   url: 'https://indiaghgp.org/sites/default/files/Rail%20Transport%20Emission.pdf',
   published: '2015',

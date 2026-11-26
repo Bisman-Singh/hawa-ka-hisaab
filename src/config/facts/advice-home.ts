@@ -9,7 +9,7 @@ export const HOME_ADVICE_FACTS: readonly Fact[] = [
     {
       id: 'advice-ventilate',
       title: 'Health ministry advice on outdoor exercise and opening windows on poor to severe days',
-      text: 'Avoid outdoor morning and late evening walk, run, jog and physical exercise, Do not open external doors and windows during morning and late evening hours, it may ventilate if necessary, between 12 p.m. to 4 p.m. in afternoon (Days with poor to severe AQI)',
+      text: 'Avoid outdoor morning and late evening walk, run, jog and physical exercise. Do not open external doors and windows during morning and late evening hours, it may ventilate if necessary, between 12 p.m. to 4 p.m. in afternoon (Days with poor to severe AQI)',
     },
     ADVISORY,
   ),

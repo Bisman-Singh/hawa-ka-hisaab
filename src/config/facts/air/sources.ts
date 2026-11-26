@@ -19,7 +19,7 @@ const source = ([title, publisher, url, published, retrieved]: Entry): Source =>
 
 /** CPCB's final report on the index, with the breakpoint table and the health statements. */
 export const NAQI_REPORT = source([
-  'National Air Quality Index, final report of the Expert Group, Tables 3.11 and 3.12',
+  'National Air Quality Index, final report of the Expert Group, Tables 3.11 and 3.12, lead not included',
   'Central Pollution Control Board',
   'https://cpcb.gov.in/displaypdf.php?id=bmF0aW9uYWwtYWlyLXF1YWxpdHktaW5kZXgvRklOQUwtUkVQT1JUX0FRSV8ucGRm',
   '2014',
@@ -60,6 +60,15 @@ export const GODL_INDIA = source([
   'https://www.data.gov.in/sites/default/files/Gazette_Notification_OGDL.pdf',
   null,
   '2026-11-23',
+]);
+
+/** The Open-Meteo licence page, which says how to credit the data. */
+export const OPEN_METEO_LICENCE = source([
+  'Open-Meteo licence, CC BY 4.0',
+  'Open-Meteo',
+  'https://open-meteo.com/en/licence',
+  null,
+  '2026-11-27',
 ]);
 
 /** The Open-Meteo air quality service the forecast curve and the modelled path read. */

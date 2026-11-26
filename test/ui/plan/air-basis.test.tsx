@@ -20,7 +20,8 @@ describe('AirBasisLine', () => {
     const reading: StationReading = { ...stationReading('very_poor'), provider: 'data_gov_in' };
     const air = { ...airResponse(), reading };
     const { container, rerender } = render(<AirBasisLine basis={basis} air={air} />);
-    expect(container).toHaveTextContent(airQuote('data-gov-in-aqi-rule'));
+    expect(airQuote('naqi-worst-sub-index')).toBe('The worst sub-index determines the overall AQI.');
+    expect(container).toHaveTextContent(airQuote('naqi-worst-sub-index'));
     rerender(<AirBasisLine basis={{ ...basis, path: 'modelled' }} air={null} />);
     expect(container).toHaveTextContent('Modelled estimate from CAMS via Open-Meteo. Not a measurement.');
   });
