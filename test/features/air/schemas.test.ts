@@ -37,6 +37,26 @@ describe('locationSchema and placeSchema', () => {
     expect(placeSchema.safeParse(place).success).toBe(true);
     expect(placeSchema.safeParse({ ...place, population: 1 }).success).toBe(false);
   });
+
+  it('says how a place was found and, for a PIN prefix answer, how rough it is', () => {
+    const pin = {
+      id: 'pin-110072',
+      name: 'PIN 110072',
+      district: null,
+      state: 'Delhi',
+      postcode: '110072',
+      lat: 28.612,
+      lon: 77.158,
+      resolution: 'pin_prefix',
+      label: 'PIN 110072, near PINs starting 1100, Delhi',
+      roughness: { prefix: '1100', pins: 94, spreadKm: 17.4 },
+    };
+    expect(placeSchema.safeParse(pin).success).toBe(true);
+    expect(placeSchema.safeParse({ ...pin, resolution: 'guess' }).success).toBe(false);
+    expect(placeSchema.safeParse({ ...pin, roughness: { prefix: '11', pins: 1, spreadKm: 0 } }).success).toBe(
+      false,
+    );
+  });
 });
 
 describe('station path', () => {
@@ -51,6 +71,15 @@ describe('station path', () => {
         .success,
     ).toBe(true);
     expect(stationReadingSchema.safeParse(stationReading(null)).success).toBe(true);
+  });
+
+  it('names the copy of the data that served the reading, and only the two known ones', () => {
+    for (const provider of ['cpcb_feed', 'data_gov_in']) {
+      expect(stationReadingSchema.safeParse({ ...stationReading(null), provider }).success).toBe(true);
+    }
+    expect(stationReadingSchema.safeParse({ ...stationReading(null), provider: 'openaq' }).success).toBe(
+      false,
+    );
   });
 
   it('refuses a station beyond the 50 km radius', () => {

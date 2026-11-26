@@ -1,0 +1,9 @@
+Station index for the data.gov.in path. Server side only; it never enters the browser bundle.
+
+stations.json lists every station as [name, lat, lon, state], written exactly as the data.gov.in resource
+"Real time Air Quality Index from various locations" writes them, so the provider can find which states hold
+the stations near a point and ask for those states only.
+
+Built by scripts/build-station-index.ts from one full answer of that resource, 26 Nov 2026, 22:00 IST,
+567 stations. The data is CPCB's, published on the Open Government Data Platform India under the Government
+Open Data License India. A station added after that answer is not in the index until it is built again.

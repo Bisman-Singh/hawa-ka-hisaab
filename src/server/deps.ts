@@ -1,5 +1,6 @@
 // Everything the API needs from the outside world. Tests pass fakes; the runtime passes real implementations.
 import type { Hono } from 'hono';
+import type { AirSources } from '../features/air/types.js';
 import type { Clock } from '../lib/clock.js';
 import type { Logger } from '../lib/logger.js';
 import type { RateLimiter } from '../lib/rate-limit.js';
@@ -14,6 +15,7 @@ export interface ServerDeps {
   readonly logger: Logger;
   readonly requestLimiter: RateLimiter;
   readonly modelLimiter: RateLimiter;
+  readonly air: AirSources;
 }
 
 /** What a route module receives: the app to register on and the dependencies to close over. */

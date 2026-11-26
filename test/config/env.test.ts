@@ -9,6 +9,7 @@ describe('readServerEnv', () => {
       value: {
         geminiApiKey: null,
         geminiModel: null,
+        dataGovInApiKey: null,
         modelDailyCallCap: 200,
         apiRateLimitPerMinute: 60,
         modelRateLimitPerMinute: 6,
@@ -17,14 +18,23 @@ describe('readServerEnv', () => {
   });
 
   it('treats empty values as unset, as in the example file', () => {
-    const result = readServerEnv({ GEMINI_API_KEY: '', MODEL_DAILY_CALL_CAP: '', GEMINI_MODEL: '  ' });
-    expect(result).toMatchObject({ ok: true, value: { geminiApiKey: null, modelDailyCallCap: 200 } });
+    const result = readServerEnv({
+      GEMINI_API_KEY: '',
+      MODEL_DAILY_CALL_CAP: '',
+      GEMINI_MODEL: '  ',
+      DATA_GOV_IN_API_KEY: '',
+    });
+    expect(result).toMatchObject({
+      ok: true,
+      value: { geminiApiKey: null, modelDailyCallCap: 200, dataGovInApiKey: null },
+    });
   });
 
   it('reads set values and ignores unrelated variables', () => {
     const result = readServerEnv({
       GEMINI_API_KEY: 'test-key',
       GEMINI_MODEL: 'test-model',
+      DATA_GOV_IN_API_KEY: 'test-data-key',
       MODEL_DAILY_CALL_CAP: '50',
       API_RATE_LIMIT_PER_MINUTE: '30',
       MODEL_RATE_LIMIT_PER_MINUTE: '3',
@@ -35,6 +45,7 @@ describe('readServerEnv', () => {
       value: {
         geminiApiKey: 'test-key',
         geminiModel: 'test-model',
+        dataGovInApiKey: 'test-data-key',
         modelDailyCallCap: 50,
         apiRateLimitPerMinute: 30,
         modelRateLimitPerMinute: 3,

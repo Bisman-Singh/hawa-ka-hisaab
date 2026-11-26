@@ -13,6 +13,7 @@ const wholeNumber = (fallback: number, min: number) =>
 const envSchema = z.object({
   GEMINI_API_KEY: optionalText,
   GEMINI_MODEL: optionalText,
+  DATA_GOV_IN_API_KEY: optionalText,
   MODEL_DAILY_CALL_CAP: wholeNumber(200, 0),
   API_RATE_LIMIT_PER_MINUTE: wholeNumber(60, 1),
   MODEL_RATE_LIMIT_PER_MINUTE: wholeNumber(6, 0),
@@ -20,11 +21,13 @@ const envSchema = z.object({
 
 /**
  * Server settings read from the environment. A missing key means the rules path is used. A model limit or daily
- * cap of 0 turns model calls off; the request limit must be at least 1.
+ * cap of 0 turns model calls off; the request limit must be at least 1. Without a data.gov.in key, station data
+ * comes only from the CPCB feed itself.
  */
 export interface ServerEnv {
   readonly geminiApiKey: string | null;
   readonly geminiModel: string | null;
+  readonly dataGovInApiKey: string | null;
   readonly modelDailyCallCap: number;
   readonly apiRateLimitPerMinute: number;
   readonly modelRateLimitPerMinute: number;
@@ -43,6 +46,7 @@ export function readServerEnv(source: EnvSource): Result<ServerEnv, readonly str
   return ok({
     geminiApiKey: env.GEMINI_API_KEY ?? null,
     geminiModel: env.GEMINI_MODEL ?? null,
+    dataGovInApiKey: env.DATA_GOV_IN_API_KEY ?? null,
     modelDailyCallCap: env.MODEL_DAILY_CALL_CAP,
     apiRateLimitPerMinute: env.API_RATE_LIMIT_PER_MINUTE,
     modelRateLimitPerMinute: env.MODEL_RATE_LIMIT_PER_MINUTE,

@@ -11,7 +11,21 @@ const longitude = z.number().min(INDIA_BOUNDS.minLon).max(INDIA_BOUNDS.maxLon);
 /** A point in India. Requests carrying a point outside India are rejected. */
 export const locationSchema = z.strictObject({ lat: latitude, lon: longitude });
 
-/** A place found by search, limited to India. */
+/** How a place answer was found: town search, an exact PIN, or the centre of the PINs sharing its first digits. */
+export const placeResolutionSchema = z.enum(['search', 'pin_exact', 'pin_prefix']);
+
+/** How rough a PIN prefix answer is: the prefix used, how many known PINs share it, how far most lie from its centre. */
+export const pinRoughnessSchema = z.strictObject({
+  prefix: z.string().regex(/^\d{3,4}$/),
+  pins: z.int().min(1),
+  spreadKm: z.number().min(0),
+});
+
+/**
+ * A place found by search, limited to India. resolution, label and roughness say what was understood and how:
+ * label reads like "PIN 110092, East Delhi, Delhi"; roughness is set only for a PIN answered from its prefix.
+ * They are optional so places saved before they existed still load.
+ */
 export const placeSchema = z.strictObject({
   id: boundedText(40),
   name: boundedText(120),
@@ -20,6 +34,9 @@ export const placeSchema = z.strictObject({
   postcode: boundedText(12).nullable(),
   lat: latitude,
   lon: longitude,
+  resolution: placeResolutionSchema.optional(),
+  label: boundedText(200).optional(),
+  roughness: pinRoughnessSchema.nullable().optional(),
 });
 
 /** A CPCB monitoring station. name is the feed's station id, such as "JNU, Delhi - DPCC". */
@@ -54,9 +71,16 @@ export const stationRecordSchema = z.strictObject({
 });
 
 /**
+ * Which copy of CPCB's data served a station reading: the CAAQMS feed itself, whose AQI is CPCB's own, or the
+ * data.gov.in copy, which has no AQI, so the AQI there is the highest sub-index by CPCB's rule.
+ */
+export const stationProviderSchema = z.enum(['cpcb_feed', 'data_gov_in']);
+
+/**
  * The station path of the air card, used when a station with at least one pollutant value lies within 50 km.
  * aqi is null when CPCB published no AQI for it. stale is worked out when the response is made; a view showing a
- * cached response works it out again from readingHour and FEED_STALE_AFTER_MINUTES.
+ * cached response works it out again from readingHour and FEED_STALE_AFTER_MINUTES. provider says which copy of
+ * the data served it; the server always sets it, and it is optional only so older copies still parse.
  */
 export const stationReadingSchema = z.strictObject({
   path: z.literal('station'),
@@ -69,6 +93,7 @@ export const stationReadingSchema = z.strictObject({
   readingHour: isoDateTimeSchema,
   stale: z.boolean(),
   source: sourceSchema,
+  provider: stationProviderSchema.optional(),
 });
 
 /**

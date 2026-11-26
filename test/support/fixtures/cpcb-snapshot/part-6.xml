@@ -1,0 +1,889 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<AqIndex>
+<Country id="India">
+<State id="Odisha">
+<City id="Keonjhar">
+<Station id="Jagamohanpur, Keonjhar - OSPCB" lastupdate="24-11-2026 22:00:00" latitude="21.6439" longitude="85.599355">
+<Pollutant_Index id="PM2.5" Min="25" Max="66" Avg="40" Hourly_sub_index="63"/>
+<Pollutant_Index id="PM10" Min="48" Max="102" Avg="69" Hourly_sub_index="102"/>
+<Pollutant_Index id="NO2" Min="13" Max="17" Avg="14" Hourly_sub_index="16"/>
+<Pollutant_Index id="NH3" Min="9" Max="9" Avg="9" Hourly_sub_index="9"/>
+<Pollutant_Index id="SO2" Min="9" Max="15" Avg="11" Hourly_sub_index="10"/>
+<Pollutant_Index id="CO" Min="63" Max="73" Avg="69" Hourly_sub_index="73"/>
+<Pollutant_Index id="OZONE" Min="9" Max="10" Avg="10" Hourly_sub_index="10"/>
+<Air_Quality_Index Value="69" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Nayagarh">
+<Station id="Dabuna, Nayagarh - OSPCB" lastupdate="24-11-2026 22:00:00" latitude="21.847279" longitude="85.416905">
+<Pollutant_Index id="PM2.5" Min="36" Max="143" Avg="73" Hourly_sub_index="123"/>
+<Pollutant_Index id="PM10" Min="83" Max="143" Avg="120" Hourly_sub_index="118"/>
+<Pollutant_Index id="NO2" Min="9" Max="9" Avg="9" Hourly_sub_index="9"/>
+<Pollutant_Index id="NH3" Min="9" Max="9" Avg="9" Hourly_sub_index="9"/>
+<Pollutant_Index id="SO2" Min="5" Max="6" Avg="5" Hourly_sub_index="6"/>
+<Pollutant_Index id="CO" Min="24" Max="27" Avg="25" Hourly_sub_index="26"/>
+<Pollutant_Index id="OZONE" Min="27" Max="30" Avg="28" Hourly_sub_index="29"/>
+<Air_Quality_Index Value="120" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Paradeep">
+<Station id="Nua Sandhakuda, Paradeep - OSPCB" lastupdate="24-11-2026 22:00:00" latitude="20.258828" longitude="86.665185">
+<Pollutant_Index id="PM2.5" Min="41" Max="91" Avg="67" Hourly_sub_index="84"/>
+<Pollutant_Index id="PM10" Min="50" Max="102" Avg="67" Hourly_sub_index="84"/>
+<Pollutant_Index id="NO2" Min="12" Max="20" Avg="14" Hourly_sub_index="13"/>
+<Pollutant_Index id="NH3" Min="5" Max="5" Avg="5" Hourly_sub_index="5"/>
+<Pollutant_Index id="SO2" Min="19" Max="19" Avg="19" Hourly_sub_index="19"/>
+<Pollutant_Index id="CO" Min="68" Max="70" Avg="69" Hourly_sub_index="69"/>
+<Pollutant_Index id="OZONE" Min="20" Max="31" Avg="24" Hourly_sub_index="20"/>
+<Air_Quality_Index Value="69" Predominant_Parameter="CO"/>
+</Station>
+</City>
+<City id="Rairangpur">
+<Station id="Divisional Forest Office, Rairangpur - OSPCB" lastupdate="24-11-2026 22:00:00" latitude="22.265816" longitude="86.174829">
+<Pollutant_Index id="PM2.5" Min="21" Max="83" Avg="46" Hourly_sub_index="62"/>
+<Pollutant_Index id="PM10" Min="41" Max="88" Avg="63" Hourly_sub_index="82"/>
+<Pollutant_Index id="NO2" Min="6" Max="7" Avg="7" Hourly_sub_index="7"/>
+<Pollutant_Index id="NH3" Min="3" Max="3" Avg="3" Hourly_sub_index="3"/>
+<Pollutant_Index id="SO2" Min="10" Max="15" Avg="13" Hourly_sub_index="13"/>
+<Pollutant_Index id="CO" Min="27" Max="67" Avg="44" Hourly_sub_index="40"/>
+<Pollutant_Index id="OZONE" Min="6" Max="32" Avg="16" Hourly_sub_index="7"/>
+<Air_Quality_Index Value="63" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Rourkela">
+<Station id="Sector-2, Rourkela - OSPCB" lastupdate="24-11-2026 22:00:00" latitude="22.245" longitude="84.88111111">
+<Pollutant_Index id="PM2.5" Min="28" Max="71" Avg="44" Hourly_sub_index="38"/>
+<Pollutant_Index id="PM10" Min="29" Max="95" Avg="46" Hourly_sub_index="95"/>
+<Pollutant_Index id="NO2" Min="19" Max="19" Avg="19" Hourly_sub_index="19"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="SO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="CO" Min="12" Max="62" Avg="27" Hourly_sub_index="62"/>
+<Pollutant_Index id="OZONE" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Air_Quality_Index Value="46" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Raghunathpali, Rourkela - OSPCB" lastupdate="24-11-2026 22:00:00" latitude="22.220833" longitude="84.809444">
+<Pollutant_Index id="PM2.5" Min="37" Max="191" Avg="97" Hourly_sub_index="184"/>
+<Pollutant_Index id="PM10" Min="42" Max="224" Avg="97" Hourly_sub_index="148"/>
+<Pollutant_Index id="NO2" Min="10" Max="16" Avg="14" Hourly_sub_index="15"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="0"/>
+<Pollutant_Index id="SO2" Min="6" Max="7" Avg="7" Hourly_sub_index="7"/>
+<Pollutant_Index id="CO" Min="37" Max="103" Avg="61" Hourly_sub_index="59"/>
+<Pollutant_Index id="OZONE" Min="2" Max="14" Avg="7" Hourly_sub_index="2"/>
+<Air_Quality_Index Value="97" Predominant_Parameter="PM2.5"/>
+</Station>
+<Station id="Fertilizer Township, Rourkela - OSPCB" lastupdate="24-11-2026 22:00:00" latitude="22.18972222" longitude="84.86277778">
+<Pollutant_Index id="PM2.5" Min="43" Max="81" Avg="55" Hourly_sub_index="51"/>
+<Pollutant_Index id="PM10" Min="51" Max="86" Avg="58" Hourly_sub_index="59"/>
+<Pollutant_Index id="NO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="SO2" Min="10" Max="14" Avg="12" Hourly_sub_index="12"/>
+<Pollutant_Index id="CO" Min="26" Max="83" Avg="41" Hourly_sub_index="28"/>
+<Pollutant_Index id="OZONE" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Air_Quality_Index Value="58" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Suakati">
+<Station id="OMC Colony, Suakati - OSPCB" lastupdate="24-11-2026 22:00:00" latitude="21.606865" longitude="85.510538">
+<Pollutant_Index id="PM2.5" Min="45" Max="105" Avg="74" Hourly_sub_index="95"/>
+<Pollutant_Index id="PM10" Min="47" Max="119" Avg="87" Hourly_sub_index="111"/>
+<Pollutant_Index id="NO2" Min="10" Max="10" Avg="10" Hourly_sub_index="10"/>
+<Pollutant_Index id="NH3" Min="10" Max="10" Avg="10" Hourly_sub_index="10"/>
+<Pollutant_Index id="SO2" Min="6" Max="14" Avg="9" Hourly_sub_index="7"/>
+<Pollutant_Index id="CO" Min="21" Max="31" Avg="24" Hourly_sub_index="21"/>
+<Pollutant_Index id="OZONE" Min="16" Max="56" Avg="27" Hourly_sub_index="16"/>
+<Air_Quality_Index Value="87" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Talcher">
+<Station id="Talcher Coalfields,Talcher - OSPCB" lastupdate="24-11-2026 22:00:00" latitude="20.9360711" longitude="85.1707021">
+<Pollutant_Index id="PM2.5" Min="61" Max="411" Avg="156" Hourly_sub_index="230"/>
+<Pollutant_Index id="PM10" Min="73" Max="280" Avg="149" Hourly_sub_index="187"/>
+<Pollutant_Index id="NO2" Min="14" Max="15" Avg="14" Hourly_sub_index="15"/>
+<Pollutant_Index id="NH3" Min="4" Max="4" Avg="4" Hourly_sub_index="4"/>
+<Pollutant_Index id="SO2" Min="34" Max="38" Avg="36" Hourly_sub_index="34"/>
+<Pollutant_Index id="CO" Min="23" Max="33" Avg="27" Hourly_sub_index="24"/>
+<Pollutant_Index id="OZONE" Min="23" Max="25" Avg="24" Hourly_sub_index="23"/>
+<Air_Quality_Index Value="156" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Tensa">
+<Station id="Barsua Iron Ore Mines, Tensa - OSPCB" lastupdate="24-11-2026 22:00:00" latitude="21.869985" longitude="85.167016">
+<Pollutant_Index id="PM2.5" Min="17" Max="76" Avg="44" Hourly_sub_index="57"/>
+<Pollutant_Index id="PM10" Min="53" Max="153" Avg="85" Hourly_sub_index="93"/>
+<Pollutant_Index id="NO2" Min="12" Max="13" Avg="13" Hourly_sub_index="13"/>
+<Pollutant_Index id="NH3" Min="5" Max="5" Avg="5" Hourly_sub_index="5"/>
+<Pollutant_Index id="SO2" Min="25" Max="50" Avg="27" Hourly_sub_index="25"/>
+<Pollutant_Index id="CO" Min="39" Max="41" Avg="40" Hourly_sub_index="39"/>
+<Pollutant_Index id="OZONE" Min="15" Max="24" Avg="18" Hourly_sub_index="15"/>
+<Air_Quality_Index Value="85" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+</State>
+<State id="Puducherry">
+<City id="Puducherry">
+<Station id="Jawahar Nagar, Puducherry - PPCC" lastupdate="24-11-2026 22:00:00" latitude="11.9309" longitude="79.8027">
+<Pollutant_Index id="PM2.5" Min="2" Max="410" Avg="49" Hourly_sub_index="165"/>
+<Pollutant_Index id="PM10" Min="6" Max="215" Avg="38" Hourly_sub_index="82"/>
+<Pollutant_Index id="NO2" Min="10" Max="42" Avg="19" Hourly_sub_index="28"/>
+<Pollutant_Index id="NH3" Min="1" Max="3" Avg="2" Hourly_sub_index="2"/>
+<Pollutant_Index id="SO2" Min="4" Max="13" Avg="9" Hourly_sub_index="11"/>
+<Pollutant_Index id="CO" Min="27" Max="74" Avg="45" Hourly_sub_index="37"/>
+<Pollutant_Index id="OZONE" Min="2" Max="21" Avg="12" Hourly_sub_index="3"/>
+<Air_Quality_Index Value="49" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+</State>
+<State id="Punjab">
+<City id="Amritsar">
+<Station id="Golden Temple, Amritsar - PPCB" lastupdate="24-11-2026 22:00:00" latitude="31.62" longitude="74.876512">
+<Pollutant_Index id="PM2.5" Min="135" Max="195" Avg="153" Hourly_sub_index="167"/>
+<Pollutant_Index id="PM10" Min="146" Max="175" Avg="155" Hourly_sub_index="161"/>
+<Pollutant_Index id="NO2" Min="15" Max="18" Avg="16" Hourly_sub_index="15"/>
+<Pollutant_Index id="NH3" Min="3" Max="4" Avg="3" Hourly_sub_index="3"/>
+<Pollutant_Index id="SO2" Min="10" Max="107" Avg="34" Hourly_sub_index="52"/>
+<Pollutant_Index id="CO" Min="31" Max="144" Avg="66" Hourly_sub_index="91"/>
+<Pollutant_Index id="OZONE" Min="14" Max="17" Avg="15" Hourly_sub_index="16"/>
+<Air_Quality_Index Value="155" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Bathinda">
+<Station id="Hardev Nagar, Bathinda - PPCB" lastupdate="24-11-2026 22:00:00" latitude="30.233011" longitude="74.907758">
+<Pollutant_Index id="PM2.5" Min="21" Max="148" Avg="62" Hourly_sub_index="148"/>
+<Pollutant_Index id="PM10" Min="21" Max="117" Avg="52" Hourly_sub_index="117"/>
+<Pollutant_Index id="NO2" Min="29" Max="36" Avg="33" Hourly_sub_index="34"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="SO2" Min="4" Max="8" Avg="4" Hourly_sub_index="4"/>
+<Pollutant_Index id="CO" Min="2" Max="3" Avg="2" Hourly_sub_index="2"/>
+<Pollutant_Index id="OZONE" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Air_Quality_Index Value="62" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Jalandhar">
+<Station id="Civil Line, Jalandhar - PPCB" lastupdate="24-11-2026 22:00:00" latitude="31.321907" longitude="75.578914">
+<Pollutant_Index id="PM2.5" Min="108" Max="324" Avg="232" Hourly_sub_index="324"/>
+<Pollutant_Index id="PM10" Min="120" Max="280" Avg="171" Hourly_sub_index="280"/>
+<Pollutant_Index id="NO2" Min="49" Max="54" Avg="52" Hourly_sub_index="50"/>
+<Pollutant_Index id="NH3" Min="6" Max="6" Avg="6" Hourly_sub_index="6"/>
+<Pollutant_Index id="SO2" Min="12" Max="32" Avg="20" Hourly_sub_index="31"/>
+<Pollutant_Index id="CO" Min="46" Max="95" Avg="69" Hourly_sub_index="53"/>
+<Pollutant_Index id="OZONE" Min="25" Max="72" Avg="47" Hourly_sub_index="25"/>
+<Air_Quality_Index Value="232" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Khanna">
+<Station id="Kalal Majra, Khanna - PPCB" lastupdate="24-11-2026 22:00:00" latitude="30.736056" longitude="76.209694">
+<Pollutant_Index id="PM2.5" Min="203" Max="340" Avg="305" Hourly_sub_index="303"/>
+<Pollutant_Index id="PM10" Min="120" Max="198" Avg="166" Hourly_sub_index="151"/>
+<Pollutant_Index id="NO2" Min="17" Max="32" Avg="22" Hourly_sub_index="24"/>
+<Pollutant_Index id="NH3" Min="4" Max="8" Avg="6" Hourly_sub_index="7"/>
+<Pollutant_Index id="SO2" Min="6" Max="15" Avg="10" Hourly_sub_index="11"/>
+<Pollutant_Index id="CO" Min="35" Max="80" Avg="61" Hourly_sub_index="40"/>
+<Pollutant_Index id="OZONE" Min="15" Max="39" Avg="29" Hourly_sub_index="30"/>
+<Air_Quality_Index Value="305" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Ludhiana">
+<Station id="Punjab Agricultural University, Ludhiana - PPCB" lastupdate="24-11-2026 22:00:00" latitude="30.9028" longitude="75.8086">
+<Pollutant_Index id="PM2.5" Min="94" Max="356" Avg="203" Hourly_sub_index="356"/>
+<Pollutant_Index id="PM10" Min="94" Max="271" Avg="138" Hourly_sub_index="271"/>
+<Pollutant_Index id="NO2" Min="10" Max="27" Avg="19" Hourly_sub_index="15"/>
+<Pollutant_Index id="NH3" Min="2" Max="6" Avg="4" Hourly_sub_index="3"/>
+<Pollutant_Index id="SO2" Min="7" Max="31" Avg="14" Hourly_sub_index="7"/>
+<Pollutant_Index id="CO" Min="37" Max="66" Avg="53" Hourly_sub_index="38"/>
+<Pollutant_Index id="OZONE" Min="30" Max="48" Avg="41" Hourly_sub_index="30"/>
+<Air_Quality_Index Value="203" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Mandi Gobindgarh">
+<Station id="RIMT University, Mandi Gobindgarh - PPCB" lastupdate="24-11-2026 22:00:00" latitude="30.649961" longitude="76.331442">
+<Pollutant_Index id="PM2.5" Min="113" Max="310" Avg="262" Hourly_sub_index="278"/>
+<Pollutant_Index id="PM10" Min="145" Max="232" Avg="173" Hourly_sub_index="178"/>
+<Pollutant_Index id="NO2" Min="16" Max="27" Avg="20" Hourly_sub_index="20"/>
+<Pollutant_Index id="NH3" Min="4" Max="7" Avg="5" Hourly_sub_index="5"/>
+<Pollutant_Index id="SO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="24"/>
+<Pollutant_Index id="CO" Min="36" Max="60" Avg="49" Hourly_sub_index="36"/>
+<Pollutant_Index id="OZONE" Min="26" Max="65" Avg="50" Hourly_sub_index="26"/>
+<Air_Quality_Index Value="262" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Patiala">
+<Station id="Model Town, Patiala - PPCB" lastupdate="24-11-2026 22:00:00" latitude="30.349388" longitude="76.366642">
+<Pollutant_Index id="PM2.5" Min="58" Max="329" Avg="92" Hourly_sub_index="329"/>
+<Pollutant_Index id="PM10" Min="97" Max="319" Avg="128" Hourly_sub_index="319"/>
+<Pollutant_Index id="NO2" Min="10" Max="23" Avg="16" Hourly_sub_index="12"/>
+<Pollutant_Index id="NH3" Min="3" Max="9" Avg="6" Hourly_sub_index="5"/>
+<Pollutant_Index id="SO2" Min="23" Max="101" Avg="44" Hourly_sub_index="101"/>
+<Pollutant_Index id="CO" Min="31" Max="93" Avg="63" Hourly_sub_index="93"/>
+<Pollutant_Index id="OZONE" Min="34" Max="113" Avg="65" Hourly_sub_index="35"/>
+<Air_Quality_Index Value="128" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Rupnagar">
+<Station id="Ratanpura, Rupnagar - Ambuja Cements" lastupdate="24-11-2026 22:00:00" latitude="31.0325454" longitude="76.5623046">
+<Pollutant_Index id="PM2.5" Min="15" Max="91" Avg="41" Hourly_sub_index="84"/>
+<Pollutant_Index id="PM10" Min="17" Max="101" Avg="46" Hourly_sub_index="94"/>
+<Pollutant_Index id="NO2" Min="9" Max="47" Avg="27" Hourly_sub_index="46"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="SO2" Min="4" Max="11" Avg="7" Hourly_sub_index="9"/>
+<Pollutant_Index id="CO" Min="28" Max="31" Avg="29" Hourly_sub_index="29"/>
+<Pollutant_Index id="OZONE" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Air_Quality_Index Value="46" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+</State>
+<State id="Rajasthan">
+<City id="Ajmer">
+<Station id="Civil Lines,  Ajmer - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="26.470859" longitude="74.646594">
+<Pollutant_Index id="PM2.5" Min="56" Max="148" Avg="93" Hourly_sub_index="119"/>
+<Pollutant_Index id="PM10" Min="58" Max="123" Avg="93" Hourly_sub_index="123"/>
+<Pollutant_Index id="NO2" Min="37" Max="85" Avg="46" Hourly_sub_index="47"/>
+<Pollutant_Index id="NH3" Min="1" Max="3" Avg="3" Hourly_sub_index="3"/>
+<Pollutant_Index id="SO2" Min="5" Max="12" Avg="9" Hourly_sub_index="12"/>
+<Pollutant_Index id="CO" Min="48" Max="105" Avg="79" Hourly_sub_index="95"/>
+<Pollutant_Index id="OZONE" Min="66" Max="95" Avg="76" Hourly_sub_index="67"/>
+<Air_Quality_Index Value="93" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Alwar">
+<Station id="Vigyan Nagar, Alwar - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="27.598796" longitude="76.63861">
+<Pollutant_Index id="PM2.5" Min="40" Max="312" Avg="170" Hourly_sub_index="298"/>
+<Pollutant_Index id="PM10" Min="72" Max="333" Avg="130" Hourly_sub_index="196"/>
+<Pollutant_Index id="NO2" Min="15" Max="68" Avg="30" Hourly_sub_index="61"/>
+<Pollutant_Index id="NH3" Min="1" Max="3" Avg="2" Hourly_sub_index="1"/>
+<Pollutant_Index id="SO2" Min="3" Max="19" Avg="8" Hourly_sub_index="4"/>
+<Pollutant_Index id="CO" Min="16" Max="111" Avg="57" Hourly_sub_index="95"/>
+<Pollutant_Index id="OZONE" Min="2" Max="56" Avg="28" Hourly_sub_index="2"/>
+<Air_Quality_Index Value="170" Predominant_Parameter="PM2.5"/>
+</Station>
+<Station id="Moti Doongri, Alwar - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="27.554793" longitude="76.611536">
+<Pollutant_Index id="PM2.5" Min="72" Max="280" Avg="146" Hourly_sub_index="89"/>
+<Pollutant_Index id="PM10" Min="93" Max="145" Avg="112" Hourly_sub_index="100"/>
+<Pollutant_Index id="NO2" Min="49" Max="97" Avg="79" Hourly_sub_index="49"/>
+<Pollutant_Index id="NH3" Min="8" Max="12" Avg="10" Hourly_sub_index="9"/>
+<Pollutant_Index id="SO2" Min="16" Max="28" Avg="22" Hourly_sub_index="21"/>
+<Pollutant_Index id="CO" Min="48" Max="89" Avg="71" Hourly_sub_index="75"/>
+<Pollutant_Index id="OZONE" Min="9" Max="76" Avg="33" Hourly_sub_index="10"/>
+<Air_Quality_Index Value="146" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Banswara">
+<Station id="Rati Talai, Banswara - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="23.55519" longitude="74.44001">
+<Pollutant_Index id="PM2.5" Min="3" Max="202" Avg="86" Hourly_sub_index="102"/>
+<Pollutant_Index id="PM10" Min="36" Max="328" Avg="108" Hourly_sub_index="126"/>
+<Pollutant_Index id="NO2" Min="22" Max="72" Avg="37" Hourly_sub_index="47"/>
+<Pollutant_Index id="NH3" Min="2" Max="4" Avg="3" Hourly_sub_index="3"/>
+<Pollutant_Index id="SO2" Min="6" Max="9" Avg="7" Hourly_sub_index="8"/>
+<Pollutant_Index id="CO" Min="21" Max="63" Avg="37" Hourly_sub_index="32"/>
+<Pollutant_Index id="OZONE" Min="4" Max="118" Avg="54" Hourly_sub_index="42"/>
+<Air_Quality_Index Value="108" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Baran">
+<Station id="Bamboliya, Baran - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="25.106006" longitude="76.469948">
+<Pollutant_Index id="PM2.5" Min="28" Max="233" Avg="121" Hourly_sub_index="117"/>
+<Pollutant_Index id="PM10" Min="48" Max="244" Avg="121" Hourly_sub_index="140"/>
+<Pollutant_Index id="NO2" Min="24" Max="136" Avg="64" Hourly_sub_index="115"/>
+<Pollutant_Index id="NH3" Min="6" Max="8" Avg="7" Hourly_sub_index="8"/>
+<Pollutant_Index id="SO2" Min="10" Max="19" Avg="13" Hourly_sub_index="11"/>
+<Pollutant_Index id="CO" Min="9" Max="51" Avg="24" Hourly_sub_index="42"/>
+<Pollutant_Index id="OZONE" Min="15" Max="156" Avg="85" Hourly_sub_index="17"/>
+<Air_Quality_Index Value="121" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Barmer">
+<Station id="Railway Colony, Barmer - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="25.747299" longitude="71.393989">
+<Pollutant_Index id="PM2.5" Min="20" Max="444" Avg="88" Hourly_sub_index="444"/>
+<Pollutant_Index id="PM10" Min="48" Max="406" Avg="104" Hourly_sub_index="406"/>
+<Pollutant_Index id="NO2" Min="6" Max="122" Avg="28" Hourly_sub_index="122"/>
+<Pollutant_Index id="NH3" Min="1" Max="3" Avg="2" Hourly_sub_index="2"/>
+<Pollutant_Index id="SO2" Min="4" Max="103" Avg="17" Hourly_sub_index="103"/>
+<Pollutant_Index id="CO" Min="11" Max="65" Avg="38" Hourly_sub_index="65"/>
+<Pollutant_Index id="OZONE" Min="4" Max="95" Avg="52" Hourly_sub_index="4"/>
+<Air_Quality_Index Value="104" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Bharatpur">
+<Station id="Krishna Nagar, Bharatpur - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="27.215415" longitude="77.50873">
+<Pollutant_Index id="PM2.5" Min="48" Max="263" Avg="118" Hourly_sub_index="263"/>
+<Pollutant_Index id="PM10" Min="88" Max="314" Avg="143" Hourly_sub_index="245"/>
+<Pollutant_Index id="NO2" Min="12" Max="97" Avg="45" Hourly_sub_index="89"/>
+<Pollutant_Index id="NH3" Min="9" Max="15" Avg="12" Hourly_sub_index="15"/>
+<Pollutant_Index id="SO2" Min="3" Max="10" Avg="5" Hourly_sub_index="4"/>
+<Pollutant_Index id="CO" Min="35" Max="112" Avg="80" Hourly_sub_index="110"/>
+<Pollutant_Index id="OZONE" Min="21" Max="89" Avg="51" Hourly_sub_index="21"/>
+<Air_Quality_Index Value="143" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Bhilwara">
+<Station id="Pratap Nagar, Bhilwara - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="25.339605" longitude="74.618883">
+<Pollutant_Index id="PM2.5" Min="38" Max="304" Avg="135" Hourly_sub_index="304"/>
+<Pollutant_Index id="PM10" Min="46" Max="247" Avg="132" Hourly_sub_index="247"/>
+<Pollutant_Index id="NO2" Min="33" Max="95" Avg="65" Hourly_sub_index="93"/>
+<Pollutant_Index id="NH3" Min="7" Max="21" Avg="14" Hourly_sub_index="21"/>
+<Pollutant_Index id="SO2" Min="6" Max="81" Avg="24" Hourly_sub_index="22"/>
+<Pollutant_Index id="CO" Min="6" Max="124" Avg="66" Hourly_sub_index="124"/>
+<Pollutant_Index id="OZONE" Min="4" Max="126" Avg="70" Hourly_sub_index="7"/>
+<Air_Quality_Index Value="135" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Bhiwadi">
+<Station id="Vasundhara Nagar_UIT, Bhiwadi - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="28.207266" longitude="76.829265">
+<Pollutant_Index id="PM2.5" Min="91" Max="500" Avg="203" Hourly_sub_index="500"/>
+<Pollutant_Index id="PM10" Min="121" Max="471" Avg="181" Hourly_sub_index="NA"/>
+<Pollutant_Index id="NO2" Min="16" Max="113" Avg="48" Hourly_sub_index="98"/>
+<Pollutant_Index id="NH3" Min="10" Max="34" Avg="14" Hourly_sub_index="29"/>
+<Pollutant_Index id="SO2" Min="2" Max="43" Avg="11" Hourly_sub_index="6"/>
+<Pollutant_Index id="CO" Min="25" Max="126" Avg="74" Hourly_sub_index="104"/>
+<Pollutant_Index id="OZONE" Min="2" Max="130" Avg="51" Hourly_sub_index="2"/>
+<Air_Quality_Index Value="203" Predominant_Parameter="PM2.5"/>
+</Station>
+<Station id="RIICO Ind. Area III, Bhiwadi - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="28.194909" longitude="76.862296">
+<Pollutant_Index id="PM2.5" Min="69" Max="319" Avg="219" Hourly_sub_index="307"/>
+<Pollutant_Index id="PM10" Min="91" Max="265" Avg="172" Hourly_sub_index="225"/>
+<Pollutant_Index id="NO2" Min="22" Max="69" Avg="47" Hourly_sub_index="60"/>
+<Pollutant_Index id="NH3" Min="7" Max="20" Avg="10" Hourly_sub_index="20"/>
+<Pollutant_Index id="SO2" Min="2" Max="20" Avg="9" Hourly_sub_index="11"/>
+<Pollutant_Index id="CO" Min="23" Max="111" Avg="59" Hourly_sub_index="72"/>
+<Pollutant_Index id="OZONE" Min="15" Max="53" Avg="31" Hourly_sub_index="15"/>
+<Air_Quality_Index Value="219" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Bikaner">
+<Station id="MM Ground, Bikaner - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="28.018792" longitude="73.292658">
+<Pollutant_Index id="PM2.5" Min="37" Max="323" Avg="193" Hourly_sub_index="313"/>
+<Pollutant_Index id="PM10" Min="92" Max="430" Avg="245" Hourly_sub_index="365"/>
+<Pollutant_Index id="NO2" Min="43" Max="182" Avg="90" Hourly_sub_index="111"/>
+<Pollutant_Index id="NH3" Min="12" Max="15" Avg="13" Hourly_sub_index="14"/>
+<Pollutant_Index id="SO2" Min="3" Max="18" Avg="6" Hourly_sub_index="10"/>
+<Pollutant_Index id="CO" Min="48" Max="150" Avg="98" Hourly_sub_index="107"/>
+<Pollutant_Index id="OZONE" Min="1" Max="84" Avg="37" Hourly_sub_index="5"/>
+<Air_Quality_Index Value="245" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Bundi">
+<Station id="New Colony, Bundi - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="25.435774" longitude="75.644272">
+<Pollutant_Index id="PM2.5" Min="65" Max="230" Avg="105" Hourly_sub_index="90"/>
+<Pollutant_Index id="PM10" Min="72" Max="423" Avg="134" Hourly_sub_index="138"/>
+<Pollutant_Index id="NO2" Min="62" Max="167" Avg="92" Hourly_sub_index="105"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="10"/>
+<Pollutant_Index id="SO2" Min="5" Max="11" Avg="8" Hourly_sub_index="11"/>
+<Pollutant_Index id="CO" Min="23" Max="87" Avg="48" Hourly_sub_index="44"/>
+<Pollutant_Index id="OZONE" Min="13" Max="100" Avg="50" Hourly_sub_index="42"/>
+<Air_Quality_Index Value="134" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Chittorgarh">
+<Station id="Shastri Nagar, Chittorgarh - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="24.892047" longitude="74.623527">
+<Pollutant_Index id="PM2.5" Min="82" Max="378" Avg="189" Hourly_sub_index="157"/>
+<Pollutant_Index id="PM10" Min="86" Max="430" Avg="176" Hourly_sub_index="174"/>
+<Pollutant_Index id="NO2" Min="17" Max="88" Avg="55" Hourly_sub_index="88"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="17"/>
+<Pollutant_Index id="SO2" Min="3" Max="126" Avg="25" Hourly_sub_index="17"/>
+<Pollutant_Index id="CO" Min="14" Max="49" Avg="29" Hourly_sub_index="49"/>
+<Pollutant_Index id="OZONE" Min="1" Max="99" Avg="50" Hourly_sub_index="1"/>
+<Air_Quality_Index Value="189" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Churu">
+<Station id="Subash Chowk, Churu - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="28.296139" longitude="74.961696">
+<Pollutant_Index id="PM2.5" Min="58" Max="337" Avg="148" Hourly_sub_index="335"/>
+<Pollutant_Index id="PM10" Min="98" Max="500" Avg="194" Hourly_sub_index="483"/>
+<Pollutant_Index id="NO2" Min="13" Max="141" Avg="54" Hourly_sub_index="115"/>
+<Pollutant_Index id="NH3" Min="4" Max="7" Avg="5" Hourly_sub_index="5"/>
+<Pollutant_Index id="SO2" Min="5" Max="34" Avg="14" Hourly_sub_index="10"/>
+<Pollutant_Index id="CO" Min="16" Max="126" Avg="67" Hourly_sub_index="115"/>
+<Pollutant_Index id="OZONE" Min="0" Max="122" Avg="61" Hourly_sub_index="0"/>
+<Air_Quality_Index Value="194" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Dausa">
+<Station id="Khatikan Mohalla, Dausa - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="26.895552" longitude="76.334753">
+<Pollutant_Index id="PM2.5" Min="30" Max="197" Avg="86" Hourly_sub_index="157"/>
+<Pollutant_Index id="PM10" Min="63" Max="303" Avg="132" Hourly_sub_index="152"/>
+<Pollutant_Index id="NO2" Min="26" Max="144" Avg="73" Hourly_sub_index="67"/>
+<Pollutant_Index id="NH3" Min="7" Max="17" Avg="10" Hourly_sub_index="10"/>
+<Pollutant_Index id="SO2" Min="4" Max="11" Avg="6" Hourly_sub_index="6"/>
+<Pollutant_Index id="CO" Min="31" Max="153" Avg="97" Hourly_sub_index="91"/>
+<Pollutant_Index id="OZONE" Min="0" Max="81" Avg="27" Hourly_sub_index="15"/>
+<Air_Quality_Index Value="132" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Deeg">
+<Station id="Shyopura, Deeg-RSPCB" lastupdate="24-11-2026 22:00:00" latitude="27.46701" longitude="77.30081">
+<Pollutant_Index id="PM2.5" Min="25" Max="89" Avg="65" Hourly_sub_index="51"/>
+<Pollutant_Index id="PM10" Min="30" Max="100" Avg="74" Hourly_sub_index="58"/>
+<Pollutant_Index id="NO2" Min="25" Max="25" Avg="25" Hourly_sub_index="25"/>
+<Pollutant_Index id="NH3" Min="5" Max="6" Avg="5" Hourly_sub_index="5"/>
+<Pollutant_Index id="SO2" Min="7" Max="10" Avg="8" Hourly_sub_index="7"/>
+<Pollutant_Index id="CO" Min="13" Max="13" Avg="13" Hourly_sub_index="13"/>
+<Pollutant_Index id="OZONE" Min="29" Max="52" Avg="38" Hourly_sub_index="29"/>
+<Air_Quality_Index Value="74" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Dholpur">
+<Station id="Raja Ganj, Dholpur - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="26.699557" longitude="77.898881">
+<Pollutant_Index id="PM2.5" Min="40" Max="123" Avg="77" Hourly_sub_index="119"/>
+<Pollutant_Index id="PM10" Min="44" Max="120" Avg="80" Hourly_sub_index="113"/>
+<Pollutant_Index id="NO2" Min="16" Max="48" Avg="27" Hourly_sub_index="48"/>
+<Pollutant_Index id="NH3" Min="8" Max="12" Avg="10" Hourly_sub_index="12"/>
+<Pollutant_Index id="SO2" Min="5" Max="9" Avg="6" Hourly_sub_index="7"/>
+<Pollutant_Index id="CO" Min="35" Max="67" Avg="46" Hourly_sub_index="67"/>
+<Pollutant_Index id="OZONE" Min="10" Max="55" Avg="31" Hourly_sub_index="15"/>
+<Air_Quality_Index Value="80" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Dungarpur">
+<Station id="Bhoiwada, Dungarpur - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="23.837789" longitude="73.714926">
+<Pollutant_Index id="PM2.5" Min="38" Max="187" Avg="93" Hourly_sub_index="77"/>
+<Pollutant_Index id="PM10" Min="47" Max="121" Avg="84" Hourly_sub_index="92"/>
+<Pollutant_Index id="NO2" Min="10" Max="41" Avg="25" Hourly_sub_index="28"/>
+<Pollutant_Index id="NH3" Min="4" Max="7" Avg="5" Hourly_sub_index="5"/>
+<Pollutant_Index id="SO2" Min="3" Max="8" Avg="5" Hourly_sub_index="4"/>
+<Pollutant_Index id="CO" Min="25" Max="51" Avg="41" Hourly_sub_index="50"/>
+<Pollutant_Index id="OZONE" Min="15" Max="107" Avg="69" Hourly_sub_index="15"/>
+<Air_Quality_Index Value="93" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Hanumangarh">
+<Station id="Housing Board, Hanumangarh - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="29.61075" longitude="74.283608">
+<Pollutant_Index id="PM2.5" Min="22" Max="359" Avg="117" Hourly_sub_index="359"/>
+<Pollutant_Index id="PM10" Min="78" Max="420" Avg="150" Hourly_sub_index="420"/>
+<Pollutant_Index id="NO2" Min="28" Max="74" Avg="37" Hourly_sub_index="74"/>
+<Pollutant_Index id="NH3" Min="10" Max="14" Avg="12" Hourly_sub_index="13"/>
+<Pollutant_Index id="SO2" Min="3" Max="11" Avg="7" Hourly_sub_index="4"/>
+<Pollutant_Index id="CO" Min="20" Max="122" Avg="79" Hourly_sub_index="84"/>
+<Pollutant_Index id="OZONE" Min="1" Max="85" Avg="37" Hourly_sub_index="2"/>
+<Air_Quality_Index Value="150" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Jaipur">
+<Station id="Adarsh Nagar, Jaipur - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="26.902909" longitude="75.836858">
+<Pollutant_Index id="PM2.5" Min="54" Max="231" Avg="127" Hourly_sub_index="197"/>
+<Pollutant_Index id="PM10" Min="78" Max="170" Avg="124" Hourly_sub_index="158"/>
+<Pollutant_Index id="NO2" Min="26" Max="128" Avg="78" Hourly_sub_index="114"/>
+<Pollutant_Index id="NH3" Min="2" Max="36" Avg="11" Hourly_sub_index="36"/>
+<Pollutant_Index id="SO2" Min="14" Max="37" Avg="27" Hourly_sub_index="34"/>
+<Pollutant_Index id="CO" Min="24" Max="123" Avg="66" Hourly_sub_index="123"/>
+<Pollutant_Index id="OZONE" Min="13" Max="100" Avg="44" Hourly_sub_index="13"/>
+<Air_Quality_Index Value="127" Predominant_Parameter="PM2.5"/>
+</Station>
+<Station id="Sector-2 Murlipura, Jaipur - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="26.960669" longitude="75.771817">
+<Pollutant_Index id="PM2.5" Min="32" Max="358" Avg="148" Hourly_sub_index="334"/>
+<Pollutant_Index id="PM10" Min="56" Max="425" Avg="184" Hourly_sub_index="425"/>
+<Pollutant_Index id="NO2" Min="29" Max="128" Avg="81" Hourly_sub_index="99"/>
+<Pollutant_Index id="NH3" Min="2" Max="5" Avg="3" Hourly_sub_index="4"/>
+<Pollutant_Index id="SO2" Min="6" Max="106" Avg="35" Hourly_sub_index="45"/>
+<Pollutant_Index id="CO" Min="76" Max="131" Avg="102" Hourly_sub_index="87"/>
+<Pollutant_Index id="OZONE" Min="10" Max="92" Avg="41" Hourly_sub_index="12"/>
+<Air_Quality_Index Value="184" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="RIICO Sitapura, Jaipur - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="26.786682" longitude="75.827928">
+<Pollutant_Index id="PM2.5" Min="45" Max="342" Avg="175" Hourly_sub_index="342"/>
+<Pollutant_Index id="PM10" Min="83" Max="440" Avg="221" Hourly_sub_index="439"/>
+<Pollutant_Index id="NO2" Min="62" Max="167" Avg="113" Hourly_sub_index="156"/>
+<Pollutant_Index id="NH3" Min="8" Max="49" Avg="21" Hourly_sub_index="34"/>
+<Pollutant_Index id="SO2" Min="5" Max="13" Avg="8" Hourly_sub_index="9"/>
+<Pollutant_Index id="CO" Min="64" Max="175" Avg="127" Hourly_sub_index="175"/>
+<Pollutant_Index id="OZONE" Min="5" Max="101" Avg="38" Hourly_sub_index="6"/>
+<Air_Quality_Index Value="221" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Police Commissionerate, Jaipur - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="26.9164092" longitude="75.7994901">
+<Pollutant_Index id="PM2.5" Min="56" Max="169" Avg="115" Hourly_sub_index="140"/>
+<Pollutant_Index id="PM10" Min="62" Max="226" Avg="144" Hourly_sub_index="226"/>
+<Pollutant_Index id="NO2" Min="13" Max="117" Avg="62" Hourly_sub_index="92"/>
+<Pollutant_Index id="NH3" Min="3" Max="115" Avg="37" Hourly_sub_index="86"/>
+<Pollutant_Index id="SO2" Min="21" Max="44" Avg="28" Hourly_sub_index="27"/>
+<Pollutant_Index id="CO" Min="41" Max="83" Avg="58" Hourly_sub_index="68"/>
+<Pollutant_Index id="OZONE" Min="0" Max="57" Avg="20" Hourly_sub_index="0"/>
+<Air_Quality_Index Value="144" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Shastri Nagar, Jaipur - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="26.9502929" longitude="75.730943">
+<Pollutant_Index id="PM2.5" Min="90" Max="318" Avg="175" Hourly_sub_index="318"/>
+<Pollutant_Index id="PM10" Min="88" Max="208" Avg="120" Hourly_sub_index="200"/>
+<Pollutant_Index id="NO2" Min="35" Max="73" Avg="49" Hourly_sub_index="73"/>
+<Pollutant_Index id="NH3" Min="6" Max="38" Avg="16" Hourly_sub_index="34"/>
+<Pollutant_Index id="SO2" Min="1" Max="43" Avg="23" Hourly_sub_index="17"/>
+<Pollutant_Index id="CO" Min="28" Max="122" Avg="69" Hourly_sub_index="104"/>
+<Pollutant_Index id="OZONE" Min="21" Max="115" Avg="65" Hourly_sub_index="60"/>
+<Air_Quality_Index Value="175" Predominant_Parameter="PM2.5"/>
+</Station>
+<Station id="Mansarovar Sector-12, Jaipur - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="26.843698" longitude="75.766894">
+<Pollutant_Index id="PM2.5" Min="37" Max="346" Avg="206" Hourly_sub_index="346"/>
+<Pollutant_Index id="PM10" Min="74" Max="424" Avg="199" Hourly_sub_index="424"/>
+<Pollutant_Index id="NO2" Min="14" Max="127" Avg="67" Hourly_sub_index="112"/>
+<Pollutant_Index id="NH3" Min="5" Max="24" Avg="11" Hourly_sub_index="19"/>
+<Pollutant_Index id="SO2" Min="5" Max="51" Avg="18" Hourly_sub_index="18"/>
+<Pollutant_Index id="CO" Min="26" Max="136" Avg="82" Hourly_sub_index="122"/>
+<Pollutant_Index id="OZONE" Min="4" Max="80" Avg="32" Hourly_sub_index="4"/>
+<Air_Quality_Index Value="206" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Jaisalmer">
+<Station id="Sadar Bazar, Jaisalmer - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="26.912329" longitude="70.909168">
+<Pollutant_Index id="PM2.5" Min="42" Max="349" Avg="170" Hourly_sub_index="340"/>
+<Pollutant_Index id="PM10" Min="71" Max="500" Avg="202" Hourly_sub_index="500"/>
+<Pollutant_Index id="NO2" Min="39" Max="174" Avg="90" Hourly_sub_index="144"/>
+<Pollutant_Index id="NH3" Min="11" Max="20" Avg="16" Hourly_sub_index="20"/>
+<Pollutant_Index id="SO2" Min="1" Max="10" Avg="4" Hourly_sub_index="7"/>
+<Pollutant_Index id="CO" Min="26" Max="115" Avg="69" Hourly_sub_index="102"/>
+<Pollutant_Index id="OZONE" Min="2" Max="100" Avg="46" Hourly_sub_index="2"/>
+<Air_Quality_Index Value="202" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Jalore">
+<Station id="Mudtra Sili, Jalore - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="25.344694" longitude="72.626208">
+<Pollutant_Index id="PM2.5" Min="53" Max="382" Avg="112" Hourly_sub_index="190"/>
+<Pollutant_Index id="PM10" Min="75" Max="426" Avg="145" Hourly_sub_index="145"/>
+<Pollutant_Index id="NO2" Min="13" Max="160" Avg="59" Hourly_sub_index="116"/>
+<Pollutant_Index id="NH3" Min="5" Max="15" Avg="7" Hourly_sub_index="9"/>
+<Pollutant_Index id="SO2" Min="6" Max="22" Avg="9" Hourly_sub_index="18"/>
+<Pollutant_Index id="CO" Min="21" Max="111" Avg="61" Hourly_sub_index="58"/>
+<Pollutant_Index id="OZONE" Min="5" Max="143" Avg="61" Hourly_sub_index="29"/>
+<Air_Quality_Index Value="145" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Jhalawar">
+<Station id="Rajlaxmi Nagar, Jhalawar - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="24.588397" longitude="76.172782">
+<Pollutant_Index id="PM2.5" Min="67" Max="325" Avg="203" Hourly_sub_index="263"/>
+<Pollutant_Index id="PM10" Min="83" Max="264" Avg="151" Hourly_sub_index="177"/>
+<Pollutant_Index id="NO2" Min="21" Max="147" Avg="63" Hourly_sub_index="133"/>
+<Pollutant_Index id="NH3" Min="7" Max="17" Avg="11" Hourly_sub_index="16"/>
+<Pollutant_Index id="SO2" Min="2" Max="26" Avg="12" Hourly_sub_index="26"/>
+<Pollutant_Index id="CO" Min="11" Max="119" Avg="64" Hourly_sub_index="119"/>
+<Pollutant_Index id="OZONE" Min="2" Max="147" Avg="61" Hourly_sub_index="8"/>
+<Air_Quality_Index Value="203" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Jhunjhunu">
+<Station id="Indra Nagar, Jhunjhunu - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="28.108988" longitude="75.386577">
+<Pollutant_Index id="PM2.5" Min="42" Max="354" Avg="169" Hourly_sub_index="307"/>
+<Pollutant_Index id="PM10" Min="59" Max="355" Avg="146" Hourly_sub_index="282"/>
+<Pollutant_Index id="NO2" Min="10" Max="147" Avg="52" Hourly_sub_index="107"/>
+<Pollutant_Index id="NH3" Min="6" Max="25" Avg="12" Hourly_sub_index="16"/>
+<Pollutant_Index id="SO2" Min="2" Max="24" Avg="8" Hourly_sub_index="7"/>
+<Pollutant_Index id="CO" Min="20" Max="116" Avg="68" Hourly_sub_index="103"/>
+<Pollutant_Index id="OZONE" Min="5" Max="134" Avg="57" Hourly_sub_index="7"/>
+<Air_Quality_Index Value="169" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Jodhpur">
+<Station id="Digari Kalan, Jodhpur - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="26.29581" longitude="73.082283">
+<Pollutant_Index id="PM2.5" Min="30" Max="337" Avg="152" Hourly_sub_index="312"/>
+<Pollutant_Index id="PM10" Min="47" Max="384" Avg="162" Hourly_sub_index="290"/>
+<Pollutant_Index id="NO2" Min="16" Max="87" Avg="37" Hourly_sub_index="84"/>
+<Pollutant_Index id="NH3" Min="3" Max="5" Avg="4" Hourly_sub_index="3"/>
+<Pollutant_Index id="SO2" Min="4" Max="6" Avg="5" Hourly_sub_index="5"/>
+<Pollutant_Index id="CO" Min="24" Max="96" Avg="56" Hourly_sub_index="87"/>
+<Pollutant_Index id="OZONE" Min="4" Max="90" Avg="43" Hourly_sub_index="4"/>
+<Air_Quality_Index Value="162" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Mandor, Jodhpur - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="26.358805" longitude="73.047444">
+<Pollutant_Index id="PM2.5" Min="27" Max="170" Avg="77" Hourly_sub_index="72"/>
+<Pollutant_Index id="PM10" Min="50" Max="149" Avg="102" Hourly_sub_index="128"/>
+<Pollutant_Index id="NO2" Min="9" Max="111" Avg="32" Hourly_sub_index="102"/>
+<Pollutant_Index id="NH3" Min="1" Max="3" Avg="2" Hourly_sub_index="3"/>
+<Pollutant_Index id="SO2" Min="3" Max="15" Avg="6" Hourly_sub_index="6"/>
+<Pollutant_Index id="CO" Min="13" Max="45" Avg="23" Hourly_sub_index="45"/>
+<Pollutant_Index id="OZONE" Min="14" Max="98" Avg="68" Hourly_sub_index="14"/>
+<Air_Quality_Index Value="102" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Collectorate, Jodhpur - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="26.268249" longitude="73.0193853">
+<Pollutant_Index id="PM2.5" Min="21" Max="215" Avg="110" Hourly_sub_index="69"/>
+<Pollutant_Index id="PM10" Min="22" Max="219" Avg="132" Hourly_sub_index="133"/>
+<Pollutant_Index id="NO2" Min="16" Max="51" Avg="27" Hourly_sub_index="32"/>
+<Pollutant_Index id="NH3" Min="6" Max="17" Avg="11" Hourly_sub_index="15"/>
+<Pollutant_Index id="SO2" Min="1" Max="12" Avg="7" Hourly_sub_index="5"/>
+<Pollutant_Index id="CO" Min="12" Max="90" Avg="51" Hourly_sub_index="67"/>
+<Pollutant_Index id="OZONE" Min="10" Max="125" Avg="61" Hourly_sub_index="10"/>
+<Air_Quality_Index Value="132" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Jhalamand, Jodhpur - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="26.215415" longitude="73.070156">
+<Pollutant_Index id="PM2.5" Min="23" Max="302" Avg="106" Hourly_sub_index="203"/>
+<Pollutant_Index id="PM10" Min="39" Max="400" Avg="129" Hourly_sub_index="230"/>
+<Pollutant_Index id="NO2" Min="6" Max="122" Avg="44" Hourly_sub_index="92"/>
+<Pollutant_Index id="NH3" Min="7" Max="18" Avg="12" Hourly_sub_index="11"/>
+<Pollutant_Index id="SO2" Min="3" Max="13" Avg="7" Hourly_sub_index="8"/>
+<Pollutant_Index id="CO" Min="13" Max="75" Avg="40" Hourly_sub_index="56"/>
+<Pollutant_Index id="OZONE" Min="10" Max="104" Avg="55" Hourly_sub_index="13"/>
+<Air_Quality_Index Value="129" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Samrat Ashok Udhyan, Jodhpur - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="26.253384" longitude="72.976571">
+<Pollutant_Index id="PM2.5" Min="28" Max="345" Avg="135" Hourly_sub_index="345"/>
+<Pollutant_Index id="PM10" Min="54" Max="288" Avg="140" Hourly_sub_index="284"/>
+<Pollutant_Index id="NO2" Min="34" Max="140" Avg="75" Hourly_sub_index="127"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="SO2" Min="3" Max="22" Avg="8" Hourly_sub_index="22"/>
+<Pollutant_Index id="CO" Min="16" Max="74" Avg="46" Hourly_sub_index="61"/>
+<Pollutant_Index id="OZONE" Min="23" Max="188" Avg="95" Hourly_sub_index="29"/>
+<Air_Quality_Index Value="140" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Karauli">
+<Station id="Satyawati Vihar, Karauli - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="26.506177" longitude="77.025989">
+<Pollutant_Index id="PM2.5" Min="22" Max="261" Avg="100" Hourly_sub_index="99"/>
+<Pollutant_Index id="PM10" Min="41" Max="316" Avg="126" Hourly_sub_index="161"/>
+<Pollutant_Index id="NO2" Min="39" Max="123" Avg="65" Hourly_sub_index="85"/>
+<Pollutant_Index id="NH3" Min="24" Max="33" Avg="30" Hourly_sub_index="33"/>
+<Pollutant_Index id="SO2" Min="2" Max="8" Avg="5" Hourly_sub_index="5"/>
+<Pollutant_Index id="CO" Min="32" Max="83" Avg="52" Hourly_sub_index="33"/>
+<Pollutant_Index id="OZONE" Min="0" Max="85" Avg="36" Hourly_sub_index="1"/>
+<Air_Quality_Index Value="126" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Khairthal">
+<Station id="New Anaj Mandi, Khairthal - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="27.8015617" longitude="76.6365217">
+<Pollutant_Index id="PM2.5" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="413"/>
+<Pollutant_Index id="PM10" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="500"/>
+<Pollutant_Index id="NO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="71"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="10"/>
+<Pollutant_Index id="SO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="5"/>
+<Pollutant_Index id="CO" Min="42" Max="50" Avg="46" Hourly_sub_index="47"/>
+<Pollutant_Index id="OZONE" Min="10" Max="10" Avg="10" Hourly_sub_index="10"/>
+<Air_Quality_Index Value="" Predominant_Parameter=""/>
+</Station>
+</City>
+<City id="Kota">
+<Station id="Dhanmandi, Kota - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="25.16409" longitude="75.858137">
+<Pollutant_Index id="PM2.5" Min="45" Max="334" Avg="137" Hourly_sub_index="243"/>
+<Pollutant_Index id="PM10" Min="76" Max="303" Avg="136" Hourly_sub_index="188"/>
+<Pollutant_Index id="NO2" Min="12" Max="52" Avg="31" Hourly_sub_index="48"/>
+<Pollutant_Index id="NH3" Min="1" Max="7" Avg="4" Hourly_sub_index="3"/>
+<Pollutant_Index id="SO2" Min="7" Max="102" Avg="25" Hourly_sub_index="17"/>
+<Pollutant_Index id="CO" Min="25" Max="118" Avg="70" Hourly_sub_index="118"/>
+<Pollutant_Index id="OZONE" Min="9" Max="144" Avg="58" Hourly_sub_index="9"/>
+<Air_Quality_Index Value="137" Predominant_Parameter="PM2.5"/>
+</Station>
+<Station id="Nayapura, Kota - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="25.196024" longitude="75.855668">
+<Pollutant_Index id="PM2.5" Min="47" Max="280" Avg="129" Hourly_sub_index="100"/>
+<Pollutant_Index id="PM10" Min="87" Max="243" Avg="151" Hourly_sub_index="144"/>
+<Pollutant_Index id="NO2" Min="11" Max="61" Avg="33" Hourly_sub_index="51"/>
+<Pollutant_Index id="NH3" Min="1" Max="4" Avg="3" Hourly_sub_index="2"/>
+<Pollutant_Index id="SO2" Min="6" Max="136" Avg="22" Hourly_sub_index="10"/>
+<Pollutant_Index id="CO" Min="6" Max="95" Avg="54" Hourly_sub_index="95"/>
+<Pollutant_Index id="OZONE" Min="7" Max="156" Avg="54" Hourly_sub_index="8"/>
+<Air_Quality_Index Value="151" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Shrinath Puram, Kota - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="25.14389" longitude="75.821256">
+<Pollutant_Index id="PM2.5" Min="80" Max="390" Avg="189" Hourly_sub_index="390"/>
+<Pollutant_Index id="PM10" Min="67" Max="260" Avg="125" Hourly_sub_index="260"/>
+<Pollutant_Index id="NO2" Min="13" Max="76" Avg="25" Hourly_sub_index="64"/>
+<Pollutant_Index id="NH3" Min="3" Max="21" Avg="8" Hourly_sub_index="21"/>
+<Pollutant_Index id="SO2" Min="7" Max="20" Avg="13" Hourly_sub_index="14"/>
+<Pollutant_Index id="CO" Min="25" Max="112" Avg="69" Hourly_sub_index="104"/>
+<Pollutant_Index id="OZONE" Min="20" Max="80" Avg="38" Hourly_sub_index="23"/>
+<Air_Quality_Index Value="189" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Kotputli">
+<Station id="Govt ITI, Kotputli-RSPCB" lastupdate="24-11-2026 22:00:00" latitude="27.701529" longitude="76.20681">
+<Pollutant_Index id="PM2.5" Min="5" Max="46" Avg="21" Hourly_sub_index="43"/>
+<Pollutant_Index id="PM10" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="NO2" Min="21" Max="124" Avg="51" Hourly_sub_index="116"/>
+<Pollutant_Index id="NH3" Min="3" Max="7" Avg="5" Hourly_sub_index="5"/>
+<Pollutant_Index id="SO2" Min="2" Max="22" Avg="8" Hourly_sub_index="9"/>
+<Pollutant_Index id="CO" Min="15" Max="116" Avg="60" Hourly_sub_index="103"/>
+<Pollutant_Index id="OZONE" Min="6" Max="141" Avg="68" Hourly_sub_index="6"/>
+<Air_Quality_Index Value="68" Predominant_Parameter="OZONE"/>
+</Station>
+</City>
+<City id="Nagaur">
+<Station id="Karni Colony, Nagaur - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="27.213494" longitude="73.734444">
+<Pollutant_Index id="PM2.5" Min="32" Max="389" Avg="169" Hourly_sub_index="354"/>
+<Pollutant_Index id="PM10" Min="64" Max="494" Avg="205" Hourly_sub_index="494"/>
+<Pollutant_Index id="NO2" Min="8" Max="133" Avg="56" Hourly_sub_index="109"/>
+<Pollutant_Index id="NH3" Min="5" Max="15" Avg="10" Hourly_sub_index="14"/>
+<Pollutant_Index id="SO2" Min="7" Max="20" Avg="11" Hourly_sub_index="12"/>
+<Pollutant_Index id="CO" Min="15" Max="116" Avg="65" Hourly_sub_index="101"/>
+<Pollutant_Index id="OZONE" Min="9" Max="101" Avg="56" Hourly_sub_index="12"/>
+<Air_Quality_Index Value="205" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Pali">
+<Station id="Indira Colony Vistar, Pali - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="25.771061" longitude="73.340227">
+<Pollutant_Index id="PM2.5" Min="48" Max="141" Avg="89" Hourly_sub_index="91"/>
+<Pollutant_Index id="PM10" Min="87" Max="175" Avg="133" Hourly_sub_index="166"/>
+<Pollutant_Index id="NO2" Min="20" Max="47" Avg="30" Hourly_sub_index="32"/>
+<Pollutant_Index id="NH3" Min="5" Max="19" Avg="11" Hourly_sub_index="10"/>
+<Pollutant_Index id="SO2" Min="7" Max="12" Avg="9" Hourly_sub_index="9"/>
+<Pollutant_Index id="CO" Min="28" Max="43" Avg="38" Hourly_sub_index="41"/>
+<Pollutant_Index id="OZONE" Min="10" Max="75" Avg="32" Hourly_sub_index="10"/>
+<Air_Quality_Index Value="133" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Pratapgarh">
+<Station id="Pragati Nagar, Pratapgarh - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="24.041198" longitude="74.780702">
+<Pollutant_Index id="PM2.5" Min="53" Max="183" Avg="128" Hourly_sub_index="183"/>
+<Pollutant_Index id="PM10" Min="62" Max="146" Avg="104" Hourly_sub_index="143"/>
+<Pollutant_Index id="NO2" Min="18" Max="78" Avg="30" Hourly_sub_index="58"/>
+<Pollutant_Index id="NH3" Min="6" Max="30" Avg="10" Hourly_sub_index="10"/>
+<Pollutant_Index id="SO2" Min="13" Max="64" Avg="23" Hourly_sub_index="43"/>
+<Pollutant_Index id="CO" Min="20" Max="42" Avg="29" Hourly_sub_index="33"/>
+<Pollutant_Index id="OZONE" Min="55" Max="126" Avg="92" Hourly_sub_index="55"/>
+<Air_Quality_Index Value="128" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Rajsamand">
+<Station id="Dhoinda, Rajsamand - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="25.03636" longitude="73.883502">
+<Pollutant_Index id="PM2.5" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="240"/>
+<Pollutant_Index id="PM10" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="130"/>
+<Pollutant_Index id="NO2" Min="7" Max="104" Avg="38" Hourly_sub_index="79"/>
+<Pollutant_Index id="NH3" Min="13" Max="33" Avg="22" Hourly_sub_index="31"/>
+<Pollutant_Index id="SO2" Min="4" Max="19" Avg="11" Hourly_sub_index="10"/>
+<Pollutant_Index id="CO" Min="28" Max="115" Avg="67" Hourly_sub_index="75"/>
+<Pollutant_Index id="OZONE" Min="3" Max="121" Avg="70" Hourly_sub_index="18"/>
+<Air_Quality_Index Value="" Predominant_Parameter=""/>
+</Station>
+</City>
+<City id="Sawai Madhopur">
+<Station id="Sahu Nagar, Sawai Madhopur - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="26.031443" longitude="76.359327">
+<Pollutant_Index id="PM2.5" Min="29" Max="351" Avg="116" Hourly_sub_index="239"/>
+<Pollutant_Index id="PM10" Min="46" Max="295" Avg="118" Hourly_sub_index="196"/>
+<Pollutant_Index id="NO2" Min="31" Max="80" Avg="45" Hourly_sub_index="80"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="3"/>
+<Pollutant_Index id="SO2" Min="1" Max="17" Avg="7" Hourly_sub_index="17"/>
+<Pollutant_Index id="CO" Min="15" Max="117" Avg="68" Hourly_sub_index="91"/>
+<Pollutant_Index id="OZONE" Min="4" Max="143" Avg="56" Hourly_sub_index="4"/>
+<Air_Quality_Index Value="118" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Sikar">
+<Station id="Radhakishan Pura, Sikar - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="27.608912" longitude="75.153302">
+<Pollutant_Index id="PM2.5" Min="30" Max="425" Avg="218" Hourly_sub_index="404"/>
+<Pollutant_Index id="PM10" Min="53" Max="500" Avg="247" Hourly_sub_index="500"/>
+<Pollutant_Index id="NO2" Min="13" Max="133" Avg="67" Hourly_sub_index="105"/>
+<Pollutant_Index id="NH3" Min="8" Max="28" Avg="18" Hourly_sub_index="NA"/>
+<Pollutant_Index id="SO2" Min="5" Max="11" Avg="8" Hourly_sub_index="10"/>
+<Pollutant_Index id="CO" Min="13" Max="132" Avg="71" Hourly_sub_index="121"/>
+<Pollutant_Index id="OZONE" Min="8" Max="127" Avg="59" Hourly_sub_index="8"/>
+<Air_Quality_Index Value="247" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Sirohi">
+<Station id="Vedhaynath Colony, Sirohi - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="24.885261" longitude="72.857549">
+<Pollutant_Index id="PM2.5" Min="37" Max="297" Avg="85" Hourly_sub_index="290"/>
+<Pollutant_Index id="PM10" Min="55" Max="500" Avg="120" Hourly_sub_index="199"/>
+<Pollutant_Index id="NO2" Min="8" Max="122" Avg="38" Hourly_sub_index="48"/>
+<Pollutant_Index id="NH3" Min="2" Max="3" Avg="3" Hourly_sub_index="3"/>
+<Pollutant_Index id="SO2" Min="5" Max="26" Avg="13" Hourly_sub_index="25"/>
+<Pollutant_Index id="CO" Min="14" Max="60" Avg="29" Hourly_sub_index="35"/>
+<Pollutant_Index id="OZONE" Min="18" Max="75" Avg="48" Hourly_sub_index="31"/>
+<Air_Quality_Index Value="120" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Sri Ganganagar">
+<Station id="Old City, Sri Ganganagar - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="29.931624" longitude="73.864511">
+<Pollutant_Index id="PM2.5" Min="27" Max="203" Avg="82" Hourly_sub_index="203"/>
+<Pollutant_Index id="PM10" Min="61" Max="339" Avg="155" Hourly_sub_index="339"/>
+<Pollutant_Index id="NO2" Min="18" Max="174" Avg="72" Hourly_sub_index="124"/>
+<Pollutant_Index id="NH3" Min="7" Max="45" Avg="15" Hourly_sub_index="38"/>
+<Pollutant_Index id="SO2" Min="1" Max="42" Avg="10" Hourly_sub_index="42"/>
+<Pollutant_Index id="CO" Min="1" Max="184" Avg="68" Hourly_sub_index="1"/>
+<Pollutant_Index id="OZONE" Min="66" Max="72" Avg="69" Hourly_sub_index="66"/>
+<Air_Quality_Index Value="155" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Tonk">
+<Station id="Shastri Nagar, Tonk - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="26.159933" longitude="75.780517">
+<Pollutant_Index id="PM2.5" Min="50" Max="365" Avg="198" Hourly_sub_index="332"/>
+<Pollutant_Index id="PM10" Min="63" Max="500" Avg="184" Hourly_sub_index="458"/>
+<Pollutant_Index id="NO2" Min="12" Max="141" Avg="45" Hourly_sub_index="106"/>
+<Pollutant_Index id="NH3" Min="4" Max="29" Avg="10" Hourly_sub_index="11"/>
+<Pollutant_Index id="SO2" Min="2" Max="9" Avg="4" Hourly_sub_index="5"/>
+<Pollutant_Index id="CO" Min="17" Max="152" Avg="83" Hourly_sub_index="109"/>
+<Pollutant_Index id="OZONE" Min="1" Max="111" Avg="46" Hourly_sub_index="1"/>
+<Air_Quality_Index Value="198" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Udaipur">
+<Station id="Ashok Nagar, Udaipur - RSPCB" lastupdate="24-11-2026 22:00:00" latitude="24.5886166" longitude="73.6321397">
+<Pollutant_Index id="PM2.5" Min="122" Max="339" Avg="208" Hourly_sub_index="339"/>
+<Pollutant_Index id="PM10" Min="96" Max="278" Avg="146" Hourly_sub_index="278"/>
+<Pollutant_Index id="NO2" Min="9" Max="33" Avg="15" Hourly_sub_index="15"/>
+<Pollutant_Index id="NH3" Min="2" Max="15" Avg="4" Hourly_sub_index="2"/>
+<Pollutant_Index id="SO2" Min="3" Max="12" Avg="7" Hourly_sub_index="12"/>
+<Pollutant_Index id="CO" Min="24" Max="49" Avg="34" Hourly_sub_index="40"/>
+<Pollutant_Index id="OZONE" Min="3" Max="120" Avg="51" Hourly_sub_index="3"/>
+<Air_Quality_Index Value="208" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+</State>
+<State id="Sikkim">
+<City id="Gangtok">
+<Station id="Zero Point GICI, Gangtok - SSPCB" lastupdate="24-11-2026 22:00:00" latitude="27.33853" longitude="88.614099">
+<Pollutant_Index id="PM2.5" Min="23" Max="64" Avg="37" Hourly_sub_index="64"/>
+<Pollutant_Index id="PM10" Min="27" Max="52" Avg="37" Hourly_sub_index="52"/>
+<Pollutant_Index id="NO2" Min="7" Max="8" Avg="8" Hourly_sub_index="8"/>
+<Pollutant_Index id="NH3" Min="1" Max="13" Avg="2" Hourly_sub_index="1"/>
+<Pollutant_Index id="SO2" Min="1" Max="1" Avg="1" Hourly_sub_index="1"/>
+<Pollutant_Index id="CO" Min="4" Max="43" Avg="14" Hourly_sub_index="43"/>
+<Pollutant_Index id="OZONE" Min="1" Max="3" Avg="2" Hourly_sub_index="1"/>
+<Air_Quality_Index Value="37" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+</State>
+<State id="Tamil Nadu">
+<City id="Chennai">
+<Station id="Perungudi, Chennai - TNPCB" lastupdate="24-11-2026 22:00:00" latitude="12.9533" longitude="80.2357">
+<Pollutant_Index id="PM2.5" Min="2" Max="145" Avg="28" Hourly_sub_index="145"/>
+<Pollutant_Index id="PM10" Min="4" Max="95" Avg="24" Hourly_sub_index="95"/>
+<Pollutant_Index id="NO2" Min="12" Max="15" Avg="14" Hourly_sub_index="14"/>
+<Pollutant_Index id="NH3" Min="4" Max="4" Avg="4" Hourly_sub_index="4"/>
+<Pollutant_Index id="SO2" Min="2" Max="3" Avg="2" Hourly_sub_index="3"/>
+<Pollutant_Index id="CO" Min="23" Max="31" Avg="26" Hourly_sub_index="31"/>
+<Pollutant_Index id="OZONE" Min="17" Max="18" Avg="18" Hourly_sub_index="17"/>
+<Air_Quality_Index Value="28" Predominant_Parameter="PM2.5"/>
+</Station>
+<Station id="Royapuram, Chennai - TNPCB" lastupdate="24-11-2026 22:00:00" latitude="13.1036" longitude="80.2909">
+<Pollutant_Index id="PM2.5" Min="0" Max="45" Avg="15" Hourly_sub_index="10"/>
+<Pollutant_Index id="PM10" Min="6" Max="40" Avg="20" Hourly_sub_index="15"/>
+<Pollutant_Index id="NO2" Min="9" Max="17" Avg="13" Hourly_sub_index="17"/>
+<Pollutant_Index id="NH3" Min="3" Max="4" Avg="4" Hourly_sub_index="4"/>
+<Pollutant_Index id="SO2" Min="2" Max="4" Avg="2" Hourly_sub_index="2"/>
+<Pollutant_Index id="CO" Min="20" Max="33" Avg="26" Hourly_sub_index="25"/>
+<Pollutant_Index id="OZONE" Min="24" Max="32" Avg="30" Hourly_sub_index="29"/>
+<Air_Quality_Index Value="30" Predominant_Parameter="OZONE"/>
+</Station>
+<Station id="Manali Village, Chennai - TNPCB" lastupdate="24-11-2026 22:00:00" latitude="13.1662" longitude="80.2584">
+<Pollutant_Index id="PM2.5" Min="6" Max="43" Avg="16" Hourly_sub_index="43"/>
+<Pollutant_Index id="PM10" Min="7" Max="39" Avg="21" Hourly_sub_index="39"/>
+<Pollutant_Index id="NO2" Min="21" Max="23" Avg="22" Hourly_sub_index="21"/>
+<Pollutant_Index id="NH3" Min="1" Max="2" Avg="1" Hourly_sub_index="2"/>
+<Pollutant_Index id="SO2" Min="11" Max="14" Avg="12" Hourly_sub_index="13"/>
+<Pollutant_Index id="CO" Min="33" Max="39" Avg="36" Hourly_sub_index="38"/>
+<Pollutant_Index id="OZONE" Min="6" Max="100" Avg="29" Hourly_sub_index="100"/>
+<Air_Quality_Index Value="36" Predominant_Parameter="CO"/>
+</Station>
+<Station id="Kodungaiyur, Chennai - TNPCB" lastupdate="24-11-2026 22:00:00" latitude="13.1278" longitude="80.2642">
+<Pollutant_Index id="PM2.5" Min="8" Max="248" Avg="38" Hourly_sub_index="85"/>
+<Pollutant_Index id="PM10" Min="6" Max="167" Avg="36" Hourly_sub_index="108"/>
+<Pollutant_Index id="NO2" Min="12" Max="15" Avg="14" Hourly_sub_index="15"/>
+<Pollutant_Index id="NH3" Min="2" Max="3" Avg="2" Hourly_sub_index="2"/>
+<Pollutant_Index id="SO2" Min="5" Max="7" Avg="6" Hourly_sub_index="6"/>
+<Pollutant_Index id="CO" Min="48" Max="56" Avg="52" Hourly_sub_index="51"/>
+<Pollutant_Index id="OZONE" Min="28" Max="33" Avg="31" Hourly_sub_index="28"/>
+<Air_Quality_Index Value="52" Predominant_Parameter="CO"/>
+</Station>
+<Station id="Manali, Chennai - CPCB" lastupdate="24-11-2026 22:00:00" latitude="13.164544" longitude="80.26285">
+<Pollutant_Index id="PM2.5" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="9"/>
+<Pollutant_Index id="PM10" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="42"/>
+<Pollutant_Index id="NO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="11"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="7"/>
+<Pollutant_Index id="SO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="5"/>
+<Pollutant_Index id="CO" Min="16" Max="53" Avg="35" Hourly_sub_index="34"/>
+<Pollutant_Index id="OZONE" Min="7" Max="8" Avg="8" Hourly_sub_index="8"/>
+<Air_Quality_Index Value="" Predominant_Parameter=""/>
+</Station>
+<Station id="Arumbakkam, Chennai - TNPCB" lastupdate="24-11-2026 22:00:00" latitude="13.0664" longitude="80.2112">
+<Pollutant_Index id="PM2.5" Min="0" Max="126" Avg="29" Hourly_sub_index="126"/>
+<Pollutant_Index id="PM10" Min="12" Max="106" Avg="42" Hourly_sub_index="106"/>
+<Pollutant_Index id="NO2" Min="15" Max="26" Avg="21" Hourly_sub_index="23"/>
+<Pollutant_Index id="NH3" Min="2" Max="3" Avg="2" Hourly_sub_index="2"/>
+<Pollutant_Index id="SO2" Min="0" Max="3" Avg="1" Hourly_sub_index="1"/>
+<Pollutant_Index id="CO" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="OZONE" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Air_Quality_Index Value="42" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+</State>
+</Country>
+</AqIndex>

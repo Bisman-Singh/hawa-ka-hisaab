@@ -1,0 +1,24 @@
+PIN lookup table for India. Server side only; it never enters the browser bundle.
+
+Source
+  GeoNames postal codes, India, IN.zip from https://download.geonames.org/export/zip/, CC BY 4.0.
+  Credit shown in the app: PIN locations: GeoNames postal codes, geonames.org, CC BY 4.0.
+  Fetched 26 Nov 2026.
+
+Files
+  centres-N.json   PIN to [lat, lon], 3 decimals, 12,690 PINs across the parts.
+  labels-N.json    PIN to [district, state], the most common GeoNames district and state for the PIN.
+  prefixes.json    4 or 3 digit prefix to [lat, lon, count, spreadKm]; 1,563 four digit and 401 three digit.
+
+Method
+  Per PIN, the GeoNames rows inside India with the best accuracy value, the median lat and lon, points over
+  25 km from it dropped, then the median again. A PIN was kept only when a second public copy of the India
+  Post PIN list put its centre within 25 km of ours. Nothing from that copy is in these files.
+  spreadKm is the 90th percentile distance of a prefix's PINs from its centre. Four digit prefixes with a
+  spread over 60 km are not stored.
+  Accuracy is city level: GeoNames often gives one point for a whole city. The app uses a PIN centre only to
+  find the nearest monitoring station and never claims neighbourhood accuracy.
+
+Parts
+  The two large tables are cut in key order into parts under 60 kB by scripts/split-pin-data.ts, to stay
+  under the repository file size cap. Values are unchanged. prefixes.json is copied byte for byte.

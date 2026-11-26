@@ -2,6 +2,7 @@
 import { createFixedWindowLimiter } from '../../src/lib/rate-limit.js';
 import type { ServerDeps } from '../../src/server/deps.js';
 import { createCaptureLogger, type CapturedLine } from './capture-logger.js';
+import { createFakeAirSources } from './fake-air-sources.js';
 import { createFakeClock, type FakeClock } from './fake-clock.js';
 
 /** Test dependencies with handles to the fakes behind them. */
@@ -22,6 +23,7 @@ export function createTestDeps(overrides: Partial<ServerDeps> = {}): TestDeps {
     logger: capture.logger,
     requestLimiter: limiter,
     modelLimiter: limiter,
+    air: createFakeAirSources(),
     ...overrides,
   };
   return { deps, clock, logLines: capture.lines, logText: capture.text };

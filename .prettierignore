@@ -5,3 +5,4 @@ test-results/
 .vitest/
 package-lock.json
 test/support/fixtures/
+src/server/data/

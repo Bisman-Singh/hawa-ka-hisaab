@@ -48,7 +48,7 @@ export function rkPuramStation(): StationRecord {
 export function stationFeed(
   stations: readonly StationRecord[] = [jnuStation(), rkPuramStation()],
 ): StationFeed {
-  return { feedHour: '2026-11-24T22:00:00+05:30', stations };
+  return { provider: 'cpcb_feed', feedHour: '2026-11-24T22:00:00+05:30', stations };
 }
 
 /** A fake station feed that returns the given reads in order, then repeats the last. */

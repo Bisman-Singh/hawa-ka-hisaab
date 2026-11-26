@@ -1,0 +1,862 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<AqIndex>
+<Country id="India">
+<State id="Maharashtra">
+<City id="Mumbai">
+<Station id="Borivali East, Mumbai - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.2243333" longitude="72.8658113">
+<Pollutant_Index id="PM2.5" Min="43" Max="71" Avg="60" Hourly_sub_index="59"/>
+<Pollutant_Index id="PM10" Min="47" Max="75" Avg="64" Hourly_sub_index="63"/>
+<Pollutant_Index id="NO2" Min="10" Max="10" Avg="10" Hourly_sub_index="10"/>
+<Pollutant_Index id="NH3" Min="2" Max="2" Avg="2" Hourly_sub_index="2"/>
+<Pollutant_Index id="SO2" Min="10" Max="15" Avg="13" Hourly_sub_index="11"/>
+<Pollutant_Index id="CO" Min="5" Max="6" Avg="6" Hourly_sub_index="5"/>
+<Pollutant_Index id="OZONE" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Air_Quality_Index Value="64" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Colaba, Mumbai - MPCB" lastupdate="24-11-2026 22:00:00" latitude="18.91" longitude="72.82">
+<Pollutant_Index id="PM2.5" Min="63" Max="85" Avg="70" Hourly_sub_index="67"/>
+<Pollutant_Index id="PM10" Min="69" Max="105" Avg="84" Hourly_sub_index="88"/>
+<Pollutant_Index id="NO2" Min="32" Max="37" Avg="34" Hourly_sub_index="34"/>
+<Pollutant_Index id="NH3" Min="3" Max="3" Avg="3" Hourly_sub_index="3"/>
+<Pollutant_Index id="SO2" Min="19" Max="22" Avg="21" Hourly_sub_index="21"/>
+<Pollutant_Index id="CO" Min="23" Max="24" Avg="24" Hourly_sub_index="24"/>
+<Pollutant_Index id="OZONE" Min="15" Max="21" Avg="18" Hourly_sub_index="15"/>
+<Air_Quality_Index Value="84" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Khindipada-Bhandup West, Mumbai - IITM" lastupdate="24-11-2026 22:00:00" latitude="19.1653323" longitude="72.922099">
+<Pollutant_Index id="PM2.5" Min="46" Max="90" Avg="67" Hourly_sub_index="87"/>
+<Pollutant_Index id="PM10" Min="68" Max="146" Avg="113" Hourly_sub_index="124"/>
+<Pollutant_Index id="NO2" Min="22" Max="57" Avg="40" Hourly_sub_index="56"/>
+<Pollutant_Index id="NH3" Min="3" Max="5" Avg="4" Hourly_sub_index="5"/>
+<Pollutant_Index id="SO2" Min="4" Max="17" Avg="10" Hourly_sub_index="9"/>
+<Pollutant_Index id="CO" Min="21" Max="52" Avg="34" Hourly_sub_index="51"/>
+<Pollutant_Index id="OZONE" Min="31" Max="44" Avg="38" Hourly_sub_index="36"/>
+<Air_Quality_Index Value="113" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Bandra Kurla Complex, Mumbai - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.065931" longitude="72.862131">
+<Pollutant_Index id="PM2.5" Min="58" Max="114" Avg="83" Hourly_sub_index="62"/>
+<Pollutant_Index id="PM10" Min="88" Max="158" Avg="116" Hourly_sub_index="103"/>
+<Pollutant_Index id="NO2" Min="41" Max="156" Avg="85" Hourly_sub_index="117"/>
+<Pollutant_Index id="NH3" Min="3" Max="3" Avg="3" Hourly_sub_index="3"/>
+<Pollutant_Index id="SO2" Min="3" Max="4" Avg="4" Hourly_sub_index="4"/>
+<Pollutant_Index id="CO" Min="6" Max="26" Avg="17" Hourly_sub_index="6"/>
+<Pollutant_Index id="OZONE" Min="7" Max="64" Avg="33" Hourly_sub_index="7"/>
+<Air_Quality_Index Value="116" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Malad West, Mumbai - IITM" lastupdate="24-11-2026 22:00:00" latitude="19.19709" longitude="72.82204">
+<Pollutant_Index id="PM2.5" Min="51" Max="153" Avg="109" Hourly_sub_index="117"/>
+<Pollutant_Index id="PM10" Min="68" Max="451" Avg="132" Hourly_sub_index="113"/>
+<Pollutant_Index id="NO2" Min="12" Max="65" Avg="32" Hourly_sub_index="48"/>
+<Pollutant_Index id="NH3" Min="2" Max="12" Avg="5" Hourly_sub_index="6"/>
+<Pollutant_Index id="SO2" Min="12" Max="89" Avg="41" Hourly_sub_index="21"/>
+<Pollutant_Index id="CO" Min="27" Max="67" Avg="47" Hourly_sub_index="59"/>
+<Pollutant_Index id="OZONE" Min="31" Max="60" Avg="47" Hourly_sub_index="31"/>
+<Air_Quality_Index Value="132" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Powai, Mumbai - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.1375" longitude="72.915056">
+<Pollutant_Index id="PM2.5" Min="35" Max="69" Avg="47" Hourly_sub_index="46"/>
+<Pollutant_Index id="PM10" Min="63" Max="108" Avg="80" Hourly_sub_index="80"/>
+<Pollutant_Index id="NO2" Min="11" Max="12" Avg="12" Hourly_sub_index="12"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="SO2" Min="13" Max="14" Avg="14" Hourly_sub_index="13"/>
+<Pollutant_Index id="CO" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="OZONE" Min="9" Max="9" Avg="9" Hourly_sub_index="9"/>
+<Air_Quality_Index Value="80" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Kherwadi_Bandra East, Mumbai - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.0632143" longitude="72.8456324">
+<Pollutant_Index id="PM2.5" Min="35" Max="144" Avg="84" Hourly_sub_index="56"/>
+<Pollutant_Index id="PM10" Min="72" Max="131" Avg="108" Hourly_sub_index="94"/>
+<Pollutant_Index id="NO2" Min="7" Max="24" Avg="13" Hourly_sub_index="7"/>
+<Pollutant_Index id="NH3" Min="5" Max="6" Avg="6" Hourly_sub_index="5"/>
+<Pollutant_Index id="SO2" Min="1" Max="11" Avg="3" Hourly_sub_index="2"/>
+<Pollutant_Index id="CO" Min="20" Max="33" Avg="24" Hourly_sub_index="33"/>
+<Pollutant_Index id="OZONE" Min="5" Max="7" Avg="6" Hourly_sub_index="5"/>
+<Air_Quality_Index Value="108" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Byculla, Mumbai - BMC" lastupdate="24-11-2026 22:00:00" latitude="18.9767" longitude="72.838">
+<Pollutant_Index id="PM2.5" Min="38" Max="137" Avg="81" Hourly_sub_index="38"/>
+<Pollutant_Index id="PM10" Min="61" Max="101" Avg="88" Hourly_sub_index="65"/>
+<Pollutant_Index id="NO2" Min="27" Max="84" Avg="55" Hourly_sub_index="57"/>
+<Pollutant_Index id="NH3" Min="4" Max="27" Avg="12" Hourly_sub_index="10"/>
+<Pollutant_Index id="SO2" Min="0" Max="6" Avg="1" Hourly_sub_index="2"/>
+<Pollutant_Index id="CO" Min="13" Max="31" Avg="19" Hourly_sub_index="31"/>
+<Pollutant_Index id="OZONE" Min="20" Max="49" Avg="31" Hourly_sub_index="22"/>
+<Air_Quality_Index Value="88" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Mindspace-Malad West, Mumbai - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.1878657" longitude="72.8304069">
+<Pollutant_Index id="PM2.5" Min="31" Max="314" Avg="103" Hourly_sub_index="NA"/>
+<Pollutant_Index id="PM10" Min="42" Max="262" Avg="114" Hourly_sub_index="NA"/>
+<Pollutant_Index id="NO2" Min="17" Max="46" Avg="33" Hourly_sub_index="NA"/>
+<Pollutant_Index id="NH3" Min="3" Max="13" Avg="7" Hourly_sub_index="NA"/>
+<Pollutant_Index id="SO2" Min="14" Max="36" Avg="23" Hourly_sub_index="NA"/>
+<Pollutant_Index id="CO" Min="15" Max="15" Avg="15" Hourly_sub_index="NA"/>
+<Pollutant_Index id="OZONE" Min="18" Max="19" Avg="18" Hourly_sub_index="NA"/>
+<Air_Quality_Index Value="114" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Worli, Mumbai - MPCB" lastupdate="24-11-2026 22:00:00" latitude="18.9936162" longitude="72.8128113">
+<Pollutant_Index id="PM2.5" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="75"/>
+<Pollutant_Index id="PM10" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="70"/>
+<Pollutant_Index id="NO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="38"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="5"/>
+<Pollutant_Index id="SO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="15"/>
+<Pollutant_Index id="CO" Min="56" Max="68" Avg="61" Hourly_sub_index="68"/>
+<Pollutant_Index id="OZONE" Min="28" Max="49" Avg="35" Hourly_sub_index="28"/>
+<Air_Quality_Index Value="" Predominant_Parameter=""/>
+</Station>
+<Station id="Bandra Kurla Complex, Mumbai - IITM" lastupdate="24-11-2026 22:00:00" latitude="19.053536" longitude="72.84643">
+<Pollutant_Index id="PM2.5" Min="66" Max="233" Avg="144" Hourly_sub_index="100"/>
+<Pollutant_Index id="PM10" Min="96" Max="155" Avg="128" Hourly_sub_index="115"/>
+<Pollutant_Index id="NO2" Min="34" Max="73" Avg="51" Hourly_sub_index="73"/>
+<Pollutant_Index id="NH3" Min="1" Max="10" Avg="5" Hourly_sub_index="7"/>
+<Pollutant_Index id="SO2" Min="18" Max="27" Avg="24" Hourly_sub_index="18"/>
+<Pollutant_Index id="CO" Min="27" Max="60" Avg="42" Hourly_sub_index="60"/>
+<Pollutant_Index id="OZONE" Min="3" Max="58" Avg="19" Hourly_sub_index="3"/>
+<Air_Quality_Index Value="144" Predominant_Parameter="PM2.5"/>
+</Station>
+<Station id="Sewri, Mumbai - BMC" lastupdate="24-11-2026 22:00:00" latitude="19.000084" longitude="72.85673">
+<Pollutant_Index id="PM2.5" Min="63" Max="140" Avg="99" Hourly_sub_index="67"/>
+<Pollutant_Index id="PM10" Min="62" Max="109" Avg="84" Hourly_sub_index="75"/>
+<Pollutant_Index id="NO2" Min="19" Max="99" Avg="62" Hourly_sub_index="79"/>
+<Pollutant_Index id="NH3" Min="3" Max="28" Avg="12" Hourly_sub_index="12"/>
+<Pollutant_Index id="SO2" Min="2" Max="12" Avg="5" Hourly_sub_index="9"/>
+<Pollutant_Index id="CO" Min="5" Max="38" Avg="21" Hourly_sub_index="38"/>
+<Pollutant_Index id="OZONE" Min="16" Max="49" Avg="33" Hourly_sub_index="18"/>
+<Air_Quality_Index Value="99" Predominant_Parameter="PM2.5"/>
+</Station>
+<Station id="Kandivali West, Mumbai - BMC" lastupdate="24-11-2026 22:00:00" latitude="19.215859" longitude="72.831718">
+<Pollutant_Index id="PM2.5" Min="60" Max="100" Avg="79" Hourly_sub_index="69"/>
+<Pollutant_Index id="PM10" Min="63" Max="100" Avg="77" Hourly_sub_index="73"/>
+<Pollutant_Index id="NO2" Min="35" Max="99" Avg="57" Hourly_sub_index="58"/>
+<Pollutant_Index id="NH3" Min="0" Max="4" Avg="2" Hourly_sub_index="2"/>
+<Pollutant_Index id="SO2" Min="3" Max="5" Avg="4" Hourly_sub_index="5"/>
+<Pollutant_Index id="CO" Min="8" Max="28" Avg="17" Hourly_sub_index="28"/>
+<Pollutant_Index id="OZONE" Min="20" Max="28" Avg="24" Hourly_sub_index="21"/>
+<Air_Quality_Index Value="79" Predominant_Parameter="PM2.5"/>
+</Station>
+<Station id="Kurla, Mumbai - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.0863" longitude="72.8888">
+<Pollutant_Index id="PM2.5" Min="48" Max="116" Avg="78" Hourly_sub_index="88"/>
+<Pollutant_Index id="PM10" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="NO2" Min="5" Max="25" Avg="12" Hourly_sub_index="16"/>
+<Pollutant_Index id="NH3" Min="0" Max="2" Avg="0" Hourly_sub_index="1"/>
+<Pollutant_Index id="SO2" Min="39" Max="39" Avg="39" Hourly_sub_index="39"/>
+<Pollutant_Index id="CO" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="OZONE" Min="29" Max="29" Avg="29" Hourly_sub_index="29"/>
+<Air_Quality_Index Value="78" Predominant_Parameter="PM2.5"/>
+</Station>
+<Station id="Ghatkopar, Mumbai - BMC" lastupdate="24-11-2026 22:00:00" latitude="19.083694" longitude="72.920967">
+<Pollutant_Index id="PM2.5" Min="52" Max="219" Avg="143" Hourly_sub_index="79"/>
+<Pollutant_Index id="PM10" Min="85" Max="130" Avg="112" Hourly_sub_index="117"/>
+<Pollutant_Index id="NO2" Min="5" Max="30" Avg="15" Hourly_sub_index="30"/>
+<Pollutant_Index id="NH3" Min="1" Max="11" Avg="6" Hourly_sub_index="11"/>
+<Pollutant_Index id="SO2" Min="0" Max="11" Avg="2" Hourly_sub_index="1"/>
+<Pollutant_Index id="CO" Min="2" Max="30" Avg="15" Hourly_sub_index="25"/>
+<Pollutant_Index id="OZONE" Min="2" Max="36" Avg="18" Hourly_sub_index="2"/>
+<Air_Quality_Index Value="143" Predominant_Parameter="PM2.5"/>
+</Station>
+<Station id="Shivaji Nagar, Mumbai - BMC" lastupdate="24-11-2026 22:00:00" latitude="19.060498" longitude="72.923356">
+<Pollutant_Index id="PM2.5" Min="68" Max="142" Avg="98" Hourly_sub_index="87"/>
+<Pollutant_Index id="PM10" Min="110" Max="148" Avg="129" Hourly_sub_index="148"/>
+<Pollutant_Index id="NO2" Min="13" Max="58" Avg="35" Hourly_sub_index="57"/>
+<Pollutant_Index id="NH3" Min="3" Max="17" Avg="9" Hourly_sub_index="14"/>
+<Pollutant_Index id="SO2" Min="4" Max="11" Avg="8" Hourly_sub_index="9"/>
+<Pollutant_Index id="CO" Min="10" Max="62" Avg="34" Hourly_sub_index="62"/>
+<Pollutant_Index id="OZONE" Min="6" Max="40" Avg="24" Hourly_sub_index="6"/>
+<Air_Quality_Index Value="129" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Chembur, Mumbai - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.0364585" longitude="72.8954371">
+<Pollutant_Index id="PM2.5" Min="47" Max="93" Avg="75" Hourly_sub_index="61"/>
+<Pollutant_Index id="PM10" Min="64" Max="117" Avg="93" Hourly_sub_index="96"/>
+<Pollutant_Index id="NO2" Min="13" Max="86" Avg="47" Hourly_sub_index="78"/>
+<Pollutant_Index id="NH3" Min="5" Max="9" Avg="7" Hourly_sub_index="8"/>
+<Pollutant_Index id="SO2" Min="3" Max="21" Avg="8" Hourly_sub_index="4"/>
+<Pollutant_Index id="CO" Min="76" Max="103" Avg="92" Hourly_sub_index="103"/>
+<Pollutant_Index id="OZONE" Min="10" Max="80" Avg="40" Hourly_sub_index="13"/>
+<Air_Quality_Index Value="93" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Siddharth Nagar-Worli, Mumbai - IITM" lastupdate="24-11-2026 22:00:00" latitude="19.000083" longitude="72.813993">
+<Pollutant_Index id="PM2.5" Min="33" Max="92" Avg="58" Hourly_sub_index="56"/>
+<Pollutant_Index id="PM10" Min="82" Max="161" Avg="123" Hourly_sub_index="109"/>
+<Pollutant_Index id="NO2" Min="30" Max="68" Avg="43" Hourly_sub_index="34"/>
+<Pollutant_Index id="NH3" Min="4" Max="7" Avg="5" Hourly_sub_index="5"/>
+<Pollutant_Index id="SO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="CO" Min="34" Max="46" Avg="41" Hourly_sub_index="46"/>
+<Pollutant_Index id="OZONE" Min="22" Max="25" Avg="24" Hourly_sub_index="23"/>
+<Air_Quality_Index Value="123" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Borivali East, Mumbai - IITM" lastupdate="24-11-2026 22:00:00" latitude="19.23241" longitude="72.86895">
+<Pollutant_Index id="PM2.5" Min="60" Max="156" Avg="96" Hourly_sub_index="86"/>
+<Pollutant_Index id="PM10" Min="65" Max="151" Avg="97" Hourly_sub_index="112"/>
+<Pollutant_Index id="NO2" Min="12" Max="68" Avg="32" Hourly_sub_index="48"/>
+<Pollutant_Index id="NH3" Min="3" Max="6" Avg="4" Hourly_sub_index="5"/>
+<Pollutant_Index id="SO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="CO" Min="27" Max="70" Avg="49" Hourly_sub_index="70"/>
+<Pollutant_Index id="OZONE" Min="9" Max="58" Avg="34" Hourly_sub_index="9"/>
+<Air_Quality_Index Value="97" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Navy Nagar-Colaba, Mumbai - IITM" lastupdate="24-11-2026 22:00:00" latitude="18.897756" longitude="72.81332">
+<Pollutant_Index id="PM2.5" Min="98" Max="224" Avg="178" Hourly_sub_index="121"/>
+<Pollutant_Index id="PM10" Min="113" Max="177" Avg="145" Hourly_sub_index="113"/>
+<Pollutant_Index id="NO2" Min="26" Max="99" Avg="59" Hourly_sub_index="35"/>
+<Pollutant_Index id="NH3" Min="4" Max="13" Avg="7" Hourly_sub_index="4"/>
+<Pollutant_Index id="SO2" Min="4" Max="35" Avg="20" Hourly_sub_index="16"/>
+<Pollutant_Index id="CO" Min="34" Max="49" Avg="41" Hourly_sub_index="49"/>
+<Pollutant_Index id="OZONE" Min="62" Max="76" Avg="69" Hourly_sub_index="62"/>
+<Air_Quality_Index Value="178" Predominant_Parameter="PM2.5"/>
+</Station>
+<Station id="Sion, Mumbai - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.047" longitude="72.8746">
+<Pollutant_Index id="PM2.5" Min="47" Max="332" Avg="147" Hourly_sub_index="331"/>
+<Pollutant_Index id="PM10" Min="67" Max="340" Avg="158" Hourly_sub_index="336"/>
+<Pollutant_Index id="NO2" Min="48" Max="48" Avg="48" Hourly_sub_index="48"/>
+<Pollutant_Index id="NH3" Min="3" Max="3" Avg="3" Hourly_sub_index="3"/>
+<Pollutant_Index id="SO2" Min="5" Max="6" Avg="5" Hourly_sub_index="5"/>
+<Pollutant_Index id="CO" Min="9" Max="14" Avg="13" Hourly_sub_index="14"/>
+<Pollutant_Index id="OZONE" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Air_Quality_Index Value="158" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Deonar, Mumbai - IITM" lastupdate="24-11-2026 22:00:00" latitude="19.04946" longitude="72.923">
+<Pollutant_Index id="PM2.5" Min="34" Max="185" Avg="110" Hourly_sub_index="116"/>
+<Pollutant_Index id="PM10" Min="58" Max="145" Avg="108" Hourly_sub_index="126"/>
+<Pollutant_Index id="NO2" Min="15" Max="88" Avg="45" Hourly_sub_index="53"/>
+<Pollutant_Index id="NH3" Min="9" Max="18" Avg="13" Hourly_sub_index="16"/>
+<Pollutant_Index id="SO2" Min="3" Max="7" Avg="5" Hourly_sub_index="3"/>
+<Pollutant_Index id="CO" Min="17" Max="122" Avg="83" Hourly_sub_index="122"/>
+<Pollutant_Index id="OZONE" Min="8" Max="58" Avg="31" Hourly_sub_index="8"/>
+<Air_Quality_Index Value="110" Predominant_Parameter="PM2.5"/>
+</Station>
+<Station id="Chakala-Andheri East, Mumbai - IITM" lastupdate="24-11-2026 22:00:00" latitude="19.11074" longitude="72.86084">
+<Pollutant_Index id="PM2.5" Min="64" Max="133" Avg="95" Hourly_sub_index="87"/>
+<Pollutant_Index id="PM10" Min="55" Max="138" Avg="105" Hourly_sub_index="118"/>
+<Pollutant_Index id="NO2" Min="26" Max="80" Avg="52" Hourly_sub_index="79"/>
+<Pollutant_Index id="NH3" Min="8" Max="24" Avg="14" Hourly_sub_index="19"/>
+<Pollutant_Index id="SO2" Min="2" Max="13" Avg="8" Hourly_sub_index="7"/>
+<Pollutant_Index id="CO" Min="14" Max="71" Avg="46" Hourly_sub_index="71"/>
+<Pollutant_Index id="OZONE" Min="6" Max="64" Avg="28" Hourly_sub_index="7"/>
+<Air_Quality_Index Value="105" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Mazgaon, Mumbai - IITM" lastupdate="24-11-2026 22:00:00" latitude="18.96702" longitude="72.84214">
+<Pollutant_Index id="PM2.5" Min="40" Max="116" Avg="80" Hourly_sub_index="71"/>
+<Pollutant_Index id="PM10" Min="106" Max="152" Avg="126" Hourly_sub_index="111"/>
+<Pollutant_Index id="NO2" Min="32" Max="114" Avg="80" Hourly_sub_index="87"/>
+<Pollutant_Index id="NH3" Min="8" Max="14" Avg="11" Hourly_sub_index="11"/>
+<Pollutant_Index id="SO2" Min="5" Max="10" Avg="8" Hourly_sub_index="7"/>
+<Pollutant_Index id="CO" Min="12" Max="78" Avg="49" Hourly_sub_index="78"/>
+<Pollutant_Index id="OZONE" Min="57" Max="106" Avg="78" Hourly_sub_index="58"/>
+<Air_Quality_Index Value="126" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Nagpur">
+<Station id="Ram Nagar, Nagpur - MPCB" lastupdate="24-11-2026 22:00:00" latitude="21.143383" longitude="79.048912">
+<Pollutant_Index id="PM2.5" Min="83" Max="206" Avg="133" Hourly_sub_index="157"/>
+<Pollutant_Index id="PM10" Min="75" Max="141" Avg="103" Hourly_sub_index="141"/>
+<Pollutant_Index id="NO2" Min="8" Max="55" Avg="25" Hourly_sub_index="53"/>
+<Pollutant_Index id="NH3" Min="2" Max="7" Avg="3" Hourly_sub_index="6"/>
+<Pollutant_Index id="SO2" Min="0" Max="128" Avg="36" Hourly_sub_index="14"/>
+<Pollutant_Index id="CO" Min="14" Max="86" Avg="44" Hourly_sub_index="81"/>
+<Pollutant_Index id="OZONE" Min="3" Max="50" Avg="23" Hourly_sub_index="3"/>
+<Air_Quality_Index Value="133" Predominant_Parameter="PM2.5"/>
+</Station>
+<Station id="Opp GPO Civil Lines, Nagpur - MPCB" lastupdate="24-11-2026 22:00:00" latitude="21.152875" longitude="79.0517531">
+<Pollutant_Index id="PM2.5" Min="74" Max="198" Avg="113" Hourly_sub_index="193"/>
+<Pollutant_Index id="PM10" Min="64" Max="179" Avg="104" Hourly_sub_index="170"/>
+<Pollutant_Index id="NO2" Min="13" Max="76" Avg="36" Hourly_sub_index="61"/>
+<Pollutant_Index id="NH3" Min="0" Max="5" Avg="3" Hourly_sub_index="3"/>
+<Pollutant_Index id="SO2" Min="8" Max="128" Avg="39" Hourly_sub_index="28"/>
+<Pollutant_Index id="CO" Min="19" Max="114" Avg="68" Hourly_sub_index="102"/>
+<Pollutant_Index id="OZONE" Min="4" Max="39" Avg="14" Hourly_sub_index="4"/>
+<Air_Quality_Index Value="113" Predominant_Parameter="PM2.5"/>
+</Station>
+<Station id="Mahal, Nagpur - MPCB" lastupdate="24-11-2026 22:00:00" latitude="21.14472" longitude="79.107595">
+<Pollutant_Index id="PM2.5" Min="92" Max="337" Avg="145" Hourly_sub_index="337"/>
+<Pollutant_Index id="PM10" Min="79" Max="266" Avg="127" Hourly_sub_index="266"/>
+<Pollutant_Index id="NO2" Min="13" Max="63" Avg="32" Hourly_sub_index="55"/>
+<Pollutant_Index id="NH3" Min="3" Max="15" Avg="7" Hourly_sub_index="13"/>
+<Pollutant_Index id="SO2" Min="1" Max="112" Avg="64" Hourly_sub_index="58"/>
+<Pollutant_Index id="CO" Min="65" Max="120" Avg="96" Hourly_sub_index="120"/>
+<Pollutant_Index id="OZONE" Min="3" Max="30" Avg="8" Hourly_sub_index="3"/>
+<Air_Quality_Index Value="145" Predominant_Parameter="PM2.5"/>
+</Station>
+<Station id="Ambazari, Nagpur - MPCB" lastupdate="24-11-2026 22:00:00" latitude="21.121801" longitude="79.04952">
+<Pollutant_Index id="PM2.5" Min="68" Max="148" Avg="92" Hourly_sub_index="148"/>
+<Pollutant_Index id="PM10" Min="67" Max="117" Avg="90" Hourly_sub_index="117"/>
+<Pollutant_Index id="NO2" Min="8" Max="73" Avg="30" Hourly_sub_index="50"/>
+<Pollutant_Index id="NH3" Min="3" Max="4" Avg="3" Hourly_sub_index="3"/>
+<Pollutant_Index id="SO2" Min="13" Max="122" Avg="40" Hourly_sub_index="28"/>
+<Pollutant_Index id="CO" Min="13" Max="104" Avg="53" Hourly_sub_index="64"/>
+<Pollutant_Index id="OZONE" Min="1" Max="48" Avg="17" Hourly_sub_index="1"/>
+<Air_Quality_Index Value="92" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Nanded">
+<Station id="Sneh Nagar, Nanded - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.173852" longitude="77.296291">
+<Pollutant_Index id="PM2.5" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="85"/>
+<Pollutant_Index id="PM10" Min="66" Max="114" Avg="96" Hourly_sub_index="111"/>
+<Pollutant_Index id="NO2" Min="5" Max="25" Avg="13" Hourly_sub_index="25"/>
+<Pollutant_Index id="NH3" Min="3" Max="13" Avg="8" Hourly_sub_index="5"/>
+<Pollutant_Index id="SO2" Min="10" Max="12" Avg="11" Hourly_sub_index="10"/>
+<Pollutant_Index id="CO" Min="21" Max="27" Avg="23" Hourly_sub_index="24"/>
+<Pollutant_Index id="OZONE" Min="41" Max="67" Avg="55" Hourly_sub_index="41"/>
+<Air_Quality_Index Value="96" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Nashik">
+<Station id="Pandav Nagari, Nashik - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.9591346" longitude="73.7788008">
+<Pollutant_Index id="PM2.5" Min="47" Max="152" Avg="83" Hourly_sub_index="98"/>
+<Pollutant_Index id="PM10" Min="64" Max="165" Avg="101" Hourly_sub_index="165"/>
+<Pollutant_Index id="NO2" Min="6" Max="47" Avg="19" Hourly_sub_index="40"/>
+<Pollutant_Index id="NH3" Min="1" Max="7" Avg="3" Hourly_sub_index="6"/>
+<Pollutant_Index id="SO2" Min="0" Max="22" Avg="5" Hourly_sub_index="6"/>
+<Pollutant_Index id="CO" Min="14" Max="103" Avg="48" Hourly_sub_index="76"/>
+<Pollutant_Index id="OZONE" Min="1" Max="49" Avg="26" Hourly_sub_index="4"/>
+<Air_Quality_Index Value="101" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="MIDC Ambad, Nashik - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.95022" longitude="73.73148">
+<Pollutant_Index id="PM2.5" Min="60" Max="251" Avg="113" Hourly_sub_index="251"/>
+<Pollutant_Index id="PM10" Min="60" Max="404" Avg="135" Hourly_sub_index="330"/>
+<Pollutant_Index id="NO2" Min="9" Max="72" Avg="29" Hourly_sub_index="60"/>
+<Pollutant_Index id="NH3" Min="2" Max="4" Avg="3" Hourly_sub_index="4"/>
+<Pollutant_Index id="SO2" Min="2" Max="23" Avg="8" Hourly_sub_index="6"/>
+<Pollutant_Index id="CO" Min="8" Max="109" Avg="47" Hourly_sub_index="56"/>
+<Pollutant_Index id="OZONE" Min="1" Max="44" Avg="22" Hourly_sub_index="7"/>
+<Air_Quality_Index Value="135" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Gangapur Road, Nashik - MPCB" lastupdate="24-11-2026 22:00:00" latitude="20.0073285" longitude="73.7762427">
+<Pollutant_Index id="PM2.5" Min="43" Max="303" Avg="158" Hourly_sub_index="151"/>
+<Pollutant_Index id="PM10" Min="69" Max="315" Avg="157" Hourly_sub_index="272"/>
+<Pollutant_Index id="NO2" Min="43" Max="56" Avg="50" Hourly_sub_index="50"/>
+<Pollutant_Index id="NH3" Min="2" Max="6" Avg="4" Hourly_sub_index="5"/>
+<Pollutant_Index id="SO2" Min="0" Max="4" Avg="3" Hourly_sub_index="NA"/>
+<Pollutant_Index id="CO" Min="30" Max="53" Avg="36" Hourly_sub_index="34"/>
+<Pollutant_Index id="OZONE" Min="5" Max="93" Avg="36" Hourly_sub_index="5"/>
+<Air_Quality_Index Value="158" Predominant_Parameter="PM2.5"/>
+</Station>
+<Station id="Hirawadi, Nashik - MPCB" lastupdate="24-11-2026 22:00:00" latitude="20.021503" longitude="73.813844">
+<Pollutant_Index id="PM2.5" Min="43" Max="154" Avg="85" Hourly_sub_index="80"/>
+<Pollutant_Index id="PM10" Min="50" Max="199" Avg="113" Hourly_sub_index="154"/>
+<Pollutant_Index id="NO2" Min="3" Max="12" Avg="8" Hourly_sub_index="9"/>
+<Pollutant_Index id="NH3" Min="2" Max="3" Avg="3" Hourly_sub_index="3"/>
+<Pollutant_Index id="SO2" Min="6" Max="76" Avg="14" Hourly_sub_index="11"/>
+<Pollutant_Index id="CO" Min="38" Max="57" Avg="47" Hourly_sub_index="51"/>
+<Pollutant_Index id="OZONE" Min="20" Max="23" Avg="21" Hourly_sub_index="20"/>
+<Air_Quality_Index Value="113" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Navi Mumbai">
+<Station id="Kopripada-Vashi, Navi Mumbai - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.090337" longitude="73.014232">
+<Pollutant_Index id="PM2.5" Min="52" Max="102" Avg="80" Hourly_sub_index="98"/>
+<Pollutant_Index id="PM10" Min="41" Max="153" Avg="88" Hourly_sub_index="153"/>
+<Pollutant_Index id="NO2" Min="12" Max="52" Avg="31" Hourly_sub_index="44"/>
+<Pollutant_Index id="NH3" Min="6" Max="7" Avg="7" Hourly_sub_index="7"/>
+<Pollutant_Index id="SO2" Min="6" Max="18" Avg="10" Hourly_sub_index="8"/>
+<Pollutant_Index id="CO" Min="9" Max="103" Avg="47" Hourly_sub_index="58"/>
+<Pollutant_Index id="OZONE" Min="3" Max="20" Avg="15" Hourly_sub_index="NA"/>
+<Air_Quality_Index Value="88" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Mahape, Navi Mumbai - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.1135051" longitude="73.008978">
+<Pollutant_Index id="PM2.5" Min="27" Max="65" Avg="46" Hourly_sub_index="44"/>
+<Pollutant_Index id="PM10" Min="52" Max="112" Avg="76" Hourly_sub_index="77"/>
+<Pollutant_Index id="NO2" Min="42" Max="44" Avg="43" Hourly_sub_index="42"/>
+<Pollutant_Index id="NH3" Min="1" Max="1" Avg="1" Hourly_sub_index="1"/>
+<Pollutant_Index id="SO2" Min="4" Max="4" Avg="4" Hourly_sub_index="4"/>
+<Pollutant_Index id="CO" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="OZONE" Min="8" Max="11" Avg="9" Hourly_sub_index="8"/>
+<Air_Quality_Index Value="76" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Sanpada, Navi Mumbai - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.0575752" longitude="73.0151367">
+<Pollutant_Index id="PM2.5" Min="33" Max="63" Avg="50" Hourly_sub_index="61"/>
+<Pollutant_Index id="PM10" Min="41" Max="115" Avg="74" Hourly_sub_index="115"/>
+<Pollutant_Index id="NO2" Min="13" Max="37" Avg="23" Hourly_sub_index="NA"/>
+<Pollutant_Index id="NH3" Min="15" Max="15" Avg="15" Hourly_sub_index="15"/>
+<Pollutant_Index id="SO2" Min="13" Max="16" Avg="14" Hourly_sub_index="NA"/>
+<Pollutant_Index id="CO" Min="20" Max="83" Avg="46" Hourly_sub_index="83"/>
+<Pollutant_Index id="OZONE" Min="1" Max="52" Avg="22" Hourly_sub_index="1"/>
+<Air_Quality_Index Value="74" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Nerul, Navi Mumbai - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.008751" longitude="73.01662">
+<Pollutant_Index id="PM2.5" Min="28" Max="142" Avg="84" Hourly_sub_index="103"/>
+<Pollutant_Index id="PM10" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="109"/>
+<Pollutant_Index id="NO2" Min="14" Max="15" Avg="14" Hourly_sub_index="14"/>
+<Pollutant_Index id="NH3" Min="2" Max="2" Avg="2" Hourly_sub_index="2"/>
+<Pollutant_Index id="SO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="CO" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="OZONE" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Air_Quality_Index Value="84" Predominant_Parameter="PM2.5"/>
+</Station>
+<Station id="Sector-2E Kalamboli, Navi Mumbai - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.02579" longitude="73.10297">
+<Pollutant_Index id="PM2.5" Min="31" Max="90" Avg="60" Hourly_sub_index="90"/>
+<Pollutant_Index id="PM10" Min="45" Max="177" Avg="98" Hourly_sub_index="144"/>
+<Pollutant_Index id="NO2" Min="3" Max="26" Avg="14" Hourly_sub_index="24"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="SO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="CO" Min="10" Max="63" Avg="30" Hourly_sub_index="20"/>
+<Pollutant_Index id="OZONE" Min="27" Max="29" Avg="28" Hourly_sub_index="28"/>
+<Air_Quality_Index Value="98" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Tondare-Taloja, Navi Mumbai - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.063" longitude="73.1209">
+<Pollutant_Index id="PM2.5" Min="40" Max="154" Avg="80" Hourly_sub_index="98"/>
+<Pollutant_Index id="PM10" Min="61" Max="137" Avg="103" Hourly_sub_index="135"/>
+<Pollutant_Index id="NO2" Min="11" Max="28" Avg="18" Hourly_sub_index="18"/>
+<Pollutant_Index id="NH3" Min="6" Max="10" Avg="8" Hourly_sub_index="9"/>
+<Pollutant_Index id="SO2" Min="0" Max="10" Avg="3" Hourly_sub_index="10"/>
+<Pollutant_Index id="CO" Min="28" Max="38" Avg="33" Hourly_sub_index="36"/>
+<Pollutant_Index id="OZONE" Min="6" Max="14" Avg="9" Hourly_sub_index="7"/>
+<Air_Quality_Index Value="103" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Parbhani">
+<Station id="Masoom Colony, Parbhani - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.265594" longitude="76.761463">
+<Pollutant_Index id="PM2.5" Min="30" Max="84" Avg="56" Hourly_sub_index="84"/>
+<Pollutant_Index id="PM10" Min="42" Max="113" Avg="79" Hourly_sub_index="113"/>
+<Pollutant_Index id="NO2" Min="11" Max="17" Avg="13" Hourly_sub_index="15"/>
+<Pollutant_Index id="NH3" Min="2" Max="4" Avg="3" Hourly_sub_index="3"/>
+<Pollutant_Index id="SO2" Min="7" Max="18" Avg="12" Hourly_sub_index="15"/>
+<Pollutant_Index id="CO" Min="8" Max="14" Avg="12" Hourly_sub_index="8"/>
+<Pollutant_Index id="OZONE" Min="40" Max="88" Avg="64" Hourly_sub_index="59"/>
+<Air_Quality_Index Value="79" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Pimpri-Chinchwad">
+<Station id="Transport Nagar-Nigdi, Pimpri-Chinchwad - IITM" lastupdate="24-11-2026 22:00:00" latitude="18.664282" longitude="73.763966">
+<Pollutant_Index id="PM2.5" Min="44" Max="279" Avg="129" Hourly_sub_index="91"/>
+<Pollutant_Index id="PM10" Min="96" Max="196" Avg="138" Hourly_sub_index="124"/>
+<Pollutant_Index id="NO2" Min="44" Max="228" Avg="118" Hourly_sub_index="169"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="SO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="CO" Min="52" Max="82" Avg="64" Hourly_sub_index="56"/>
+<Pollutant_Index id="OZONE" Min="3" Max="35" Avg="20" Hourly_sub_index="10"/>
+<Air_Quality_Index Value="138" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Thergaon, Pimpri Chinchwad - MPCB" lastupdate="24-11-2026 22:00:00" latitude="18.616318" longitude="73.765797">
+<Pollutant_Index id="PM2.5" Min="126" Max="317" Avg="223" Hourly_sub_index="215"/>
+<Pollutant_Index id="PM10" Min="87" Max="161" Avg="123" Hourly_sub_index="114"/>
+<Pollutant_Index id="NO2" Min="37" Max="143" Avg="87" Hourly_sub_index="139"/>
+<Pollutant_Index id="NH3" Min="6" Max="15" Avg="10" Hourly_sub_index="NA"/>
+<Pollutant_Index id="SO2" Min="0" Max="3" Avg="2" Hourly_sub_index="2"/>
+<Pollutant_Index id="CO" Min="26" Max="108" Avg="67" Hourly_sub_index="108"/>
+<Pollutant_Index id="OZONE" Min="3" Max="86" Avg="42" Hourly_sub_index="3"/>
+<Air_Quality_Index Value="223" Predominant_Parameter="PM2.5"/>
+</Station>
+<Station id="Bhumkar Nagar, Pimpri-Chinchwad - IITM" lastupdate="24-11-2026 22:00:00" latitude="18.60577" longitude="73.749976">
+<Pollutant_Index id="PM2.5" Min="91" Max="375" Avg="227" Hourly_sub_index="200"/>
+<Pollutant_Index id="PM10" Min="175" Max="414" Avg="265" Hourly_sub_index="238"/>
+<Pollutant_Index id="NO2" Min="94" Max="191" Avg="142" Hourly_sub_index="191"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="SO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="CO" Min="40" Max="115" Avg="63" Hourly_sub_index="115"/>
+<Pollutant_Index id="OZONE" Min="1" Max="79" Avg="25" Hourly_sub_index="1"/>
+<Air_Quality_Index Value="265" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Savta Mali Nagar, Pimpri-Chinchwad - IITM" lastupdate="24-11-2026 22:00:00" latitude="18.614767" longitude="73.799516">
+<Pollutant_Index id="PM2.5" Min="50" Max="335" Avg="150" Hourly_sub_index="208"/>
+<Pollutant_Index id="PM10" Min="81" Max="275" Avg="160" Hourly_sub_index="160"/>
+<Pollutant_Index id="NO2" Min="20" Max="238" Avg="84" Hourly_sub_index="238"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="SO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="CO" Min="25" Max="122" Avg="60" Hourly_sub_index="122"/>
+<Pollutant_Index id="OZONE" Min="5" Max="44" Avg="28" Hourly_sub_index="NA"/>
+<Air_Quality_Index Value="160" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Gavalinagar, Pimpri Chinchwad - MPCB" lastupdate="24-11-2026 22:00:00" latitude="18.63673" longitude="73.82487">
+<Pollutant_Index id="PM2.5" Min="54" Max="310" Avg="180" Hourly_sub_index="NA"/>
+<Pollutant_Index id="PM10" Min="121" Max="215" Avg="159" Hourly_sub_index="168"/>
+<Pollutant_Index id="NO2" Min="31" Max="152" Avg="90" Hourly_sub_index="152"/>
+<Pollutant_Index id="NH3" Min="5" Max="29" Avg="17" Hourly_sub_index="29"/>
+<Pollutant_Index id="SO2" Min="1" Max="5" Avg="3" Hourly_sub_index="3"/>
+<Pollutant_Index id="CO" Min="24" Max="123" Avg="59" Hourly_sub_index="123"/>
+<Pollutant_Index id="OZONE" Min="6" Max="53" Avg="28" Hourly_sub_index="7"/>
+<Air_Quality_Index Value="180" Predominant_Parameter="PM2.5"/>
+</Station>
+<Station id="Park Street Wakad, Pimpri Chinchwad - MPCB" lastupdate="24-11-2026 22:00:00" latitude="18.59051" longitude="73.77946">
+<Pollutant_Index id="PM2.5" Min="16" Max="284" Avg="120" Hourly_sub_index="46"/>
+<Pollutant_Index id="PM10" Min="88" Max="267" Avg="133" Hourly_sub_index="156"/>
+<Pollutant_Index id="NO2" Min="54" Max="134" Avg="90" Hourly_sub_index="134"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="1"/>
+<Pollutant_Index id="SO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="12"/>
+<Pollutant_Index id="CO" Min="29" Max="122" Avg="74" Hourly_sub_index="122"/>
+<Pollutant_Index id="OZONE" Min="6" Max="55" Avg="27" Hourly_sub_index="7"/>
+<Air_Quality_Index Value="133" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Bhosari, Pimpri-Chinchwad - IITM" lastupdate="24-11-2026 22:00:00" latitude="18.640051" longitude="73.848956">
+<Pollutant_Index id="PM2.5" Min="70" Max="351" Avg="221" Hourly_sub_index="311"/>
+<Pollutant_Index id="PM10" Min="102" Max="360" Avg="197" Hourly_sub_index="291"/>
+<Pollutant_Index id="NO2" Min="33" Max="121" Avg="74" Hourly_sub_index="121"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="SO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="CO" Min="30" Max="112" Avg="66" Hourly_sub_index="111"/>
+<Pollutant_Index id="OZONE" Min="2" Max="39" Avg="20" Hourly_sub_index="3"/>
+<Air_Quality_Index Value="221" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Pune">
+<Station id="Panchawati_Pashan, Pune - IITM" lastupdate="24-11-2026 22:00:00" latitude="18.536457" longitude="73.805454">
+<Pollutant_Index id="PM2.5" Min="76" Max="304" Avg="186" Hourly_sub_index="110"/>
+<Pollutant_Index id="PM10" Min="88" Max="170" Avg="133" Hourly_sub_index="114"/>
+<Pollutant_Index id="NO2" Min="11" Max="73" Avg="34" Hourly_sub_index="41"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="SO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="CO" Min="2" Max="32" Avg="16" Hourly_sub_index="NA"/>
+<Pollutant_Index id="OZONE" Min="19" Max="63" Avg="43" Hourly_sub_index="19"/>
+<Air_Quality_Index Value="186" Predominant_Parameter="PM2.5"/>
+</Station>
+<Station id="Katraj Dairy, Pune - MPCB" lastupdate="24-11-2026 22:00:00" latitude="18.45445" longitude="73.854155">
+<Pollutant_Index id="PM2.5" Min="45" Max="124" Avg="68" Hourly_sub_index="124"/>
+<Pollutant_Index id="PM10" Min="62" Max="160" Avg="108" Hourly_sub_index="115"/>
+<Pollutant_Index id="NO2" Min="43" Max="69" Avg="54" Hourly_sub_index="65"/>
+<Pollutant_Index id="NH3" Min="2" Max="11" Avg="6" Hourly_sub_index="11"/>
+<Pollutant_Index id="SO2" Min="2" Max="8" Avg="3" Hourly_sub_index="4"/>
+<Pollutant_Index id="CO" Min="34" Max="59" Avg="41" Hourly_sub_index="59"/>
+<Pollutant_Index id="OZONE" Min="14" Max="42" Avg="27" Hourly_sub_index="14"/>
+<Air_Quality_Index Value="108" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Hadapsar, Pune - IITM" lastupdate="24-11-2026 22:00:00" latitude="18.501793" longitude="73.927532">
+<Pollutant_Index id="PM2.5" Min="44" Max="315" Avg="179" Hourly_sub_index="198"/>
+<Pollutant_Index id="PM10" Min="111" Max="369" Avg="198" Hourly_sub_index="244"/>
+<Pollutant_Index id="NO2" Min="46" Max="106" Avg="78" Hourly_sub_index="95"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="SO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="CO" Min="59" Max="108" Avg="80" Hourly_sub_index="108"/>
+<Pollutant_Index id="OZONE" Min="2" Max="48" Avg="25" Hourly_sub_index="2"/>
+<Air_Quality_Index Value="198" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Mhada Colony, Pune - IITM" lastupdate="24-11-2026 22:00:00" latitude="18.57304" longitude="73.927715">
+<Pollutant_Index id="PM2.5" Min="77" Max="285" Avg="156" Hourly_sub_index="134"/>
+<Pollutant_Index id="PM10" Min="97" Max="245" Avg="158" Hourly_sub_index="190"/>
+<Pollutant_Index id="NO2" Min="20" Max="67" Avg="45" Hourly_sub_index="62"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="SO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="CO" Min="29" Max="101" Avg="55" Hourly_sub_index="86"/>
+<Pollutant_Index id="OZONE" Min="3" Max="45" Avg="26" Hourly_sub_index="8"/>
+<Air_Quality_Index Value="158" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Revenue Colony-Shivajinagar, Pune - IITM" lastupdate="24-11-2026 22:00:00" latitude="18.530085" longitude="73.849598">
+<Pollutant_Index id="PM2.5" Min="83" Max="319" Avg="213" Hourly_sub_index="277"/>
+<Pollutant_Index id="PM10" Min="131" Max="348" Avg="226" Hourly_sub_index="171"/>
+<Pollutant_Index id="NO2" Min="36" Max="116" Avg="83" Hourly_sub_index="95"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="SO2" Min="15" Max="35" Avg="22" Hourly_sub_index="29"/>
+<Pollutant_Index id="CO" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="OZONE" Min="4" Max="56" Avg="20" Hourly_sub_index="7"/>
+<Air_Quality_Index Value="226" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Savitribai Phule Pune University, Pune - MPCB" lastupdate="24-11-2026 22:00:00" latitude="18.547056" longitude="73.826908">
+<Pollutant_Index id="PM2.5" Min="52" Max="198" Avg="119" Hourly_sub_index="66"/>
+<Pollutant_Index id="PM10" Min="76" Max="183" Avg="133" Hourly_sub_index="111"/>
+<Pollutant_Index id="NO2" Min="13" Max="102" Avg="52" Hourly_sub_index="61"/>
+<Pollutant_Index id="NH3" Min="1" Max="41" Avg="16" Hourly_sub_index="25"/>
+<Pollutant_Index id="SO2" Min="3" Max="7" Avg="4" Hourly_sub_index="3"/>
+<Pollutant_Index id="CO" Min="11" Max="113" Avg="52" Hourly_sub_index="111"/>
+<Pollutant_Index id="OZONE" Min="2" Max="101" Avg="53" Hourly_sub_index="2"/>
+<Air_Quality_Index Value="133" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Dhankawadi, Pune - IITM" lastupdate="24-11-2026 22:00:00" latitude="18.459883" longitude="73.852193">
+<Pollutant_Index id="PM2.5" Min="65" Max="306" Avg="182" Hourly_sub_index="205"/>
+<Pollutant_Index id="PM10" Min="103" Max="249" Avg="168" Hourly_sub_index="191"/>
+<Pollutant_Index id="NO2" Min="28" Max="48" Avg="38" Hourly_sub_index="39"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="SO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="CO" Min="18" Max="56" Avg="31" Hourly_sub_index="56"/>
+<Pollutant_Index id="OZONE" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Air_Quality_Index Value="182" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Sangli">
+<Station id="Vijay Nagar, Sangli - MPCB" lastupdate="24-11-2026 22:00:00" latitude="16.5038" longitude="74.3623">
+<Pollutant_Index id="PM2.5" Min="36" Max="192" Avg="93" Hourly_sub_index="70"/>
+<Pollutant_Index id="PM10" Min="71" Max="137" Avg="97" Hourly_sub_index="84"/>
+<Pollutant_Index id="NO2" Min="21" Max="80" Avg="38" Hourly_sub_index="24"/>
+<Pollutant_Index id="NH3" Min="7" Max="26" Avg="12" Hourly_sub_index="8"/>
+<Pollutant_Index id="SO2" Min="5" Max="12" Avg="9" Hourly_sub_index="10"/>
+<Pollutant_Index id="CO" Min="20" Max="44" Avg="30" Hourly_sub_index="24"/>
+<Pollutant_Index id="OZONE" Min="24" Max="55" Avg="42" Hourly_sub_index="40"/>
+<Air_Quality_Index Value="97" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Satara">
+<Station id="Koyana Nagar, Satara - MPCB" lastupdate="24-11-2026 22:00:00" latitude="17.696651" longitude="74.003387">
+<Pollutant_Index id="PM2.5" Min="33" Max="178" Avg="73" Hourly_sub_index="95"/>
+<Pollutant_Index id="PM10" Min="31" Max="131" Avg="65" Hourly_sub_index="101"/>
+<Pollutant_Index id="NO2" Min="20" Max="129" Avg="54" Hourly_sub_index="129"/>
+<Pollutant_Index id="NH3" Min="4" Max="7" Avg="5" Hourly_sub_index="5"/>
+<Pollutant_Index id="SO2" Min="6" Max="10" Avg="7" Hourly_sub_index="8"/>
+<Pollutant_Index id="CO" Min="25" Max="112" Avg="62" Hourly_sub_index="112"/>
+<Pollutant_Index id="OZONE" Min="3" Max="107" Avg="65" Hourly_sub_index="3"/>
+<Air_Quality_Index Value="73" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Solapur">
+<Station id="Dnyaneshwar Nagar, Solapur - MPCB" lastupdate="24-11-2026 22:00:00" latitude="17.6336264" longitude="75.9132495">
+<Pollutant_Index id="PM2.5" Min="31" Max="148" Avg="74" Hourly_sub_index="68"/>
+<Pollutant_Index id="PM10" Min="56" Max="143" Avg="91" Hourly_sub_index="117"/>
+<Pollutant_Index id="NO2" Min="6" Max="52" Avg="19" Hourly_sub_index="20"/>
+<Pollutant_Index id="NH3" Min="1" Max="8" Avg="3" Hourly_sub_index="2"/>
+<Pollutant_Index id="SO2" Min="1" Max="8" Avg="4" Hourly_sub_index="3"/>
+<Pollutant_Index id="CO" Min="10" Max="41" Avg="22" Hourly_sub_index="18"/>
+<Pollutant_Index id="OZONE" Min="20" Max="46" Avg="34" Hourly_sub_index="35"/>
+<Air_Quality_Index Value="91" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Ratandeep Housing Society, Solapur - MPCB" lastupdate="24-11-2026 22:00:00" latitude="17.65439" longitude="75.90649">
+<Pollutant_Index id="PM2.5" Min="21" Max="84" Avg="49" Hourly_sub_index="52"/>
+<Pollutant_Index id="PM10" Min="56" Max="121" Avg="82" Hourly_sub_index="101"/>
+<Pollutant_Index id="NO2" Min="11" Max="51" Avg="25" Hourly_sub_index="31"/>
+<Pollutant_Index id="NH3" Min="3" Max="7" Avg="4" Hourly_sub_index="4"/>
+<Pollutant_Index id="SO2" Min="1" Max="23" Avg="6" Hourly_sub_index="13"/>
+<Pollutant_Index id="CO" Min="27" Max="54" Avg="38" Hourly_sub_index="37"/>
+<Pollutant_Index id="OZONE" Min="16" Max="35" Avg="27" Hourly_sub_index="24"/>
+<Air_Quality_Index Value="82" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Railway Lines, Solapur - MPCB (Formerly know as Solapur, Solapur - MPCB)" lastupdate="24-11-2026 22:00:00" latitude="17.668924" longitude="75.901173">
+<Pollutant_Index id="PM2.5" Min="30" Max="83" Avg="50" Hourly_sub_index="62"/>
+<Pollutant_Index id="PM10" Min="40" Max="115" Avg="69" Hourly_sub_index="94"/>
+<Pollutant_Index id="NO2" Min="17" Max="100" Avg="45" Hourly_sub_index="59"/>
+<Pollutant_Index id="NH3" Min="4" Max="7" Avg="5" Hourly_sub_index="5"/>
+<Pollutant_Index id="SO2" Min="5" Max="24" Avg="12" Hourly_sub_index="16"/>
+<Pollutant_Index id="CO" Min="36" Max="98" Avg="63" Hourly_sub_index="58"/>
+<Pollutant_Index id="OZONE" Min="22" Max="88" Avg="54" Hourly_sub_index="45"/>
+<Air_Quality_Index Value="69" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Thane">
+<Station id="Upvan Fort, Thane - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.222279" longitude="72.957979">
+<Pollutant_Index id="PM2.5" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="67"/>
+<Pollutant_Index id="PM10" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="101"/>
+<Pollutant_Index id="NO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="5"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="2"/>
+<Pollutant_Index id="SO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="8"/>
+<Pollutant_Index id="CO" Min="25" Max="35" Avg="29" Hourly_sub_index="30"/>
+<Pollutant_Index id="OZONE" Min="30" Max="43" Avg="36" Hourly_sub_index="38"/>
+<Air_Quality_Index Value="" Predominant_Parameter=""/>
+</Station>
+<Station id="Kasarvadavali, Thane - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.26777" longitude="72.97182">
+<Pollutant_Index id="PM2.5" Min="47" Max="98" Avg="80" Hourly_sub_index="70"/>
+<Pollutant_Index id="PM10" Min="73" Max="136" Avg="103" Hourly_sub_index="110"/>
+<Pollutant_Index id="NO2" Min="18" Max="87" Avg="42" Hourly_sub_index="73"/>
+<Pollutant_Index id="NH3" Min="3" Max="15" Avg="7" Hourly_sub_index="15"/>
+<Pollutant_Index id="SO2" Min="7" Max="18" Avg="11" Hourly_sub_index="8"/>
+<Pollutant_Index id="CO" Min="21" Max="58" Avg="37" Hourly_sub_index="53"/>
+<Pollutant_Index id="OZONE" Min="7" Max="44" Avg="28" Hourly_sub_index="8"/>
+<Air_Quality_Index Value="103" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Ulhasnagar">
+<Station id="Sidhi Vinayak Nagar, Ulhasnagar - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.235581" longitude="73.159121">
+<Pollutant_Index id="PM2.5" Min="40" Max="153" Avg="88" Hourly_sub_index="132"/>
+<Pollutant_Index id="PM10" Min="54" Max="436" Avg="118" Hourly_sub_index="436"/>
+<Pollutant_Index id="NO2" Min="18" Max="101" Avg="42" Hourly_sub_index="42"/>
+<Pollutant_Index id="NH3" Min="4" Max="5" Avg="5" Hourly_sub_index="NA"/>
+<Pollutant_Index id="SO2" Min="1" Max="77" Avg="27" Hourly_sub_index="55"/>
+<Pollutant_Index id="CO" Min="12" Max="102" Avg="47" Hourly_sub_index="37"/>
+<Pollutant_Index id="OZONE" Min="3" Max="92" Avg="44" Hourly_sub_index="53"/>
+<Air_Quality_Index Value="118" Predominant_Parameter="PM10"/>
+</Station>
+<Station id="Vithalwadi, Ulhasnagar - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.2307571" longitude="73.155192">
+<Pollutant_Index id="PM2.5" Min="23" Max="167" Avg="64" Hourly_sub_index="88"/>
+<Pollutant_Index id="PM10" Min="50" Max="218" Avg="98" Hourly_sub_index="137"/>
+<Pollutant_Index id="NO2" Min="1" Max="1" Avg="1" Hourly_sub_index="1"/>
+<Pollutant_Index id="NH3" Min="2" Max="3" Avg="2" Hourly_sub_index="2"/>
+<Pollutant_Index id="SO2" Min="3" Max="7" Avg="5" Hourly_sub_index="4"/>
+<Pollutant_Index id="CO" Min="17" Max="108" Avg="58" Hourly_sub_index="55"/>
+<Pollutant_Index id="OZONE" Min="3" Max="77" Avg="42" Hourly_sub_index="43"/>
+<Air_Quality_Index Value="98" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Vasai">
+<Station id="Mulgaon, Vasai-MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.348465" longitude="72.811098">
+<Pollutant_Index id="PM2.5" Min="35" Max="113" Avg="68" Hourly_sub_index="77"/>
+<Pollutant_Index id="PM10" Min="38" Max="101" Avg="63" Hourly_sub_index="72"/>
+<Pollutant_Index id="NO2" Min="11" Max="45" Avg="25" Hourly_sub_index="19"/>
+<Pollutant_Index id="NH3" Min="8" Max="12" Avg="10" Hourly_sub_index="10"/>
+<Pollutant_Index id="SO2" Min="5" Max="13" Avg="8" Hourly_sub_index="8"/>
+<Pollutant_Index id="CO" Min="26" Max="51" Avg="38" Hourly_sub_index="48"/>
+<Pollutant_Index id="OZONE" Min="75" Max="96" Avg="87" Hourly_sub_index="75"/>
+<Air_Quality_Index Value="87" Predominant_Parameter="OZONE"/>
+</Station>
+<Station id="Golani Naka, Vasai-MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.409313" longitude="72.86661">
+<Pollutant_Index id="PM2.5" Min="23" Max="113" Avg="55" Hourly_sub_index="107"/>
+<Pollutant_Index id="PM10" Min="64" Max="199" Avg="109" Hourly_sub_index="171"/>
+<Pollutant_Index id="NO2" Min="11" Max="110" Avg="48" Hourly_sub_index="61"/>
+<Pollutant_Index id="NH3" Min="0" Max="4" Avg="3" Hourly_sub_index="3"/>
+<Pollutant_Index id="SO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="CO" Min="98" Max="112" Avg="104" Hourly_sub_index="106"/>
+<Pollutant_Index id="OZONE" Min="3" Max="5" Avg="4" Hourly_sub_index="3"/>
+<Air_Quality_Index Value="109" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Virar">
+<Station id="Bolinj, Virar - MPCB" lastupdate="24-11-2026 22:00:00" latitude="19.445821" longitude="72.7988231">
+<Pollutant_Index id="PM2.5" Min="22" Max="156" Avg="56" Hourly_sub_index="34"/>
+<Pollutant_Index id="PM10" Min="28" Max="140" Avg="65" Hourly_sub_index="42"/>
+<Pollutant_Index id="NO2" Min="20" Max="58" Avg="35" Hourly_sub_index="22"/>
+<Pollutant_Index id="NH3" Min="3" Max="5" Avg="4" Hourly_sub_index="4"/>
+<Pollutant_Index id="SO2" Min="2" Max="4" Avg="4" Hourly_sub_index="4"/>
+<Pollutant_Index id="CO" Min="24" Max="40" Avg="34" Hourly_sub_index="38"/>
+<Pollutant_Index id="OZONE" Min="5" Max="8" Avg="7" Hourly_sub_index="6"/>
+<Air_Quality_Index Value="65" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+</State>
+<State id="Manipur"/>
+<State id="Meghalaya">
+<City id="Byrnihat">
+<Station id="15th Mile-Nongthymmai, Byrnihat -Meghalaya PCB" lastupdate="24-11-2026 22:00:00" latitude="26.079047" longitude="91.875185">
+<Pollutant_Index id="PM2.5" Min="1" Max="45" Avg="14" Hourly_sub_index="1"/>
+<Pollutant_Index id="PM10" Min="29" Max="123" Avg="74" Hourly_sub_index="100"/>
+<Pollutant_Index id="NO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="NH3" Min="0" Max="0" Avg="0" Hourly_sub_index="0"/>
+<Pollutant_Index id="SO2" Min="2" Max="6" Avg="4" Hourly_sub_index="5"/>
+<Pollutant_Index id="CO" Min="2" Max="3" Avg="3" Hourly_sub_index="2"/>
+<Pollutant_Index id="OZONE" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Air_Quality_Index Value="74" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Shillong">
+<Station id="Lumpyngngad, Shillong - Meghalaya PCB" lastupdate="24-11-2026 22:00:00" latitude="25.5586" longitude="91.8985">
+<Pollutant_Index id="PM2.5" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="PM10" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="NO2" Min="0" Max="0" Avg="0" Hourly_sub_index="0"/>
+<Pollutant_Index id="NH3" Min="0" Max="0" Avg="0" Hourly_sub_index="0"/>
+<Pollutant_Index id="SO2" Min="12" Max="14" Avg="13" Hourly_sub_index="13"/>
+<Pollutant_Index id="CO" Min="22" Max="31" Avg="27" Hourly_sub_index="26"/>
+<Pollutant_Index id="OZONE" Min="15" Max="21" Avg="18" Hourly_sub_index="18"/>
+<Air_Quality_Index Value="" Predominant_Parameter=""/>
+</Station>
+</City>
+</State>
+<State id="Mizoram">
+<City id="Aizawl">
+<Station id="Sikulpuikawn, Aizawl - Mizoram PCB" lastupdate="24-11-2026 22:00:00" latitude="23.7176342" longitude="92.7192841">
+<Pollutant_Index id="PM2.5" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="7"/>
+<Pollutant_Index id="PM10" Min="8" Max="52" Avg="33" Hourly_sub_index="47"/>
+<Pollutant_Index id="NO2" Min="0" Max="0" Avg="0" Hourly_sub_index="0"/>
+<Pollutant_Index id="NH3" Min="0" Max="0" Avg="0" Hourly_sub_index="0"/>
+<Pollutant_Index id="SO2" Min="9" Max="9" Avg="9" Hourly_sub_index="9"/>
+<Pollutant_Index id="CO" Min="3" Max="3" Avg="3" Hourly_sub_index="3"/>
+<Pollutant_Index id="OZONE" Min="1" Max="5" Avg="3" Hourly_sub_index="2"/>
+<Air_Quality_Index Value="33" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+</State>
+<State id="Nagaland">
+<City id="Kohima">
+<Station id="PWD Junction, Kohima - NPCB" lastupdate="24-11-2026 22:00:00" latitude="25.6635413" longitude="94.0989878">
+<Pollutant_Index id="PM2.5" Min="1" Max="1" Avg="1" Hourly_sub_index="1"/>
+<Pollutant_Index id="PM10" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="NO2" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="NH3" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Pollutant_Index id="SO2" Min="62" Max="68" Avg="64" Hourly_sub_index="62"/>
+<Pollutant_Index id="CO" Min="5" Max="12" Avg="8" Hourly_sub_index="9"/>
+<Pollutant_Index id="OZONE" Min="NA" Max="NA" Avg="NA" Hourly_sub_index="NA"/>
+<Air_Quality_Index Value="64" Predominant_Parameter="SO2"/>
+</Station>
+</City>
+</State>
+<State id="Odisha">
+<City id="Angul">
+<Station id="Hakimapada, Angul - OSPCB" lastupdate="24-11-2026 22:00:00" latitude="20.832874" longitude="85.104082">
+<Pollutant_Index id="PM2.5" Min="13" Max="263" Avg="149" Hourly_sub_index="163"/>
+<Pollutant_Index id="PM10" Min="54" Max="117" Avg="92" Hourly_sub_index="96"/>
+<Pollutant_Index id="NO2" Min="3" Max="221" Avg="61" Hourly_sub_index="20"/>
+<Pollutant_Index id="NH3" Min="2" Max="18" Avg="6" Hourly_sub_index="3"/>
+<Pollutant_Index id="SO2" Min="3" Max="125" Avg="48" Hourly_sub_index="21"/>
+<Pollutant_Index id="CO" Min="57" Max="75" Avg="65" Hourly_sub_index="69"/>
+<Pollutant_Index id="OZONE" Min="5" Max="90" Avg="43" Hourly_sub_index="5"/>
+<Air_Quality_Index Value="149" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Balasore">
+<Station id="Kalidaspur, Balasore - OSPCB" lastupdate="24-11-2026 22:00:00" latitude="21.51161" longitude="86.89088">
+<Pollutant_Index id="PM2.5" Min="43" Max="253" Avg="73" Hourly_sub_index="147"/>
+<Pollutant_Index id="PM10" Min="47" Max="202" Avg="74" Hourly_sub_index="136"/>
+<Pollutant_Index id="NO2" Min="2" Max="45" Avg="12" Hourly_sub_index="28"/>
+<Pollutant_Index id="NH3" Min="4" Max="6" Avg="5" Hourly_sub_index="6"/>
+<Pollutant_Index id="SO2" Min="9" Max="53" Avg="16" Hourly_sub_index="10"/>
+<Pollutant_Index id="CO" Min="37" Max="93" Avg="63" Hourly_sub_index="80"/>
+<Pollutant_Index id="OZONE" Min="2" Max="47" Avg="22" Hourly_sub_index="2"/>
+<Air_Quality_Index Value="74" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Barbil">
+<Station id="Forest Office, Barbil - OSPCB" lastupdate="24-11-2026 22:00:00" latitude="22.1166054" longitude="85.3945546">
+<Pollutant_Index id="PM2.5" Min="22" Max="147" Avg="49" Hourly_sub_index="68"/>
+<Pollutant_Index id="PM10" Min="31" Max="149" Avg="66" Hourly_sub_index="97"/>
+<Pollutant_Index id="NO2" Min="8" Max="60" Avg="21" Hourly_sub_index="10"/>
+<Pollutant_Index id="NH3" Min="2" Max="6" Avg="3" Hourly_sub_index="2"/>
+<Pollutant_Index id="SO2" Min="7" Max="55" Avg="19" Hourly_sub_index="9"/>
+<Pollutant_Index id="CO" Min="12" Max="82" Avg="26" Hourly_sub_index="16"/>
+<Pollutant_Index id="OZONE" Min="6" Max="61" Avg="24" Hourly_sub_index="6"/>
+<Air_Quality_Index Value="66" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Baripada">
+<Station id="Meher Colony, Baripada - OSPCB" lastupdate="24-11-2026 22:00:00" latitude="21.941841" longitude="86.728318">
+<Pollutant_Index id="PM2.5" Min="40" Max="137" Avg="69" Hourly_sub_index="130"/>
+<Pollutant_Index id="PM10" Min="67" Max="125" Avg="92" Hourly_sub_index="116"/>
+<Pollutant_Index id="NO2" Min="3" Max="53" Avg="20" Hourly_sub_index="30"/>
+<Pollutant_Index id="NH3" Min="0" Max="4" Avg="2" Hourly_sub_index="0"/>
+<Pollutant_Index id="SO2" Min="6" Max="12" Avg="8" Hourly_sub_index="7"/>
+<Pollutant_Index id="CO" Min="10" Max="42" Avg="18" Hourly_sub_index="17"/>
+<Pollutant_Index id="OZONE" Min="44" Max="90" Avg="64" Hourly_sub_index="44"/>
+<Air_Quality_Index Value="92" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Bhubaneswar">
+<Station id="Lingraj Mandir, Bhubaneswar - OSPCB" lastupdate="24-11-2026 22:00:00" latitude="20.24079" longitude="85.836784">
+<Pollutant_Index id="PM2.5" Min="45" Max="141" Avg="61" Hourly_sub_index="75"/>
+<Pollutant_Index id="PM10" Min="38" Max="91" Avg="60" Hourly_sub_index="73"/>
+<Pollutant_Index id="NO2" Min="6" Max="24" Avg="13" Hourly_sub_index="10"/>
+<Pollutant_Index id="NH3" Min="2" Max="6" Avg="3" Hourly_sub_index="3"/>
+<Pollutant_Index id="SO2" Min="5" Max="13" Avg="8" Hourly_sub_index="8"/>
+<Pollutant_Index id="CO" Min="12" Max="18" Avg="14" Hourly_sub_index="12"/>
+<Pollutant_Index id="OZONE" Min="25" Max="57" Avg="40" Hourly_sub_index="25"/>
+<Air_Quality_Index Value="61" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Bileipada">
+<Station id="Tata Township, Bileipada - OSPCB" lastupdate="24-11-2026 22:00:00" latitude="22.06156703" longitude="85.47409613">
+<Pollutant_Index id="PM2.5" Min="104" Max="301" Avg="204" Hourly_sub_index="301"/>
+<Pollutant_Index id="PM10" Min="131" Max="332" Avg="211" Hourly_sub_index="279"/>
+<Pollutant_Index id="NO2" Min="14" Max="16" Avg="15" Hourly_sub_index="15"/>
+<Pollutant_Index id="NH3" Min="8" Max="9" Avg="9" Hourly_sub_index="8"/>
+<Pollutant_Index id="SO2" Min="4" Max="5" Avg="5" Hourly_sub_index="4"/>
+<Pollutant_Index id="CO" Min="25" Max="53" Avg="41" Hourly_sub_index="39"/>
+<Pollutant_Index id="OZONE" Min="5" Max="8" Avg="6" Hourly_sub_index="8"/>
+<Air_Quality_Index Value="211" Predominant_Parameter="PM10"/>
+</Station>
+</City>
+<City id="Brajrajnagar">
+<Station id="GM Office, Brajrajnagar - OSPCB" lastupdate="24-11-2026 22:00:00" latitude="21.8004996" longitude="83.8396977">
+<Pollutant_Index id="PM2.5" Min="0" Max="149" Avg="45" Hourly_sub_index="12"/>
+<Pollutant_Index id="PM10" Min="0" Max="149" Avg="58" Hourly_sub_index="17"/>
+<Pollutant_Index id="NO2" Min="1" Max="30" Avg="14" Hourly_sub_index="12"/>
+<Pollutant_Index id="NH3" Min="11" Max="11" Avg="11" Hourly_sub_index="11"/>
+<Pollutant_Index id="SO2" Min="17" Max="18" Avg="18" Hourly_sub_index="18"/>
+<Pollutant_Index id="CO" Min="51" Max="70" Avg="62" Hourly_sub_index="51"/>
+<Pollutant_Index id="OZONE" Min="42" Max="46" Avg="44" Hourly_sub_index="43"/>
+<Air_Quality_Index Value="62" Predominant_Parameter="CO"/>
+</Station>
+</City>
+<City id="Byasanagar">
+<Station id="Ferro Chrome Colony, Byasanagar - OSPCB" lastupdate="24-11-2026 22:00:00" latitude="20.94185" longitude="86.1151">
+<Pollutant_Index id="PM2.5" Min="60" Max="143" Avg="82" Hourly_sub_index="107"/>
+<Pollutant_Index id="PM10" Min="57" Max="109" Avg="76" Hourly_sub_index="100"/>
+<Pollutant_Index id="NO2" Min="8" Max="31" Avg="17" Hourly_sub_index="27"/>
+<Pollutant_Index id="NH3" Min="3" Max="4" Avg="4" Hourly_sub_index="4"/>
+<Pollutant_Index id="SO2" Min="4" Max="19" Avg="10" Hourly_sub_index="7"/>
+<Pollutant_Index id="CO" Min="38" Max="64" Avg="46" Hourly_sub_index="45"/>
+<Pollutant_Index id="OZONE" Min="19" Max="50" Avg="32" Hourly_sub_index="19"/>
+<Air_Quality_Index Value="82" Predominant_Parameter="PM2.5"/>
+</Station>
+</City>
+<City id="Cuttack">
+<Station id="CDA Area, Cuttack - OSPCB" lastupdate="24-11-2026 22:00:00" latitude="20.48891" longitude="85.84768">
+<Pollutant_Index id="PM2.5" Min="25" Max="53" Avg="41" Hourly_sub_index="53"/>
+<Pollutant_Index id="PM10" Min="36" Max="79" Avg="53" Hourly_sub_index="57"/>
+<Pollutant_Index id="NO2" Min="8" Max="50" Avg="17" Hourly_sub_index="11"/>
+<Pollutant_Index id="NH3" Min="2" Max="7" Avg="3" Hourly_sub_index="2"/>
+<Pollutant_Index id="SO2" Min="10" Max="60" Avg="21" Hourly_sub_index="13"/>
+<Pollutant_Index id="CO" Min="24" Max="27" Avg="26" Hourly_sub_index="26"/>
+<Pollutant_Index id="OZONE" Min="43" Max="75" Avg="57" Hourly_sub_index="43"/>
+<Air_Quality_Index Value="57" Predominant_Parameter="OZONE"/>
+</Station>
+</City>
+</State>
+</Country>
+</AqIndex>
