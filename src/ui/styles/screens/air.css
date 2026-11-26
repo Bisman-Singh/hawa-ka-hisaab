@@ -172,3 +172,19 @@
     flex-direction: column;
   }
 }
+
+.place-note {
+  margin-bottom: var(--s-3);
+}
+
+.slip .reading + .small {
+  margin-top: var(--s-3);
+}
+
+.slip > .btn {
+  margin-bottom: var(--s-3);
+}
+
+.place {
+  margin-bottom: var(--s-4);
+}

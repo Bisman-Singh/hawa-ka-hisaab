@@ -135,7 +135,7 @@
 }
 
 .grid-2 {
-  align-items: end;
+  align-items: start;
 }
 
 .grid-3 {
@@ -203,4 +203,21 @@ form + .msg {
   .grid-3 {
     grid-template-columns: 1fr 1fr;
   }
+}
+
+.form-block > .btn,
+.form-block > .status {
+  margin-top: var(--s-2);
+}
+
+.status .linkbtn {
+  margin-left: var(--s-2);
+}
+
+.row-form > .flag {
+  margin-bottom: var(--s-3);
+}
+
+.page-right > form > .msg {
+  margin-top: var(--s-4);
 }
