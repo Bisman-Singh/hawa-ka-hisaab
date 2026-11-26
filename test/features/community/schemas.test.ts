@@ -51,10 +51,47 @@ describe('notice on the rules path', () => {
     expect(noticeSchema.safeParse({ en: english, hi: null }).success).toBe(true);
   });
 
-  it('holds the model to both languages', () => {
-    expect(noticeReplySchema.safeParse({ en: english, hi: null }).success).toBe(false);
-    expect(
-      noticeReplySchema.safeParse({ en: english, hi: { title: 'आज की हवा', lines: ['य'] } }).success,
-    ).toBe(true);
+  it('holds the model to both languages, each worded by action id', () => {
+    const worded = {
+      title: 'Air today',
+      actions: [{ id: 'windows', text: 'Keep windows shut until noon.' }],
+    };
+    const hindi = { title: 'आज की हवा', actions: [{ id: 'windows', text: 'य' }] };
+    expect(noticeReplySchema.safeParse({ en: worded, hi: null }).success).toBe(false);
+    expect(noticeReplySchema.safeParse({ en: worded, hi: hindi }).success).toBe(true);
+    expect(noticeReplySchema.safeParse({ en: english, hi: hindi }).success).toBe(false);
+  });
+
+  it('refuses the same action id twice in one language', () => {
+    const line = { id: 'windows', text: 'Keep windows shut.' };
+    const twice = { title: 'Air today', actions: [line, line] };
+    const once = { title: 'आज की हवा', actions: [{ id: 'windows', text: 'य' }] };
+    const result = noticeReplySchema.safeParse({ en: twice, hi: once });
+    expect(result.error?.issues[0]?.message).toBe('action ids must be unique');
+  });
+
+  it('lets a notice carry up to fourteen lines, for twelve actions and the two frame lines', () => {
+    const lines = (count: number): string[] => Array.from({ length: count }, () => 'A line.');
+    expect(noticeSchema.safeParse({ en: { title: 'Air', lines: lines(14) }, hi: null }).success).toBe(true);
+    expect(noticeSchema.safeParse({ en: { title: 'Air', lines: lines(15) }, hi: null }).success).toBe(false);
+  });
+});
+
+describe('optional headcounts', () => {
+  it('accepts counts of children, older adults and outdoor staff for a society, and leaves them optional', () => {
+    const counts = { children: 40, olderAdults: 25, outdoorStaff: 6 };
+    expect(communityInputSchema.safeParse({ ...sampleCommunity(), ...counts }).success).toBe(true);
+    expect(communityInputSchema.safeParse({ ...sampleCommunity(), children: null }).success).toBe(true);
+    expect(communityInputSchema.safeParse({ ...sampleCommunity(), children: -1 }).success).toBe(false);
+  });
+
+  it('keeps child and older adult counts off a school, which gives pupils, but allows its outdoor staff', () => {
+    const school = { ...sampleCommunity(), kind: 'school', homes: null, pupils: 300 };
+    expect(communityInputSchema.safeParse({ ...school, outdoorStaff: 5 }).success).toBe(true);
+    const result = communityInputSchema.safeParse({ ...school, olderAdults: 0 });
+    expect(result.error?.issues[0]?.message).toBe(
+      'child and older adult counts are for a housing society; a school gives pupils',
+    );
+    expect(communityInputSchema.safeParse({ ...school, children: 12 }).success).toBe(false);
   });
 });
