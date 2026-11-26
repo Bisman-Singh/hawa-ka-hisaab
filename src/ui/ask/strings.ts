@@ -1,0 +1,17 @@
+// Words of the ask box under the plan.
+/** Strings of the ask box and its answers. */
+export const ASK = {
+  title: 'Ask about today',
+  label: 'Your question',
+  hint: 'For example: can my son still go for football at 6 in the evening? Answers use the same calculators as the plan, and you can see each call. Questions about symptoms, medicines or diagnosis get a fixed reply and are not sent to the model.',
+  send: 'Ask',
+  empty: 'Type a question first.',
+  asked: 'You asked',
+  working: 'Working out the answer',
+  ready: 'The answer is ready.',
+  calls: 'Calculator calls,',
+  noCalls: 'No calculator calls were made for this answer.',
+  notSent: 'This question was not sent to the model.',
+  rulesNote: 'The model did not answer, so this reply is fixed text.',
+  sources: 'Sources of this advice:',
+};

@@ -32,7 +32,8 @@
   height: 3rem;
 }
 
-.bulletin h1 {
+.bulletin h1,
+.bulletin h2 {
   font-size: var(--t-36);
   margin: 0;
 }
@@ -108,7 +109,7 @@
 
 .ds-bars .bar {
   width: max(5px, 34%);
-  height: calc(var(--v) / 350 * 100%);
+  height: min(100%, calc(var(--v) / 350 * 100%));
   background: var(--ink-2);
 }
 
@@ -210,6 +211,24 @@
 .ds-step .btn {
   padding: 0;
   width: var(--target);
+}
+
+/* The ledger words a figure in a sentence, so the reckoning and the facts sent wrap instead of running wide. */
+.reckon td.num {
+  white-space: normal;
+}
+
+.made .facts td {
+  overflow-wrap: anywhere;
+}
+
+ul.cite {
+  padding-left: var(--s-4);
+  margin-bottom: var(--s-2);
+}
+
+.plan-tools .small {
+  margin: 0;
 }
 
 .ask form {
