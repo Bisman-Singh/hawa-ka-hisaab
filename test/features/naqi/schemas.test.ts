@@ -39,15 +39,26 @@ describe('naqiEstimateSchema', () => {
     ).toBe(false);
   });
 
-  it('refuses averaging periods other than 8 and 24 hours', () => {
-    const estimate = {
+  it('refuses averaging periods other than 8 and 24 hours, and 1 hour for any pollutant but ozone', () => {
+    const estimate = (subIndices: unknown[]) => ({
       status: 'computed',
       value: 1,
       band: 'good',
       predominant: 'pm25',
-      subIndices: [subIndex('pm25', 1), subIndex('no2', 24), subIndex('co', 8)],
-    };
-    expect(naqiEstimateSchema.safeParse(estimate).success).toBe(false);
+      subIndices,
+    });
+    expect(
+      naqiEstimateSchema.safeParse(estimate([subIndex('pm25', 12), subIndex('no2', 24), subIndex('co', 8)]))
+        .success,
+    ).toBe(false);
+    expect(
+      naqiEstimateSchema.safeParse(estimate([subIndex('pm25', 1), subIndex('no2', 24), subIndex('co', 8)]))
+        .success,
+    ).toBe(false);
+    expect(
+      naqiEstimateSchema.safeParse(estimate([subIndex('pm25', 24), subIndex('no2', 24), subIndex('o3', 1)]))
+        .success,
+    ).toBe(true);
   });
 
   it('can say why no estimate was possible', () => {

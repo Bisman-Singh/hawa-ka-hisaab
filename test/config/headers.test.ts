@@ -22,6 +22,20 @@ describe('PAGE_HEADERS', () => {
   });
 });
 
+describe('Permissions-Policy', () => {
+  it('turns off the device features this app never uses, allows location for this site only, and names no withdrawn feature', () => {
+    const value = PAGE_HEADERS.find((header) => header.key === 'Permissions-Policy')?.value ?? '';
+    expect(value.split(', ')).toEqual([
+      'camera=()',
+      'microphone=()',
+      'geolocation=(self)',
+      'payment=()',
+      'usb=()',
+    ]);
+    expect(value).not.toMatch(/browsing-topics|interest-cohort/);
+  });
+});
+
 describe('API_HEADERS', () => {
   it('denies every resource type for JSON responses', () => {
     expect(policyOf(API_HEADERS)).toMatch(/^default-src 'none'/);

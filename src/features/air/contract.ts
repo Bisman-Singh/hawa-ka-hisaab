@@ -13,22 +13,16 @@ export const placesQuerySchema = z.object({ q: boundedText(80) });
 export const placesResponseSchema = z.strictObject({ places: z.array(placeSchema).max(10) });
 
 const twoDecimals = (value: number): boolean => Math.round(value * 100) / 100 === value;
+const coordinate = (min: number, max: number) =>
+  z.coerce.number().min(min).max(max).refine(twoDecimals, { error: 'round to two decimals' });
 
 /**
  * Query of GET /api/air. Coordinates are rounded to two decimals, about a kilometre, before they go into a URL:
  * an exact home location never reaches request logs or a shared cache, and nearby callers share cached answers.
  */
 export const airQuerySchema = z.object({
-  lat: z.coerce
-    .number()
-    .min(INDIA_BOUNDS.minLat)
-    .max(INDIA_BOUNDS.maxLat)
-    .refine(twoDecimals, { error: 'round to two decimals' }),
-  lon: z.coerce
-    .number()
-    .min(INDIA_BOUNDS.minLon)
-    .max(INDIA_BOUNDS.maxLon)
-    .refine(twoDecimals, { error: 'round to two decimals' }),
+  lat: coordinate(INDIA_BOUNDS.minLat, INDIA_BOUNDS.maxLat),
+  lon: coordinate(INDIA_BOUNDS.minLon, INDIA_BOUNDS.maxLon),
 });
 
 /** Body of GET /api/air: the reading, the feed state, the forecast curve and GRAP where it applies. */

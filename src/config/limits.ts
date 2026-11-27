@@ -32,8 +32,20 @@ export const UPSTREAM_TIMEOUT_MS = 8000;
 /** Length of the per-client rate limit window, in milliseconds. */
 export const RATE_WINDOW_MS = 60_000;
 
-/** Most distinct clients the in-memory rate limiter tracks before it evicts the oldest. */
+/** Most distinct clients the in-memory rate limiter tracks before it evicts the oldest that is not blocked. */
 export const RATE_MAX_CLIENTS = 10_000;
+
+/**
+ * Call budgets per upstream: calls one client may cause in a minute, and one instance in a minute and in a day. Open-Meteo's free tier allows 600 calls a minute and 10,000 a day from one address,
+ * shared with whatever else runs behind the host's outgoing address. data.gov.in answers 429 after about a dozen
+ * rapid calls. One air request makes at most one forecast call and two calls per state read.
+ */
+export const UPSTREAM_BUDGET: Readonly<
+  Record<'openMeteo' | 'dataGovIn', Readonly<Record<'perClientPerMinute' | 'perMinute' | 'perDay', number>>>
+> = {
+  openMeteo: { perClientPerMinute: 20, perMinute: 120, perDay: 8000 },
+  dataGovIn: { perClientPerMinute: 16, perMinute: 30, perDay: 20_000 },
+};
 
 /**
  * IST clock hours at which the morning, afternoon and evening slots of a plan begin. Hours before the morning
@@ -56,3 +68,6 @@ export const MIN_MODEL_CALL_MS = 3000;
 
 /** With less time than this left after a rejected reply, the one retry is skipped. */
 export const MIN_RETRY_MS = 5000;
+
+/** The call budget of one upstream. */
+export type UpstreamLimits = (typeof UPSTREAM_BUDGET)['openMeteo'];

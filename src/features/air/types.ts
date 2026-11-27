@@ -3,7 +3,8 @@ import type { z } from 'zod';
 import type { HttpFailure } from '../../lib/http.js';
 import type { Result } from '../../lib/result.js';
 import type { airResponseSchema, placesResponseSchema } from './contract.js';
-import type { airReadingSchema, feedStatusSchema, grapNoticeSchema, hourCurveSchema } from './schemas.js';
+import type { airReadingSchema, feedProblemSchema, feedStatusSchema } from './schemas.js';
+import type { grapNoticeSchema, hourCurveSchema } from './schemas.js';
 import type { hourlyAirSchema, locationSchema, modelledReadingSchema, placeSchema } from './schemas.js';
 import type { pinRoughnessSchema, placeResolutionSchema, stationProviderSchema } from './schemas.js';
 import type { stationPollutantSchema, stationReadingSchema, stationRecordSchema } from './schemas.js';
@@ -48,6 +49,9 @@ export type AirReading = z.infer<typeof airReadingSchema>;
 /** State of the CPCB feed. */
 export type FeedStatus = z.infer<typeof feedStatusSchema>;
 
+/** Why the station data could not be read just now, in the words the screen chooses from. */
+export type FeedProblem = z.infer<typeof feedProblemSchema>;
+
 /** One modelled hour. */
 export type HourlyAir = z.infer<typeof hourlyAirSchema>;
 
@@ -70,11 +74,20 @@ export interface StationFeed {
   readonly stations: readonly StationRecord[];
 }
 
-/** A read of the feed: fresh, the last good copy after a failed fetch, or nothing at all. */
+/**
+ * Why a station read is not fresh: an upstream failure, or incomplete when the source answered while it was being
+ * rebuilt, with stations missing or only part of their rows there.
+ */
+export type FeedFailure = HttpFailure | { readonly kind: 'incomplete' };
+
+/**
+ * A read of the feed: fresh, a usable copy after a failed or incomplete fetch, or nothing at all. A last_good copy
+ * may mix the stations that came complete just now with the last good reading of the others.
+ */
 export type StationFeedRead =
   | { readonly kind: 'fresh'; readonly feed: StationFeed }
-  | { readonly kind: 'last_good'; readonly feed: StationFeed; readonly failure: HttpFailure }
-  | { readonly kind: 'miss'; readonly failure: HttpFailure };
+  | { readonly kind: 'last_good'; readonly feed: StationFeed; readonly failure: FeedFailure }
+  | { readonly kind: 'miss'; readonly failure: FeedFailure };
 
 /**
  * Port for the official station data. Implementations cache, dedupe and bound their fetches. near is the point
@@ -110,9 +123,10 @@ export interface PinDirectory {
   load(): Promise<PinTables>;
 }
 
-/** Every source the air feature reads, grouped as one server dependency. */
+/** Every source the air feature reads, grouped as one server dependency. stationProviders names the chain in order. */
 export interface AirSources {
   readonly stations: AirProvider;
+  readonly stationProviders: readonly StationProvider[];
   readonly forecast: ForecastProvider;
   readonly geocoder: Geocoder;
   readonly pins: PinDirectory;

@@ -47,7 +47,7 @@ describe('GET /api/air', () => {
   it('shows the nearest station with CPCB AQI, the feed hour, the curve and GRAP in Delhi, cached five minutes', async () => {
     const { app } = setup([fresh]);
     const response = await app.request(DELHI);
-    expect(response.headers.get('cache-control')).toBe('public, max-age=300');
+    expect(response.headers.get('cache-control')).toBe('public, max-age=300, s-maxage=300');
     const body = airResponseSchema.parse(await response.json());
     expect(body.reading).toMatchObject({ path: 'station', aqi: { value: 246, band: 'poor' }, stale: false });
     expect(body.feed).toEqual({ fetch: 'ok', feedHour: '2026-11-24T22:00:00+05:30', stale: false });
@@ -83,17 +83,27 @@ describe('GET /api/air', () => {
     expect(body.reading).toMatchObject({ path: 'station', stale: true });
   });
 
-  it('serves the last good snapshot when the feed is down, and logs it', async () => {
+  it('serves the last good snapshot when the feed is down, says why, logs it and lets a retry through', async () => {
     const { app, test } = setup([{ kind: 'last_good', feed: stationFeed(), failure: { kind: 'timeout' } }]);
-    const { body } = await get(app, DELHI);
-    expect(body.feed).toEqual({ fetch: 'failed', feedHour: '2026-11-24T22:00:00+05:30', stale: false });
+    const response = await app.request(DELHI);
+    expect(response.headers.get('cache-control')).toBe('no-store');
+    const body = airResponseSchema.parse(await response.json());
+    expect(body.feed).toEqual({
+      fetch: 'failed',
+      feedHour: '2026-11-24T22:00:00+05:30',
+      stale: false,
+      problem: 'no_answer',
+    });
     expect(body.reading.path).toBe('station');
     expect(test.logText()).toContain('"upstream":"cpcb"');
   });
 
-  it('falls back to the model when the feed is down with nothing cached', async () => {
-    const { body } = await get(setup([{ kind: 'miss', failure: { kind: 'network' } }]).app, DELHI);
-    expect(body.feed).toEqual({ fetch: 'failed', feedHour: null, stale: false });
+  it('falls back to the model when the feed is down with nothing cached, and is not cached itself', async () => {
+    const { app } = setup([{ kind: 'miss', failure: { kind: 'network' } }]);
+    const response = await app.request(DELHI);
+    expect(response.headers.get('cache-control')).toBe('no-store');
+    const body = airResponseSchema.parse(await response.json());
+    expect(body.feed).toEqual({ fetch: 'failed', feedHour: null, stale: false, problem: 'no_answer' });
     expect(body.reading).toMatchObject({
       path: 'modelled',
       reason: 'feed_unavailable',
@@ -101,9 +111,27 @@ describe('GET /api/air', () => {
     });
   });
 
-  it('keeps the station reading without a curve when the forecast is down', async () => {
+  it('says the source is being updated when it answered mid rebuild, with a retry, never a wrong reason', async () => {
+    const far = { ...rkPuramStation(), station: { ...rkPuramStation().station, lat: 30.9, lon: 75.85 } };
+    const partial: StationFeedRead = {
+      kind: 'last_good',
+      feed: stationFeed([far]),
+      failure: { kind: 'incomplete' },
+    };
+    const { body } = await get(setup([partial]).app, DELHI);
+    expect(body.feed).toMatchObject({ fetch: 'failed', problem: 'updating' });
+    expect(body.reading).toMatchObject({ path: 'modelled', reason: 'feed_unavailable' });
+    const near: StationFeedRead = { ...partial, feed: stationFeed() };
+    const { body: withStation } = await get(setup([near]).app, DELHI);
+    expect(withStation.reading).toMatchObject({ path: 'station', aqi: { value: 246 } });
+    expect(withStation.feed.problem).toBe('updating');
+  });
+
+  it('keeps the station reading without a curve when the forecast is down, and does not cache that', async () => {
     const { app, test } = setup([fresh], false);
-    const { body } = await get(app, DELHI);
+    const response = await app.request(DELHI);
+    expect(response.headers.get('cache-control')).toBe('no-store');
+    const body = airResponseSchema.parse(await response.json());
     expect(body.reading.path).toBe('station');
     expect(body.forecast).toBeNull();
     expect(test.logText()).toContain('"upstream":"open-meteo"');

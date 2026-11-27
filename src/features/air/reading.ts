@@ -7,6 +7,7 @@ import { estimateNaqi } from '../naqi/estimate.js';
 import { istHourStart, istIso } from './geo.js';
 import { chooseStation, isStale, stationReading, type StationChoice } from './stations.js';
 import type { AirReading, AirResponse, FeedStatus, GrapNotice, HourCurve, Location } from './types.js';
+import { feedProblem } from './failures.js';
 import type { ModelledReading, StationFeedRead } from './types.js';
 
 /** Everything the air card is built from. now is epoch milliseconds when the response is made. */
@@ -18,17 +19,23 @@ export interface AirInput {
   readonly grap: GrapNotice | null;
 }
 
-/** The feed state: whether this read fetched, the feed hour in use and whether it is stale. */
+/** The feed state: whether this read fetched, the feed hour in use, whether it is stale, and why it failed. */
 export function feedStatus(read: StationFeedRead, nowMs: number): FeedStatus {
   if (read.kind === 'miss') {
-    return { fetch: 'failed', feedHour: null, stale: false };
+    return { fetch: 'failed', feedHour: null, stale: false, problem: feedProblem(read.failure) };
   }
   const feedHour = read.feed.feedHour;
-  return { fetch: read.kind === 'fresh' ? 'ok' : 'failed', feedHour, stale: isStale(feedHour, nowMs) };
+  const stale = isStale(feedHour, nowMs);
+  return read.kind === 'fresh'
+    ? { fetch: 'ok', feedHour, stale }
+    : { fetch: 'failed', feedHour, stale, problem: feedProblem(read.failure) };
 }
 
+// While the source is mid rebuild only its complete stations are known, so a place with none of them in range
+// cannot be told apart from one with no station: it gets the feed reason, which offers a retry.
 function modelledReason(read: StationFeedRead, choice: StationChoice): ModelledReading['reason'] {
-  if (read.kind === 'miss') {
+  const updating = read.kind === 'last_good' && read.failure.kind === 'incomplete';
+  if (read.kind === 'miss' || (updating && !choice.anyInRange)) {
     return 'feed_unavailable';
   }
   return choice.anyInRange ? 'no_station_reading' : 'no_station_in_range';

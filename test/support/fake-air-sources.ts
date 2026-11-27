@@ -61,6 +61,7 @@ export function createFakePinDirectory(
 export function createFakeAirSources(overrides: Partial<AirSources> = {}): AirSources {
   return {
     stations: createFakeAirProvider([{ kind: 'miss', failure: { kind: 'network' } }]),
+    stationProviders: [],
     forecast: createFakeForecastProvider(err({ kind: 'network' })),
     geocoder: createFakeGeocoder([], { kind: 'network' }),
     pins: createFakePinDirectory(),

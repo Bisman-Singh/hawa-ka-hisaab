@@ -12,13 +12,18 @@ export interface BreakpointRow {
   readonly indexHigh: number;
 }
 
-/** How one pollutant is read: averaging hours, unit, printed decimals and the rows Good to Very poor. */
+/**
+ * How one pollutant is read: averaging hours, unit, printed decimals and the rows Good to Very poor. oneHourFrom is
+ * the lowest concentration of the rows meant for one hour values, from it up to Severe, or null when every row is
+ * for means over the averaging hours.
+ */
 export interface PollutantRule {
   readonly pollutant: PollutantId;
   readonly hours: 8 | 24;
   readonly unit: ConcentrationUnit;
   readonly decimals: number;
   readonly rows: readonly BreakpointRow[];
+  readonly oneHourFrom: number | null;
 }
 
 /** The table: the band index ranges, the Severe floor and the rule for every pollutant. */
@@ -36,17 +41,18 @@ const BAND_KEYS: readonly (readonly [AqiBand, string])[] = [
   ['very_poor', 'very-poor'],
 ];
 
-type Reading = readonly [hours: 8 | 24, unit: ConcentrationUnit, decimals: number];
+type Reading = readonly [hours: 8 | 24, unit: ConcentrationUnit, decimals: number, periodRows: number];
 
-// Averaging periods and units as the naqi-averaging fact states them. CO is printed to one decimal in mg.
+// Averaging periods and units as the naqi-averaging fact states them. CO is printed to one decimal in mg. The O3
+// cells from Very poor on carry the table's asterisk: one hourly values, for mathematical calculation only.
 const READING: Readonly<Record<PollutantId, Reading>> = {
-  pm25: [24, 'ug_m3', 0],
-  pm10: [24, 'ug_m3', 0],
-  no2: [24, 'ug_m3', 0],
-  so2: [24, 'ug_m3', 0],
-  o3: [8, 'ug_m3', 0],
-  co: [8, 'mg_m3', 1],
-  nh3: [24, 'ug_m3', 0],
+  pm25: [24, 'ug_m3', 0, 5],
+  pm10: [24, 'ug_m3', 0, 5],
+  no2: [24, 'ug_m3', 0, 5],
+  so2: [24, 'ug_m3', 0, 5],
+  o3: [8, 'ug_m3', 0, 4],
+  co: [8, 'mg_m3', 1, 5],
+  nh3: [24, 'ug_m3', 0, 5],
 };
 
 /** Rounds a value to the given number of decimals, half up. */
@@ -78,7 +84,7 @@ function buildRule(
   pollutant: PollutantId,
   bands: readonly BandEntry[],
 ): PollutantRule {
-  const [hours, unit, decimals] = READING[pollutant];
+  const [hours, unit, decimals, periodRows] = READING[pollutant];
   let low = 0;
   let indexLow = 0;
   const rows = bands.map(({ key, high: indexHigh }) => {
@@ -88,7 +94,8 @@ function buildRule(
     indexLow = row.indexHigh + 1;
     return row;
   });
-  return { pollutant, hours, unit, decimals, rows };
+  const oneHourFrom = rows.find((_row, index) => index >= periodRows)?.low ?? null;
+  return { pollutant, hours, unit, decimals, rows, oneHourFrom };
 }
 
 /** Builds the table from facts. It throws when a fact it needs is missing, which is a fault in the data. */

@@ -2,7 +2,12 @@
 import { describe, expect, it } from 'vitest';
 import { airResponseSchema } from '../../../src/features/air/contract.js';
 import { buildAirResponse, type AirInput } from '../../../src/features/air/reading.js';
-import type { HourCurve, StationFeed, StationRecord } from '../../../src/features/air/types.js';
+import type {
+  HourCurve,
+  StationFeed,
+  StationFeedRead,
+  StationRecord,
+} from '../../../src/features/air/types.js';
 import { err, ok } from '../../../src/lib/result.js';
 import { hourCurve, jnuStation, rkPuramStation, stationFeed } from '../../support/fake-air.js';
 import { FIXTURE_HOUR_MS } from '../../support/fake-clock.js';
@@ -117,7 +122,7 @@ describe('the modelled path', () => {
 
   it('is used with its reason when the feed is down and nothing is cached', () => {
     const down = buildAirResponse(input({ feed: { kind: 'miss', failure: { kind: 'timeout' } } }));
-    expect(down.feed).toEqual({ fetch: 'failed', feedHour: null, stale: false });
+    expect(down.feed).toEqual({ fetch: 'failed', feedHour: null, stale: false, problem: 'no_answer' });
     expect(down.reading.path === 'modelled' && down.reading.reason).toBe('feed_unavailable');
     expect(down.reading.path === 'modelled' && down.reading.nearestStationKm).toBeNull();
   });
@@ -129,8 +134,23 @@ describe('when sources fail', () => {
     const response = buildAirResponse(
       input({ feed: { kind: 'last_good', feed, failure: { kind: 'network' } } }),
     );
-    expect(response.feed).toEqual({ fetch: 'failed', feedHour: feed.feedHour, stale: false });
+    expect(response.feed).toEqual({
+      fetch: 'failed',
+      feedHour: feed.feedHour,
+      stale: false,
+      problem: 'no_answer',
+    });
     expect(response.reading.path).toBe('station');
+  });
+
+  it('keeps the plain reasons mid rebuild when a station of the answer is in range', () => {
+    const silent: StationRecord = { ...jnuStation(), aqiValue: null, pollutants: [] };
+    const feed: StationFeedRead = {
+      kind: 'last_good',
+      feed: stationFeed([silent]),
+      failure: { kind: 'incomplete' },
+    };
+    expect(buildAirResponse(input({ feed })).reading).toMatchObject({ reason: 'no_station_reading' });
   });
 
   it('keeps the station reading and drops the curve when the forecast is down', () => {

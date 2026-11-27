@@ -6,14 +6,17 @@ import type { RouteModule } from '../deps.js';
 import { failure } from '../errors.js';
 import { mountGet } from '../mount.js';
 
-/** Registers the places route. A search that fails upstream is a 503 the page can retry. */
+/**
+ * Registers the places route. A search that fails upstream is a 503 the page can retry; one this client may not
+ * make yet, being over its share of upstream calls, is a 429.
+ */
 export const registerPlaces: RouteModule = (target) => {
   const { deps } = target;
   mountGet(target, placesRoute, async (query) => {
     const found = await findPlaces(deps.air, query.q);
     if (!found.ok) {
       deps.logger.warn('upstream_failed', { upstream: 'open-meteo', code: found.error.kind });
-      return err(failure('upstream_unavailable'));
+      return err(failure(found.error.kind === 'over_budget' ? 'rate_limited' : 'upstream_unavailable'));
     }
     return ok({ places: found.value.slice(0, 10) });
   });

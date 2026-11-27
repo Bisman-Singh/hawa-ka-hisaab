@@ -100,4 +100,44 @@ describe('estimateNaqi', () => {
     const tie = estimateNaqi(rows(24, { pm25: 60, pm10: 100, no2: 80 }), END);
     expect(tie).toMatchObject({ value: 100, predominant: 'pm25' });
   });
+
+  describe('ozone above the 8 hour rows', () => {
+    const ozone = (hours: readonly number[]) => {
+      const day = rows(24, { pm10: 100, no2: 10 });
+      const series = [...Array<number | null>(24 - hours.length).fill(null), ...hours];
+      const estimate = estimateNaqi(
+        day.map((row, index) => ({ ...row, o3: series[index] ?? null })),
+        END,
+      );
+      return estimate.status === 'computed'
+        ? estimate.subIndices.find((entry) => entry.pollutant === 'o3')
+        : null;
+    };
+    const flat = (value: number) => Array<number>(8).fill(value);
+
+    it('reads an 8 hour mean up to 208 against the 8 hour rows', () => {
+      expect(ozone(flat(208))).toMatchObject({ subIndex: 300, meanConcentration: 208, averagingHours: 8 });
+      expect(ozone(flat(208.4))).toMatchObject({ subIndex: 300, averagingHours: 8 });
+      expect(ozone([700, ...Array<number>(7).fill(71)])).toMatchObject({ subIndex: 173, averagingHours: 8 });
+    });
+
+    it('reads the highest hour against the one hour rows once the 8 hour mean is above 208', () => {
+      expect(ozone(flat(208.5))).toEqual({
+        pollutant: 'o3',
+        subIndex: 301,
+        meanConcentration: 209,
+        unit: 'ug_m3',
+        averagingHours: 1,
+      });
+      expect(ozone([748, ...Array<number>(7).fill(227)])).toMatchObject({
+        subIndex: 400,
+        meanConcentration: 748,
+        averagingHours: 1,
+      });
+      expect(ozone([749, ...Array<number>(7).fill(227)])).toMatchObject({ subIndex: 401, averagingHours: 1 });
+      expect(
+        naqiEstimateSchema.safeParse(estimateNaqi(rows(24, { pm10: 100, no2: 10, o3: 300 }), END)).success,
+      ).toBe(true);
+    });
+  });
 });

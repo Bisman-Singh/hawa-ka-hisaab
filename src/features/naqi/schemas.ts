@@ -10,14 +10,21 @@ export const aqiBandSchema = z.enum(['good', 'satisfactory', 'moderate', 'poor',
 /** Units of a modelled mean. CO is in mg per cubic metre, the rest in micrograms per cubic metre. */
 export const concentrationUnitSchema = z.enum(['ug_m3', 'mg_m3']);
 
-/** One pollutant's sub-index on the modelled path, with the trailing mean it came from. */
-export const modelledSubIndexSchema = z.strictObject({
-  pollutant: pollutantIdSchema,
-  subIndex: z.int().min(0),
-  meanConcentration: z.number().min(0),
-  unit: concentrationUnitSchema,
-  averagingHours: z.union([z.literal(8), z.literal(24)]),
-});
+/**
+ * One pollutant's sub-index on the modelled path, with the trailing mean it came from. averagingHours 1 means the
+ * value is the highest single hour of the trailing 8, used for ozone when its 8 hour mean is above the 8 hour rows.
+ */
+export const modelledSubIndexSchema = z
+  .strictObject({
+    pollutant: pollutantIdSchema,
+    subIndex: z.int().min(0),
+    meanConcentration: z.number().min(0),
+    unit: concentrationUnitSchema,
+    averagingHours: z.union([z.literal(1), z.literal(8), z.literal(24)]),
+  })
+  .refine((entry) => entry.averagingHours !== 1 || entry.pollutant === 'o3', {
+    error: 'only ozone is read from one hour values',
+  });
 
 /**
  * A NAQI value estimated in code from modelled concentrations, never a station reading.

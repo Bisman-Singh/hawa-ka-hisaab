@@ -34,7 +34,7 @@ async function places(path: string, target = app().app): Promise<readonly Place[
 describe('GET /api/places', () => {
   it('finds a town, cached for a day', async () => {
     const response = await app().app.request('/api/places?q=Shillong');
-    expect(response.headers.get('cache-control')).toBe('public, max-age=86400');
+    expect(response.headers.get('cache-control')).toBe('public, max-age=86400, s-maxage=86400');
     expect(placesResponseSchema.parse(await response.json()).places).toEqual([SHILLONG]);
   });
 
@@ -64,6 +64,14 @@ describe('GET /api/places', () => {
     expect(response.status).toBe(503);
     expect(test.logText()).toContain('"code":"timeout"');
     expect(test.logText()).not.toContain('Secret');
+  });
+
+  it('answers 429 when this client is over its share of search calls', async () => {
+    const response = await app(createFakeGeocoder([], { kind: 'over_budget' })).app.request(
+      '/api/places?q=Agra',
+    );
+    expect(response.status).toBe(429);
+    expect(await response.json()).toMatchObject({ error: { code: 'rate_limited' } });
   });
 
   it('refuses an empty or overlong query', async () => {

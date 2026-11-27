@@ -1,4 +1,5 @@
-// Upstream fetch with a timeout and a response size bound. Failures come back as data, never as throws.
+// Upstream fetch with a timeout and a response size bound. Failures come back as data, never as throws, and carry
+// only a kind and a status: never the URL, which can hold a key, nor an error message that may quote it.
 import type { z } from 'zod';
 import { err, ok, type Result } from './result.js';
 
@@ -13,8 +14,9 @@ export interface UpstreamRequest {
   readonly headers?: Readonly<Record<string, string>>;
 }
 
-/** Why an upstream call failed. */
+/** Why an upstream call failed. over_budget means the call was not made, as its caller was over a call budget. */
 export type HttpFailure =
+  | { readonly kind: 'over_budget' }
   | { readonly kind: 'timeout' }
   | { readonly kind: 'network' }
   | { readonly kind: 'too_large' }
@@ -52,7 +54,10 @@ async function readBounded(response: Response, maxBytes: number): Promise<Result
   return ok(text + decoder.decode());
 }
 
-/** Fetches a URL as text. It aborts after timeoutMs and stops reading past maxBytes. */
+/**
+ * Fetches a URL as text. It aborts after timeoutMs and stops reading past maxBytes. A redirect is not followed, so
+ * a query string never travels to another host; it is reported as its status.
+ */
 export async function fetchText(
   fetcher: Fetcher,
   request: UpstreamRequest,
@@ -64,6 +69,7 @@ export async function fetchText(
   try {
     const response = await fetcher(request.url, {
       headers: { ...request.headers },
+      redirect: 'manual',
       signal: controller.signal,
     });
     if (!response.ok) {

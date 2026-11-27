@@ -1,9 +1,11 @@
-// Tests for the data.gov.in path: CPCB's AQI rule pinned against the saved feed, and rows grouped into stations.
+// Tests for the data.gov.in path: CPCB's AQI rule pinned against the saved feed, and rows grouped into stations,
+// with only stations whose seven rows are all there at one hour taken.
 import { describe, expect, it } from 'vitest';
 import { parseCpcbFeed } from '../../../src/features/air/cpcb-feed.js';
 import {
   aqiByCpcbRule,
-  dataGovFeed,
+  COMPLETE_ROWS,
+  dataGovStations,
   dataGovStateUrl,
   statesNear,
 } from '../../../src/features/air/data-gov.js';
@@ -95,21 +97,26 @@ describe("CPCB's AQI rule against what CPCB published", () => {
   });
 });
 
-describe('dataGovFeed', () => {
+describe('dataGovStations', () => {
   it('turns the fixture written as rows back into the same stations and AQIs', () => {
     const direct = stationsOf(readCpcbFixture());
-    const result = dataGovFeed(asRows(direct));
-    expect(result.ok && result.value.provider).toBe('data_gov_in');
-    const rebuilt = result.ok ? result.value.stations : [];
-    expect(rebuilt.map((record) => record.aqiValue)).toEqual(direct.map((record) => record.aqiValue));
-    expect(rebuilt.map((record) => record.station)).toEqual(direct.map((record) => record.station));
-    expect(rebuilt[0]?.pollutants[0]).toEqual({
+    const { complete, incomplete } = dataGovStations(asRows(direct));
+    expect(incomplete).toBe(0);
+    expect(complete.map((record) => record.aqiValue)).toEqual(direct.map((record) => record.aqiValue));
+    expect(complete.map((record) => record.station)).toEqual(direct.map((record) => record.station));
+    expect(complete[0]?.pollutants[0]).toEqual({
       pollutant: 'pm25',
       hourlySubIndex: null,
       avg: 246,
       min: 89,
       max: 321,
     });
+  });
+
+  it('expects all seven pollutants, as every station of both saved copies has', () => {
+    expect(COMPLETE_ROWS).toBe(7);
+    const direct = readCpcbSnapshotParts().flatMap(stationsOf);
+    expect(direct.every((record) => record.pollutants.length === COMPLETE_ROWS)).toBe(true);
   });
 
   const base = {
@@ -129,24 +136,28 @@ describe('dataGovFeed', () => {
     avg_value: avg,
     ...extra,
   });
+  const rest = (extra: Record<string, string> = {}) =>
+    ['PM10', 'NH3', 'OZONE'].map((id) => row(id, 'NA', extra));
 
-  it('keeps only the latest hour of a station, the first of duplicated rows, and reads numbers sent as numbers', () => {
+  it('keeps the first of duplicated rows, reads numbers sent as numbers, and reads NA as null', () => {
     const rows = [
-      row('PM2.5', '40', { last_update: '24-11-2026 21:00:00' }),
       row('PM2.5', '60'),
       row('PM2.5', '99'),
       { ...base, pollutant_id: 'NO2', min_value: '1', max_value: '9', avg_value: 5 },
       row('SO2', 'NA'),
       row('CO', '30'),
+      ...rest(),
     ];
-    const result = dataGovFeed(rows);
-    const [record] = result.ok ? result.value.stations : [];
+    const [record] = dataGovStations(rows).complete;
     expect(record?.station.state).toBe('Tamil Nadu');
     expect(record?.pollutants.map((entry) => [entry.pollutant, entry.avg])).toEqual([
       ['pm25', 60],
       ['no2', 5],
       ['so2', null],
       ['co', 30],
+      ['pm10', null],
+      ['nh3', null],
+      ['o3', null],
     ]);
     expect(record).toMatchObject({
       aqiValue: 60,
@@ -155,22 +166,43 @@ describe('dataGovFeed', () => {
     });
   });
 
-  it('drops a row whose hour it cannot read when the station has a readable one', () => {
-    const result = dataGovFeed([row('PM2.5', '60', { last_update: 'soon' }), row('NO2', '20')]);
-    expect(result.ok && result.value.stations[0]?.pollutants.map((entry) => entry.pollutant)).toEqual([
-      'no2',
-    ]);
+  it('never takes a station with a row missing, so a missing worst pollutant cannot lower its AQI', () => {
+    const rows = [row('PM2.5', '300'), row('NO2', '20'), row('SO2', '10'), row('CO', '30'), ...rest()];
+    expect(dataGovStations(rows).complete[0]?.aqiValue).toBe(300);
+    expect(dataGovStations(rows.slice(1))).toEqual({ complete: [], incomplete: 1 });
+    const twice = [...rows.slice(1), row('NO2', '20')];
+    expect(dataGovStations(twice)).toEqual({ complete: [], incomplete: 1 });
   });
 
-  it('gives a null AQI to a station that came with too few pollutants', () => {
-    const result = dataGovFeed([row('PM2.5', '60'), row('NO2', '20')]);
-    expect(result.ok && result.value.stations[0]).toMatchObject({ aqiValue: null, predominant: null });
+  it('takes the newest hour whose rows are all there and counts a station whose newest hour is short', () => {
+    const at21 = { last_update: '24-11-2026 21:00:00' };
+    const rows = [
+      ...[row('PM2.5', '40', at21), row('NO2', '20', at21), row('SO2', '10', at21), row('CO', '30', at21)],
+      ...rest(at21),
+      row('PM2.5', '90'),
+      row('NO2', '20'),
+    ];
+    const { complete, incomplete } = dataGovStations(rows);
+    expect(incomplete).toBe(1);
+    expect(complete[0]).toMatchObject({ aqiValue: 40, readingHour: '2026-11-24T21:00:00+05:30' });
   });
 
-  it('skips rows of the wrong shape and stations that fail their check, and says when nothing is left', () => {
+  it('gives a null AQI to a complete station whose averages are too few for CPCB rule', () => {
+    const rows = [row('PM2.5', '60'), row('NO2', '20'), row('SO2', 'NA'), row('CO', 'NA'), ...rest()];
+    expect(dataGovStations(rows).complete[0]).toMatchObject({ aqiValue: null, predominant: null });
+  });
+
+  it('skips rows of the wrong shape, rows whose hour it cannot read and stations that fail their check', () => {
     const noCoordinates = { ...row('PM2.5', '60'), station: 'Other', latitude: undefined };
-    expect(dataGovFeed([{ station: 'x' }, noCoordinates])).toEqual({ ok: false, error: 'no_stations' });
-    expect(dataGovFeed([])).toEqual({ ok: false, error: 'no_stations' });
+    expect(dataGovStations([{ station: 'x' }, noCoordinates])).toEqual({ complete: [], incomplete: 1 });
+    expect(dataGovStations([])).toEqual({ complete: [], incomplete: 0 });
+    const soon = [
+      row('PM2.5', '60', { last_update: 'soon' }),
+      row('NO2', '20'),
+      row('SO2', '1'),
+      row('CO', '1'),
+    ];
+    expect(dataGovStations([...soon, ...rest()])).toEqual({ complete: [], incomplete: 1 });
   });
 });
 

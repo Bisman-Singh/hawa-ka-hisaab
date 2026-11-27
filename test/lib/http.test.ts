@@ -22,6 +22,25 @@ describe('fetchText', () => {
     expect(fake.calls[0]?.init.signal).toBeInstanceOf(AbortSignal);
   });
 
+  it('never follows a redirect, so a key in the query string cannot travel to another host', async () => {
+    const moved = new Response(null, {
+      status: 301,
+      headers: { location: 'http://elsewhere.test/feed?api-key=secret-value' },
+    });
+    const fake = answer(moved);
+    const result = await fetchText(fake.fetch, request);
+    expect(fake.calls[0]?.init.redirect).toBe('manual');
+    expect(result).toEqual({ ok: false, error: { kind: 'status', status: 301 } });
+  });
+
+  it('keeps nothing of a thrown error, whose message can quote the URL and its key', async () => {
+    const url = 'https://upstream.test/feed?api-key=secret-value';
+    const fake = createFakeFetcher(() => Promise.reject(new TypeError(`Failed to parse URL from ${url}`)));
+    const result = await fetchJson(fake.fetch, { ...request, url }, z.unknown());
+    expect(result).toEqual({ ok: false, error: { kind: 'network' } });
+    expect(JSON.stringify(result)).not.toContain('secret-value');
+  });
+
   it('decodes a character split across chunks', async () => {
     const bytes = new TextEncoder().encode('हवा');
     const body = new ReadableStream<Uint8Array>({

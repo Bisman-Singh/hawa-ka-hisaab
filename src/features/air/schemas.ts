@@ -123,13 +123,22 @@ export const airReadingSchema = z.discriminatedUnion('path', [
 ]);
 
 /**
+ * Why the station data could not be read just now: updating, the source was being rebuilt and answered with
+ * stations missing; busy, it asked us to slow down or this server is holding back its calls; no_answer, it did not
+ * answer in time or failed; unusable, it sent something the app cannot use.
+ */
+export const feedProblemSchema = z.enum(['updating', 'busy', 'no_answer', 'unusable']);
+
+/**
  * State of the CPCB feed. fetch failed with a feedHour means the last good snapshot is in use;
  * fetch failed with feedHour null means nothing is cached. stale means feedHour is older than three hours.
+ * problem says why fetch failed; the server always sets it then, and it is optional so older copies still parse.
  */
 export const feedStatusSchema = z.strictObject({
   fetch: z.enum(['ok', 'failed']),
   feedHour: isoDateTimeSchema.nullable(),
   stale: z.boolean(),
+  problem: feedProblemSchema.optional(),
 });
 
 /** One modelled hour in micrograms per cubic metre, CO included. null where the model gave no value. */

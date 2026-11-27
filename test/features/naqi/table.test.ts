@@ -92,6 +92,16 @@ describe('bands and the table', () => {
     expect(NAQI_TABLE.pollutants.co.unit).toBe('mg_m3');
   });
 
+  it('marks the ozone rows from Very poor on as one hour values, as the table footnote does, and no other', () => {
+    expect(NAQI_TABLE.pollutants.o3.oneHourFrom).toBe(209);
+    const others = Object.values(NAQI_TABLE.pollutants).filter((rule) => rule.pollutant !== 'o3');
+    expect(others.map((rule) => rule.oneHourFrom)).toEqual(others.map(() => null));
+    const footnoted = AIR_FACTS.filter(
+      (fact) => fact.id.startsWith('naqi-') && fact.title.includes('one hour value'),
+    );
+    expect(footnoted.map((fact) => fact.id)).toEqual(['naqi-o3-very-poor', 'naqi-o3-severe']);
+  });
+
   it('refuses to build from facts with a breakpoint missing or of the wrong kind', () => {
     expect(() => buildNaqiTable(AIR_FACTS.filter((fact) => fact.id !== 'naqi-pm25-poor'))).toThrow(
       'naqi-pm25-poor',

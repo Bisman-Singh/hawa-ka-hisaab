@@ -8,16 +8,22 @@ export type CacheRead<V, E> =
   | { readonly kind: 'last_good'; readonly value: V; readonly storedAt: number; readonly error: E }
   | { readonly kind: 'miss'; readonly error: E };
 
-/** Settings for one cache instance. */
-export interface TtlCacheOptions {
-  readonly ttlMs: number;
-  readonly retryAfterFailureMs: number;
+/** A time in milliseconds, fixed or worked out from the value or failure it applies to. */
+export type Duration<T> = number | ((subject: T) => number);
+
+/** Settings for one cache instance. A failure held for 0 ms lets the next read load at once. */
+export interface TtlCacheOptions<V, E> {
+  readonly ttlMs: Duration<V>;
+  readonly retryAfterFailureMs: Duration<E>;
   readonly maxEntries: number;
   readonly clock: Clock;
 }
 
-/** Loads a value for a key. It reports failure as a Result and should not reject. */
-export type CacheLoader<V, E> = () => Promise<Result<V, E>>;
+/**
+ * Loads a value for a key, given the last value stored for it, even an expired one. It reports failure as a Result
+ * and should not reject.
+ */
+export type CacheLoader<V, E> = (previous: V | undefined) => Promise<Result<V, E>>;
 
 /** A keyed cache. Concurrent reads of one key share a single load. */
 export interface TtlCache<V, E> {
@@ -32,8 +38,11 @@ interface Entry<V> {
 
 interface Failure<E> {
   readonly error: E;
-  readonly at: number;
+  readonly until: number;
 }
+
+const durationOf = <T>(duration: Duration<T>, subject: T): number =>
+  typeof duration === 'number' ? duration : duration(subject);
 
 function dropOldest(map: Map<string, unknown>, maxSize: number): void {
   const oldest = map.keys().next();
@@ -46,9 +55,9 @@ class MemoryTtlCache<V, E> implements TtlCache<V, E> {
   readonly #entries = new Map<string, Entry<V>>();
   readonly #failures = new Map<string, Failure<E>>();
   readonly #inFlight = new Map<string, Promise<CacheRead<V, E>>>();
-  readonly #options: TtlCacheOptions;
+  readonly #options: TtlCacheOptions<V, E>;
 
-  constructor(options: TtlCacheOptions) {
+  constructor(options: TtlCacheOptions<V, E>) {
     this.#options = options;
   }
 
@@ -73,23 +82,24 @@ class MemoryTtlCache<V, E> implements TtlCache<V, E> {
   #cached(key: string): CacheRead<V, E> | null {
     const now = this.#options.clock.now();
     const entry = this.#entries.get(key);
-    if (entry && now - entry.storedAt < this.#options.ttlMs) {
+    if (entry && now - entry.storedAt < durationOf(this.#options.ttlMs, entry.value)) {
       return { kind: 'fresh', ...entry };
     }
     const failure = this.#failures.get(key);
-    if (failure && now - failure.at < this.#options.retryAfterFailureMs) {
+    if (failure && now < failure.until) {
       return this.#fallback(key, failure.error);
     }
     return null;
   }
 
   async #settle(key: string, load: CacheLoader<V, E>): Promise<CacheRead<V, E>> {
-    const result = await load();
+    const result = await load(this.#entries.get(key)?.value);
     if (result.ok) {
       return this.#store(key, result.value);
     }
+    const until = this.#options.clock.now() + durationOf(this.#options.retryAfterFailureMs, result.error);
     this.#failures.delete(key);
-    this.#failures.set(key, { error: result.error, at: this.#options.clock.now() });
+    this.#failures.set(key, { error: result.error, until });
     dropOldest(this.#failures, this.#options.maxEntries);
     return this.#fallback(key, result.error);
   }
@@ -110,9 +120,9 @@ class MemoryTtlCache<V, E> implements TtlCache<V, E> {
 }
 
 /**
- * Creates a cache. After a failed load it waits retryAfterFailureMs before calling the loader again. Values and
- * failures are each held for at most maxEntries keys, the oldest dropped first.
+ * Creates a cache. A value is fresh for ttlMs; after a failed load it waits retryAfterFailureMs before calling the
+ * loader again. Values and failures are each held for at most maxEntries keys, the oldest dropped first.
  */
-export function createTtlCache<V, E>(options: TtlCacheOptions): TtlCache<V, E> {
+export function createTtlCache<V, E>(options: TtlCacheOptions<V, E>): TtlCache<V, E> {
   return new MemoryTtlCache<V, E>(options);
 }

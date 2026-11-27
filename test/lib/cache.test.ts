@@ -125,6 +125,36 @@ describe('createTtlCache', () => {
     expect(retryC).not.toHaveBeenCalled();
   });
 
+  it('works out the time to live from the value and the wait from the failure when given functions', async () => {
+    const clock = createFakeClock(0);
+    const cache = createTtlCache<string, string>({
+      ttlMs: (value) => (value === 'partial' ? 20 : HOUR),
+      retryAfterFailureMs: (error) => (error === 'not_made' ? 0 : 60_000),
+      maxEntries: 10,
+      clock,
+    });
+    await cache.read('a', loads('partial'));
+    clock.advance(19);
+    expect(await cache.read('a', loads('whole'))).toMatchObject({ value: 'partial' });
+    clock.advance(1);
+    expect(await cache.read('a', loads('whole'))).toMatchObject({ value: 'whole' });
+    const notMade = fails('not_made');
+    await cache.read('b', notMade);
+    await cache.read('b', notMade);
+    expect(notMade).toHaveBeenCalledTimes(2);
+  });
+
+  it('hands the loader the last stored value, even once it has expired', async () => {
+    const { clock, cache } = setup();
+    const first = vi.fn(() => Promise.resolve<Result<string, string>>(ok('feed-1')));
+    await cache.read('feed', first);
+    expect(first).toHaveBeenCalledWith(undefined);
+    clock.advance(HOUR);
+    const second = vi.fn(() => Promise.resolve<Result<string, string>>(ok('feed-2')));
+    await cache.read('feed', second);
+    expect(second).toHaveBeenCalledWith('feed-1');
+  });
+
   it('lets a rejection through and clears the in-flight load so the next read retries', async () => {
     const { cache } = setup();
     const broken = vi.fn(() => Promise.reject(new Error('loader bug')));
