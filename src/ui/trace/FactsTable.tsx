@@ -28,11 +28,11 @@ function joins({ first, rest }: Group, fact: FactValue): boolean {
   );
 }
 
-function unitValue(first: FactValue, rest: readonly FactValue[], values: string): string {
+function unitValue(first: FactValue, values: string): string {
   if (first.unit === 'name') {
     return values;
   }
-  return rest.length === 0 ? amountText(first.value, first.unit) : `${values} ${first.unit}`;
+  return first.unit === 'clock time' ? `${values}, ${TRACE.clockPart}` : amountText(first.value, first.unit);
 }
 
 function rowOf({ first, rest }: Group): FactRow {
@@ -47,7 +47,7 @@ function rowOf({ first, rest }: Group): FactRow {
   const values = [first, ...rest].map((fact) => String(fact.value)).join(', ');
   return {
     label: first.label,
-    value: unitValue(first, rest, values),
+    value: unitValue(first, values),
     id: first.id,
   };
 }

@@ -14,6 +14,7 @@
       "id": "Id"
     },
     "noFacts": "No facts were sent, because the model was not asked.",
+    "clockPart": "from a clock time",
     "reply": "The model's reply",
     "refused": "A reply the checks refused",
     "refusedWhy": "The model did reply, but its reply was not used because it",

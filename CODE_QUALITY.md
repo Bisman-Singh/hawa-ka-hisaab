@@ -30,7 +30,7 @@ Each rule below says where it is enforced and which check proves it. `npm run ga
 **Byte caps and a line budget.** A hand-written source file is at most 12,000 bytes and any other file at most 64,000, the lockfile excepted. TypeScript source outside tests and the fact tables has a budget of 15,030 code lines and the stylesheets one of 2,600.
 
 - Enforced in `test/conventions/size.test.ts`.
-- Measured in this tree: 15,023 TypeScript code lines across 287 files, and 2,210 CSS code lines.
+- Measured in this tree: 15,019 TypeScript code lines across 287 files, and 2,210 CSS code lines.
 
 ## Layers
 

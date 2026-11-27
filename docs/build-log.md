@@ -1,6 +1,6 @@
 # Build log
 
-What was built, in the order it landed on the main branch, from `git log`. Dates are in IST. This account runs to commit 2bdc19c.
+What was built, in the order it landed on the main branch, from `git log`. Dates are in IST.
 
 ## 26 November 2026
 
@@ -24,3 +24,5 @@ What was built, in the order it landed on the main branch, from `git log`. Dates
 15. **data.gov.in and budgets.** Only stations with every pollutant row are used from data.gov.in, failed reads are retried sooner, upstream calls are held to budgets, and the rate limiter is tighter.
 16. **Wording as checked data.** Interface wording moved into checked content files, button, section and time helpers shared across the views, and seven small product faults fixed.
 17. **Focus, errors and targets.** Focus kept on a useful element after every action on every screen, form errors announced, one line for each kind of station data problem, and touch targets brought to 44 px, with end to end checks for focus, screen layout and target size.
+18. **Documents.** The README, the control documents for code quality, security, efficiency, testing, accessibility and problem alignment, the licence, the decisions and this log.
+19. **Compare and the facts table.** The compare view names who the health advisory counts as at higher risk in each household, and a part of a clock time in the facts table says what it is.

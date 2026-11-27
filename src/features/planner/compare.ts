@@ -1,7 +1,7 @@
 // Compares two households' plans made on the same air and names the differences worth calling out:
-// who is protected, what moved, what stays indoors, travel changes, the largest cut and the indoor steps.
+// who is at higher risk, what moved, what stays indoors, travel changes, the largest cut and the indoor steps.
 import { err, ok, type Result } from '../../lib/result.js';
-import { describeMember, membersOf } from '../household/members.js';
+import { describeMember, isVulnerable } from '../household/members.js';
 import type { Household } from '../household/types.js';
 import { effectDisplay } from '../ledger/display.js';
 import { fill } from '../../lib/template.js';
@@ -48,11 +48,7 @@ function largestCut(side: ComparedPlan): string[] {
 }
 
 const ITEMS: Readonly<Record<CompareTopic, (side: ComparedPlan) => string[]>> = {
-  protected: (side) =>
-    membersOf(
-      side.household,
-      ofKind(side, ['protect', 'move_indoors']).flatMap((item) => item.memberIds),
-    ).map(describeMember),
+  protected: (side) => side.household.members.filter(isVulnerable).map(describeMember),
   moved: (side) =>
     ofKind(side, ['reschedule']).map((item) =>
       fill(WORDS.movedTo, { name: nameOf(side, item), time: item.start ?? '' }),

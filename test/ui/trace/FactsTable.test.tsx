@@ -36,7 +36,7 @@ describe('factRows', () => {
       { label: 'An hour alone', value: '7 hour', id: 'lone' },
       { label: 'A minute of another fact', value: '30 minute', id: 'other' },
       { label: 'Start time as entered', value: '18:30', id: 'a1' },
-      { label: 'Start time as entered', value: '8, 8 clock time', id: 'a2' },
+      { label: 'Start time as entered', value: '8, 8, from a clock time', id: 'a2' },
     ]);
   });
 

@@ -7,7 +7,7 @@ Every source file with runtime code has its own test file. On top of those, adve
 Measured on this tree. `npm run gate` exited 0, and so did the Playwright run:
 
 - **Unit, route, interface and convention tests:** 1,825 tests in 319 files, all passing.
-- **Coverage over `src/`:** 100 percent of statements, branches, functions and lines, which is 4,547 statements, 2,902 branches, 1,703 functions and 4,189 lines.
+- **Coverage over `src/`:** 100 percent of statements, branches, functions and lines, which is 4,546 statements, 2,902 branches, 1,702 functions and 4,188 lines.
 - **End to end:** 56 tests in 7 files, 28 on a phone profile and 28 on a laptop profile, all passing.
 
 ## Commands

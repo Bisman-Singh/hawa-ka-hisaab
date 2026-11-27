@@ -21,12 +21,12 @@ function side(household: Household): ComparedPlan {
 }
 
 describe('comparePlans', () => {
-  it('names who is protected, what moved indoors and the travel changes for each household', () => {
+  it('names who is at higher risk, what moved indoors and the travel changes for each household', () => {
     const result = comparePlans(side(sample('family-car-asthma')), side(sample('delivery-rider')));
     const lines = result.ok ? Object.fromEntries(result.value.map((line) => [line.topic, line])) : {};
     expect(lines['protected']).toEqual({
       topic: 'protected',
-      left: 'adult; child with asthma or a lung condition; older adult with a heart condition',
+      left: 'child with asthma or a lung condition; older adult with a heart condition',
       right: 'adult who works outdoors',
     });
     expect(lines['indoors']?.left).toBe('walk in the park; football practice');
