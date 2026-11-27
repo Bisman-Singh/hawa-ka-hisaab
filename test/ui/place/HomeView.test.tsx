@@ -97,6 +97,7 @@ describe('HomeView', () => {
       location: { lat: 28.64, lon: 77.3 },
       place: pinPlace(),
       language: 'en',
+      modelChoice: null,
     });
     home();
     expect(await screen.findByText('JNU, Delhi - DPCC')).toBeInTheDocument();

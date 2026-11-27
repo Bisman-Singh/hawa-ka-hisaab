@@ -1,26 +1,27 @@
 // The figures of a station slip: CPCB's AQI as published, never worked out here, and the hourly sub-indices.
+// The short card leaves out the scale and the legend.
 import { Fragment } from 'react';
 import type { ReactElement } from 'react';
 import type { StationReading } from '../../features/air/types.js';
 import { BandLabel, BandScale } from '../components/Band.js';
 import { BandLegend } from '../components/BandLegend.js';
-import { providerWords } from './SourceLine.js';
-import { AIR, POLLUTANT_NAME } from './strings.js';
+import { AIR, NO_AQI, POLLUTANT_NAME } from './strings.js';
 
-/** CPCB's AQI as published with its band and scale, or the words for a missing AQI. at marks an old hour. */
+/** CPCB's AQI as published with its band and, unless compact, its scale; or the words for a missing AQI. */
 export function StationAqi(props: {
   readonly reading: StationReading;
   readonly at: string | null;
+  readonly compact: boolean;
 }): ReactElement {
-  const { reading, at } = props;
+  const { reading, at, compact } = props;
   if (reading.aqi === null) {
-    const words = providerWords(reading);
+    const words = NO_AQI[reading.provider ?? 'cpcb_feed'];
     return (
       <>
         <div className="reading">
-          <p className="aqi-none">{words.noAqi}</p>
+          <p className="aqi-none">{words.short}</p>
         </div>
-        <p className="small">{words.noAqiNote}</p>
+        <p className="small">{words.note}</p>
       </>
     );
   }
@@ -41,8 +42,12 @@ export function StationAqi(props: {
           )}
         </div>
       </div>
-      <BandScale value={value} band={band} />
-      <BandLegend />
+      {compact ? null : (
+        <>
+          <BandScale value={value} band={band} label={AIR.cpcbAqi} />
+          <BandLegend />
+        </>
+      )}
     </>
   );
 }

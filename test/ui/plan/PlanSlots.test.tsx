@@ -14,7 +14,13 @@ describe('slots', () => {
   it('say so when a part of the day has nothing planned', () => {
     const { plan } = planResponse('older-couple-chulha', 'poor');
     const empty = { ...plan, slots: { morning: [], afternoon: [], evening: [] } };
-    render(<PlanSlots plan={empty} household={sample('older-couple-chulha')} curve={null} />);
+    render(
+      <PlanSlots
+        plan={empty}
+        household={sample('older-couple-chulha')}
+        whatIf={{ curve: null, notBefore: null }}
+      />,
+    );
     expect(screen.getAllByText('Nothing planned in this part of the day.')).toHaveLength(3);
   });
 });

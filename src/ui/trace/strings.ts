@@ -14,6 +14,9 @@ export const TRACE = {
   factsHead: { label: 'Fact', value: 'Value', id: 'Id' },
   noFacts: 'No facts were sent, because the model was not asked.',
   reply: "The model's reply",
+  refused: 'A reply the checks refused',
+  refusedWhy: 'The model did reply, but the reply failed a check and was not used. It is not advice.',
+  refusedShow: 'Show the refused text',
   replyNote:
     'The reply is checked against a schema. Text from it is shown as plain text, never as page code.',
   noReply: 'There is no model reply for this answer.',
@@ -24,6 +27,8 @@ export const TRACE = {
   formula: 'Formula',
   sources: 'Factors and sources',
   noSource: 'no source record on this page',
+  cached:
+    'Reused from a few minutes ago. The same request was answered in the last five minutes, so the model was not asked again.',
 };
 
 /** Who wrote the words, in a sentence. */

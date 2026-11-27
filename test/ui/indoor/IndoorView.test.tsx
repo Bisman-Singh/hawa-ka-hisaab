@@ -2,7 +2,7 @@
 // with figures where a factor backs them and the reason alone where none does, the states before a plan, and axe.
 import { screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { figure } from '../../../src/features/planner/fact-values.js';
+import { formatFigure } from '../../../src/features/ledger/format.js';
 import { Announcer } from '../../../src/ui/hooks/announcer.js';
 import { IndoorView } from '../../../src/ui/indoor/IndoorView.js';
 import { axeViolations, renderInApp } from '../helpers.js';
@@ -29,8 +29,8 @@ describe('IndoorView', () => {
       await screen.findByRole('heading', { level: 2, name: 'Purifier size for the bedroom' }),
     ).toBeInTheDocument();
     const purifier = need(response.plan.indoor.find((step) => step.id === 'purifier-r1'));
-    const total = need(figure(purifier.id, need(purifier.figure))[0]);
-    expect(screen.getAllByText(`${String(total.value)} ${total.unit}`)).not.toHaveLength(0);
+    const total = formatFigure(need(purifier.figure));
+    expect(container.querySelector('dl.calc .total')).toHaveTextContent(total);
     expect(container.querySelector('dl.calc .total')).not.toBeNull();
     expect(
       screen.getByRole('heading', { name: 'Houseplants will not clean smoky air' }).closest('li'),

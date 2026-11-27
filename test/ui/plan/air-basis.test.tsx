@@ -2,8 +2,10 @@
 // modelled label, and nothing when the page holds another reading or none.
 import { render } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import type { StationReading } from '../../../src/features/air/types.js';
-import { AirBasisLine, airQuote, istClock } from '../../../src/ui/plan/air-basis.js';
+import { factQuote } from '../../../src/config/facts/index.js';
+import type { AirResponse, StationReading } from '../../../src/features/air/types.js';
+import { AirBasisLine, istClock, otherAir } from '../../../src/ui/plan/air-basis.js';
+import { modelledReading } from '../place/air-fixtures.js';
 import { airResponse, planResponse, READING_HOUR, stationReading } from './fixtures.js';
 
 const basis = planResponse('family-car-asthma', 'very_poor').airBasis;
@@ -20,8 +22,7 @@ describe('AirBasisLine', () => {
     const reading: StationReading = { ...stationReading('very_poor'), provider: 'data_gov_in' };
     const air = { ...airResponse(), reading };
     const { container, rerender } = render(<AirBasisLine basis={basis} air={air} />);
-    expect(airQuote('naqi-worst-sub-index')).toBe('The worst sub-index determines the overall AQI.');
-    expect(container).toHaveTextContent(airQuote('naqi-worst-sub-index'));
+    expect(container).toHaveTextContent(factQuote('naqi-worst-sub-index'));
     rerender(<AirBasisLine basis={{ ...basis, path: 'modelled' }} air={null} />);
     expect(container).toHaveTextContent('Modelled estimate from CAMS via Open-Meteo. Not a measurement.');
   });
@@ -37,10 +38,24 @@ describe('AirBasisLine', () => {
 });
 
 describe('helpers', () => {
-  it('give the IST clock of an instant and the text of an air quote, empty for an unknown id', () => {
+  it('give the IST clock of an instant', () => {
     expect(istClock(READING_HOUR)).toBe('22:00');
     expect(istClock('2026-11-24T00:30:00Z')).toBe('06:00');
-    expect(airQuote('credit-open-meteo')).toBe('Weather data by Open-Meteo.com');
-    expect(airQuote('grap-stage-order')).toBe('');
+  });
+});
+
+describe('otherAir', () => {
+  it('is true only when the air held on the page is not the reading the plan was made on', () => {
+    expect(otherAir(null, basis)).toBe(false);
+    expect(otherAir(airResponse(), basis)).toBe(false);
+    expect(otherAir(airResponse(), { ...basis, readingHour: '2026-11-24T21:00:00+05:30' })).toBe(true);
+    expect(otherAir(airResponse(), { ...basis, path: 'modelled' })).toBe(true);
+    const modelled: AirResponse = { ...airResponse(), reading: modelledReading() };
+    expect(otherAir(modelled, { ...basis, path: 'modelled', readingHour: READING_HOUR })).toBe(false);
+    const none: AirResponse = {
+      ...airResponse(),
+      reading: { path: 'unavailable', reason: 'feed_and_model_down' },
+    };
+    expect(otherAir(none, { ...basis, path: 'unavailable', readingHour: null })).toBe(false);
   });
 });

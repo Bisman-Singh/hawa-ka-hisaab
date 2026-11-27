@@ -12,10 +12,10 @@ export const UI = {
     cpcb: 'Air readings come from the Central Pollution Control Board CAAQMS feed.',
     meteoBefore: 'Forecasts and modelled estimates: Weather data by ',
     meteoLink: 'Open-Meteo.com',
-    meteoAfter: ', CC BY 4.0.',
+    licence: 'CC BY 4.0',
+    licenceUrl: 'https://creativecommons.org/licenses/by/4.0/',
     geoBefore: 'PIN code places: ',
     geoLink: 'GeoNames (geonames.org)',
-    geoAfter: ', CC BY 4.0.',
     samples: 'Sample households are made up.',
   },
   working: 'Show the working',
@@ -85,10 +85,20 @@ export const BAND_TEXT: Readonly<Record<AqiBand, BandText>> = {
   },
 };
 
-/** The sentence a screen reader hears for the band scale, such as "AQI 342 is in the fifth of six bands, ...". */
-export function scaleSentence(aqi: number, band: AqiBand, range: string): string {
+/**
+ * A value placed on the band scale. label says what it is, such as "CPCB AQI" for a station or "Estimated index"
+ * for the model path, so an estimate is never read out as an AQI reading.
+ */
+export interface ScaleValue {
+  readonly label: string;
+  readonly value: number;
+  readonly band: AqiBand;
+}
+
+/** The sentence a screen reader hears for the band scale, such as "CPCB AQI 342 is in the fifth of six bands". */
+export function scaleSentence({ label, value, band }: ScaleValue, range: string): string {
   const { name, ordinal } = BAND_TEXT[band];
-  return `AQI ${String(aqi)} is in the ${ordinal} of six bands, ${name}, ${range}.`;
+  return `${label} ${String(value)} is in the ${ordinal} of six bands, ${name}, ${range}.`;
 }
 
 /** A title and a next step for a failed request, in plain words. */

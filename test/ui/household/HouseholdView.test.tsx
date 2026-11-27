@@ -75,6 +75,7 @@ describe('HouseholdView', () => {
       location: null,
       place: null,
       language: 'en',
+      modelChoice: null,
     });
     setIntake({
       text: 'One teen.',

@@ -1,9 +1,8 @@
 // Tests for the working sheet: inputs shown as the ledger displays them, the formula, and each factor linked to its
-// source, with extra facts found and an unknown id named rather than hidden.
+// source, every fact found in the registry alone and an unknown id named rather than hidden.
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { findFact } from '../../../src/config/facts/index.js';
-import { COMMUNITY_FACTS } from '../../../src/config/facts/community.js';
 import { displayValue } from '../../../src/features/ledger/format.js';
 import { factsFor, Workings, WorkingSheet } from '../../../src/ui/trace/Working.js';
 import { need, planResponse } from '../plan/fixtures.js';
@@ -29,18 +28,14 @@ describe('WorkingSheet', () => {
 });
 
 describe('factsFor', () => {
-  it('finds facts in the registry or the extra list and keeps unknown ids as ids', () => {
-    const community = need(COMMUNITY_FACTS[0]);
-    const found = factsFor(
-      ['advice-very-poor-general', community.id, 'no-such-fact', 'no-such-fact'],
-      COMMUNITY_FACTS,
-    );
+  it('finds every fact in the registry, community facts too, and keeps unknown ids as ids', () => {
+    const community = need(findFact('community-share-dg-sets'));
+    const found = factsFor(['advice-very-poor-general', community.id, 'no-such-fact', 'no-such-fact']);
     expect(found.map((fact) => (typeof fact === 'string' ? fact : fact.id))).toEqual([
       'advice-very-poor-general',
       community.id,
       'no-such-fact',
     ]);
-    expect(factsFor([community.id])).toEqual([community]);
   });
 });
 

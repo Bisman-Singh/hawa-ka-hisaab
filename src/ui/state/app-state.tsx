@@ -7,7 +7,7 @@ import type { PlanResponse } from '../../features/planner/types.js';
 import { clearState, EMPTY_STATE, loadState, saveState } from '../storage.js';
 import type { StoredState } from '../storage.js';
 
-/** The kept fields a view may change: household, location, place and language. */
+/** The kept fields a view may change: household, location, place, language and the model choice. */
 export type SavedFields = Omit<StoredState, 'version'>;
 
 /** Everything shared. kept is false when the browser refused to store the household. */
@@ -28,19 +28,25 @@ export interface AppActions {
 const differs = (fields: Partial<SavedFields>, state: SavedFields, key: keyof SavedFields): boolean =>
   key in fields && JSON.stringify(fields[key]) !== JSON.stringify(state[key]);
 
-/** Applies a save: a changed location clears the reading and plan, a changed household or language the plan. */
+const REPLAN_KEYS: readonly (keyof SavedFields)[] = ['household', 'language', 'modelChoice'];
+
+/**
+ * Applies a save: a changed location clears the reading and plan; a changed household, language or model choice
+ * clears the plan, so the next one is made for them.
+ */
 export function applySave(state: AppState, fields: Partial<SavedFields>): AppState {
   const moved = differs(fields, state, 'location');
-  const replan = moved || differs(fields, state, 'household') || differs(fields, state, 'language');
+  const replan = moved || REPLAN_KEYS.some((key) => differs(fields, state, key));
   return { ...state, ...fields, reading: moved ? null : state.reading, plan: replan ? null : state.plan };
 }
 
-const savedPart = ({ household, location, place, language }: SavedFields): StoredState => ({
+const savedPart = ({ household, location, place, language, modelChoice }: SavedFields): StoredState => ({
   version: 1,
   household,
   location,
   place,
   language,
+  modelChoice,
 });
 
 const EMPTY_FIELDS: SavedFields = {
@@ -48,6 +54,7 @@ const EMPTY_FIELDS: SavedFields = {
   location: EMPTY_STATE.location,
   place: EMPTY_STATE.place,
   language: EMPTY_STATE.language,
+  modelChoice: EMPTY_STATE.modelChoice,
 };
 
 /** Writes the kept fields, or removes them when nothing is left to keep. False when the browser refused. */

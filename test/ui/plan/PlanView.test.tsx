@@ -10,16 +10,7 @@ import { PlanView } from '../../../src/ui/plan/PlanView.js';
 import { contextFor } from '../../../src/ui/plan/plan-data.js';
 import { sample } from '../../support/plan-fixtures.js';
 import { axeViolations, fakeDialog, renderInApp } from '../helpers.js';
-import {
-  airResponse,
-  announced,
-  FORECAST,
-  json,
-  need,
-  planResponse,
-  saveSample,
-  stubApi,
-} from './fixtures.js';
+import { airResponse, announced, json, need, planResponse, saveSample, stubApi } from './fixtures.js';
 
 const renderPlan = () =>
   renderInApp(
@@ -68,7 +59,7 @@ describe('PlanView with a plan', () => {
     const entry = entryOf('Office commute: take the bus');
     const toggles = response.plan.slots.morning.flatMap((item) => item.whatIfs);
     const toggle = need(toggles.find((found) => found.id === 'carpool-a1'));
-    const ctx = contextFor(response.plan, sample('family-car-asthma'), FORECAST);
+    const ctx = contextFor(response.plan, sample('family-car-asthma'), need(response.whatIfContext));
     const expected = whatIfEffects(ctx, toggle.patch);
     const co2 = need(expected.ok ? expected.value.find((effect) => effect.kind === 'co2') : undefined);
     const text = formatEffect(co2);
@@ -95,7 +86,7 @@ describe('PlanView with a plan', () => {
     const toggles = response.plan.slots.afternoon.flatMap((item) => item.whatIfs);
     const toggle = need(toggles.find((found) => found.id === 'start-a3-1300'));
     const expected = whatIfEffects(
-      contextFor(response.plan, sample('family-car-asthma'), FORECAST),
+      contextFor(response.plan, sample('family-car-asthma'), need(response.whatIfContext)),
       toggle.patch,
     );
     const exposure = need(
@@ -105,20 +96,6 @@ describe('PlanView with a plan', () => {
     expect(within(entry).queryByText(text)).toBeNull();
     await userEvent.click(within(entry).getByRole('radio', { name: 'Start at 13:00' }));
     expect(within(entry).getByText(text)).toBeInTheDocument();
-  });
-
-  it('hides start-time toggles and says why when the page has no forecast', async () => {
-    saveSample();
-    stubApi({
-      '/api/air': () => json(airResponse('poor', null)),
-      '/api/plan': () => json(planResponse('family-car-asthma', 'poor')),
-    });
-    renderPlan();
-    await screen.findByText('Move walk in the park to 14:00');
-    const entry = entryOf('Move walk in the park to 14:00');
-    expect(within(entry).queryByRole('radio', { name: 'Start at 13:00' })).toBeNull();
-    expect(within(entry).getByText(/Other start times need the forecast/)).toBeInTheDocument();
-    expect(screen.getByText(/forecast is not loaded on this page/)).toBeInTheDocument();
   });
 
   it('puts the severe-day bulletin first, with the health ministry words for everyone and the vulnerable', async () => {
@@ -134,7 +111,8 @@ describe('PlanView with a plan', () => {
     const heading = screen.getByRole('heading', { level: 1 });
     expect(bulletin.compareDocumentPosition(heading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(bulletin).toHaveTextContent('AQI 342 at JNU, Delhi - DPCC');
-    expect(screen.getAllByText(/AQI/)).toHaveLength(1);
+    const plan = need(container.querySelector<HTMLElement>('.page-right'));
+    expect(within(plan).getAllByText(/AQI/)).toHaveLength(1);
     expect(await axeViolations(container)).toEqual([]);
   }, 30_000);
 
@@ -162,7 +140,8 @@ describe('PlanView with a plan', () => {
     });
     renderPlan();
     expect(await screen.findByText(/air reading for your place is not available today/)).toBeInTheDocument();
-    expect(screen.getByText(/CPCB published no AQI for this station/)).toBeInTheDocument();
+    const head = need(document.querySelector<HTMLElement>('.plan-head'));
+    expect(within(head).getByText(/CPCB published no AQI for this station/)).toBeInTheDocument();
   });
 
   it('shows model text as text, never as HTML', async () => {

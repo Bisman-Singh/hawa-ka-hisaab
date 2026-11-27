@@ -3,7 +3,6 @@
 import { useId, useState } from 'react';
 import { flushSync } from 'react-dom';
 import type { ReactElement } from 'react';
-import { COMMUNITY_FACTS } from '../../config/facts/community.js';
 import { noticeToPlainText } from '../../features/community/notice.js';
 import type { CommunityKind, NoticeResponse, NoticeText } from '../../features/community/types.js';
 import type { Language } from '../../lib/types.js';
@@ -47,7 +46,7 @@ function Facts({ response, kind }: NoticeResultProps): ReactElement {
             <span>{fact.label}</span>
             <span className="fig">{`${String(fact.value)} ${fact.unit}`}</span>
             <div className="cite">
-              <Workings workings={[fact]} extra={COMMUNITY_FACTS} />
+              <Workings workings={[fact]} />
             </div>
           </li>
         ))}

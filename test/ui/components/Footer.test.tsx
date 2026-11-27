@@ -2,7 +2,10 @@
 import { screen } from '@testing-library/react';
 import type { ReactElement } from 'react';
 import { describe, expect, it } from 'vitest';
+import { factQuote } from '../../../src/config/facts/index.js';
 import { Footer } from '../../../src/ui/components/Footer.js';
+import { LICENCES } from '../../../src/ui/components/Credit.js';
+import { UI } from '../../../src/ui/i18n/strings.js';
 import { axeViolations, renderInApp } from '../helpers.js';
 
 const Empty = (): ReactElement => <p>Privacy text</p>;
@@ -19,8 +22,17 @@ describe('Footer', () => {
       'href',
       'https://open-meteo.com/',
     );
+    expect(screen.getAllByRole('link', { name: 'CC BY 4.0' })).toHaveLength(2);
     expect(screen.queryByRole('list')).not.toBeInTheDocument();
     expect(await axeViolations(container)).toEqual([]);
+  });
+
+  it('words the Open-Meteo credit and its licence as the facts registry does', () => {
+    const { meteoBefore, meteoLink, licenceUrl } = UI.credits;
+    expect(`${meteoBefore.slice(meteoBefore.indexOf('Weather data by'))}${meteoLink}`).toBe(
+      factQuote('credit-open-meteo'),
+    );
+    expect(LICENCES['credit-open-meteo']?.url).toBe(licenceUrl);
   });
 
   it('lists the footer views as links', () => {

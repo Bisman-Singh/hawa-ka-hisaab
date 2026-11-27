@@ -1,6 +1,11 @@
 // Words of the place search and the air card. Names, numbers and hours come from the data, never from here.
 import { STATION_RADIUS_KM } from '../../config/limits.js';
-import type { GrapNotice, ModelledReading, UnavailableReading } from '../../features/air/types.js';
+import type {
+  GrapNotice,
+  ModelledReading,
+  StationProvider,
+  UnavailableReading,
+} from '../../features/air/types.js';
 import type { PollutantId } from '../../features/naqi/types.js';
 
 const RADIUS = `${String(STATION_RADIUS_KM)} km`;
@@ -70,6 +75,18 @@ export const AIR = {
   insufficient: 'The model gave too few pollutants for an index, so none is shown.',
   unavailable: 'The air reading could not be fetched',
   grapLead: 'GRAP, Delhi NCR only.',
+};
+
+/** What a missing AQI means for each copy of CPCB's data: the short line and the note under it. */
+export const NO_AQI: Readonly<Record<StationProvider, { readonly short: string; readonly note: string }>> = {
+  cpcb_feed: {
+    short: 'CPCB published no AQI for this station this hour.',
+    note: "This app shows CPCB's AQI as published and never works one out for a station.",
+  },
+  data_gov_in: {
+    short: 'No AQI for this station this hour.',
+    note: "CPCB's rule needs at least three pollutants, one of them PM2.5 or PM10, and this station has fewer this hour.",
+  },
 };
 
 /** The GRAP stages in force, cumulative as CAQM orders them. */

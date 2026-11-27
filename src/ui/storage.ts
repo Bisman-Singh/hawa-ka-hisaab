@@ -1,5 +1,5 @@
-// State kept in the browser between visits: the household, the place and the language. Nothing is kept on a server.
-// A saved copy is checked on load, so a damaged or outdated copy is dropped instead of breaking the page.
+// State kept in the browser between visits: the household, the place, the language and whether this browser lets
+// the app use the model. A saved copy is checked on load, so a damaged copy is dropped instead of breaking the page.
 import { z } from 'zod';
 import { locationSchema, placeSchema } from '../features/air/schemas.js';
 import { householdSchema } from '../features/household/schemas.js';
@@ -8,9 +8,16 @@ import { languageSchema } from '../lib/schemas/common.js';
 /** Key the saved state lives under in local storage. */
 export const STORAGE_KEY = 'saved-state';
 
+/** Whether this browser lets the app send to the model: on, off, or not chosen yet. */
+export const modelChoiceSchema = z.enum(['on', 'off']).nullable();
+
+/** A model choice: on, off, or null when not chosen yet. */
+export type ModelChoiceValue = z.infer<typeof modelChoiceSchema>;
+
 /**
  * Everything kept between visits. location is the point used for the air, from search or the device; place is
- * set only when it came from search. Bump version when the shape changes, and older copies are dropped.
+ * set only when it came from search. modelChoice may be missing in a copy saved before it existed, which reads as
+ * not chosen, so that copy keeps its household. Bump version when the shape changes, and older copies are dropped.
  */
 export const storedStateSchema = z.strictObject({
   version: z.literal(1),
@@ -18,6 +25,7 @@ export const storedStateSchema = z.strictObject({
   location: locationSchema.nullable(),
   place: placeSchema.nullable(),
   language: languageSchema,
+  modelChoice: modelChoiceSchema.default(null),
 });
 
 /** A saved state accepted by storedStateSchema. */
@@ -30,6 +38,7 @@ export const EMPTY_STATE: StoredState = {
   location: null,
   place: null,
   language: 'en',
+  modelChoice: null,
 };
 
 /** Reads the saved state. A missing, unreadable or outdated copy gives the empty state. */

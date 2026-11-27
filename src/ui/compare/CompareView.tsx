@@ -1,6 +1,5 @@
 // Compare: the person's own household against a sample household in the same air. Two plan requests for the same
-// place, then the planner's comparePlans; each row is marked as differing or the same, with the reason.
-import { useState } from 'react';
+// place, or with the model off two plans made in this browser on the air it read, then the planner's comparePlans.
 import type { ReactElement } from 'react';
 import type { Location } from '../../features/air/types.js';
 import { SAMPLE_HOUSEHOLDS } from '../../features/household/samples.js';
@@ -9,15 +8,15 @@ import type { PlanResponse } from '../../features/planner/types.js';
 import { Field } from '../components/Field.js';
 import { ViewHeading } from '../components/Navigation.js';
 import { RequestFailure } from '../components/RequestFailure.js';
-import { useAction } from '../data/request.js';
+import { ModelChoice } from '../consent/ModelChoice.js';
+import { CONSENT } from '../consent/strings.js';
 import type { RequestState } from '../data/request.js';
-import { useAnnounce } from '../hooks/announcer.js';
 import { useAppState } from '../state/app-state.js';
-import { planCall } from '../plan/calls.js';
+import { useComparison } from './useComparison.js';
 import { Missing } from '../plan/states.js';
 import { CompareResult } from './CompareResult.js';
 import { COMPARE } from './strings.js';
-import { calling, texting } from '../plan/handlers.js';
+import { texting } from '../plan/handlers.js';
 
 type Failed = Extract<RequestState<PlanResponse>, { status: 'failed' }>;
 
@@ -44,39 +43,16 @@ export function SamplePicker({
   );
 }
 
-function useComparison(household: Household, location: Location) {
-  const [picked, setPicked] = useState(0);
-  const announce = useAnnounce();
-  const left = useAction(planCall);
-  const right = useAction(planCall, calling(announce, COMPARE.ready));
-  const sample = SAMPLE_HOUSEHOLDS.slice(picked, picked + 1);
-  const run = (): void => {
-    left.run({ household, location, language: 'en' });
-    sample.forEach((other) => {
-      right.run({ household: other.household, location, language: 'en' });
-    });
-  };
-  const pick = (value: string): void => {
-    setPicked(Number(value));
-    left.reset();
-    right.reset();
-  };
-  const done =
-    left.state.status === 'done' && right.state.status === 'done'
-      ? { mine: left.state.data, theirs: right.state.data }
-      : null;
-  const states = [left.state, right.state];
-  return { picked, pick, run, sample, done, states };
-}
-
 function Comparison({
   household,
   location,
+  local,
 }: {
   readonly household: Household;
   readonly location: Location;
+  readonly local: boolean;
 }): ReactElement {
-  const { picked, pick, run, sample, done, states } = useComparison(household, location);
+  const { picked, pick, run, sample, done, states, retry } = useComparison(household, location, local);
   const failed = states.find((state): state is Failed => state.status === 'failed');
   const busy = states.some((state) => state.status === 'loading');
   return (
@@ -90,7 +66,7 @@ function Comparison({
           {COMPARE.busy}
         </p>
       ) : null}
-      {failed === undefined ? null : <RequestFailure failure={failed.failure} retry={run} />}
+      {failed === undefined ? null : <RequestFailure failure={failed.failure} retry={retry} />}
       {done === null
         ? null
         : sample.map((other) => (
@@ -105,9 +81,9 @@ function Comparison({
   );
 }
 
-/** The compare view. It needs a place and the person's own household first. */
+/** The compare view. It needs a place, the person's own household and the model choice first. */
 export function CompareView(): ReactElement {
-  const { household, location } = useAppState();
+  const { household, location, modelChoice } = useAppState();
   if (location === null || household === null) {
     return <Missing title={COMPARE.title} what={location === null ? 'no_place' : 'no_household'} />;
   }
@@ -115,7 +91,11 @@ export function CompareView(): ReactElement {
     <div>
       <ViewHeading>{COMPARE.title}</ViewHeading>
       <p className="lede">{COMPARE.lede}</p>
-      <Comparison household={household} location={location} />
+      {modelChoice === null ? (
+        <ModelChoice without={CONSENT.offCompare} />
+      ) : (
+        <Comparison household={household} location={location} local={modelChoice === 'off'} />
+      )}
     </div>
   );
 }

@@ -1,8 +1,9 @@
-// The parts of the "how this was made" sheet, built from the trace of an answer: who wrote it, the number check,
-// the facts sent, the model's raw reply as plain text and the calculator calls.
+// The parts of the "how this was made" sheet, built from the trace of an answer: who wrote it and whether it was
+// reused, the number check, the facts sent, the model's raw reply as plain text and the calculator calls.
 import { useId } from 'react';
 import type { ReactElement, ReactNode } from 'react';
 import type { ToolCallRecord, Trace } from '../../lib/types.js';
+import { Disclosure } from '../components/Disclosure.js';
 import { WrittenBy } from '../components/WrittenBy.js';
 import { CALL_FAILURE, CHECK, FALLBACK, MADE_BY, TRACE } from './strings.js';
 
@@ -56,6 +57,30 @@ function FactsTable({ trace }: { readonly trace: Trace }): ReactElement {
   );
 }
 
+/**
+ * The model's reply. A reply the checks refused is never shown as an answer: it is titled as refused, says why, and
+ * sits closed behind its own disclosure. An absent or masked reply is just text, so neither can break the sheet.
+ */
+export function Reply({ trace }: { readonly trace: Trace }): ReactElement {
+  const refused = trace.producedBy === 'rules' && trace.modelReply !== null;
+  const reason = trace.fallbackReason;
+  return (
+    <Part title={refused ? TRACE.refused : TRACE.reply}>
+      {trace.modelReply === null ? <p>{TRACE.noReply}</p> : null}
+      {refused ? (
+        <>
+          <p className="check">{`${TRACE.refusedWhy} ${reason === null ? '' : FALLBACK[reason]}`}</p>
+          <Disclosure summary={TRACE.refusedShow}>
+            <pre className="raw">{trace.modelReply}</pre>
+          </Disclosure>
+        </>
+      ) : null}
+      {trace.modelReply !== null && !refused ? <pre className="raw">{trace.modelReply}</pre> : null}
+      <p className="small">{TRACE.replyNote}</p>
+    </Part>
+  );
+}
+
 /** Every part of the sheet for one trace. The raw reply sits in a pre element as text. */
 export function TraceSections({ trace }: { readonly trace: Trace }): ReactElement {
   const { numberCheck } = trace;
@@ -67,6 +92,7 @@ export function TraceSections({ trace }: { readonly trace: Trace }): ReactElemen
           {trace.modelId === null ? null : <span className="small"> {trace.modelId}</span>}
         </p>
         <p>{MADE_BY[trace.producedBy]}</p>
+        {trace.cached === true ? <p>{TRACE.cached}</p> : null}
         {trace.fallbackReason === null ? null : <p>{FALLBACK[trace.fallbackReason]}</p>}
       </Part>
       <Part title={TRACE.check}>
@@ -79,10 +105,7 @@ export function TraceSections({ trace }: { readonly trace: Trace }): ReactElemen
       <Part title={TRACE.facts}>
         <FactsTable trace={trace} />
       </Part>
-      <Part title={TRACE.reply}>
-        {trace.modelReply === null ? <p>{TRACE.noReply}</p> : <pre className="raw">{trace.modelReply}</pre>}
-        <p className="small">{TRACE.replyNote}</p>
-      </Part>
+      <Reply trace={trace} />
       <Part title={TRACE.calls}>
         {trace.toolCalls.length === 0 ? (
           <p>{TRACE.noCalls}</p>

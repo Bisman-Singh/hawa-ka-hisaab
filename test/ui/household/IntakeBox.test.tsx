@@ -1,10 +1,12 @@
-// Tests for the intake box: samples, the privacy note before sending, and each outcome of reading the text.
+// Tests for the intake box: samples, the model note before sending, the choice it keeps, the model off for this
+// browser, and each outcome of reading the text.
 import { act, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { SAMPLE_HOUSEHOLDS } from '../../../src/features/household/samples.js';
 import { IntakeBox } from '../../../src/ui/household/IntakeBox.js';
 import { readIntake, setIntake } from '../../../src/ui/household/intake-store.js';
+import { loadState, saveState } from '../../../src/ui/storage.js';
 import { sampleHousehold, sampleTrace } from '../../support/samples.js';
 import { axeViolations, renderInApp } from '../helpers.js';
 import { json } from '../place/air-fixtures.js';
@@ -16,7 +18,7 @@ function stubIntake(respond: () => Promise<Response>) {
 }
 
 const box = () => screen.getByRole('textbox', { name: 'Who is at home and how does your day go?' });
-const send = () => screen.getByRole('button', { name: 'Read my household' });
+const send = () => screen.getByRole('button', { name: 'Read it with the model' });
 
 beforeEach(() => {
   window.history.replaceState(null, '', '/');
@@ -35,6 +37,50 @@ describe('IntakeBox', () => {
     expect(box()).toHaveValue(SAMPLE_HOUSEHOLDS[1]?.description);
     expect(box()).toHaveFocus();
     expect(await axeViolations(container)).toEqual([]);
+  });
+
+  it('says what goes to the model and asks for no names, and its hint and note agree on conditions', () => {
+    renderInApp(<IntakeBox />);
+    expect(box()).toHaveAccessibleDescription(/conditions as general flags such as asthma or pregnancy/);
+    expect(box()).toHaveAccessibleDescription(/Do not add names, record numbers/);
+    expect(box()).toHaveAccessibleDescription(/any condition such as asthma or a heart condition/);
+    expect(box()).toHaveAccessibleDescription(/Google may use what is sent to improve its products/);
+    expect(screen.getByRole('link', { name: 'More on the privacy page' })).toHaveAttribute(
+      'href',
+      '?view=privacy',
+    );
+  });
+
+  it('keeps the choice to use the model when the text is sent to be read', async () => {
+    window.localStorage.clear();
+    stubIntake(() =>
+      Promise.resolve(json({ outcome: 'unavailable', reason: 'quota', trace: sampleTrace() })),
+    );
+    renderInApp(<IntakeBox />);
+    await userEvent.type(box(), 'Two adults.');
+    await userEvent.click(send());
+    expect(loadState(window.localStorage).modelChoice).toBe('on');
+  });
+
+  it('with the model off for this browser sends nothing and offers the hand form or turning the model on', async () => {
+    saveState(window.localStorage, {
+      version: 1,
+      household: null,
+      location: null,
+      place: null,
+      language: 'en',
+      modelChoice: 'off',
+    });
+    const fetcher = stubIntake(() => Promise.resolve(json({})));
+    renderInApp(<IntakeBox />);
+    expect(screen.queryByRole('button', { name: 'Read it with the model' })).toBeNull();
+    expect(screen.getByText(/so a description cannot be read/)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Fill the form by hand' })).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Turn the model on' }));
+    expect(loadState(window.localStorage).modelChoice).toBe('on');
+    expect(send()).toBeInTheDocument();
+    expect(fetcher).not.toHaveBeenCalled();
+    window.localStorage.clear();
   });
 
   it('opens the hand form with the reason when the model is unavailable, never an error page', async () => {

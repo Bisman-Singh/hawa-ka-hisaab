@@ -16,6 +16,7 @@ const saved: StoredState = {
   location: { lat: 28.54, lon: 77.17 },
   place: null,
   language: 'hi',
+  modelChoice: 'off',
 };
 
 afterEach(() => {
@@ -32,11 +33,19 @@ describe('loadState', () => {
     expect(loadState(localStorage)).toEqual(saved);
   });
 
+  it('keeps the household of a copy saved before the model choice existed, reading the choice as not made', () => {
+    const { modelChoice, ...older } = saved;
+    expect(modelChoice).toBe('off');
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(older));
+    expect(loadState(localStorage)).toEqual({ ...saved, modelChoice: null });
+  });
+
   it('drops a damaged, outdated or invalid copy', () => {
     for (const raw of [
       '{not json',
       JSON.stringify({ ...saved, version: 0 }),
       JSON.stringify({ ...saved, name: 'x' }),
+      JSON.stringify({ ...saved, modelChoice: 'maybe' }),
     ]) {
       localStorage.setItem(STORAGE_KEY, raw);
       expect(loadState(localStorage)).toEqual(EMPTY_STATE);

@@ -1,0 +1,32 @@
+// The one note about the model, shown before anything first goes to it on any path, and the words of the choice.
+// It states the provider's free tier terms plainly; the privacy page says the same at length.
+
+/** Strings of the model note and choice. */
+export const CONSENT = {
+  title: "Before anything goes to Google's model",
+  lead: 'Before you send.',
+  sent: "To read a description, word a plan, answer a question or word a notice, this app sends Google's Gemini model the household as the form holds it: who is at home by age group, conditions as general flags such as asthma or pregnancy, and the times of the day's outings, with any question you ask.",
+  terms:
+    "This app uses Gemini's free tier, so Google may use what is sent to improve its products, and people at Google may read it.",
+  ask: 'Do not add names, record numbers or anything else that identifies a person.',
+  kept: 'Our server stores none of it: it only reuses the answer to an identical request, from memory, for five minutes. Your household stays in this browser.',
+  more: 'More on the privacy page',
+  use: 'Use the model',
+  off: 'Keep the model off',
+  offPlan:
+    'With the model off, the plan is made in this browser with fixed wording, and nothing about your household leaves it.',
+  offNotice:
+    'With the model off, the notice is made in this browser with fixed wording, in English and, where fixed Hindi text covers it, Hindi.',
+  offCompare:
+    'With the model off, both plans are made in this browser with fixed wording, and nothing about your household leaves it.',
+  offIntake:
+    'The model is off for this browser, so a description cannot be read. Fill the form by hand, or turn the model on.',
+  offAsk:
+    'Questions are answered with the model, which is off for this browser. Turning it on also words the plan.',
+  madeHere:
+    'Made in this browser with fixed wording, because the model is off for this browser. Nothing about your household left it.',
+  state: { on: 'The model is on for this browser.', off: 'The model is off for this browser.' },
+  notChosen: 'No choice made yet. The app asks before anything first goes to the model.',
+  turnOn: 'Turn the model on',
+  turnOff: 'Turn the model off',
+};

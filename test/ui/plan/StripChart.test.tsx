@@ -12,7 +12,12 @@ const hours = [
 describe('Chart', () => {
   it('draws one bar per hour with its value, hides odd hours on the axis and marks the selected one', () => {
     const { container } = render(
-      <Chart hours={hours} selected={1} plan={planResponse('family-car-asthma', 'poor').plan} />,
+      <Chart
+        hours={hours}
+        selected={1}
+        plan={planResponse('family-car-asthma', 'poor').plan}
+        madeAt={null}
+      />,
     );
     const bars = container.querySelectorAll<HTMLElement>('.ds-bars li');
     expect(bars).toHaveLength(2);

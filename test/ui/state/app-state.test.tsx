@@ -27,6 +27,7 @@ const start: AppState = {
   location: delhi,
   place: null,
   language: 'en',
+  modelChoice: 'on',
   reading,
   plan,
   kept: true,
@@ -78,6 +79,12 @@ describe('applySave', () => {
 
   it('drops the plan for a new household or language and both for a new location', () => {
     expect(applySave(start, { language: 'hi' })).toMatchObject({ language: 'hi', reading, plan: null });
+    expect(applySave(start, { modelChoice: 'off' })).toMatchObject({
+      modelChoice: 'off',
+      reading,
+      plan: null,
+    });
+    expect(applySave(start, { modelChoice: 'on' })).toMatchObject({ reading, plan });
     expect(applySave(start, { household: null })).toMatchObject({ reading, plan: null });
     expect(applySave(start, { location: { lat: 19.07, lon: 72.88 } })).toMatchObject({
       reading: null,
@@ -94,6 +101,7 @@ describe('AppStateProvider', () => {
       location: null,
       place: null,
       language: 'en',
+      modelChoice: null,
     });
     render(
       <AppStateProvider storage={window.localStorage}>

@@ -4,27 +4,17 @@ import type { FallbackReason } from '../../lib/types.js';
 
 const MAX = String(MAX_INTAKE_TEXT_CHARS);
 
-/**
- * The note shown before the first send. It states only what is certain about where the text goes; the terms of
- * the model provider's unpaid tier belong here once checked against the current terms.
- */
-export const PRIVACY_NOTE = {
-  lead: 'Before you send.',
-  body: "What you type goes to Google's Gemini model, which reads it into the form on the next screen. Please leave out names and health record details.",
-  kept: 'Nothing is kept on our server. Your household stays in this browser.',
-};
-
 /** Fixed text of the intake box on the first screen. */
 export const INTAKE = {
   ask: 'Who is at home and how does your day go?',
-  hint: 'Write it the way you would tell a neighbour: ages, health conditions, who goes where and when, how you cook, what burns at home.',
+  hint: 'Write it the way you would tell a neighbour: who is at home by age, any condition such as asthma or a heart condition, who goes where and when, how you cook and what burns at home. No names.',
   count: (chars: number): string => `${String(chars)} of ${MAX} characters.`,
   empty: 'Write a few words about your household first.',
   tooLong: (chars: number): string => `This is ${String(chars)} characters. Keep it to ${MAX}.`,
   samples: 'Or start from a sample',
   use: 'Use this',
   used: 'Sample copied into the box.',
-  read: 'Read my household',
+  read: 'Read it with the model',
   reading: 'Reading your household. This takes a few seconds.',
   byHand: 'Fill the form by hand',
 };

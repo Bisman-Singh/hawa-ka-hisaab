@@ -1,11 +1,12 @@
-// The forecast strip: modelled PM2.5 for each hour of the plan's day as bars, with the airing window and the time
-// now marked, a stepper that reads one hour at a time, and a hidden table with every value for screen readers.
+// The forecast strip: modelled PM2.5 for each hour of the plan's day from the curve the server planned with, the
+// airing window and the planning time marked, a stepper, a hidden table and the credit the forecast's licence asks.
 import { useId, useState } from 'react';
 import type { ReactElement } from 'react';
 import type { HourCurve } from '../../features/air/types.js';
 import { clockText } from '../../features/community/format.js';
 import { dayCurve } from '../../features/ledger/curve.js';
-import type { AirBasis, Plan } from '../../features/planner/types.js';
+import type { AirBasis, Plan, WhatIfContext } from '../../features/planner/types.js';
+import { Credit } from '../components/Credit.js';
 import { Chart, HourTable } from './StripChart.js';
 import type { StripHour, StripPartProps } from './StripChart.js';
 import { STRIP } from './strings.js';
@@ -65,28 +66,26 @@ export function Stepper({
   );
 }
 
-/** Why there is no strip, and whether the forecast on the page is not the one the plan was made with. */
-export function stripNotes(basis: AirBasis, curve: HourCurve | null): { why: string; other: boolean } {
-  const issued = basis.forecastIssuedAt;
-  return {
-    why: issued === null || curve !== null ? STRIP.noForecast : STRIP.notLoaded,
-    other: issued !== null && curve !== null && curve.issuedAt !== issued,
-  };
+/** Why there is no strip: no forecast for the place today, or a plan that came without the one it used. */
+export function stripNote(basis: AirBasis, curve: HourCurve | null): string {
+  return basis.forecastIssuedAt === null || curve !== null ? STRIP.noForecast : STRIP.notSent;
 }
 
-/** Props of the strip: the plan, its air basis and the forecast held on this page, if any. */
+/** Props of the strip: the plan, its air basis and the forecast and time the server planned with. */
 export interface ForecastStripProps {
   readonly plan: Plan;
   readonly basis: AirBasis;
-  readonly curve: HourCurve | null;
+  readonly whatIf: WhatIfContext;
 }
 
 function StripBody({
   hours,
   plan,
+  madeAt,
 }: {
   readonly hours: readonly StripHour[];
   readonly plan: Plan;
+  readonly madeAt: string | null;
 }): ReactElement {
   const [selected, setSelected] = useState(() => {
     const values = hours.map((hour) => hour.pm25);
@@ -94,28 +93,29 @@ function StripBody({
   });
   return (
     <>
-      <Chart hours={hours} plan={plan} selected={selected} />
+      <Chart hours={hours} plan={plan} selected={selected} madeAt={madeAt} />
       <Stepper hours={hours} selected={selected} onSelect={setSelected} />
       <HourTable hours={hours} />
     </>
   );
 }
 
-/** The strip, or why there is none: no forecast for the place today, or none loaded on this page. */
-export function ForecastStrip({ plan, basis, curve }: ForecastStripProps): ReactElement {
+/** The strip from the plan's own forecast, or why there is none. */
+export function ForecastStrip({ plan, basis, whatIf }: ForecastStripProps): ReactElement {
   const id = useId();
+  const { curve, notBefore } = whatIf;
   const hours = curve === null ? [] : stripHours(curve, plan.date);
-  const { why, other } = stripNotes(basis, curve);
   return (
     <section className="ds" aria-labelledby={id}>
       <h2 id={id}>{STRIP.title}</h2>
       {hours.length === 0 ? (
-        <p>{why}</p>
+        <p>{stripNote(basis, curve)}</p>
       ) : (
         <>
-          <p>{STRIP.about}</p>
-          {other ? <p>{STRIP.otherCurve}</p> : null}
-          <StripBody key={curve?.issuedAt} hours={hours} plan={plan} />
+          <p>
+            {STRIP.about} <Credit id="credit-open-meteo" />
+          </p>
+          <StripBody key={curve?.issuedAt} hours={hours} plan={plan} madeAt={notBefore} />
         </>
       )}
     </section>

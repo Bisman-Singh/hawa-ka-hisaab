@@ -109,7 +109,12 @@
 
 .abstract li b {
   font-weight: var(--w-mid);
-  min-width: 5.5rem;
+  flex: 0 0 5.5rem;
+}
+
+.abstract li span {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .colophon {

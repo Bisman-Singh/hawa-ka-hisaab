@@ -128,9 +128,9 @@ function Bands(): ReactElement {
         ))}
       </ul>
       <div className="slip">
-        <BandScale value={342} band="very_poor" />
-        <BandScale value={41} band="good" />
-        <BandScale value={447} band="severe" />
+        <BandScale value={342} band="very_poor" label="CPCB AQI" />
+        <BandScale value={41} band="good" label="CPCB AQI" />
+        <BandScale value={447} band="severe" label="Estimated index" />
         <BandLegend />
       </div>
       <p>

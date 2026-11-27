@@ -1,6 +1,6 @@
 // Tests that the display name lives in one constant, so a rename is one line plus package.json.
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { APP_NAME } from '../../src/config/app.js';
 
@@ -14,7 +14,7 @@ describe('APP_NAME', () => {
       encoding: 'utf8',
     })
       .split('\n')
-      .filter((file) => /^(src|api|scripts)\/.*\.(ts|tsx|css)$|^index\.html$/.test(file));
+      .filter((file) => /^(src|api|scripts)\/.*\.(ts|tsx|css)$|^index\.html$/.test(file) && existsSync(file));
     const holders = files.filter((file) => readFileSync(file, 'utf8').includes(APP_NAME));
     expect(holders).toEqual(['src/config/app.ts']);
   });

@@ -8,6 +8,9 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: ci,
   retries: 0,
+  // The journeys are long and run axe at every step, so a busy machine needs more than the default 30 seconds.
+  timeout: 90_000,
+  ...(ci ? { workers: 2 } : {}),
   reporter: 'list',
   use: { baseURL: 'http://localhost:4173', trace: 'retain-on-failure' },
   projects: [

@@ -1,11 +1,13 @@
-// The states a plan screen shows before its plan is ready: no place or household yet, loading with its steps
-// and skeleton entries, or a failed request with a retry.
+// The states a plan screen shows before its plan is ready: no place or household yet, the model choice not made
+// yet, loading with its steps and skeleton entries, or a failed request with a retry.
 import type { ReactElement } from 'react';
 import { ViewHeading, ViewLink } from '../components/Navigation.js';
 import { ProgressSteps, Skeleton } from '../components/Progress.js';
 import type { ProgressStep } from '../components/Progress.js';
 import { RequestFailure } from '../components/RequestFailure.js';
 import { StateMessage } from '../components/StateMessage.js';
+import { ModelChoice } from '../consent/ModelChoice.js';
+import { CONSENT } from '../consent/strings.js';
 import { PLAN } from './strings.js';
 import type { DayPlan } from './useDayPlan.js';
 
@@ -79,6 +81,14 @@ export function NotReady({
   }
   if (day.status === 'loading') {
     return <PlanLoading airDone={day.air !== null} title={title} />;
+  }
+  if (day.status === 'choose') {
+    return (
+      <div className="page-right">
+        <ViewHeading>{title}</ViewHeading>
+        <ModelChoice without={CONSENT.offPlan} />
+      </div>
+    );
   }
   return (
     <div className="page-right">

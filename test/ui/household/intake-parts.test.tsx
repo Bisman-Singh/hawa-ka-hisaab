@@ -2,8 +2,7 @@
 import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { IntakeSamples, IntakeText, PrivacyNote } from '../../../src/ui/household/intake-parts.js';
-import { PRIVACY_NOTE } from '../../../src/ui/household/strings.js';
+import { IntakeSamples, IntakeText } from '../../../src/ui/household/intake-parts.js';
 
 describe('intake parts', () => {
   it('labels the box by its heading and ties the count, hint and problem to it', async () => {
@@ -29,15 +28,5 @@ describe('intake parts', () => {
     await userEvent.click(buttons[2] ?? document.body);
     expect(onUse.mock.calls[0]?.[0]).toMatch(/delivery rider/);
     expect(buttons[2]).toHaveAccessibleDescription(/delivery rider/);
-  });
-
-  it('says where the text goes and asks for no names or health record details', () => {
-    render(<PrivacyNote id="p" />);
-    expect(screen.getByText(PRIVACY_NOTE.body)).toBeInTheDocument();
-    expect(PRIVACY_NOTE.body).toMatch(/Google's Gemini model/);
-    expect(PRIVACY_NOTE.body).toMatch(/leave out names and health record details/);
-    expect(
-      screen.getByText('Nothing is kept on our server. Your household stays in this browser.'),
-    ).toBeInTheDocument();
   });
 });

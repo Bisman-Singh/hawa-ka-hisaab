@@ -1,10 +1,11 @@
 // One printed notice: the title, the opening line with the reading, a numbered line per action, the closing and
-// the credits; and the copy that puts its plain text on the clipboard.
+// the credits, Open-Meteo's as the link its licence asks for; and the copy that puts its plain text on the clipboard.
 import type { ReactElement } from 'react';
 import { APP_NAME } from '../../config/app.js';
 import type { NoticeText } from '../../features/community/types.js';
 import type { Language } from '../../lib/types.js';
-import { airQuote } from '../plan/air-basis.js';
+import { factQuote } from '../../config/facts/index.js';
+import { Credit } from '../components/Credit.js';
 import { COMMUNITY } from './strings.js';
 
 /** Copies text to the clipboard. The promise settles false where the browser refuses or has no clipboard. */
@@ -48,7 +49,7 @@ export function NoticeCard({
         <p key={line}>{line}</p>
       ))}
       <p className="src" lang="en">
-        {`${airQuote('credit-cpcb')} ${airQuote('credit-open-meteo')}. ${COMMUNITY.madeWith} ${APP_NAME}.`}
+        {factQuote('credit-cpcb')} <Credit id="credit-open-meteo" /> {`${COMMUNITY.madeWith} ${APP_NAME}.`}
       </p>
     </article>
   );

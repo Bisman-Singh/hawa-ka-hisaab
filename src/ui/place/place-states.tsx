@@ -4,16 +4,11 @@ import type { ReactElement } from 'react';
 import type { Place, PlacesResponse } from '../../features/air/types.js';
 import { RequestFailure } from '../components/RequestFailure.js';
 import { StateMessage } from '../components/StateMessage.js';
+import type { PlaceQuery } from '../data/api.js';
 import type { Query } from '../data/request.js';
 import { placeLabel } from './place-answer.js';
 import { PLACE } from './strings.js';
 import type { LocateState } from './useDeviceLocation.js';
-
-/** One search as submitted. turn makes a repeated search of the same text run again. */
-export interface Search {
-  readonly q: string;
-  readonly turn: number;
-}
 
 const REFUSALS = { denied: PLACE.denied, unavailable: PLACE.unavailable, outside: PLACE.outside };
 
@@ -83,7 +78,7 @@ export function DeviceState({ state }: { readonly state: LocateState }): ReactEl
 /** The hint and problem of the place field: a blank search or a place not found. */
 export function fieldWords(
   blank: boolean,
-  search: Search | null,
+  search: PlaceQuery | null,
   query: Query<PlacesResponse>,
 ): { readonly error: string | undefined; readonly hint: string } {
   const { state } = query;

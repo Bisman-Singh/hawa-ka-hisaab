@@ -1,7 +1,7 @@
 // The air a plan was built on, in words: the station reading the air card shows when it is the same reading,
-// or the modelled estimate's label. Source wording comes from the reading and the air facts, not from here.
+// or the modelled estimate's label. Source wording comes from the reading and the facts registry, not from here.
 import type { ReactElement } from 'react';
-import { AIR_FACTS } from '../../config/facts/air.js';
+import { factQuote } from '../../config/facts/index.js';
 import type { AirResponse, StationReading } from '../../features/air/types.js';
 import { clockText, istParts } from '../../features/community/format.js';
 import type { AirBasis } from '../../features/planner/types.js';
@@ -13,10 +13,16 @@ export function istClock(iso: string): string {
   return clockText(parts.hour, parts.minute);
 }
 
-/** The text of an air fact, such as the CPCB rule for the AQI. Empty when the id is not an air quote. */
-export function airQuote(id: string): string {
-  const fact = AIR_FACTS.find((found) => found.id === id);
-  return fact?.kind === 'text' ? fact.text : '';
+function readingHour({ reading }: AirResponse): string | null {
+  if (reading.path === 'station') {
+    return reading.readingHour;
+  }
+  return reading.path === 'modelled' ? reading.modelHour : null;
+}
+
+/** True when the air held on the page is not the reading the plan was made on. */
+export function otherAir(air: AirResponse | null, basis: AirBasis): boolean {
+  return air !== null && (air.reading.path !== basis.path || readingHour(air) !== basis.readingHour);
 }
 
 /** Props of the basis line: the plan's air basis and the air response held on this page. */
@@ -27,7 +33,7 @@ export interface AirBasisLineProps {
 
 /** A station reading in words: AQI, station, hour and source, with the AQI rule when data.gov.in served it. */
 export function StationLine({ reading }: { readonly reading: StationReading }): ReactElement {
-  const rule = reading.provider === 'data_gov_in' ? ` ${airQuote('naqi-worst-sub-index')}` : '';
+  const rule = reading.provider === 'data_gov_in' ? ` ${factQuote('naqi-worst-sub-index')}` : '';
   const blank = reading.aqi === null ? ` ${PLAN.noAqi}` : '';
   return (
     <>

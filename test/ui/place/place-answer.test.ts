@@ -1,6 +1,6 @@
 // Tests for the words of a place answer: what was understood and how rough a PIN point is.
 import { describe, expect, it } from 'vitest';
-import { placeLabel, placeNote } from '../../../src/ui/place/place-answer.js';
+import { placeLabel, placeNote, placeWhere } from '../../../src/ui/place/place-answer.js';
 import { pinPlace, townPlace } from './air-fixtures.js';
 
 describe('placeLabel', () => {
@@ -14,6 +14,13 @@ describe('placeLabel', () => {
     expect([label, resolution, roughness]).toEqual(['Lucknow, Lucknow, Uttar Pradesh', 'search', null]);
     expect(placeLabel(old)).toBe('Lucknow, Uttar Pradesh');
     expect(placeLabel({ ...old, district: null, state: null })).toBe('Lucknow');
+  });
+});
+
+describe('placeWhere', () => {
+  it('names a found place as understood, and a device point as your location', () => {
+    expect(placeWhere(pinPlace())).toBe('PIN 110092, East Delhi, Delhi');
+    expect(placeWhere(null)).toBe('your location');
   });
 });
 

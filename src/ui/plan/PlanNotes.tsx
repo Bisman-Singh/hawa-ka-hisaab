@@ -1,12 +1,15 @@
-// Notes above the plan: the severe-day bulletin with the health ministry's words, and the note shown when fixed
-// rules wrote the plan, with the reason and a way to ask the model again.
+// Notes above the plan: the severe-day bulletin with the health ministry's words, the note shown when fixed rules
+// wrote the plan, with the reason and a way to ask the model again, and the note on a plan made in this browser.
 import { useId } from 'react';
 import type { ReactElement } from 'react';
-import { adviceText } from '../../config/facts/advice.js';
+import { adviceFactId } from '../../config/facts/advice.js';
+import { factQuote } from '../../config/facts/index.js';
 import type { AqiBand } from '../../features/naqi/types.js';
 import type { PlanResponse } from '../../features/planner/types.js';
 import { BandGlyph } from '../components/Band.js';
 import { StateMessage } from '../components/StateMessage.js';
+import { CONSENT } from '../consent/strings.js';
+import { useAppActions } from '../state/app-state.js';
 import { BAND_TEXT } from '../i18n/strings.js';
 import { FALLBACK } from '../trace/strings.js';
 import { AirBasisLine, type AirBasisLineProps } from './air-basis.js';
@@ -20,10 +23,29 @@ export function Bulletin({ band, ...line }: AirBasisLineProps & { readonly band:
       <BandGlyph band={band} />
       <h2 id={id}>{`${BAND_TEXT[band].name} ${PLAN.bulletinAir}`}</h2>
       <p>
-        <AirBasisLine {...line} /> {PLAN.forEveryone} “{adviceText(band, 'general')}”. {PLAN.forVulnerable} “
-        {adviceText(band, 'vulnerable')}”.
+        <AirBasisLine {...line} /> {PLAN.forEveryone} “{factQuote(adviceFactId(band, 'general'))}”.{' '}
+        {PLAN.forVulnerable} “{factQuote(adviceFactId(band, 'vulnerable'))}”.
       </p>
     </div>
+  );
+}
+
+/** The note on a plan made in this browser with the model off, with the way to turn the model on. */
+export function LocalNote(): ReactElement {
+  const { save } = useAppActions();
+  return (
+    <StateMessage tone="status" glyph="model" title={CONSENT.state.off} quiet level={2}>
+      <p>{CONSENT.madeHere}</p>
+      <button
+        className="btn btn-quiet"
+        type="button"
+        onClick={() => {
+          save({ modelChoice: 'on' });
+        }}
+      >
+        {CONSENT.turnOn}
+      </button>
+    </StateMessage>
   );
 }
 

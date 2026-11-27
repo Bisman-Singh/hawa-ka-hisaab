@@ -1,9 +1,8 @@
 // Parts of the indoor view: a titled section, a list of sources, the purifier sum, a note and a swap.
 import { useId } from 'react';
 import type { ReactElement, ReactNode } from 'react';
-import { displayValue } from '../../features/ledger/format.js';
+import { displayValue, formatFigure } from '../../features/ledger/format.js';
 import type { Figure } from '../../features/ledger/types.js';
-import { figure as shownFigure } from '../../features/planner/fact-values.js';
 import type { Alternative, IndoorStep } from '../../features/planner/types.js';
 import { LeaderRows } from '../components/Ledger.js';
 import { rowsOf, sumsOf } from '../plan/plan-data.js';
@@ -38,9 +37,8 @@ export function Part({
   );
 }
 
-/** A figure worked as a column of sums: each input as the ledger shows it, then the total as the fact set does. */
-export function Calc({ id, found }: { readonly id: string; readonly found: Figure }): ReactElement {
-  const total = shownFigure(id, found).slice(0, 1);
+/** A figure worked as a column of sums: each input as the ledger shows it, then the total as the ledger formats it. */
+export function Calc({ found }: { readonly found: Figure }): ReactElement {
   return (
     <LeaderRows
       kind="calc"
@@ -48,10 +46,7 @@ export function Calc({ id, found }: { readonly id: string; readonly found: Figur
         label: input.label,
         figure: `${String(displayValue(input))} ${input.unit}`,
       }))}
-      total={{
-        label: found.label,
-        figure: total.map((value) => `${String(value.value)} ${value.unit}`).join(''),
-      }}
+      total={{ label: found.label, figure: formatFigure(found) }}
     />
   );
 }
@@ -60,7 +55,7 @@ export function Calc({ id, found }: { readonly id: string; readonly found: Figur
 export function PurifierStep({ step }: { readonly step: IndoorStep }): ReactElement {
   return (
     <Part title={step.title}>
-      {step.figure === null ? null : <Calc id={step.id} found={step.figure} />}
+      {step.figure === null ? null : <Calc found={step.figure} />}
       <p>{step.detail}</p>
       <Sources ids={step.factIds} />
     </Part>

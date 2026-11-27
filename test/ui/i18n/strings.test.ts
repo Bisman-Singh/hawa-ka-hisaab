@@ -10,9 +10,12 @@ describe('strings', () => {
     expect(UI.skip).toBe('Skip to content');
   });
 
-  it('builds the sentence a screen reader hears for the scale', () => {
-    expect(scaleSentence(342, 'very_poor', '301 to 400')).toBe(
-      'AQI 342 is in the fifth of six bands, Very Poor, 301 to 400.',
+  it('builds the sentence a screen reader hears for the scale, naming what the value is', () => {
+    expect(scaleSentence({ label: 'CPCB AQI', value: 342, band: 'very_poor' }, '301 to 400')).toBe(
+      'CPCB AQI 342 is in the fifth of six bands, Very Poor, 301 to 400.',
+    );
+    expect(scaleSentence({ label: 'Estimated index', value: 61, band: 'satisfactory' }, '51 to 100')).toBe(
+      'Estimated index 61 is in the second of six bands, Satisfactory, 51 to 100.',
     );
   });
 

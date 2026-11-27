@@ -1,5 +1,5 @@
-// The station path of the air card: CPCB's AQI as published, its band, the hourly sub-indices and the source.
-// An old or kept reading is drawn dim with its hour, and the AQI is never worked out here.
+// The station path of the air card: CPCB's AQI as published, never worked out here, its band, the sub-indices and
+// the source. An old reading is drawn dim with its hour; compact leaves out the scale and sub-indices.
 import { useId, useState } from 'react';
 import type { ReactElement, ReactNode } from 'react';
 import type { FeedStatus, StationReading } from '../../features/air/types.js';
@@ -15,6 +15,7 @@ export interface StationSlipProps {
   readonly feed: FeedStatus;
   readonly where: string;
   readonly retry: () => void;
+  readonly compact?: boolean;
   readonly children?: ReactNode;
 }
 
@@ -47,7 +48,8 @@ function OldReading({
 }
 
 /** The station slip, with the stale or feed-down message above it when the reading is old. */
-export function StationSlip({ reading, feed, where, retry, children }: StationSlipProps): ReactElement {
+export function StationSlip(props: StationSlipProps): ReactElement {
+  const { reading, feed, where, retry, compact = false, children } = props;
   const [now] = useState(() => Date.now());
   const id = useId();
   const hour = istClock(reading.readingHour);
@@ -67,8 +69,8 @@ export function StationSlip({ reading, feed, where, retry, children }: StationSl
         {reading.station.city}. <b>{reading.distanceKm.toFixed(1)} km</b> from {where}. Reading for{' '}
         <b>{hour} IST</b> on {istDay(reading.readingHour)}.
       </p>
-      <StationAqi reading={reading} at={old ? hour : null} />
-      <SubIndices reading={reading} />
+      <StationAqi reading={reading} at={old ? hour : null} compact={compact} />
+      {compact ? null : <SubIndices reading={reading} />}
       <StationSource reading={reading} />
       {children}
     </article>

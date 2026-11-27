@@ -1,22 +1,24 @@
-// The plan for the saved household and place: asks for the air when it is not held yet, asks for the plan when
-// there is none, keeps both in the shared state and says which state the screens should show.
-import { useCallback } from 'react';
+// The plan for the saved household and place: the air first, then the model choice, then the plan from the server
+// with the model on or made in this browser with it off, kept in the shared state, with the state to show.
+import { useCallback, useMemo, useState } from 'react';
 import type { AirResponse, Location } from '../../features/air/types.js';
 import type { Household } from '../../features/household/types.js';
 import type { PlanResponse } from '../../features/planner/types.js';
 import type { ApiCallFailure } from '../api-client.js';
-import { useAir } from '../data/api.js';
-import { useQuery } from '../data/request.js';
-import type { RequestState } from '../data/request.js';
+import { usePlanFor } from '../data/plan-api.js';
+import type { Query, RequestState } from '../data/request.js';
 import { useAnnounce } from '../hooks/announcer.js';
 import { useAppActions, useAppState } from '../state/app-state.js';
-import { planCall } from './calls.js';
+import type { ModelChoiceValue } from '../storage.js';
+import { localPlan } from './local.js';
+import { useAirQuery } from './useAirQuery.js';
 import { PLAN } from './strings.js';
 
-/** What the plan screens can show. again asks the model afresh, for the model-down state. */
+/** What the plan screens can show. again asks the model afresh; local marks a plan made in this browser. */
 export type DayPlan =
   | { readonly status: 'no_place' }
   | { readonly status: 'no_household' }
+  | { readonly status: 'choose' }
   | { readonly status: 'loading'; readonly air: AirResponse | null }
   | { readonly status: 'failed'; readonly failure: ApiCallFailure; readonly retry: () => void }
   | {
@@ -25,7 +27,9 @@ export type DayPlan =
       readonly household: Household;
       readonly location: Location;
       readonly air: AirResponse | null;
+      readonly airQuery: Query<AirResponse>;
       readonly again: () => void;
+      readonly local: boolean;
     };
 
 interface Saved {
@@ -33,36 +37,57 @@ interface Saved {
   readonly location: Location | null;
   readonly plan: PlanResponse | null;
   readonly reading: AirResponse | null;
+  readonly choice: ModelChoiceValue;
 }
 
 interface Asks {
   readonly retry: () => void;
   readonly again: () => void;
+  readonly air: Query<AirResponse>;
 }
 
-/** The state to show for what is saved and where the plan request stands. */
+function waiting(request: RequestState<unknown>, asks: Asks, reading: AirResponse | null): DayPlan {
+  return request.status === 'failed'
+    ? { status: 'failed', failure: request.failure, retry: asks.retry }
+    : { status: 'loading', air: reading };
+}
+
+/** The state to show for what is saved, the model choice and where the plan or, with the model off, the air stands. */
 export function dayPlanOf(saved: Saved, request: RequestState<PlanResponse>, asks: Asks): DayPlan {
-  const { household, location, plan, reading } = saved;
+  const { household, location, plan, reading, choice } = saved;
   if (location === null) {
     return { status: 'no_place' };
   }
   if (household === null) {
     return { status: 'no_household' };
   }
-  if (plan !== null) {
-    return { status: 'ready', response: plan, household, location, air: reading, again: asks.again };
+  if (choice === null) {
+    return { status: 'choose' };
   }
-  return request.status === 'failed'
-    ? { status: 'failed', failure: request.failure, retry: asks.retry }
-    : { status: 'loading', air: reading };
+  const local = choice === 'off';
+  if (plan !== null) {
+    const ready = {
+      response: plan,
+      household,
+      location,
+      air: reading,
+      airQuery: asks.air,
+      again: asks.again,
+    };
+    return { status: 'ready', ...ready, local };
+  }
+  return local
+    ? waiting(asks.air.state, { ...asks, retry: asks.air.retry }, reading)
+    : waiting(request, asks, reading);
 }
 
-/** The day plan for the saved household, place and language, made once and kept until one of them changes. */
+/** The day plan for the saved household, place, language and model choice, made once and kept until one changes. */
 export function useDayPlan(): DayPlan {
-  const { household, location, language, reading, plan } = useAppState();
-  const { setReading, setPlan } = useAppActions();
+  const { household, location, language, plan, modelChoice } = useAppState();
+  const { setPlan } = useAppActions();
   const announce = useAnnounce();
-  useAir(reading === null ? location : null, setReading);
+  const { reading, air } = useAirQuery(location);
+  const [now] = useState(() => Date.now());
   const keep = useCallback(
     (response: PlanResponse) => {
       setPlan(response);
@@ -70,11 +95,19 @@ export function useDayPlan(): DayPlan {
     },
     [setPlan, announce],
   );
-  const request = household === null || location === null ? null : { household, location, language };
-  const { state, retry } = useQuery(planCall, plan === null ? request : null, keep);
+  const ask = household !== null && location !== null && modelChoice === 'on' && plan === null;
+  const { state, retry } = usePlanFor(ask ? { household, location, language } : null, keep);
+  const made = useMemo(
+    () =>
+      modelChoice === 'off' && household !== null && reading !== null
+        ? localPlan(household, reading, now)
+        : null,
+    [modelChoice, household, reading, now],
+  );
   const again = useCallback(() => {
     setPlan(null);
     retry();
   }, [setPlan, retry]);
-  return dayPlanOf({ household, location, plan, reading }, state, { retry, again });
+  const saved = { household, location, plan: made ?? plan, reading, choice: modelChoice };
+  return dayPlanOf(saved, state, { retry, again, air });
 }

@@ -1,5 +1,5 @@
-// The modelled path of the air card: dashed, labelled as a model estimate, with why it is used, the means
-// behind the index and the source. It is never called a reading or a measurement.
+// The modelled path of the air card: dashed, labelled as a model estimate, never a reading, with why it is used,
+// the means behind the index and the source. compact leaves out the scale and the means beside the plan.
 import { Fragment, useId } from 'react';
 import type { ReactElement, ReactNode } from 'react';
 import type { ModelledReading } from '../../features/air/types.js';
@@ -7,15 +7,22 @@ import { BandLabel, BandScale } from '../components/Band.js';
 import { ModelledSource } from './SourceLine.js';
 import { AIR, modelledWhy, POLLUTANT_NAME } from './strings.js';
 
+type ComputedEstimate = Extract<ModelledReading['estimate'], { status: 'computed' }>;
+
 /** Props of the modelled slip. where names the place; children hold the GRAP note. */
 export interface ModelledSlipProps {
   readonly reading: ModelledReading;
   readonly where: string;
   readonly retry: () => void;
+  readonly compact?: boolean;
   readonly children?: ReactNode;
 }
 
-function Estimate({ estimate }: { readonly estimate: ModelledReading['estimate'] }): ReactElement {
+function Estimate(props: {
+  readonly estimate: ModelledReading['estimate'];
+  readonly compact: boolean;
+}): ReactElement {
+  const { estimate, compact } = props;
   if (estimate.status === 'insufficient') {
     return (
       <div className="reading">
@@ -23,7 +30,7 @@ function Estimate({ estimate }: { readonly estimate: ModelledReading['estimate']
       </div>
     );
   }
-  const { value, band, predominant, subIndices } = estimate;
+  const { value, band, predominant } = estimate;
   return (
     <>
       <div className="reading">
@@ -39,7 +46,16 @@ function Estimate({ estimate }: { readonly estimate: ModelledReading['estimate']
           </p>
         </div>
       </div>
-      <BandScale value={value} band={band} />
+      {compact ? null : <Means estimate={estimate} />}
+    </>
+  );
+}
+
+function Means({ estimate }: { readonly estimate: ComputedEstimate }): ReactElement {
+  const { value, band, predominant, subIndices } = estimate;
+  return (
+    <>
+      <BandScale value={value} band={band} label={AIR.estimated} />
       <div className="subidx">
         <h3>{AIR.modelHeading}</h3>
         <p className="small">{AIR.modelNote}</p>
@@ -64,7 +80,8 @@ function Estimate({ estimate }: { readonly estimate: ModelledReading['estimate']
 }
 
 /** The modelled slip. A feed that did not answer gets a retry, since a station reading may come back. */
-export function ModelledSlip({ reading, where, retry, children }: ModelledSlipProps): ReactElement {
+export function ModelledSlip(props: ModelledSlipProps): ReactElement {
+  const { reading, where, retry, compact = false, children } = props;
   const id = useId();
   return (
     <article className="slip modelled" aria-labelledby={`${id}-kind ${id}-name`}>
@@ -83,7 +100,7 @@ export function ModelledSlip({ reading, where, retry, children }: ModelledSlipPr
       <p>
         <b>{AIR.modelledLabel}</b>
       </p>
-      <Estimate estimate={reading.estimate} />
+      <Estimate estimate={reading.estimate} compact={compact} />
       <ModelledSource reading={reading} />
       {children}
     </article>

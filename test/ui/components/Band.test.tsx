@@ -19,8 +19,8 @@ describe('band parts', () => {
   });
 
   it('marks today on the scale, places the pointer and gives screen readers one sentence', async () => {
-    const { container } = render(<BandScale value={342} band="very_poor" />);
-    expect(screen.getByText('AQI 342 is in the fifth of six bands, Very Poor, 301 to 400.')).toHaveClass(
+    const { container } = render(<BandScale value={342} band="very_poor" label="CPCB AQI" />);
+    expect(screen.getByText('CPCB AQI 342 is in the fifth of six bands, Very Poor, 301 to 400.')).toHaveClass(
       'vh',
     );
     const pointer = container.querySelector<HTMLElement>('.scale-pointer');

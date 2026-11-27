@@ -1,8 +1,8 @@
-// The drawing of the forecast strip: a bar per hour, the airing window and the time now, the hour axis and the
-// parts of the day. Sizes and positions reach the stylesheet as custom properties, as the page policy requires.
-import { useRef, useState } from 'react';
+// The drawing of the forecast strip: a bar per hour, the airing window and the time the plan was made, the hour
+// axis and the parts of the day. Sizes and positions reach the stylesheet as custom properties, as the page policy requires.
+import { useRef } from 'react';
 import type { ReactElement } from 'react';
-import { clockText, istParts } from '../../features/community/format.js';
+import { clockText } from '../../features/community/format.js';
 import { minutesOf } from '../../features/ledger/format.js';
 import { slotOf } from '../../features/planner/effects.js';
 import type { Plan } from '../../features/planner/types.js';
@@ -75,19 +75,23 @@ function Axis({ hours, selected }: StripPartProps): ReactElement {
   );
 }
 
-/** The bars, the airing window, the time now, the hour axis and the parts of the day. Hidden from screen readers. */
-export function Chart({ hours, selected, plan }: StripPartProps & { readonly plan: Plan }): ReactElement {
+/**
+ * The bars, the airing window, when the plan was made, the hour axis and the parts of the day, hidden from screen
+ * readers. madeAt is the IST time the server planned from, null for a whole-day plan.
+ */
+export function Chart(
+  props: StripPartProps & { readonly plan: Plan; readonly madeAt: string | null },
+): ReactElement {
+  const { hours, selected, plan, madeAt } = props;
   const ref = useRef<HTMLDivElement>(null);
   useCssVars(ref, { '--hours': hours.length });
-  const [now] = useState(() => istParts(Date.now()));
   const first = Math.min(...hours.map((hour) => hour.hour));
   const airing = plan.indoor.find((step) => step.topic === 'ventilation')?.window ?? null;
-  const nowAt = now.hour - first + now.minute / 60;
-  const nowText = `${STRIP.now} ${clockText(now.hour, now.minute)}`;
+  const madeAtHour = madeAt === null ? -1 : minutesOf(madeAt) / 60 - first;
   return (
     <div ref={ref} className="ds-chart" aria-hidden="true">
-      {now.date === plan.date && nowAt >= 0 ? (
-        <Placed name="ds-now" vars={{ '--at': nowAt }} text={nowText} />
+      {madeAt !== null && madeAtHour >= 0 ? (
+        <Placed name="ds-now" vars={{ '--at': madeAtHour }} text={`${STRIP.now} ${madeAt}`} />
       ) : null}
       {airing === null ? null : (
         <Placed

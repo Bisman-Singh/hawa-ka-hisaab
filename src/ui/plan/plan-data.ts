@@ -1,13 +1,19 @@
 // Pure helpers for the plan screens: where each entry sits in the day, the sums beside it and words for the
 // household. Every figure comes from the ledger's own formatters, and what-if sums from the planner's function.
-import type { HourCurve } from '../../features/air/types.js';
 import { describeMember, isVulnerable, membersOf } from '../../features/household/members.js';
 import type { Activity, Household } from '../../features/household/types.js';
 import { describeChange, formatEffect, minutesOf } from '../../features/ledger/format.js';
 import type { Effect } from '../../features/ledger/types.js';
 import type { PlanContext } from '../../features/planner/context.js';
 import { slotOf } from '../../features/planner/effects.js';
-import type { Plan, PlanItem, Slot, WhatIf } from '../../features/planner/types.js';
+import type {
+  Plan,
+  PlanItem,
+  PlanResponse,
+  Slot,
+  WhatIf,
+  WhatIfContext,
+} from '../../features/planner/types.js';
 import { whatIfEffects } from '../../features/planner/what-if.js';
 import type { SumRow } from '../components/Ledger.js';
 import { PLAN } from './strings.js';
@@ -110,9 +116,17 @@ export function sumsSentence(sums: readonly Sum[]): string {
   return sums.map((sum) => `${sum.label}: ${sum.text}`).join('. ');
 }
 
-/** What the browser needs to recompute a plan's toggles: the household, the plan's band and date, and the curve. */
-export function contextFor(plan: Plan, household: Household, curve: HourCurve | null): PlanContext {
-  return { household, band: plan.band, curve, date: plan.date, notBefore: null };
+/** The forecast curve and earliest move time the server planned with. A response without them gives neither. */
+export function whatIfOf(response: PlanResponse): WhatIfContext {
+  return response.whatIfContext ?? { curve: null, notBefore: null };
+}
+
+/**
+ * What the browser needs to recompute a plan's toggles as the server would: the household, the plan's band and
+ * date, and the server's own curve and earliest move time, never the browser's clock or another forecast.
+ */
+export function contextFor(plan: Plan, household: Household, whatIf: WhatIfContext): PlanContext {
+  return { household, band: plan.band, curve: whatIf.curve, date: plan.date, notBefore: whatIf.notBefore };
 }
 
 /** The people an item is for and how long it takes, in plain words. */

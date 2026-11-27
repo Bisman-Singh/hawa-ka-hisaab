@@ -1,4 +1,5 @@
-// Tests for one notice: the opening, numbered action lines and closing in order, the credits, and copyText.
+// Tests for one notice: the opening, numbered action lines and closing in order, the credits with Open-Meteo's as
+// a link, and copyText.
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { copyText, NoticeCard } from '../../../src/ui/community/NoticeCard.js';
@@ -12,6 +13,7 @@ describe('NoticeCard', () => {
     expect(container.querySelectorAll('ol li')).toHaveLength(en.lines.length - 2);
     expect(screen.getByText(en.lines.at(-1) ?? '')).toBeInTheDocument();
     expect(container.querySelector('.src')).toHaveTextContent(/Open-Meteo\.com.*Made with Hawa Ka Hisaab/);
+    expect(screen.getByRole('link', { name: 'Weather data by Open-Meteo.com' })).toBeInTheDocument();
   });
 
   it('shows a one line notice as its opening only', () => {

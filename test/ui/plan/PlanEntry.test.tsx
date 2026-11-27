@@ -13,7 +13,12 @@ describe('ItemEntry', () => {
     const item = { ...need(plan.slots.morning[0]), start: null };
     const { container } = render(
       <ol>
-        <ItemEntry item={item} household={household} ctx={contextFor(plan, household, null)} language="en" />
+        <ItemEntry
+          item={item}
+          household={household}
+          ctx={contextFor(plan, household, { curve: null, notBefore: null })}
+          language="en"
+        />
       </ol>,
     );
     expect(container.querySelector('.more')).toBeNull();

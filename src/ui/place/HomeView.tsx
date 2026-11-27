@@ -1,5 +1,5 @@
-// The first screen: the lead line, the place field and, once a place is set, the air card. Beside them, the
-// household intake. A chosen place moves focus to the air card, and its reading is announced when it arrives.
+// The first screen: the lead line, the place field and, once a place is set, the air card, which loads on demand.
+// Beside them, the household intake. A chosen place moves focus to the air card, and its reading is announced.
 import { useCallback, useId } from 'react';
 import type { ReactElement } from 'react';
 import type { Location, Place } from '../../features/air/types.js';
@@ -9,9 +9,10 @@ import { useAir } from '../data/api.js';
 import { useAnnounce } from '../hooks/announcer.js';
 import { IntakeBox } from '../household/IntakeBox.js';
 import { useAppActions, useAppState } from '../state/app-state.js';
-import { AirCard, airSummary } from './AirCard.js';
+import { airSummary } from './air-summary.js';
+import { AirCardSlot } from './AirCardSlot.js';
 import { useFocusLater } from './focus.js';
-import { placeLabel, placeNote } from './place-answer.js';
+import { placeNote, placeWhere } from './place-answer.js';
 import { PlaceSearch } from './PlaceSearch.js';
 import { AIR, PLACE } from './strings.js';
 
@@ -22,7 +23,7 @@ export function HomeView(): ReactElement {
   const { save, setReading } = useAppActions();
   const announce = useAnnounce();
   const focusLater = useFocusLater();
-  const where = place === null ? PLACE.yourLocation : placeLabel(place);
+  const where = placeWhere(place);
   const note = place === null ? PLACE.rounded : placeNote(place);
   const air = useAir(location, (data) => {
     setReading(data);
@@ -55,7 +56,7 @@ export function HomeView(): ReactElement {
           ) : (
             <>
               {note === null ? null : <p className="hint place-note">{note}</p>}
-              <AirCard air={air} where={where} />
+              <AirCardSlot air={air} where={where} />
             </>
           )}
         </section>

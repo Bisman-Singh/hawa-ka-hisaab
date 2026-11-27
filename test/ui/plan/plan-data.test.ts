@@ -6,6 +6,7 @@ import type { PlanItem, WhatIf } from '../../../src/features/planner/types.js';
 import {
   activityOf,
   contextFor,
+  whatIfOf,
   entriesBySlot,
   fixityOf,
   itemsOf,
@@ -69,7 +70,7 @@ describe('sums and what-if', () => {
 
   it('gives no effects for a toggle the planner refuses, and keeps start toggles only with a curve', () => {
     const { plan } = planResponse('family-car-asthma', 'poor');
-    const ctx = contextFor(plan, household, FORECAST);
+    const ctx = contextFor(plan, household, { curve: FORECAST, notBefore: null });
     const refused: WhatIf = {
       id: 'x',
       label: 'X',
@@ -79,7 +80,22 @@ describe('sums and what-if', () => {
     expect(whatIfEffectsOf(ctx, refused)).toEqual([]);
     const moved = need(plan.slots.afternoon[0]);
     expect(usableToggles(ctx, moved)).toHaveLength(2);
-    expect(usableToggles(contextFor(plan, household, null), moved)).toEqual([]);
+    expect(usableToggles(contextFor(plan, household, { curve: null, notBefore: null }), moved)).toEqual([]);
+  });
+
+  it('recomputes with the curve and planning time the server sent, and with neither for an older response', () => {
+    const response = planResponse('family-car-asthma', 'poor', { notBefore: '09:30' });
+    const whatIf = need(response.whatIfContext);
+    expect(whatIfOf(response)).toBe(whatIf);
+    expect(contextFor(response.plan, household, whatIf)).toEqual({
+      household,
+      band: response.plan.band,
+      curve: whatIf.curve,
+      date: response.plan.date,
+      notBefore: '09:30',
+    });
+    const older = planResponse('family-car-asthma', 'poor', { withContext: false });
+    expect(whatIfOf(older)).toEqual({ curve: null, notBefore: null });
   });
 });
 

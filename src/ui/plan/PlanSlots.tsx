@@ -1,11 +1,10 @@
 // Morning, afternoon and evening as ledger slots with their entries, then the day's reckoning of every figure.
 import type { ReactElement } from 'react';
 import { SLOT_START_HOURS } from '../../config/limits.js';
-import type { HourCurve } from '../../features/air/types.js';
 import type { Household } from '../../features/household/types.js';
 import { clockOf } from '../../features/ledger/format.js';
 import { activityName, capitalise } from '../../features/planner/text.js';
-import type { Plan, Slot } from '../../features/planner/types.js';
+import type { Plan, Slot, WhatIfContext } from '../../features/planner/types.js';
 import { LedgerSlot } from '../components/Ledger.js';
 import { activityOf, contextFor, entriesBySlot, itemsOf, SLOTS, sumsOf } from './plan-data.js';
 import type { Entry } from './plan-data.js';
@@ -20,17 +19,17 @@ export function slotHours(slot: Slot): string {
   return `${clockOf(SLOT_START_HOURS[slot] * 60)} ${PLAN.hoursTo} ${clockOf(SLOT_START_HOURS[NEXT[slot]] * 60)}`;
 }
 
-/** Props of the slots: the plan, the household it was made for and the forecast held on this page. */
+/** Props of the slots: the plan, the household it was made for and the forecast and time it was made with. */
 export interface PlanSlotsProps {
   readonly plan: Plan;
   readonly household: Household;
-  readonly curve: HourCurve | null;
+  readonly whatIf: WhatIfContext;
 }
 
 /** The three slots. An empty slot says so rather than vanishing. */
-export function PlanSlots({ plan, household, curve }: PlanSlotsProps): ReactElement {
+export function PlanSlots({ plan, household, whatIf }: PlanSlotsProps): ReactElement {
   const slots = entriesBySlot(plan, household);
-  const ctx = contextFor(plan, household, curve);
+  const ctx = contextFor(plan, household, whatIf);
   const draw = (entry: Entry): ReactElement => {
     return entry.kind === 'moved' ? (
       <MovedEntry key={`moved-${entry.item.candidateId}`} item={entry.item} activity={entry.activity} />

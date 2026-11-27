@@ -16,11 +16,11 @@ import { buildCandidates } from '../../../src/features/planner/candidates.js';
 import { buildFactSet } from '../../../src/features/planner/fact-set.js';
 import { planFromWording } from '../../../src/features/planner/from-wording.js';
 import { planResponseSchema } from '../../../src/features/planner/contract.js';
+import { whatIfContextOf } from '../../../src/features/planner/request-context.js';
 import { rulesChoice, rulesPlan } from '../../../src/features/planner/rules-plan.js';
 import type { PlanResponse } from '../../../src/features/planner/types.js';
 import type { Travel } from '../../../src/features/household/types.js';
 import type { FallbackReason, Trace } from '../../../src/lib/types.js';
-import { saveState } from '../../../src/ui/storage.js';
 import { hourCurve, jnuStation } from '../../support/fake-air.js';
 import { planContext, sample, winterDay } from '../../support/plan-fixtures.js';
 
@@ -83,21 +83,30 @@ export function rulesTrace(reason: FallbackReason | null = 'disabled'): Trace {
   };
 }
 
-/** Options for a plan fixture: the forecast the plan used, and the trace to attach. */
+/**
+ * Options for a plan fixture: the forecast the plan used, the trace to attach, the IST time the server planned
+ * from, and whether the response carries the what-if context, as every response from the real route does.
+ */
 export interface PlanOptions {
   readonly curve?: HourCurve | null;
   readonly trace?: Trace;
+  readonly notBefore?: string;
+  readonly withContext?: boolean;
 }
 
-/** A rules plan for a sample household on the given band, made by the real planner and checked by the schema. */
+/**
+ * A rules plan for a sample household on the given band, made by the real planner, with the what-if context the
+ * real route sends, and checked by the schema.
+ */
 export function planResponse(id: string, band: AqiBand | null, options: PlanOptions = {}): PlanResponse {
   const curve = options.curve === undefined ? FORECAST : options.curve;
-  const ctx = planContext(sample(id), band, curve);
+  const ctx = { ...planContext(sample(id), band, curve), notBefore: options.notBefore ?? null };
   const set = buildCandidates(ctx);
   return planResponseSchema.parse({
     plan: rulesPlan(ctx, set),
     airBasis: { path: 'station', band, readingHour: READING_HOUR, forecastIssuedAt: curve?.issuedAt ?? null },
     trace: options.trace ?? rulesTrace(),
+    ...(options.withContext === false ? {} : { whatIfContext: whatIfContextOf(ctx) }),
   });
 }
 
@@ -122,6 +131,7 @@ export function hindiPlanResponse(id: string, band: AqiBand): PlanResponse {
   return planResponseSchema.parse({
     plan: plan.value,
     airBasis: { path: 'station', band, readingHour: READING_HOUR, forecastIssuedAt: FORECAST.issuedAt },
+    whatIfContext: whatIfContextOf(ctx),
     trace: {
       producedBy: 'model',
       modelId: 'gemini-test',
@@ -246,35 +256,7 @@ export function stubApi(routes: Routes): Fetcher {
   return fetcher;
 }
 
-/** Saves a household and place in local storage, as the earlier views would. */
-export function saveSample(id = 'family-car-asthma', language: 'en' | 'hi' = 'en'): void {
-  saveState(window.localStorage, {
-    version: 1,
-    household: sample(id),
-    location: DELHI,
-    place: {
-      id: 'p1',
-      name: 'Delhi',
-      district: null,
-      state: 'Delhi',
-      postcode: null,
-      lat: 28.54,
-      lon: 77.17,
-    },
-    language,
-  });
-}
-
-/** Saves only a place, with no household yet. */
-export function savePlaceOnly(): void {
-  saveState(window.localStorage, {
-    version: 1,
-    household: null,
-    location: DELHI,
-    place: null,
-    language: 'en',
-  });
-}
+export { savePlaceOnly, saveSample } from './saved.js';
 
 /** The value, or a thrown error naming what was missing: for test data that must exist. */
 export function need<T>(value: T | null | undefined, what = 'a value'): T {

@@ -1,6 +1,7 @@
 // Tests for the sheet's parts: the model trace with facts, raw reply as text and calls; the rules trace with the
 // reason; a failed number check with the numbers that matched nothing.
 import { render, screen } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import type { Trace } from '../../../src/lib/types.js';
 import { TraceSections } from '../../../src/ui/trace/TraceSections.js';
@@ -30,6 +31,37 @@ describe('TraceSections', () => {
     expect(screen.getByText('The model took too long to answer.')).toBeInTheDocument();
     expect(screen.getByText(/No facts were sent/)).toBeInTheDocument();
     expect(screen.getByText('There is no model reply for this answer.')).toBeInTheDocument();
+  });
+
+  it('shows a refused reply as refused with its reason, closed, and never as the model reply', async () => {
+    const refused: Trace = { ...rulesTrace('number_check_failed'), modelReply: '{"text":"The AQI is 999."}' };
+    const { rerender } = render(<TraceSections trace={refused} />);
+    expect(screen.getByRole('heading', { name: 'A reply the checks refused' })).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: "The model's reply" })).toBeNull();
+    expect(
+      screen.getByText(/failed a check and was not used\. It is not advice\. The model used a number/),
+    ).toBeInTheDocument();
+    const details = screen.getByText('Show the refused text').closest('details');
+    expect(details).not.toHaveAttribute('open');
+    await userEvent.click(screen.getByText('Show the refused text'));
+    expect(details?.querySelector('pre')).toHaveTextContent('The AQI is 999.');
+    rerender(<TraceSections trace={{ ...refused, fallbackReason: null, modelReply: '[withheld]' }} />);
+    expect(
+      screen.getByText(
+        'The model did reply, but the reply failed a check and was not used. It is not advice.',
+      ),
+    ).toBeInTheDocument();
+    rerender(<TraceSections trace={{ ...refused, modelReply: null }} />);
+    expect(screen.getByText('There is no model reply for this answer.')).toBeInTheDocument();
+  });
+
+  it('says when a reply was reused from a few minutes ago, and nothing of the sort for a fresh one', () => {
+    const { rerender } = render(
+      <TraceSections trace={{ ...rulesTrace(null), producedBy: 'model', cached: true }} />,
+    );
+    expect(screen.getByText(/^Reused from a few minutes ago\./)).toBeInTheDocument();
+    rerender(<TraceSections trace={{ ...rulesTrace(null), producedBy: 'model', cached: false }} />);
+    expect(screen.queryByText(/Reused from a few minutes ago/)).toBeNull();
   });
 
   it('names the numbers that matched nothing when the check failed', () => {

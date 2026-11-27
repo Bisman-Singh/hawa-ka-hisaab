@@ -1,5 +1,6 @@
 // What a place answer means: the words for what was understood and, for a PIN, how rough the point is.
 import type { Place } from '../../features/air/types.js';
+import { PLACE } from './strings.js';
 
 const USE = 'used only to find the nearest monitoring station.';
 
@@ -7,6 +8,11 @@ const USE = 'used only to find the nearest monitoring station.';
 export function placeLabel(place: Place): string {
   const parts = place.label?.split(', ') ?? [place.name, place.district ?? '', place.state ?? ''];
   return [...new Set(parts.filter((part) => part !== ''))].join(', ');
+}
+
+/** The words for where the air is read: the place as understood, or the device's own location. */
+export function placeWhere(place: Place | null): string {
+  return place === null ? PLACE.yourLocation : placeLabel(place);
 }
 
 /** How exact the point is. A PIN answer is the approximate centre of its area; a town answer needs no note. */

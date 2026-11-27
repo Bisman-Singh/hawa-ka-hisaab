@@ -2,21 +2,15 @@
 // on request. One match is chosen at once; focus moves to the list, the field or the air card as the answer needs.
 import { useCallback, useId, useState } from 'react';
 import type { ReactElement, SubmitEvent } from 'react';
-import { placesRoute } from '../../features/air/contract.js';
 import type { Location, Place, PlacesResponse } from '../../features/air/types.js';
-import { getJson } from '../api-client.js';
 import { Field } from '../components/Field.js';
-import { useQuery } from '../data/request.js';
-import type { Call } from '../data/request.js';
+import { usePlaces } from '../data/api.js';
+import type { PlaceQuery } from '../data/api.js';
 import { useAnnounce } from '../hooks/announcer.js';
 import { useFocusLater } from './focus.js';
 import { Crosshair, DeviceState, fieldWords, SearchState } from './place-states.js';
-import type { Search } from './place-states.js';
 import { PLACE } from './strings.js';
 import { useDeviceLocation } from './useDeviceLocation.js';
-
-const findPlaces: Call<Search, PlacesResponse> = (search, signal) =>
-  getJson(placesRoute, { q: search.q }, { signal });
 
 /** Props of the place field. onChoose gets a found place, or null for the device, with the point to read. */
 export interface PlaceSearchProps {
@@ -24,7 +18,7 @@ export interface PlaceSearchProps {
 }
 
 function useSearch(onChoose: PlaceSearchProps['onChoose'], id: string) {
-  const [search, setSearch] = useState<Search | null>(null);
+  const [search, setSearch] = useState<PlaceQuery | null>(null);
   const announce = useAnnounce();
   const focusLater = useFocusLater();
   const pick = useCallback(
@@ -45,7 +39,7 @@ function useSearch(onChoose: PlaceSearchProps['onChoose'], id: string) {
     }
     focusLater(first ? `${id}-first` : id);
   };
-  const query = useQuery(findPlaces, search, onFound);
+  const query = usePlaces(search, onFound);
   const run = (q: string): void => {
     setSearch({ q, turn: (search?.turn ?? 0) + 1 });
     announce(PLACE.finding);

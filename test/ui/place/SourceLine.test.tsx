@@ -1,11 +1,9 @@
 // Tests for the source line: each provider worded as the facts say, with its hour, links and licence.
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import { AIR_FACTS } from '../../../src/config/facts/air.js';
-import { ModelledSource, PROVIDER_WORDS, StationSource } from '../../../src/ui/place/SourceLine.js';
+import { factQuote, findFact } from '../../../src/config/facts/index.js';
+import { ModelledSource, providerWords, StationSource } from '../../../src/ui/place/SourceLine.js';
 import { jnuReading, modelledReading } from './air-fixtures.js';
-
-const ruleText = AIR_FACTS.find((fact) => fact.id === 'naqi-worst-sub-index');
 
 describe('source line', () => {
   it('names the CPCB feed, the hour, and that the AQI is as CPCB published it', () => {
@@ -20,7 +18,10 @@ describe('source line', () => {
   });
 
   it('words the data.gov.in path with the rule from the facts and links its licence', () => {
-    expect(ruleText?.kind === 'text' ? ruleText.text : null).toBe(PROVIDER_WORDS.data_gov_in.after);
+    expect(providerWords('data_gov_in')).toEqual({
+      after: factQuote('naqi-worst-sub-index'),
+      licence: findFact('credit-data-gov-in')?.source,
+    });
     render(<StationSource reading={jnuReading({ provider: 'data_gov_in' })} />);
     expect(screen.getByText(/The worst sub-index determines the overall AQI\./)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Government Open Data License India/ })).toBeInTheDocument();
@@ -33,10 +34,16 @@ describe('source line', () => {
     expect(container.textContent).toContain('The AQI is shown as CPCB published it.');
   });
 
-  it('credits Open-Meteo on the modelled path and says how the index is found', () => {
+  it('credits Open-Meteo on the modelled path as a link with its licence, and says how the index is found', () => {
     const { container } = render(<ModelledSource reading={modelledReading()} />);
     expect(container.textContent).toBe(
-      "Source: Air Quality API, CAMS global model, Open-Meteo, hours up to 22:00 IST. The index is worked out from these means with CPCB's NAQI table. Weather data by Open-Meteo.com.",
+      "Source: Air Quality API, CAMS global model, Open-Meteo, hours up to 22:00 IST. The index is worked out from these means with CPCB's NAQI table. Weather data by Open-Meteo.com, CC BY 4.0.",
+    );
+    const credit = screen.getByRole('link', { name: 'Weather data by Open-Meteo.com' });
+    expect(credit).toHaveAttribute('href', findFact('credit-open-meteo')?.source.url);
+    expect(screen.getByRole('link', { name: 'CC BY 4.0' })).toHaveAttribute(
+      'href',
+      'https://creativecommons.org/licenses/by/4.0/',
     );
   });
 });

@@ -1,50 +1,34 @@
 // The source line of the air card: which copy of the data served the reading, its hour, and what that means for
-// the AQI. Every provider's wording sits here, with the sentences the air facts hold quoted from them.
+// the AQI. Sentences and credits the facts hold are read from the facts registry, never retyped here.
 import type { ReactElement } from 'react';
-import { AIR_FACTS } from '../../config/facts/air.js';
-import { GODL_INDIA } from '../../config/facts/air/sources.js';
+import { factQuote } from '../../config/facts/index.js';
 import type { ModelledReading, StationProvider, StationReading } from '../../features/air/types.js';
 import type { Source } from '../../lib/types.js';
+import { Credit, factSource } from '../components/Credit.js';
 import { istClock, istDay } from './hours.js';
 
-const quoted = (id: string): string =>
-  AIR_FACTS.flatMap((fact) => (fact.kind === 'text' && fact.id === id ? [fact.text] : [])).join('');
-
-/** What a provider means for the AQI: the closing sentence of the source line and the words for a missing AQI. */
+/** What a provider means for the AQI: the closing sentence of the source line and the licence to link, if any. */
 export interface ProviderWords {
   readonly after: string;
   readonly licence: Source | null;
-  readonly noAqi: string;
-  readonly noAqiNote: string;
 }
 
-/** The words for each copy of CPCB's data. */
-export const PROVIDER_WORDS: Readonly<Record<StationProvider, ProviderWords>> = {
-  cpcb_feed: {
-    after: 'The AQI is shown as CPCB published it.',
-    licence: null,
-    noAqi: 'CPCB published no AQI for this station this hour.',
-    noAqiNote: "This app shows CPCB's AQI as published and never works one out for a station.",
-  },
-  data_gov_in: {
-    after: quoted('naqi-worst-sub-index'),
-    licence: GODL_INDIA,
-    noAqi: 'No AQI for this station this hour.',
-    noAqiNote:
-      "CPCB's rule needs at least three pollutants, one of them PM2.5 or PM10, and this station has fewer this hour.",
-  },
-};
-
-/** The words for a station reading. A copy saved before provider existed came from the CPCB feed. */
-export function providerWords(reading: StationReading): ProviderWords {
-  return PROVIDER_WORDS[reading.provider ?? 'cpcb_feed'];
+/** The words for each copy of CPCB's data. On data.gov.in, CPCB's rule for the AQI and the licence come from the registry. */
+export function providerWords(provider: StationProvider): ProviderWords {
+  if (provider === 'cpcb_feed') {
+    return { after: 'The AQI is shown as CPCB published it.', licence: null };
+  }
+  return {
+    after: factQuote('naqi-worst-sub-index'),
+    licence: factSource('credit-data-gov-in'),
+  };
 }
 
-/** Props of the source line: the source record, the hour words and the closing sentence. */
+/** Props of the source line: the source record, the hour words, the closing words and any licence. */
 export interface SourceLineProps {
   readonly source: Source;
   readonly hour: string;
-  readonly after: string;
+  readonly after: ReactElement | string;
   readonly licence?: Source | null;
 }
 
@@ -63,16 +47,20 @@ export function SourceLine({ source, hour, after, licence = null }: SourceLinePr
   );
 }
 
-/** The source line of a station reading. */
+/** The source line of a station reading. A copy saved before provider existed came from the CPCB feed. */
 export function StationSource({ reading }: { readonly reading: StationReading }): ReactElement {
-  const words = providerWords(reading);
+  const words = providerWords(reading.provider ?? 'cpcb_feed');
   const hour = `reading for ${istClock(reading.readingHour)} IST on ${istDay(reading.readingHour)}`;
   return <SourceLine source={reading.source} hour={hour} after={words.after} licence={words.licence} />;
 }
 
-/** The source line of a modelled estimate, with the credit Open-Meteo asks for. */
+/** The source line of a modelled estimate, with the credit and licence link Open-Meteo asks for beside its data. */
 export function ModelledSource({ reading }: { readonly reading: ModelledReading }): ReactElement {
-  const after = `The index is worked out from these means with CPCB's NAQI table. ${quoted('credit-open-meteo')}.`;
+  const after = (
+    <>
+      {"The index is worked out from these means with CPCB's NAQI table."} <Credit id="credit-open-meteo" />
+    </>
+  );
   return (
     <SourceLine
       source={reading.source}

@@ -1,7 +1,7 @@
 // The parts of the intake box: the text box with its count and problem, and the samples to start from.
 import type { ReactElement } from 'react';
 import { SAMPLE_HOUSEHOLDS } from '../../features/household/samples.js';
-import { INTAKE, PRIVACY_NOTE } from './strings.js';
+import { INTAKE } from './strings.js';
 
 /** Props of the intake text box. problem is why the last send was refused, if it was. */
 export interface IntakeTextProps {
@@ -75,17 +75,5 @@ export function IntakeSamples({
         ))}
       </ul>
     </>
-  );
-}
-
-/** The note shown before the first send: where the text goes and what is kept. */
-export function PrivacyNote({ id }: { readonly id: string }): ReactElement {
-  return (
-    <div className="privacy-note" id={id}>
-      <p>
-        <b>{PRIVACY_NOTE.lead}</b> {PRIVACY_NOTE.body}
-      </p>
-      <p>{PRIVACY_NOTE.kept}</p>
-    </div>
   );
 }

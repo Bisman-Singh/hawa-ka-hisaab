@@ -1,4 +1,6 @@
-// The six CPCB AQI bands as the interface draws them: their order, AQI range and hatch class.
+// The six CPCB AQI bands as the interface draws them: their order, AQI range and hatch class. The ranges are read
+// from CPCB's NAQI table in the facts registry, so the scale and the legend hold no copy of their own.
+import { factNumber } from '../config/facts/index.js';
 import { aqiBandSchema } from '../features/naqi/schemas.js';
 import type { AqiBand } from '../features/naqi/types.js';
 
@@ -12,14 +14,25 @@ export interface BandStyle {
   readonly hatch: string;
 }
 
-/** Ranges from CPCB's National Air Quality Index. The scale ends at 500, the top of Severe. */
+/** The low and high ends of a number fact, both its value when it has no range. */
+export function factSpan(id: string): { readonly lo: number; readonly hi: number } {
+  const { value, range } = factNumber(id);
+  return { lo: value, hi: range === null ? value : range.high };
+}
+
+const style = (band: AqiBand, hatch: string): BandStyle => ({
+  ...factSpan(`naqi-band-${band.replace('_', '-')}`),
+  hatch,
+});
+
+/** Ranges from CPCB's National Air Quality Index, as the registry holds them. The scale ends at 500. */
 export const BANDS: Readonly<Record<AqiBand, BandStyle>> = {
-  good: { lo: 0, hi: 50, hatch: 'g-good' },
-  satisfactory: { lo: 51, hi: 100, hatch: 'g-sat' },
-  moderate: { lo: 101, hi: 200, hatch: 'g-mod' },
-  poor: { lo: 201, hi: 300, hatch: 'g-poor' },
-  very_poor: { lo: 301, hi: 400, hatch: 'g-vpoor' },
-  severe: { lo: 401, hi: 500, hatch: 'g-severe' },
+  good: style('good', 'g-good'),
+  satisfactory: style('satisfactory', 'g-sat'),
+  moderate: style('moderate', 'g-mod'),
+  poor: style('poor', 'g-poor'),
+  very_poor: style('very_poor', 'g-vpoor'),
+  severe: style('severe', 'g-severe'),
 };
 
 /** The range of a band in words, such as "301 to 400". */
@@ -27,7 +40,7 @@ export function rangeText(band: AqiBand): string {
   return `${String(BANDS[band].lo)} to ${String(BANDS[band].hi)}`;
 }
 
-/** Where an AQI sits along the six equal cells of the scale, from 0 to 1. Values past 500 stay at the end. */
+/** Where a value sits along the six equal cells of the scale, from 0 to 1. Values past 500 stay at the end. */
 export function scalePosition(value: number, band: AqiBand): number {
   const { lo, hi } = BANDS[band];
   const within = Math.min(1, Math.max(0, (value - lo) / (hi - lo + 1)));

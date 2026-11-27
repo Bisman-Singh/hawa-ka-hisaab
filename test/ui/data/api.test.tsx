@@ -1,16 +1,8 @@
-// Tests for the typed route hooks: each one calls its route with checked input and the coordinates rounded.
+// Tests for the first screen's route hooks: each calls its route with checked input, the coordinates rounded, and
+// hands a successful answer to its completion callback.
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import {
-  roundCoordinate,
-  useAir,
-  useAsk,
-  useIntake,
-  useNotice,
-  usePlaces,
-  usePlan,
-} from '../../../src/ui/data/api.js';
-import { sampleCommunity, sampleHousehold } from '../../support/samples.js';
+import { roundCoordinate, useAir, useIntake, usePlaces } from '../../../src/ui/data/api.js';
 
 const json = (body: unknown, status = 200): Response =>
   new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } });
@@ -38,10 +30,12 @@ describe('route hooks', () => {
 
   it('searches places and reads the air for a rounded location, keeping the reading', async () => {
     const fetcher = stubFetch(() => json({ places: [] }));
-    const places = renderHook(() => usePlaces('Lucknow'));
+    const found = vi.fn();
+    const places = renderHook(() => usePlaces({ q: 'Lucknow', turn: 1 }, found));
     await waitFor(() => {
       expect(places.result.current.state).toEqual({ status: 'done', data: { places: [] } });
     });
+    expect(found).toHaveBeenCalledWith({ places: [] });
     expect(fetcher.mock.calls[0]?.[0]).toBe('/api/places?q=Lucknow');
     fetcher.mockImplementation(() => Promise.resolve(json(air)));
     const onDone = vi.fn();
@@ -53,35 +47,44 @@ describe('route hooks', () => {
     expect(renderHook(() => useAir(null)).result.current.state).toEqual({ status: 'idle' });
   });
 
-  it('posts intake, plan, ask and notice bodies to their routes', async () => {
-    const fetcher = stubFetch(() =>
-      json({ error: { code: 'internal', message: 'Failed.', issues: [] } }, 500),
-    );
-    const location = { lat: 28.65, lon: 77.31 };
-    const household = sampleHousehold();
-    const intake = renderHook(() => useIntake()).result;
-    const plan = renderHook(() => usePlan()).result;
-    const ask = renderHook(() => useAsk()).result;
-    const notice = renderHook(() => useNotice()).result;
+  it('asks the same place again when the search turn changes', async () => {
+    const fetcher = stubFetch(() => json({ places: [] }));
+    const places = renderHook(({ turn }) => usePlaces({ q: 'Pune', turn }), { initialProps: { turn: 1 } });
+    await waitFor(() => {
+      expect(places.result.current.state.status).toBe('done');
+    });
+    places.rerender({ turn: 2 });
+    await waitFor(() => {
+      expect(fetcher).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  it('posts the intake text and hands the answer to the callback', async () => {
+    const answer = {
+      outcome: 'unavailable',
+      reason: 'disabled',
+      trace: {
+        producedBy: 'rules',
+        modelId: null,
+        fallbackReason: 'disabled',
+        factsSent: [],
+        modelReply: null,
+        toolCalls: [],
+        numberCheck: { status: 'not_run', attempts: 0, unmatched: [] },
+        cached: false,
+      },
+    };
+    const fetcher = stubFetch(() => json(answer));
+    const onDone = vi.fn();
+    const intake = renderHook(() => useIntake(onDone)).result;
     act(() => {
       intake.current.run({ text: 'Two adults and a child.' });
-      plan.current.run({ household, location, language: 'en' });
-      ask.current.run({ question: 'Can she play at 6?', household, location, language: 'en' });
-      notice.current.run({ community: sampleCommunity(), location });
     });
     await waitFor(() => {
-      expect([intake, plan, ask, notice].map((hook) => hook.current.state.status)).toEqual([
-        'failed',
-        'failed',
-        'failed',
-        'failed',
-      ]);
+      expect(onDone).toHaveBeenCalledWith(answer);
     });
     expect(fetcher.mock.calls.map(([url, init]) => `${init?.method ?? ''} ${url}`)).toEqual([
       'POST /api/intake',
-      'POST /api/plan',
-      'POST /api/ask',
-      'POST /api/notice',
     ]);
   });
 });

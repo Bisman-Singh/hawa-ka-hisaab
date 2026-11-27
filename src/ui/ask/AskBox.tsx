@@ -9,10 +9,11 @@ import type { Household } from '../../features/household/types.js';
 import type { Language } from '../../lib/types.js';
 import { Field } from '../components/Field.js';
 import { RequestFailure } from '../components/RequestFailure.js';
-import { useAction } from '../data/request.js';
+import { useAsk } from '../data/plan-api.js';
 import type { RequestState } from '../data/request.js';
+import { CONSENT } from '../consent/strings.js';
 import { useAnnounce } from '../hooks/announcer.js';
-import { askCall } from '../plan/calls.js';
+import { useAppActions } from '../state/app-state.js';
 import { FixedReply, ModelAnswer } from './Answer.js';
 import { ASK } from './strings.js';
 import { calling, texting } from '../plan/handlers.js';
@@ -64,11 +65,32 @@ export function AskResult({
   );
 }
 
+/** Where the ask box goes when the model is off for this browser: why there is none, and how to turn it on. */
+export function AskOff(): ReactElement {
+  const id = useId();
+  const { save } = useAppActions();
+  return (
+    <section className="sec ask" aria-labelledby={id}>
+      <h2 id={id}>{ASK.title}</h2>
+      <p>{CONSENT.offAsk}</p>
+      <button
+        className="btn btn-quiet"
+        type="button"
+        onClick={() => {
+          save({ modelChoice: 'on' });
+        }}
+      >
+        {CONSENT.turnOn}
+      </button>
+    </section>
+  );
+}
+
 /** The ask box. An empty question is refused in place; the answer is announced when it arrives. */
 export function AskBox({ household, location, language }: AskBoxProps): ReactElement {
   const id = useId();
   const announce = useAnnounce();
-  const ask = useAction(askCall, calling(announce, ASK.ready));
+  const ask = useAsk(calling(announce, ASK.ready));
   const [question, setQuestion] = useState('');
   const [asked, setAsked] = useState('');
   const [empty, setEmpty] = useState(false);

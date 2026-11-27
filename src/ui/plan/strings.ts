@@ -56,7 +56,8 @@ export const PLAN = {
   noneNeeded: 'None needed.',
   whatIf: 'What if',
   asPlanned: 'As planned',
-  whatIfNeedsForecast: 'Other start times need the forecast, which is not loaded on this page.',
+  whatIfNeedsForecast:
+    'Other start times need the forecast this plan was made with, which did not come with it.',
   slots: { morning: 'Morning', afternoon: 'Afternoon', evening: 'Evening' } satisfies Record<Slot, string>,
   hoursTo: 'to',
   empty: 'Nothing planned in this part of the day.',
@@ -67,6 +68,7 @@ export const PLAN = {
   reckoningEmpty: 'Changes with a measured figure',
   reckoningNo: 'None',
   aside: 'This account',
+  otherAir: 'This card shows a different reading from the one this plan was made on.',
   household: 'Household',
   people: 'People',
   outings: 'Outings',
@@ -93,10 +95,8 @@ export const STRIP = {
   caption: 'Forecast PM2.5 by hour, model, µg/m³',
   hour: 'Hour',
   pm25: 'PM2.5',
-  now: 'now',
+  now: 'planned at',
   airing: 'airing window',
   noForecast: 'No forecast was available for your place today, so nothing is moved to cleaner hours.',
-  notLoaded: 'The forecast is not loaded on this page, so the strip is not shown.',
-  otherCurve:
-    'The forecast on this page was fetched after the plan was made. What-if times use the one on this page.',
+  notSent: 'This plan came without the forecast it was made with, so the strip is not shown.',
 };

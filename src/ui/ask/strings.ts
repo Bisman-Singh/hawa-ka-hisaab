@@ -3,7 +3,7 @@
 export const ASK = {
   title: 'Ask about today',
   label: 'Your question',
-  hint: 'For example: can my son still go for football at 6 in the evening? Answers use the same calculators as the plan, and you can see each call. Questions about symptoms, medicines or diagnosis get a fixed reply and are not sent to the model.',
+  hint: "For example: can my son still go for football at 6 in the evening? Answers use the same calculators as the plan, and you can see each call. Your question goes to Google's model with the household, so leave out names. Questions about symptoms, medicines or diagnosis get a fixed reply and are not sent to the model.",
   send: 'Ask',
   empty: 'Type a question first.',
   asked: 'You asked',

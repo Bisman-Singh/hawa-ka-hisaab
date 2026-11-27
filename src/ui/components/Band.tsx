@@ -6,6 +6,7 @@ import type { AqiBand } from '../../features/naqi/types.js';
 import { BAND_ORDER, BANDS, rangeText, scalePosition } from '../bands.js';
 import { useCssVars } from '../hooks/useCssVars.js';
 import { BAND_TEXT, scaleSentence } from '../i18n/strings.js';
+import type { ScaleValue } from '../i18n/strings.js';
 
 /** The hatched square of a band. Decorative: the band's name always sits beside it. */
 export function BandGlyph({ band }: { readonly band: AqiBand }): ReactElement {
@@ -22,19 +23,16 @@ export function BandLabel({ band }: { readonly band: AqiBand }): ReactElement {
   );
 }
 
-/** Props of the scale: the AQI and the band CPCB gave it. */
-export interface BandScaleProps {
-  readonly value: number;
-  readonly band: AqiBand;
-}
+/** Props of the scale: what the value is called, the value, and the band its source gave it. */
+export type BandScaleProps = ScaleValue;
 
 /** Six cells with today's marked. Screen readers hear one sentence; the drawing is hidden from them. */
-export function BandScale({ value, band }: BandScaleProps): ReactElement {
+export function BandScale({ value, band, label }: BandScaleProps): ReactElement {
   const pointer = useRef<HTMLSpanElement>(null);
   useCssVars(pointer, { '--at': scalePosition(value, band).toFixed(3) });
   return (
     <div className="scale">
-      <p className="vh">{scaleSentence(value, band, rangeText(band))}</p>
+      <p className="vh">{scaleSentence({ label, value, band }, rangeText(band))}</p>
       <span ref={pointer} className="scale-pointer" aria-hidden="true">
         {value}
       </span>

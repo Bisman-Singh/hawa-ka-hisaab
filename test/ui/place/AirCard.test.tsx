@@ -4,9 +4,9 @@ import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import type { AirResponse, GrapNotice } from '../../../src/features/air/types.js';
 import type { Query, RequestState } from '../../../src/ui/data/request.js';
-import { AirCard, airSummary } from '../../../src/ui/place/AirCard.js';
+import { AirCard } from '../../../src/ui/place/AirCard.js';
 import { axeViolations } from '../helpers.js';
-import { airResponse, jnuReading, modelledReading } from './air-fixtures.js';
+import { airResponse, modelledReading } from './air-fixtures.js';
 
 const query = (state: RequestState<AirResponse>, retry = vi.fn()): Query<AirResponse> => ({ state, retry });
 const done = (data: AirResponse) => query({ status: 'done', data });
@@ -48,6 +48,22 @@ describe('AirCard', () => {
     expect(container.querySelector('.modelled .grap')).not.toBeNull();
   });
 
+  it('gives the short card beside the plan the AQI, band, source and GRAP note without the detail', () => {
+    const { container, rerender } = render(
+      <AirCard air={done(airResponse({ grap: GRAP }))} where="PIN 110067" compact />,
+    );
+    expect(screen.getByText('246')).toBeInTheDocument();
+    expect(screen.getByText('Poor')).toBeInTheDocument();
+    expect(container.querySelector('.source')).not.toBeNull();
+    expect(container.querySelector('.grap')).not.toBeNull();
+    expect(container.querySelector('.scale')).toBeNull();
+    expect(container.querySelector('.subidx')).toBeNull();
+    rerender(<AirCard air={done(airResponse({ reading: modelledReading() }))} where="Delhi" compact />);
+    expect(screen.getByText('61')).toBeInTheDocument();
+    expect(container.querySelector('.scale')).toBeNull();
+    expect(container.querySelector('.subidx')).toBeNull();
+  });
+
   it('says plainly when neither the feed nor the model answered, with a retry', async () => {
     const retry = vi.fn();
     const data = airResponse({ reading: { path: 'unavailable', reason: 'no_station_and_model_down' } });
@@ -57,26 +73,5 @@ describe('AirCard', () => {
     );
     await userEvent.click(screen.getByRole('button', { name: 'Try again' }));
     expect(retry).toHaveBeenCalledTimes(1);
-  });
-});
-
-describe('airSummary', () => {
-  it('says the AQI and band, the estimate, or why there is none, in one sentence', () => {
-    expect(airSummary(airResponse())).toBe('CPCB AQI 246, Poor.');
-    expect(airSummary(airResponse({ reading: jnuReading({ aqi: null }) }))).toBe(
-      'CPCB published no AQI for this station this hour.',
-    );
-    expect(airSummary(airResponse({ reading: modelledReading() }))).toBe(
-      'Modelled estimate 61, Satisfactory.',
-    );
-    const thin = modelledReading({
-      estimate: { status: 'insufficient', reason: 'too_few_pollutants', available: [] },
-    });
-    expect(airSummary(airResponse({ reading: thin }))).toBe(
-      'The model gave too few pollutants for an index, so none is shown.',
-    );
-    expect(airSummary(airResponse({ reading: { path: 'unavailable', reason: 'feed_and_model_down' } }))).toBe(
-      'The air reading could not be fetched.',
-    );
   });
 });
