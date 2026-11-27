@@ -78,15 +78,16 @@ test('a family in Delhi plans a very poor day from a PIN and a sample sentence',
     await expectClean(page, problems);
   });
 
-  await test.step('a range that could be a cut or a rise is headlined by its rise, with why it is wide', async () => {
+  await test.step('a range that could be a cut or a rise is headlined by its rise, and why it is wide is said once', async () => {
     const entry = page
       .getByRole('listitem')
       .filter({ has: page.getByRole('heading', { name: 'Office commute: take the bus' }) });
     await expect(entry.locator('.fig', { hasText: 'Up to 2.4× as much' })).toBeVisible();
     await expect(entry.locator('.range', { hasText: /^or 8% less/ })).toBeVisible();
+    await expect(entry.locator('.tradeoff')).toBeVisible();
     await expect(
       entry.getByText('Wide because a closed car with AC keeps out far more', { exact: false }),
-    ).toBeVisible();
+    ).toHaveCount(0);
   });
 
   await test.step('open a working, then change a what-if and see the figure change', async () => {

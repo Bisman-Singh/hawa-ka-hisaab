@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { Announcer } from '../../../src/ui/hooks/announcer.js';
 import { readIntake, setIntake } from '../../../src/ui/household/intake-store.js';
 import { ClearHousehold } from '../../../src/ui/legal/ClearHousehold.js';
-import { PRIVACY } from '../../../src/ui/legal/strings.js';
+import { PRIVACY } from '../../../src/ui/legal/words.js';
 import { loadState, STORAGE_KEY } from '../../../src/ui/storage.js';
 import { sampleTrace } from '../../support/samples.js';
 import { axeViolations, renderInApp } from '../helpers.js';

@@ -1,5 +1,7 @@
 // What the place field shows under itself: the search in progress, a failed search, the list for an ambiguous
 // name, and the device location states. Also the words for the field's hint and problem.
+import { calling } from '../handlers.js';
+import { Button } from '../components/Button.js';
 import type { ReactElement } from 'react';
 import type { Place, PlacesResponse } from '../../features/air/types.js';
 import { RequestFailure } from '../components/RequestFailure.js';
@@ -7,7 +9,7 @@ import { StateMessage } from '../components/StateMessage.js';
 import type { PlaceQuery } from '../data/api.js';
 import type { Query } from '../data/request.js';
 import { placeLabel } from './place-answer.js';
-import { PLACE } from './strings.js';
+import { notFound, PLACE } from './words.js';
 import type { LocateState } from './useDeviceLocation.js';
 
 const REFUSALS = { denied: PLACE.denied, unavailable: PLACE.unavailable, outside: PLACE.outside };
@@ -24,16 +26,9 @@ function Choices({ places, id, pick }: { places: readonly Place[]; id: string; p
       <ul className="abstract" aria-labelledby={`${id}-choose`}>
         {places.map((place, index) => (
           <li key={place.id}>
-            <button
-              className="linkbtn"
-              type="button"
-              id={index === 0 ? `${id}-first` : undefined}
-              onClick={() => {
-                pick(place);
-              }}
-            >
+            <Button look="link" id={index === 0 ? `${id}-first` : undefined} onClick={calling(pick, place)}>
               {placeLabel(place)}
-            </button>
+            </Button>
           </li>
         ))}
       </ul>
@@ -86,8 +81,7 @@ export function fieldWords(
     return { error: PLACE.blank, hint: PLACE.hint };
   }
   if (search !== null && state.status === 'done' && state.data.places.length === 0) {
-    const [error, hint] = PLACE.notFound(search.q);
-    return { error, hint };
+    return notFound(search.q);
   }
   return { error: undefined, hint: PLACE.hint };
 }

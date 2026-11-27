@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import { ForecastStrip, stripHours, stripNote } from '../../../src/ui/plan/ForecastStrip.js';
-import { STRIP } from '../../../src/ui/plan/strings.js';
+import { STRIP } from '../../../src/ui/plan/words.js';
 import { hourCurve } from '../../support/fake-air.js';
 import { winterDay } from '../../support/plan-fixtures.js';
 import { axeViolations } from '../helpers.js';

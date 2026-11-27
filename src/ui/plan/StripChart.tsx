@@ -1,15 +1,13 @@
-// The drawing of the forecast strip: a bar per hour, the airing window and the time the plan was made, the hour
-// axis and the parts of the day. Sizes and positions reach the stylesheet as custom properties, as the page policy requires.
-import { useRef } from 'react';
-import type { ReactElement } from 'react';
-import { clockText } from '../../features/community/format.js';
-import { minutesOf } from '../../features/ledger/format.js';
+// The forecast strip drawing: a bar per hour, the airing window, the planning time, the hour axis and the parts of
+// the day. Sizes and positions reach the stylesheet as custom properties, as the page policy requires.
+import { type ReactElement, useRef } from 'react';
+import { clockOf, minutesOf } from '../../lib/time.js';
 import { slotOf } from '../../features/planner/effects.js';
 import type { Plan } from '../../features/planner/types.js';
-import { useCssVars } from '../hooks/useCssVars.js';
-import type { CssVars } from '../hooks/useCssVars.js';
+import { useCssVars, type CssVars } from '../hooks/useCssVars.js';
 import { SLOTS } from './plan-data.js';
-import { PLAN, STRIP } from './strings.js';
+import type { Language } from '../../lib/types.js';
+import { PLAN, PLAN_LABELS, STRIP } from './words.js';
 
 /** One hour of the strip: the hour of the day and its modelled PM2.5. */
 export interface StripHour {
@@ -52,7 +50,7 @@ function Placed({
   );
 }
 
-function Axis({ hours, selected }: StripPartProps): ReactElement {
+function Axis({ hours, selected, language }: StripPartProps & { readonly language: Language }): ReactElement {
   return (
     <>
       <ol className="ds-axis">
@@ -65,10 +63,11 @@ function Axis({ hours, selected }: StripPartProps): ReactElement {
           </li>
         ))}
       </ol>
-      <div className="ds-slots">
+      <div className="ds-slots" lang={language}>
         {SLOTS.map((slot) => {
           const span = hours.filter((hour) => slotOf(hour.hour * 60) === slot).length;
-          return span === 0 ? null : <Placed key={slot} vars={{ '--span': span }} text={PLAN.slots[slot]} />;
+          const name = PLAN_LABELS[language].slots[slot];
+          return span === 0 ? null : <Placed key={slot} vars={{ '--span': span }} text={name} />;
         })}
       </div>
     </>
@@ -108,7 +107,7 @@ export function Chart(
           <Bar key={hour.hour} value={hour.pm25} selected={index === selected} />
         ))}
       </ol>
-      <Axis hours={hours} selected={selected} />
+      <Axis hours={hours} selected={selected} language={plan.language} />
     </div>
   );
 }
@@ -127,7 +126,7 @@ export function HourTable({ hours }: { readonly hours: readonly StripHour[] }): 
       <tbody>
         {hours.map((hour) => (
           <tr key={hour.hour}>
-            <td>{clockText(hour.hour, 0)}</td>
+            <td>{clockOf(hour.hour * 60)}</td>
             <td>{hour.pm25}</td>
           </tr>
         ))}

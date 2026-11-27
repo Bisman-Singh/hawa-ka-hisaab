@@ -1,23 +1,10 @@
-// Parts the two plain pages share: a titled section and a list of labelled lines in the account book's style.
-import { useId } from 'react';
-import type { ReactElement, ReactNode } from 'react';
-import type { Line } from './strings.js';
+// Labelled lines in the account book's style, as the two plain pages list what is sent and what is kept.
+import type { ReactElement } from 'react';
 
-/** A section with its own heading. */
-export function Part({
-  title,
-  children,
-}: {
-  readonly title: string;
-  readonly children: ReactNode;
-}): ReactElement {
-  const id = useId();
-  return (
-    <section className="sec" aria-labelledby={id}>
-      <h2 id={id}>{title}</h2>
-      {children}
-    </section>
-  );
+/** One labelled line of a page: a short label and what it says. */
+export interface Line {
+  readonly label: string;
+  readonly text: string;
 }
 
 /** Labelled lines, each a short label beside what it says. */

@@ -2,6 +2,7 @@
 // romanised Hindi, and the check of model answers for medical advice. A hit gets a fixed reply written in code.
 import type { FactValue, Language } from '../../lib/types.js';
 import type { AqiBand } from '../naqi/types.js';
+import REPLIES from './replies.json' with { type: 'json' };
 import { cited } from '../planner/fact-values.js';
 import { bandAdvice } from './band-advice.js';
 import { foldDevanagari, readForMatching } from './lookalikes.js';
@@ -29,7 +30,7 @@ export interface FixedReply {
 }
 
 const compile = (terms: Terms): RegExp => {
-  const hindi = terms.devanagari.split('|').map((term) => `(?<![\\p{L}\\p{M}])${term}`);
+  const hindi = terms.devanagari.map((term) => `(?<![\\p{L}\\p{M}])${term}`);
   return new RegExp(foldDevanagari([...terms.latin, ...hindi].join('|')), 'iu');
 };
 
@@ -72,16 +73,7 @@ export function mentionsTreatment(text: string): boolean {
   return anyMatch(text, [EMERGENCY, MEDICINE, MEDICAL, TREATMENT]);
 }
 
-const TEXTS: Readonly<Record<FixedReply['kind'], Readonly<Record<Language, string>>>> = {
-  medical: {
-    en: 'This app does not advise on symptoms, medicines, doses or diagnosis. Please ask a doctor.',
-    hi: 'यह ऐप लक्षण, दवा, खुराक या बीमारी की पहचान पर सलाह नहीं देता। कृपया डॉक्टर से पूछें।',
-  },
-  emergency: {
-    en: 'This sounds urgent. If someone is struggling to breathe, has chest pain, has blue or grey lips or has fainted, get medical help now. Call 112 or go to the nearest hospital.',
-    hi: 'यह आपात स्थिति लगती है। अगर किसी को साँस लेने में बहुत तकलीफ़ है, सीने में दर्द है, होंठ नीले पड़ रहे हैं या वह बेहोश हो गया है, तो तुरंत चिकित्सा सहायता लें। 112 पर कॉल करें या नज़दीकी अस्पताल जाएँ।',
-  },
-};
+const TEXTS: Readonly<Record<FixedReply['kind'], Readonly<Record<Language, string>>>> = REPLIES;
 
 const EMERGENCY_NUMBER = 'india-emergency-number';
 

@@ -1,34 +1,20 @@
 // The result for a society or school: computed facts with their working, the action list, and the notice in
 // English and Hindi with copy buttons for the plain text and a print button that prints only the notices.
-import { useId, useState } from 'react';
+import { type ReactElement, useState } from 'react';
 import { flushSync } from 'react-dom';
-import type { ReactElement } from 'react';
 import { noticeToPlainText } from '../../features/community/notice.js';
 import type { CommunityKind, NoticeResponse, NoticeText } from '../../features/community/types.js';
 import type { Language } from '../../lib/types.js';
+import { Button } from '../components/Button.js';
+import { Section } from '../components/Section.js';
+import { amountText } from '../components/words.js';
 import { WrittenBy } from '../components/WrittenBy.js';
 import { useAnnounce } from '../hooks/announcer.js';
 import { Workings } from '../trace/Working.js';
 import { HowMade } from '../trace/HowMade.js';
 import { copyText, NoticeCard } from './NoticeCard.js';
-import { COMMUNITY } from './strings.js';
-import { calling } from '../plan/handlers.js';
-
-function Part({
-  title,
-  children,
-}: {
-  readonly title: string;
-  readonly children: ReactElement | ReactElement[];
-}) {
-  const id = useId();
-  return (
-    <section className="sec" aria-labelledby={id}>
-      <h2 id={id}>{title}</h2>
-      {children}
-    </section>
-  );
-}
+import { COMMUNITY } from './words.js';
+import { calling } from '../handlers.js';
 
 /** Props of the result: the response and whether it is for a society or a school. */
 export interface NoticeResultProps {
@@ -39,19 +25,19 @@ export interface NoticeResultProps {
 function Facts({ response, kind }: NoticeResultProps): ReactElement {
   const noun = kind === 'school' ? COMMUNITY.school : COMMUNITY.society;
   return (
-    <Part title={`${COMMUNITY.facts} ${noun.toLowerCase()}`}>
+    <Section title={`${COMMUNITY.facts} ${noun.toLowerCase()}`}>
       <ul className="facts-list">
         {response.facts.map((fact) => (
           <li key={fact.label}>
             <span>{fact.label}</span>
-            <span className="fig">{`${String(fact.value)} ${fact.unit}`}</span>
+            <span className="fig">{amountText(fact.value, fact.unit)}</span>
             <div className="cite">
               <Workings workings={[fact]} />
             </div>
           </li>
         ))}
       </ul>
-    </Part>
+    </Section>
   );
 }
 
@@ -76,20 +62,21 @@ function Notices({ response }: { readonly response: NoticeResponse }): ReactElem
       announce(done ? COMMUNITY.copied : COMMUNITY.copyFailed);
     });
   };
-  const button = (label: string, onClick: () => void, quiet = true): ReactElement => (
-    <button className={quiet ? 'btn btn-quiet' : 'btn'} type="button" onClick={onClick}>
-      {label}
-    </button>
-  );
   return (
     <section className="sec" aria-label={COMMUNITY.notice}>
       <div className="sec-head">
         <h2>{COMMUNITY.notice}</h2>
         <div className="actions">
-          {button(COMMUNITY.print, calling(print, 'en'), false)}
-          {hi === null ? null : button(COMMUNITY.printHindi, calling(print, 'hi'), false)}
-          {button(COMMUNITY.copyEnglish, calling(copy, en))}
-          {hi === null ? null : button(COMMUNITY.copyHindi, calling(copy, hi))}
+          <Button look="main" onClick={calling(print, 'en')}>
+            {COMMUNITY.print}
+          </Button>
+          {hi === null ? null : (
+            <Button look="main" onClick={calling(print, 'hi')}>
+              {COMMUNITY.printHindi}
+            </Button>
+          )}
+          <Button onClick={calling(copy, en)}>{COMMUNITY.copyEnglish}</Button>
+          {hi === null ? null : <Button onClick={calling(copy, hi)}>{COMMUNITY.copyHindi}</Button>}
         </div>
       </div>
       <div className="small">
@@ -111,7 +98,7 @@ export function NoticeResult({ response, kind }: NoticeResultProps): ReactElemen
   return (
     <>
       <Facts response={response} kind={kind} />
-      <Part title={COMMUNITY.actions}>
+      <Section title={COMMUNITY.actions}>
         <ol className="acts">
           {response.actions.map((action) => (
             <li key={action.id}>
@@ -119,7 +106,7 @@ export function NoticeResult({ response, kind }: NoticeResultProps): ReactElemen
             </li>
           ))}
         </ol>
-      </Part>
+      </Section>
       <Notices response={response} />
     </>
   );

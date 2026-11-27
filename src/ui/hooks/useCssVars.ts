@@ -1,7 +1,6 @@
 // Sets CSS custom properties on an element through the CSSOM. The page policy forbids style attributes, so a
 // value worked out in code, such as a bar height or a pointer position, reaches the stylesheet this way.
-import { useLayoutEffect } from 'react';
-import type { RefObject } from 'react';
+import { type RefObject, useLayoutEffect } from 'react';
 
 /** Custom property values by name, such as { '--at': 0.735 }. */
 export type CssVars = Readonly<Record<`--${string}`, string | number>>;

@@ -4,7 +4,7 @@ import { screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { CommunityView } from '../../../src/ui/community/CommunityView.js';
-import { CONSENT } from '../../../src/ui/consent/strings.js';
+import { CONSENT } from '../../../src/ui/consent/words.js';
 import { Announcer } from '../../../src/ui/hooks/announcer.js';
 import { fakeDialog, renderInApp } from '../helpers.js';
 import { airResponse, announced, json, noticeResponse, saveSample, stubApi } from '../plan/fixtures.js';

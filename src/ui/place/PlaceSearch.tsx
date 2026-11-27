@@ -1,15 +1,15 @@
 // The place field: search by city, town or PIN code, a short list when a name is ambiguous, and device location
 // on request. One match is chosen at once; focus moves to the list, the field or the air card as the answer needs.
-import { useCallback, useId, useState } from 'react';
-import type { ReactElement, SubmitEvent } from 'react';
+import { Button } from '../components/Button.js';
+import { type ReactElement, type SubmitEvent, useCallback, useId, useState } from 'react';
 import type { Location, Place, PlacesResponse } from '../../features/air/types.js';
 import { Field } from '../components/Field.js';
-import { usePlaces } from '../data/api.js';
-import type { PlaceQuery } from '../data/api.js';
+import { type PlaceQuery, usePlaces } from '../data/api.js';
 import { useAnnounce } from '../hooks/announcer.js';
-import { useFocusLater } from './focus.js';
+import { useFocusLater } from '../hooks/focus.js';
 import { Crosshair, DeviceState, fieldWords, SearchState } from './place-states.js';
-import { PLACE } from './strings.js';
+import { fill } from '../../lib/template.js';
+import { PLACE } from './words.js';
 import { useDeviceLocation } from './useDeviceLocation.js';
 
 /** Props of the place field. onChoose gets a found place, or null for the device, with the point to read. */
@@ -35,7 +35,7 @@ function useSearch(onChoose: PlaceSearchProps['onChoose'], id: string) {
       return;
     }
     if (first) {
-      announce(`${String(places.length)} places match. Choose one.`);
+      announce(fill(PLACE.matches, { count: places.length }));
     }
     focusLater(first ? `${id}-first` : id);
   };
@@ -109,10 +109,10 @@ export function PlaceSearch({ onChoose }: PlaceSearchProps): ReactElement {
       <DeviceState state={device.state} />
       <form className="place" onSubmit={submit} noValidate>
         <PlaceInput id={id} words={fieldWords(blank, search, query)} text={text} onText={setText} />
-        <button className="btn btn-quiet" type="button" onClick={device.locate}>
+        <Button onClick={device.locate}>
           <Crosshair />
           {PLACE.locate}
-        </button>
+        </Button>
       </form>
       <SearchState query={query} id={id} pick={pick} />
     </section>

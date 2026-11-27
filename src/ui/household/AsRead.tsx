@@ -1,10 +1,9 @@
 // What the model made of the typed text: the outcome, or why it could not read it, the text as typed, the parts it
 // could not place and what it assumed. The form beside it is what the plan uses.
-import { useId } from 'react';
-import type { ReactElement } from 'react';
+import { type ReactElement, useId } from 'react';
 import { StateMessage } from '../components/StateMessage.js';
 import type { IntakeEntry } from './intake-store.js';
-import { HOUSEHOLD, MODEL_DOWN } from './strings.js';
+import { HOUSEHOLD, MODEL_DOWN } from './words.js';
 
 function Notes({ title, note, items }: { title: string; note: string; items: readonly string[] }) {
   const id = useId();

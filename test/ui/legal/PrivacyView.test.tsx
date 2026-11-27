@@ -3,8 +3,8 @@
 import { render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 import { ContactLine, PrivacyView } from '../../../src/ui/legal/PrivacyView.js';
-import { GEMINI_TERMS_URL, PRIVACY } from '../../../src/ui/legal/strings.js';
-import { CONSENT } from '../../../src/ui/consent/strings.js';
+import { GEMINI_TERMS_URL, PRIVACY } from '../../../src/ui/legal/words.js';
+import { CONSENT } from '../../../src/ui/consent/words.js';
 import { axeViolations, renderInApp } from '../helpers.js';
 import { saveSample } from '../plan/fixtures.js';
 

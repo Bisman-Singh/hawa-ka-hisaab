@@ -1,0 +1,359 @@
+{
+  "bands": {
+    "en": {
+      "good": "Good",
+      "satisfactory": "Satisfactory",
+      "moderate": "Moderate",
+      "poor": "Poor",
+      "very_poor": "Very Poor",
+      "severe": "Severe"
+    },
+    "hi": {
+      "good": "अच्छा",
+      "satisfactory": "संतोषजनक",
+      "moderate": "मध्यम",
+      "poor": "खराब",
+      "very_poor": "बहुत खराब",
+      "severe": "गंभीर"
+    }
+  },
+  "bandsBeforeNoun": {
+    "good": "अच्छी",
+    "satisfactory": "संतोषजनक",
+    "moderate": "मध्यम",
+    "poor": "खराब",
+    "very_poor": "बहुत खराब",
+    "severe": "गंभीर"
+  },
+  "adviceHi": {
+    "good": {
+      "general": "कोई खास सावधानी जरूरी नहीं",
+      "vulnerable": "कोई खास सावधानी जरूरी नहीं"
+    },
+    "satisfactory": {
+      "general": "कोई खास सावधानी जरूरी नहीं",
+      "vulnerable": "बाहर देर तक या ज्यादा मेहनत वाली शारीरिक गतिविधि कम करें"
+    },
+    "moderate": {
+      "general": "बाहर देर तक या ज्यादा मेहनत वाली शारीरिक गतिविधि कम करें",
+      "vulnerable": "बाहर देर तक या ज्यादा मेहनत वाली शारीरिक गतिविधि से बचें"
+    },
+    "poor": {
+      "general": "बाहर शारीरिक मेहनत से बचें",
+      "vulnerable": "बाहर की शारीरिक गतिविधियों से बचें"
+    },
+    "very_poor": {
+      "general": "बाहर की शारीरिक गतिविधियों से बचें, खासकर सुबह और देर शाम के समय",
+      "vulnerable": "अंदर रहें और गतिविधि कम रखें"
+    },
+    "severe": {
+      "general": "बाहर की शारीरिक गतिविधियों से बचें",
+      "vulnerable": "अंदर रहें और गतिविधि कम रखें"
+    }
+  },
+  "frame": {
+    "en": {
+      "title": {
+        "school": "Air quality notice for parents and staff, {date}",
+        "housing_society": "Air quality notice for residents, {date}"
+      },
+      "greeting": {
+        "school": "Dear parents and staff,",
+        "housing_society": "Dear residents,"
+      },
+      "reading": {
+        "station": "the latest CPCB reading, for {time}, is {band}, with an AQI of {aqi} at the {station} station.",
+        "station_no_aqi": "CPCB published no AQI for the nearest station, {station}, for {time}.",
+        "modelled": "a modelled estimate puts today's air at {band}, with an AQI of about {aqi}. It comes from CAMS via Open-Meteo for {time}, is not a measurement and tends to read low in cities.",
+        "none": "no air reading is available right now."
+      },
+      "stale": " This reading is more than three hours old.",
+      "early": " The air changes through the day, so check the AQI again in the morning before outdoor activity.",
+      "closing": {
+        "school": "This notice from the school office follows the health ministry's air pollution advisory. It is general guidance, not medical advice. Anyone with breathlessness, cough or chest pain should see a doctor.",
+        "housing_society": "This notice from the managing committee follows the health ministry's air pollution advisory. It is general guidance, not medical advice. Anyone with breathlessness, cough or chest pain should see a doctor."
+      }
+    },
+    "hi": {
+      "title": {
+        "school": "अभिभावकों और स्टाफ के लिए वायु गुणवत्ता सूचना, {date}",
+        "housing_society": "निवासियों के लिए वायु गुणवत्ता सूचना, {date}"
+      },
+      "greeting": {
+        "school": "आदरणीय अभिभावकगण एवं स्टाफ,",
+        "housing_society": "आदरणीय निवासीगण,"
+      },
+      "reading": {
+        "station": "CPCB की {time} बजे की ताजा रीडिंग में {station} स्टेशन पर AQI {aqi} है, यानी हवा {band} श्रेणी में है।",
+        "station_no_aqi": "CPCB ने नजदीकी स्टेशन {station} के लिए {time} बजे का AQI जारी नहीं किया है।",
+        "modelled": "मॉडल के अनुमान से आज हवा {band} श्रेणी में है, अनुमानित AQI {aqi}। यह Open-Meteo के जरिए CAMS मॉडल का {time} बजे का अनुमान है, असली माप नहीं, और शहरों में अक्सर कम आंकता है।",
+        "none": "अभी हवा की कोई रीडिंग उपलब्ध नहीं है।"
+      },
+      "stale": " यह रीडिंग तीन घंटे से ज्यादा पुरानी है।",
+      "early": " हवा दिन में बदलती है, इसलिए सुबह बाहर की गतिविधि से पहले AQI दोबारा देखें।",
+      "closing": {
+        "school": "यह सूचना विद्यालय कार्यालय की ओर से है और स्वास्थ्य मंत्रालय की वायु प्रदूषण संबंधी सलाह पर आधारित है। यह सामान्य जानकारी है, चिकित्सा सलाह नहीं। साँस फूलने, खाँसी या सीने में दर्द होने पर डॉक्टर को दिखाएँ।",
+        "housing_society": "यह सूचना प्रबंध समिति की ओर से है और स्वास्थ्य मंत्रालय की वायु प्रदूषण संबंधी सलाह पर आधारित है। यह सामान्य जानकारी है, चिकित्सा सलाह नहीं। साँस फूलने, खाँसी या सीने में दर्द होने पर डॉक्टर को दिखाएँ।"
+      }
+    }
+  },
+  "actions": {
+    "health-advice": {
+      "title": "Follow the health advice for {band} air",
+      "line": {
+        "en": {
+          "school": "Health advice for {band} air. For pupils, and for staff who are pregnant, older or have heart or lung illness, \"{vuln}\". For other staff, \"{gen}\".",
+          "housing_society": "Health advice for {band} air. For children, older people, pregnant women and people with heart or lung illness, \"{vuln}\". For everyone else, \"{gen}\"."
+        },
+        "hi": {
+          "school": "{band} हवा के लिए स्वास्थ्य सलाह। सभी विद्यार्थियों के लिए, और उन स्टाफ सदस्यों के लिए जो गर्भवती हैं, बुजुर्ग हैं या जिन्हें दिल या फेफड़ों की बीमारी है: {vuln}। बाकी स्टाफ के लिए: {gen}।",
+          "housing_society": "{band} हवा के लिए स्वास्थ्य सलाह। बच्चों, बुजुर्गों, गर्भवती महिलाओं और दिल या फेफड़ों की बीमारी वाले लोगों के लिए: {vuln}। बाकी सभी के लिए: {gen}।"
+        }
+      },
+      "detail": "These are the health ministry's words for {band} air. Its advisory counts children, older people, pregnant women, people with heart or lung illness and outdoor workers as vulnerable.",
+      "factIds": [
+        "advice-{bandSlug}-general",
+        "advice-{bandSlug}-vulnerable",
+        "community-advice-vulnerable-groups"
+      ]
+    },
+    "normal-day": {
+      "title": "Normal activity is fine today",
+      "line": {
+        "en": {
+          "school": "Assembly, outdoor periods and games can go ahead as usual today.",
+          "housing_society": "Outdoor activities can go ahead as usual today."
+        },
+        "hi": {
+          "school": "आज प्रार्थना सभा, बाहर के पीरियड और खेल सामान्य रूप से हो सकते हैं।",
+          "housing_society": "आज बाहर की गतिविधियाँ सामान्य रूप से हो सकती हैं।"
+        }
+      },
+      "detail": "The air is {band}. At this level the health ministry advises no special precautions for most people.",
+      "factIds": ["advice-{bandSlug}-general", "advice-{bandSlug}-vulnerable"]
+    },
+    "check-reading": {
+      "title": "Check the AQI before outdoor activity",
+      "line": {
+        "en": "Check the AQI again before outdoor activity today, and follow the health advice for that band.",
+        "hi": "बाहर की गतिविधियों से पहले AQI दोबारा देखें और उस श्रेणी की स्वास्थ्य सलाह मानें।"
+      },
+      "detail": "No reading is available now. The health ministry advises rescheduling outdoor activities as per the AQI.",
+      "factIds": ["community-advice-reschedule"]
+    },
+    "assembly-indoors": {
+      "title": {
+        "school": "Hold the {assembly} assembly indoors",
+        "housing_society": "Hold the {assembly} gathering indoors"
+      },
+      "line": {
+        "en": {
+          "school": "Today, hold the {assembly} assembly indoors, in classrooms or the hall.",
+          "housing_society": "Today, hold the {assembly} gathering indoors or put it off."
+        },
+        "hi": {
+          "school": "आज {assembly} बजे की प्रार्थना सभा बाहर नहीं, कक्षाओं या हॉल में करें।",
+          "housing_society": "आज {assembly} बजे की सभा अंदर करें या टाल दें।"
+        }
+      },
+      "detail": {
+        "school": "The health ministry asks schools to limit outdoor activities when the AQI is poor or worse.",
+        "housing_society": "The health ministry advises staying indoors on days with poor to severe AQI."
+      },
+      "factIds": {
+        "school": ["community-advice-school-outdoor", "community-advice-reschedule"],
+        "housing_society": ["community-advice-reschedule"]
+      }
+    },
+    "outdoor-indoors": {
+      "title": "Move outdoor activity indoors",
+      "line": {
+        "en": {
+          "school": "Today, hold outdoor activity at {periodTimes} indoors, and keep breaks indoors too.",
+          "housing_society": "Today, move outdoor activity at {periodTimes} indoors or put it off."
+        },
+        "hi": {
+          "school": "आज {periodTimes} बजे की बाहर की गतिविधियाँ अंदर कराएँ, और ब्रेक में भी बच्चे अंदर ही रहें।",
+          "housing_society": "आज {periodTimes} बजे की बाहर की गतिविधियाँ अंदर करें या टाल दें।"
+        }
+      },
+      "detail": {
+        "school": "When the AQI is poor or worse, the health ministry asks schools to keep break sessions indoors and to avoid or postpone running, jogging and play.",
+        "housing_society": "The health ministry advises staying indoors on days with poor to severe AQI."
+      },
+      "factIds": {
+        "school": ["community-advice-school-outdoor", "community-advice-reschedule"],
+        "housing_society": ["community-advice-reschedule"]
+      }
+    },
+    "outdoor-move": {
+      "title": "Move outdoor activity to the cleaner hours",
+      "line": {
+        "en": {
+          "school": "If the timetable allows, move outdoor activity at {worseTimes} to the hours from {winStart} to {winEnd}, the cleanest in today's forecast.",
+          "housing_society": "If you can, move outdoor activity at {worseTimes} to the hours from {winStart} to {winEnd}, the cleanest in today's forecast."
+        },
+        "hi": {
+          "school": "टाइमटेबल में गुंजाइश हो तो {worseTimes} बजे की बाहर की गतिविधियाँ {winStart} से {winEnd} बजे के बीच कराएँ। आज के पूर्वानुमान में ये सबसे साफ घंटे हैं।",
+          "housing_society": "हो सके तो {worseTimes} बजे की बाहर की गतिविधियाँ {winStart} से {winEnd} बजे के बीच करें। आज के पूर्वानुमान में ये सबसे साफ घंटे हैं।"
+        }
+      },
+      "detail": "The forecast puts {worseTimes} in the dirtier half of the day. It is a model forecast, not a measurement.",
+      "factIds": ["community-advice-reschedule"]
+    },
+    "outdoor-light": {
+      "title": "Keep outdoor activity light",
+      "line": {
+        "en": "Keep outdoor activity light today, with no long or hard running.",
+        "hi": "आज बाहर की गतिविधियाँ हल्की रखें, देर तक दौड़-भाग या भारी कसरत न हो।"
+      },
+      "detail": "On a Moderate day the health ministry advises children, older people and others at risk to avoid prolonged or strenuous outdoor exertion.",
+      "factIds": ["advice-moderate-vulnerable"]
+    },
+    "windows": {
+      "title": "Keep windows shut except at midday",
+      "line": {
+        "en": "Keep doors and windows shut in the morning and late evening. If rooms need air, open windows between {ventFrom} p.m. and {ventTo} p.m.",
+        "hi": "सुबह और देर शाम दरवाजे-खिड़कियाँ बंद रखें। कमरों में हवा आने देनी हो तो दोपहर {ventFrom} से शाम {ventTo} बजे के बीच खिड़कियाँ खोलें।"
+      },
+      "detail": {
+        "school": "The health ministry advises against opening external doors and windows in the morning and late evening on days with poor to severe AQI, and asks schools to close windows at these levels.",
+        "housing_society": "The health ministry advises against opening external doors and windows in the morning and late evening on days with poor to severe AQI."
+      },
+      "factIds": {
+        "school": [
+          "advice-ventilate",
+          "community-ventilation-from",
+          "community-ventilation-until",
+          "community-advice-school-windows"
+        ],
+        "housing_society": ["advice-ventilate", "community-ventilation-from", "community-ventilation-until"]
+      }
+    },
+    "wet-mopping": {
+      "title": {
+        "school": "Wet mop floors before pupils arrive",
+        "housing_society": "Wet mop the common areas"
+      },
+      "line": {
+        "en": {
+          "school": "Clean floors with a wet mop before pupils arrive, not with a broom.",
+          "housing_society": "Clean lobbies, stairs and corridors with a wet mop, not a broom."
+        },
+        "hi": {
+          "school": "बच्चों के आने से पहले फर्श झाड़ू से नहीं, गीले पोंछे से साफ करें।",
+          "housing_society": "लॉबी, सीढ़ियाँ और गलियारे झाड़ू से नहीं, गीले पोंछे से साफ करें।"
+        }
+      },
+      "detail": "The health ministry advises wet mopping instead of sweeping to reduce exposure to air pollution.",
+      "factIds": {
+        "school": ["advice-wet-mopping", "community-advice-school-mopping"],
+        "housing_society": ["advice-wet-mopping"]
+      }
+    },
+    "masks": {
+      "title": "Use a well-fitted N{n95} mask for short spells outdoors",
+      "line": {
+        "en": {
+          "school": "Adults who must be outdoors, such as gate staff, can wear a well-fitted N{n95} or N{n99} mask for short spells. Cloth, paper masks, handkerchiefs and scarves do not work. No tested evidence shows how well masks protect children.",
+          "housing_society": "If you must go out, a well-fitted N{n95} or N{n99} mask helps for short spells. Cloth, paper masks, handkerchiefs and scarves do not work."
+        },
+        "hi": {
+          "school": "जिन बड़ों को बाहर रहना जरूरी है, जैसे गेट स्टाफ, वे कम समय के लिए ठीक से फिट N{n95} या N{n99} मास्क पहनें। कपड़े या कागज के मास्क, रूमाल और दुपट्टे से बचाव नहीं होता। बच्चों के लिए मास्क कितने कारगर हैं, इसका परखा हुआ प्रमाण नहीं है।",
+          "housing_society": "बाहर जाना जरूरी हो तो कम समय के लिए ठीक से फिट N{n95} या N{n99} मास्क पहनें। कपड़े या कागज के मास्क, रूमाल और दुपट्टे से बचाव नहीं होता।"
+        }
+      },
+      "detail": "Worn by people in a lab test without a fit test, N{n95} and CaN{n99} respirators filtered {n95Low} to {n95High}% of small particles, and cloth masks {clothLow} to {clothHigh}%. Worn at rest in a chamber test, retail masks let in {leakLow} to {leakHigh}% of diesel black carbon, mostly through poor fit.",
+      "factIds": [
+        "advice-masks",
+        "community-mask-class-n95",
+        "community-mask-class-n99",
+        "community-mask-n95-filtration",
+        "community-mask-cloth-filtration",
+        "community-mask-fit-leakage"
+      ]
+    },
+    "outdoor-staff": {
+      "title": "Protect staff who work outdoors",
+      "line": {
+        "en": {
+          "school": "Give gate staff and others who work outside N{n95} masks, rotate outdoor duty and allow breaks indoors.",
+          "housing_society": "Guards, sweepers and gardeners work outside all day. Give them N{n95} masks, rotate outdoor duty and allow breaks indoors."
+        },
+        "hi": {
+          "school": "गेट स्टाफ और बाहर काम करने वाले कर्मचारियों को N{n95} मास्क दें, बाहर की ड्यूटी बारी-बारी से लगाएँ और अंदर आराम का समय दें।",
+          "housing_society": "गार्ड, सफाईकर्मी और माली दिन भर बाहर काम करते हैं। उन्हें N{n95} मास्क दें, बाहर की ड्यूटी बारी-बारी से लगाएँ और अंदर आराम का समय दें।"
+        }
+      },
+      "detail": "You entered {staff} outdoor staff. The health ministry counts outdoor workers as vulnerable, and its advice to employers of construction workers asks for masks, rotation between tasks and regular breaks.",
+      "factIds": [
+        "community-advice-vulnerable-groups",
+        "community-advice-workers",
+        "community-mask-class-n95"
+      ]
+    },
+    "no-idling": {
+      "title": "Engines off at the gate",
+      "line": {
+        "en": {
+          "school": "Drivers and parents should switch the engine off while waiting at the gate. Pupils should wait away from running vehicles.",
+          "housing_society": "Drivers, cabs and delivery riders should switch the engine off while waiting at the gate."
+        },
+        "hi": {
+          "school": "ड्राइवर और अभिभावक गेट पर इंतजार करते समय गाड़ी का इंजन बंद रखें। बच्चे चालू गाड़ियों से दूर खड़े हों।",
+          "housing_society": "ड्राइवर, कैब और डिलीवरी वाले गेट पर इंतजार करते समय इंजन बंद रखें।"
+        }
+      },
+      "detail": {
+        "school": "{vehicles} vehicles a day wait about {minutes} minutes each, which is {vehicleMinutes} vehicle-minutes of running engines. The health ministry names school gates as a place for precautions. In Delhi in winter {studyYear}, transport of all kinds made up {transportShare}% of fine particle pollution; no cited figure gives idling alone.",
+        "housing_society": "{vehicles} vehicles a day wait about {minutes} minutes each, which is {vehicleMinutes} vehicle-minutes of running engines. In Delhi in winter {studyYear}, transport of all kinds made up {transportShare}% of fine particle pollution; no cited figure gives idling alone."
+      },
+      "factIds": {
+        "school": ["community-share-transport", "community-study-winter", "community-advice-school-gates"],
+        "housing_society": ["community-share-transport", "community-study-winter"]
+      }
+    },
+    "stop-waste-burning": {
+      "title": "No burning of leaves or waste",
+      "line": {
+        "en": {
+          "school": "Do not burn leaves, garbage or any waste on or near the campus. Hand it over for collection instead.",
+          "housing_society": "Do not burn leaves, garbage or any waste in or near the society. Hand it over for collection instead."
+        },
+        "hi": {
+          "school": "स्कूल परिसर में या उसके आसपास पत्ते, कूड़ा या कोई भी कचरा न जलाएँ। कचरा कूड़ा-गाड़ी में ही दें।",
+          "housing_society": "सोसाइटी में या उसके आसपास पत्ते, कूड़ा या कोई भी कचरा न जलाएँ। कचरा कूड़ा-गाड़ी में ही दें।"
+        }
+      },
+      "detail": "The health ministry advises against burning wood, leaves, crop residues and waste in the open. In Delhi in winter {studyYear}, refuse burning made up {refuseShare}% of fine particle pollution across the city.",
+      "factIds": ["community-advice-open-burning", "community-share-refuse-burning", "community-study-winter"]
+    },
+    "generator-essential": {
+      "title": "Run the generator only when essential",
+      "line": {
+        "en": "Run the generator only during power cuts and only for essential needs.",
+        "hi": "जनरेटर सिर्फ बिजली जाने पर और जरूरी कामों के लिए ही चलाएँ।"
+      },
+      "detail": "It runs {hours} hours a day now, as entered. In Delhi in winter {studyYear}, DG sets made up {dgShare}% of fine particle pollution. That share is for the whole city, not for this generator.",
+      "factIds": ["community-share-dg-sets", "community-study-winter"]
+    },
+    "grap-stage": {
+      "title": "GRAP Stage {stage} is in force in Delhi NCR",
+      "line": {
+        "en": "GRAP Stage {stage} is in force in Delhi NCR under the CAQM order of {orderDate}. Its citizen charter asks everyone not to idle vehicles, to use DG sets only for essential activities and not to burn waste in the open.",
+        "hi": "दिल्ली NCR में CAQM के {orderDate} के आदेश के तहत GRAP का स्टेज {stage} लागू है। इसका नागरिक चार्टर सभी से कहता है कि गाड़ी खड़ी करके इंजन चालू न रखें, DG सेट सिर्फ जरूरी कामों के लिए चलाएँ और खुले में कचरा न जलाएँ।"
+      },
+      "detail": "These steps are from the GRAP citizen charter for Stages I and II. Higher stages add further rules; read the order in force on the CAQM website.",
+      "factIds": ["community-grap-charter", "{grapFact}"]
+    },
+    "grap-sports": {
+      "title": "Reschedule sports competitions",
+      "line": {
+        "en": "CAQM has advised that physical sports competitions in NCR during November and December be rescheduled, to protect students' health.",
+        "hi": "CAQM की सलाह है कि NCR में नवंबर और दिसंबर में होने वाली खेल प्रतियोगिताओं की तारीखें विद्यार्थियों की सेहत को देखते हुए बदली जाएँ।"
+      },
+      "detail": "This advisory was noted by CAQM at the meeting that approved the revised GRAP schedule.",
+      "factIds": ["community-grap-sports"]
+    }
+  }
+}

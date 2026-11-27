@@ -8,7 +8,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { APP_NAME } from '../../../src/config/app.js';
 import { AppShell } from '../../../src/ui/components/AppShell.js';
 import { ViewHeading } from '../../../src/ui/components/Navigation.js';
-import type { ViewDef } from '../../../src/ui/view-types.js';
+import type { ViewDef } from '../../../src/ui/views.js';
 import { renderInApp } from '../helpers.js';
 
 const now = new Date('2026-11-26T01:10:00Z');

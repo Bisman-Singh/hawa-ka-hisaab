@@ -1,19 +1,11 @@
-// Tests for reading hours in Indian time, ages and staleness.
+// Tests for the age of a reading and its staleness.
 import { describe, expect, it } from 'vitest';
-import { ageWords, dateWords, istClock, istDay, isStale } from '../../../src/ui/place/hours.js';
+import { ageWords, isStale } from '../../../src/ui/place/hours.js';
 
 const HOUR = '2026-11-24T22:00:00+05:30';
 const at = (iso: string): number => Date.parse(iso);
 
 describe('hours', () => {
-  it('reads the clock and day in Indian time whatever the offset written', () => {
-    expect(istClock(HOUR)).toBe('22:00');
-    expect(istClock('2026-11-24T16:30:00Z')).toBe('22:00');
-    expect(istDay('2026-11-24T19:00:00Z')).toBe('25 Nov');
-    expect(dateWords('2026-11-17')).toBe('17 Nov 2026');
-    expect(dateWords('2027-01-02')).toBe('2 Jan 2027');
-  });
-
   it('says an age in hours and minutes, dropping a zero part', () => {
     expect(ageWords(HOUR, at('2026-11-25T02:40:00+05:30'))).toBe('4 hours 40 minutes');
     expect(ageWords(HOUR, at('2026-11-24T23:00:00+05:30'))).toBe('1 hour');

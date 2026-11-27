@@ -3,14 +3,8 @@
 import { idlesAtGate, runsDgSet } from './rules.js';
 import type { Timing } from './timing.js';
 import type { CommunityInput } from './types.js';
-import {
-  buildFigure,
-  cited,
-  entered,
-  forecastHour,
-  type FigureSpec,
-  type FigureWithFacts,
-} from './working.js';
+import { buildFigure, cited, entered, forecastHour } from './working.js';
+import type { FigureSpec, FigureWithFacts } from './working.js';
 
 function vulnerable(c: CommunityInput): FigureSpec | null {
   const counts: readonly (readonly [string, string, number | null | undefined])[] = [

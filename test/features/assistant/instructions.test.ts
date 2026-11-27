@@ -3,11 +3,11 @@ import { describe, expect, it } from 'vitest';
 import {
   ASK_INSTRUCTIONS,
   INTAKE_INSTRUCTIONS,
+  NOTICE_INSTRUCTIONS,
   PLAN_INSTRUCTIONS,
   RETRY_NOTES,
   retryInstructions,
 } from '../../../src/features/assistant/instructions.js';
-import { NOTICE_INSTRUCTIONS } from '../../../src/features/community/notice.js';
 
 const all = [INTAKE_INSTRUCTIONS, PLAN_INSTRUCTIONS, ASK_INSTRUCTIONS, NOTICE_INSTRUCTIONS];
 

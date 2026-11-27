@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import type { IntakeResponse } from '../../../src/features/household/types.js';
 import { AsRead } from '../../../src/ui/household/AsRead.js';
-import { HOUSEHOLD, MODEL_DOWN } from '../../../src/ui/household/strings.js';
+import { HOUSEHOLD, MODEL_DOWN } from '../../../src/ui/household/words.js';
 import { sampleHousehold, sampleTrace } from '../../support/samples.js';
 
 describe('AsRead', () => {

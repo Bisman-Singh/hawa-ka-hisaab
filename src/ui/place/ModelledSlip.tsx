@@ -1,11 +1,12 @@
 // The modelled path of the air card: dashed, labelled as a model estimate, never a reading, with why it is used,
 // the means behind the index and the source. compact leaves out the scale and the means beside the plan.
-import { Fragment, useId } from 'react';
-import type { ReactElement, ReactNode } from 'react';
+import { Button } from '../components/Button.js';
+import { type ReactElement, type ReactNode, useId } from 'react';
 import type { ModelledReading } from '../../features/air/types.js';
 import { BandLabel, BandScale } from '../components/Band.js';
 import { ModelledSource } from './SourceLine.js';
-import { AIR, modelledWhy, POLLUTANT_NAME } from './strings.js';
+import { PollutantList, type PollutantRow } from './station-parts.js';
+import { AIR, modelledWhy, POLLUTANT_NAME } from './words.js';
 
 type ComputedEstimate = Extract<ModelledReading['estimate'], { status: 'computed' }>;
 
@@ -51,6 +52,14 @@ function Estimate(props: {
   );
 }
 
+const meanRow = (row: ComputedEstimate['subIndices'][number]): PollutantRow => ({
+  id: row.pollutant,
+  value:
+    row.unit === 'mg_m3'
+      ? `${row.meanConcentration.toFixed(2)} mg/m³`
+      : `${row.meanConcentration.toFixed(1)} µg/m³`,
+});
+
 function Means({ estimate }: { readonly estimate: ComputedEstimate }): ReactElement {
   const { value, band, predominant, subIndices } = estimate;
   return (
@@ -59,21 +68,7 @@ function Means({ estimate }: { readonly estimate: ComputedEstimate }): ReactElem
       <div className="subidx">
         <h3>{AIR.modelHeading}</h3>
         <p className="small">{AIR.modelNote}</p>
-        <dl>
-          {subIndices.map((row) => (
-            <Fragment key={row.pollutant}>
-              <dt className={row.pollutant === predominant ? 'main' : undefined}>
-                {POLLUTANT_NAME[row.pollutant]}
-                {row.pollutant === predominant ? ', leads the estimate' : ''}
-              </dt>
-              <dd className={row.pollutant === predominant ? 'main' : undefined}>
-                {row.unit === 'mg_m3'
-                  ? `${row.meanConcentration.toFixed(2)} mg/m³`
-                  : `${row.meanConcentration.toFixed(1)} µg/m³`}
-              </dd>
-            </Fragment>
-          ))}
-        </dl>
+        <PollutantList rows={subIndices.map(meanRow)} main={predominant} mark={AIR.leadsMark} />
       </div>
     </>
   );
@@ -92,11 +87,7 @@ export function ModelledSlip(props: ModelledSlipProps): ReactElement {
         {where.charAt(0).toUpperCase() + where.slice(1)}
       </p>
       <p className="meta">{modelledWhy(reading.reason, reading.nearestStationKm)}</p>
-      {reading.reason === 'feed_unavailable' ? (
-        <button className="btn btn-quiet" type="button" onClick={retry}>
-          {AIR.retry}
-        </button>
-      ) : null}
+      {reading.reason === 'feed_unavailable' ? <Button onClick={retry}>{AIR.retry}</Button> : null}
       <p>
         <b>{AIR.modelledLabel}</b>
       </p>

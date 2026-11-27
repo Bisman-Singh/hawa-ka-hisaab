@@ -1,7 +1,8 @@
 // A travel CO₂ effect laid out for the page: kilograms for one person, then whether it is there and back and
 // how many share the vehicle. A range that could be a saving or a rise is never headlined as a saving.
 import type { EffectDisplay } from './display.js';
-import { fill, type EffectWords } from './display-words.js';
+import { fill } from '../../lib/template.js';
+import type { EffectWords } from './display-words.js';
 import { roundKg } from './format.js';
 import type { Effect, WorkingInput } from './types.js';
 

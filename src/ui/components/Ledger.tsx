@@ -1,7 +1,6 @@
 // Ledger primitives: a slot of the day, an entry with its time and sums, leader rows and a double-ruled total.
 // They only lay out what they are given; every figure and word comes in through props.
-import { useId } from 'react';
-import type { ReactElement, ReactNode } from 'react';
+import { type ReactElement, type ReactNode, useId } from 'react';
 import type { Language } from '../../lib/types.js';
 
 /** Props of a slot: its heading, the hours it covers, a short air line and its entries. */
@@ -113,22 +112,25 @@ export interface TotalRow {
   readonly value: ReactNode;
 }
 
-/** Props of a totals table: a caption, the rows and the total that sits on the double rule. */
+/** Props of a totals table: its caption, which also names it, the rows, an optional total on the double rule,
+ * notes below it and the language of its words. */
 export interface TotalTableProps {
-  readonly caption: ReactNode;
+  readonly caption: string;
   readonly rows: readonly TotalRow[];
-  readonly total: TotalRow;
-  readonly note?: ReactNode;
+  readonly total?: TotalRow;
+  readonly children?: ReactNode;
+  readonly lang?: Language;
 }
 
-/** The reckoning: a real table whose last row is the total, double ruled as in an account book. */
-export function TotalTable({ caption, rows, total, note }: TotalTableProps): ReactElement {
+/** The reckoning: a real table whose last row may be a total, double ruled as in an account book. */
+export function TotalTable({ caption, rows, total, children, lang }: TotalTableProps): ReactElement {
+  const all = total === undefined ? rows : [...rows, total];
   return (
-    <div className="reckon">
+    <section className="reckon" aria-label={caption} lang={lang}>
       <table>
         <caption>{caption}</caption>
         <tbody>
-          {[...rows, total].map((row, index) => (
+          {all.map((row, index) => (
             <tr key={index} className={index === rows.length ? 'total' : undefined}>
               <th scope="row">{row.label}</th>
               <td className="num">{row.value}</td>
@@ -136,7 +138,7 @@ export function TotalTable({ caption, rows, total, note }: TotalTableProps): Rea
           ))}
         </tbody>
       </table>
-      {note === undefined ? null : <p className="note">{note}</p>}
-    </div>
+      {children}
+    </section>
   );
 }

@@ -3,12 +3,12 @@
 import type { z } from 'zod';
 import type { JsonValue } from '../../lib/json.js';
 import type { ModelTool } from '../../lib/model.js';
-import type { FactValue, Language, Trace } from '../../lib/types.js';
+import type { FactValue, GuardCheck, Language, Trace } from '../../lib/types.js';
 import type { AqiBand } from '../naqi/types.js';
 import { bandAdvice } from './band-advice.js';
 import { fixedReplyTrace } from './guard-trace.js';
 import { runGuarded, type Guarded, type ModelRun } from './guarded.js';
-import { ASK_INSTRUCTIONS, type GuardProblem } from './instructions.js';
+import { ASK_INSTRUCTIONS } from './instructions.js';
 import {
   fixedMedicalReply,
   medicalGate,
@@ -17,6 +17,7 @@ import {
   type FixedReply,
 } from './medical-gate.js';
 import { misquotes } from './quotes.js';
+import REPLIES from './replies.json' with { type: 'json' };
 import { askReplySchema } from './schemas.js';
 
 /** What the model returns for a question. */
@@ -39,7 +40,7 @@ export interface AskInput {
 }
 
 /** Names a medicine or a dose, gives treatment advice of any kind, or quotes words that are not official text. */
-function answerProblem(text: string): GuardProblem | null {
+function answerProblem(text: string): GuardCheck | null {
   if (mentionsMedicine(text)) {
     return 'medicine';
   }
@@ -83,16 +84,7 @@ export function answerQuestion(run: ModelRun<AskReply>, input: AskInput): Promis
 /** Why no model answer is shown: the model could not be asked, or its answer did not pass the checks. */
 export type Unanswered = 'unavailable' | 'refused';
 
-const UNANSWERED: Readonly<Record<Unanswered, Readonly<Record<Language, string>>>> = {
-  unavailable: {
-    en: "Questions are answered by the model, which is not available right now, so nothing was worked out for this one. The plan above comes from the app's own rules and gives the reason for each step.",
-    hi: 'सवालों के जवाब मॉडल देता है, जो अभी उपलब्ध नहीं है, इसलिए इस सवाल पर कुछ नहीं निकाला गया। ऊपर की योजना ऐप के अपने नियमों से बनी है और हर कदम का कारण बताती है।',
-  },
-  refused: {
-    en: "The model's answer to this question did not pass the app's checks, so it is not shown. The plan above gives the reason and the effect of each step.",
-    hi: 'इस सवाल पर मॉडल का जवाब ऐप की जाँच में पास नहीं हुआ, इसलिए उसे नहीं दिखाया गया। ऊपर की योजना हर कदम का कारण और असर बताती है।',
-  },
-};
+const UNANSWERED: Readonly<Record<Unanswered, Readonly<Record<Language, string>>>> = REPLIES.unanswered;
 
 /** Whether a fallback trace means the model could not be asked or its answer was refused by a check. */
 export function unansweredBy(trace: Trace): Unanswered {

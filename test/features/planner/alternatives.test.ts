@@ -1,6 +1,6 @@
 // Tests for the "instead of X, do Y" pairs.
 import { describe, expect, it } from 'vitest';
-import type { Activity } from '../../../src/features/household/types.js';
+import type { Activity, Household } from '../../../src/features/household/types.js';
 import { alternativesFor } from '../../../src/features/planner/alternatives.js';
 import { situationOf } from '../../../src/features/planner/context.js';
 import { planContext, testActivity, testHousehold } from '../../support/plan-fixtures.js';
@@ -50,5 +50,25 @@ describe('alternativesFor', () => {
   it('keeps at most twelve pairs', () => {
     const many = Array.from({ length: 6 }, (_, index) => driven(`a${String(index)}`, 'commute'));
     expect(alternativesFor(situationOf(planContext(testHousehold(many), 'good')))).toHaveLength(12);
+  });
+});
+
+describe('home pairs', () => {
+  const home = (
+    cookingFuel: Household['home']['cookingFuel'],
+    indoorSources: Household['home']['indoorSources'],
+  ) =>
+    situationOf(
+      planContext({ ...testHousehold([]), home: { rooms: [], cookingFuel, indoorSources } }, 'good'),
+    );
+
+  it('suggest gas or induction for a smoky fuel only', () => {
+    expect(alternativesFor(home('coal', [])).map((pair) => pair.instead)).toEqual(['cooking on coal']);
+    expect(alternativesFor(home('lpg', []))).toEqual([]);
+  });
+
+  it('suggest a net or a repellent that does not burn in place of a coil, citing the coil finding', () => {
+    expect(alternativesFor(home('lpg', ['mosquito_coil']))[0]?.factIds).toContain('coil-cigarettes');
+    expect(alternativesFor(home('lpg', ['incense']))).toEqual([]);
   });
 });

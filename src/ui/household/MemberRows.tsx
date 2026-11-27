@@ -1,4 +1,5 @@
 // The people block of the household form: an age group and flags for each person. There is no name field.
+import { fill } from '../../lib/template.js';
 import type { ReactElement } from 'react';
 import { describeMember } from '../../features/household/members.js';
 import type { Member } from '../../features/household/types.js';
@@ -7,7 +8,7 @@ import { Choice } from './controls.js';
 import { binder, MAX_ROWS, NEW_ROW, replaceAt, withoutMember } from './edits.js';
 import { OPTIONS } from './options.js';
 import { AddButton, RowTitle, UndoLine } from './rows.js';
-import { FORM } from './strings.js';
+import { FORM } from './words.js';
 import type { HouseholdFormState } from './useHouseholdForm.js';
 
 function MemberRow({ form, member, index }: { form: HouseholdFormState; member: Member; index: number }) {
@@ -18,12 +19,16 @@ function MemberRow({ form, member, index }: { form: HouseholdFormState; member: 
   });
   const remove = (): void => {
     const back = at('members', index, 'ageGroup').id;
-    const said = FORM.removed(FORM.person(index + 1));
+    const said = fill(FORM.removed, { what: fill(FORM.person, { n: index + 1 }) });
     form.remove({ block: 'members', said, next: withoutMember(draft, member.id), back });
   };
   return (
     <div className="row-form" role="group" aria-labelledby={title}>
-      <RowTitle id={title} title={`${FORM.person(index + 1)}, ${describeMember(member)}`} onRemove={remove} />
+      <RowTitle
+        id={title}
+        title={`${fill(FORM.person, { n: index + 1 })}, ${describeMember(member)}`}
+        onRemove={remove}
+      />
       <Choice
         {...at('members', index, 'ageGroup')}
         label={FORM.age}

@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 import { factQuote } from '../../../src/config/facts/index.js';
 import { Footer } from '../../../src/ui/components/Footer.js';
 import { LICENCES } from '../../../src/ui/components/Credit.js';
-import { UI } from '../../../src/ui/i18n/strings.js';
+import { UI } from '../../../src/ui/components/words.js';
 import { axeViolations, renderInApp } from '../helpers.js';
 
 const Empty = (): ReactElement => <p>Privacy text</p>;

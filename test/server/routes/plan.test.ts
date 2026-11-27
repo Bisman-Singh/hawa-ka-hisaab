@@ -129,6 +129,26 @@ describe('POST /api/plan', () => {
     expect(model.requests).toHaveLength(1);
   });
 
+  it('makes one model call for two identical plans asked at once, as from two tabs or a double click', async () => {
+    const model = behavingModel('good');
+    const { app } = setup({ model });
+    const [first, second] = await Promise.all([plan(app), plan(app)]);
+    expect(model.requests).toHaveLength(1);
+    expect([first.trace.cached, second.trace.cached].sort()).toEqual([false, true]);
+    expect(second.plan).toEqual(first.plan);
+  });
+
+  it('says the model is off on every plan a keyless server makes, never that the browser asked too often', async () => {
+    const clock = createFakeClock(MORNING_MS);
+    const modelLimiter = createFixedWindowLimiter({ limit: 1, windowMs: 60_000, maxKeys: 10, clock });
+    const { app } = setup({ clock, modelLimiter });
+    const reasons = [];
+    for (const language of ['en', 'hi', 'en', 'hi']) {
+      reasons.push((await plan(app, { ...body, language })).trace.fallbackReason);
+    }
+    expect(reasons).toEqual(['disabled', 'disabled', 'disabled', 'disabled']);
+  });
+
   it('stops calling the model host once the daily cap is used, a retry counted, and says daily_cap', async () => {
     const clock = createFakeClock(MORNING_MS);
     const { model, fetch } = cappedGemini(clock, 1);

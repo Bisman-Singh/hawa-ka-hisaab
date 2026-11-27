@@ -1,45 +1,15 @@
-// Tests for notice formatting: IST parts, numbers, clock times, dates in both languages, lists and numerals.
+// Tests for notice formatting: numbers, lists and numerals.
 import { describe, expect, it } from 'vitest';
-import {
-  clockText,
-  dateText,
-  formatNumber,
-  istParts,
-  joinList,
-  minutesOf,
-  numeralsIn,
-  pairs,
-} from '../../../src/features/community/format.js';
+import { formatNumber, joinList, numeralsIn, pairs } from '../../../src/features/community/format.js';
 
-describe('istParts', () => {
-  it('reads an instant in IST, across the date line', () => {
-    expect(istParts(Date.parse('2026-11-25T19:00:00Z'))).toEqual({
-      date: '2026-11-26',
-      month: 11,
-      hour: 0,
-      minute: 30,
-    });
-  });
-});
-
-describe('formatNumber and clockText', () => {
-  it('writes at most one decimal place and pads clock times', () => {
+describe('formatNumber', () => {
+  it('writes at most one decimal place', () => {
     expect([formatNumber(583.5), formatNumber(800), formatNumber(2.25), formatNumber(0.04)]).toEqual([
       '583.5',
       '800',
       '2.3',
       '0',
     ]);
-    expect(clockText(7, 5)).toBe('07:05');
-    expect(minutesOf('13:10')).toBe(790);
-  });
-});
-
-describe('dateText', () => {
-  it('writes the date in English and Hindi with the same digits', () => {
-    expect(dateText('2026-11-07', 'en')).toBe('7 Nov 2026');
-    expect(dateText('2026-11-07', 'hi')).toBe('7 नवंबर 2026');
-    expect(dateText('2027-01-26', 'hi')).toBe('26 जनवरी 2027');
   });
 });
 

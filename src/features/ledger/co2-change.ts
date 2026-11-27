@@ -1,4 +1,4 @@
-// The CO2 change for one traveller when a trip changes mode or occupancy, per trip, and scaled to a day or week.
+// The CO2 change for one traveller on one trip when the trip changes mode or occupancy.
 import type { Travel } from '../household/types.js';
 import { factNumber } from '../../config/facts/index.js';
 import { travelCo2, type TripCo2 } from './co2.js';
@@ -61,30 +61,5 @@ export function co2ChangeEffect(before: Travel, after: Travel): Effect | null {
       inputs: changeInputs(now, instead),
       factIds,
     },
-  };
-}
-
-/**
- * A per trip CO2 effect scaled to a day or a week, given how many such trips the household makes in it. The trips
- * count always joins the working, which keeps at most twelve inputs.
- */
-export function co2ForPeriod(effect: Effect, per: 'day' | 'week', trips: number): Effect {
-  if (effect.kind !== 'co2' || effect.per !== 'trip') {
-    return effect;
-  }
-  const range = effect.range && { low: effect.range.low * trips, high: effect.range.high * trips };
-  const count: WorkingInput = {
-    label: `trips a ${per}`,
-    value: trips,
-    unit: 'trips',
-    from: 'household',
-    factId: null,
-  };
-  return {
-    ...effect,
-    changeKg: effect.changeKg * trips,
-    range,
-    per,
-    working: { ...effect.working, inputs: [...effect.working.inputs.slice(0, 11), count] },
   };
 }

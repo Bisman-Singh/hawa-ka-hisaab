@@ -1,12 +1,11 @@
 // The outdoor periods of the community form, one row each, and the samples the form can start from.
+import { Button } from '../components/Button.js';
 import type { ReactElement } from 'react';
 import { COMMUNITY_SAMPLES } from '../../features/community/samples.js';
-import { formFrom } from './community-form.js';
-import type { CommunityForm } from './community-form.js';
-import { LabelledInput } from './FormParts.js';
-import type { Kit } from './FormParts.js';
-import { COMMUNITY } from './strings.js';
-import { calling } from '../plan/handlers.js';
+import { type CommunityForm, formFrom } from './community-form.js';
+import { type Kit, LabelledInput } from './FormParts.js';
+import { COMMUNITY } from './words.js';
+import { calling } from '../handlers.js';
 
 /** Most outdoor periods the community schema accepts. */
 export const MAX_PERIODS = 12;
@@ -45,13 +44,9 @@ export function PeriodRow({ kit, index }: { readonly kit: Kit; readonly index: n
           onText={change('minutes')}
         />
       ))}
-      <button
-        className="linkbtn"
-        type="button"
-        onClick={calling(set, { periods: form.periods.filter((_, at) => at !== index) })}
-      >
+      <Button look="link" onClick={calling(set, { periods: form.periods.filter((_, at) => at !== index) })}>
         {`${COMMUNITY.removePeriod} ${String(index + 1)}`}
-      </button>
+      </Button>
     </div>
   );
 }
@@ -65,14 +60,12 @@ export function Periods({ kit }: { readonly kit: Kit }): ReactElement {
       {periods.map((_, index) => (
         <PeriodRow key={index} kit={kit} index={index} />
       ))}
-      <button
-        className="btn btn-quiet"
-        type="button"
+      <Button
         disabled={periods.length >= MAX_PERIODS}
         onClick={calling(kit.set, { periods: [...periods, { start: '', minutes: '' }] })}
       >
         {COMMUNITY.addPeriod}
-      </button>
+      </Button>
     </fieldset>
   );
 }
@@ -85,9 +78,9 @@ export function SampleList({ onPick }: { readonly onPick: (form: CommunityForm) 
       <ul className="abstract">
         {COMMUNITY_SAMPLES.map((sample) => (
           <li key={sample.id}>
-            <button className="linkbtn" type="button" onClick={calling(onPick, formFrom(sample.input))}>
+            <Button look="link" onClick={calling(onPick, formFrom(sample.input))}>
               {sample.description}
-            </button>
+            </Button>
           </li>
         ))}
       </ul>

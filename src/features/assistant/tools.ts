@@ -5,7 +5,7 @@ import type { FactValue } from '../../lib/types.js';
 import { defineTool, type ModelTool } from '../../lib/model.js';
 import { localIdSchema } from '../household/schemas.js';
 import type { Household } from '../household/types.js';
-import { formatEffect } from '../ledger/format.js';
+import { effectDisplay } from '../ledger/display.js';
 import { purifierNeed } from '../ledger/purifier.js';
 import type { Effect } from '../ledger/types.js';
 import type { CandidateSet, PlanContext } from '../planner/context.js';
@@ -22,6 +22,8 @@ const citedBy = (effects: readonly Effect[], more: readonly string[] = []): stri
 
 const NOT_FOUND = { found: false };
 
+const sentenceOf = (effect: Effect): string => effectDisplay(effect).sentence;
+
 function optionsFor(set: CandidateSet, activityId: string) {
   const options = set.actions.filter((action) => action.activityId === activityId);
   return {
@@ -30,7 +32,7 @@ function optionsFor(set: CandidateSet, activityId: string) {
       start: option.start,
       title: option.template.title,
       why: option.template.why,
-      effects: option.effects.map(formatEffect),
+      effects: option.effects.map(sentenceOf),
     })),
     factIds: citedBy(
       options.flatMap((option) => option.effects),
@@ -71,7 +73,7 @@ function switchTravel(ctx: PlanContext): ModelTool {
         return NOT_FOUND;
       }
       const co2 = effects.value.some((effect) => effect.kind === 'co2');
-      const shown = effects.value.map(formatEffect);
+      const shown = effects.value.map(sentenceOf);
       return { found: true, mode, co2Figure: co2, effects: shown, factIds: citedBy(effects.value) };
     },
   });

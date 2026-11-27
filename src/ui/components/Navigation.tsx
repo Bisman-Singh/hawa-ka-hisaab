@@ -1,6 +1,5 @@
 // Links between views and the heading every view opens with, which takes focus when the reader moves to it.
-import { useEffect, useRef } from 'react';
-import type { MouseEvent, ReactElement, ReactNode } from 'react';
+import { type MouseEvent, type ReactElement, type ReactNode, useEffect, useRef } from 'react';
 import { hrefFor, useRoute } from '../router.js';
 
 /** Props of a link to another view. */

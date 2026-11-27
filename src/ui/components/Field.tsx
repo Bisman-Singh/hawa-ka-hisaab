@@ -1,6 +1,5 @@
 // A labelled field with its hint and error tied to the control, for inputs, text areas and selects alike.
-import { useId } from 'react';
-import type { ReactElement, ReactNode } from 'react';
+import { type ReactElement, type ReactNode, useId } from 'react';
 
 /** What the control must carry so the label, hint and error reach assistive technology. */
 export interface ControlProps {

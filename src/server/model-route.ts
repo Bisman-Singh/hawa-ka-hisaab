@@ -1,7 +1,7 @@
-// What every model route shares: one short cache of checked replies per route, and the run handed to a model
-// task, with the per-client limit taken only when the model is really asked and the route's deadline.
+// What every model route shares: one short cache of checked replies and one map of outcomes in flight per route,
+// and the run handed to a model task, with the per-client limit taken only when the model is really asked.
 import { ROUTE_DEADLINE_MS } from '../config/limits.js';
-import type { Checked, ModelRun } from '../features/assistant/guarded.js';
+import type { Checked, Guarded, ModelRun } from '../features/assistant/guarded.js';
 import {
   createReplyCache,
   MODEL_CACHE_ENTRIES,
@@ -12,11 +12,12 @@ import type { FallbackReason } from '../lib/types.js';
 import type { ServerDeps } from './deps.js';
 import type { RequestMeta } from './mount.js';
 
-/** A route's dependencies with its own cache of checked replies. */
+/** A route's dependencies with its own cache of checked replies and of outcomes still in flight. */
 export interface ModelRoute<T> {
   readonly deps: ServerDeps;
   readonly path: string;
   readonly cache: ReplyCache<Checked<T>>;
+  readonly inFlight: Map<string, Promise<Guarded<T>>>;
 }
 
 /** Makes the shared parts of a model route. The cache lives as long as the server instance. */
@@ -26,7 +27,7 @@ export function createModelRoute<T>(deps: ServerDeps, path: string): ModelRoute<
     maxEntries: MODEL_CACHE_ENTRIES,
     clock: deps.clock,
   });
-  return { deps, path, cache };
+  return { deps, path, cache, inFlight: new Map() };
 }
 
 /** The run for one request that started at startedAt, in epoch ms. */
@@ -36,6 +37,7 @@ export function runFor<T>(route: ModelRoute<T>, meta: RequestMeta, startedAt: nu
     model: deps.model,
     allow: () => deps.modelLimiter.take(meta.clientKey),
     cache: route.cache,
+    inFlight: route.inFlight,
     clock: deps.clock,
     deadline: startedAt + ROUTE_DEADLINE_MS,
   };

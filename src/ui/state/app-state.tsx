@@ -4,8 +4,7 @@ import { createContext, useContext, useMemo, useRef, useState } from 'react';
 import type { ReactElement, ReactNode } from 'react';
 import type { AirResponse } from '../../features/air/types.js';
 import type { PlanResponse } from '../../features/planner/types.js';
-import { clearState, EMPTY_STATE, loadState, saveState } from '../storage.js';
-import type { StoredState } from '../storage.js';
+import { clearState, EMPTY_STATE, loadState, saveState, type StoredState } from '../storage.js';
 
 /** The kept fields a view may change: household, location, place, language and the model choice. */
 export type SavedFields = Omit<StoredState, 'version'>;

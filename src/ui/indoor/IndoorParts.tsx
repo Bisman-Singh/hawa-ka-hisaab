@@ -1,16 +1,16 @@
 // Parts of the indoor view: a titled section, a list of sources, the purifier sum, a note and a swap. Text the plan
 // wrote carries the plan's language; labels, sums and sources are English.
-import { useId } from 'react';
-import type { ReactElement, ReactNode } from 'react';
+import type { ReactElement } from 'react';
 import { displayValue, formatFigure } from '../../features/ledger/format.js';
 import type { Figure } from '../../features/ledger/types.js';
 import type { Alternative, IndoorStep } from '../../features/planner/types.js';
 import type { Language } from '../../lib/types.js';
 import { LeaderRows } from '../components/Ledger.js';
+import { Section } from '../components/Section.js';
+import { amountText } from '../components/words.js';
 import { rowsOf, sumsOf } from '../plan/plan-data.js';
-import { langOf } from '../i18n/lang.js';
 import { SourceItems, Workings } from '../trace/Working.js';
-import { INDOOR } from './strings.js';
+import { INDOOR } from './words.js';
 
 /** The sources of a step or swap, each with a link. */
 export function Sources({ ids }: { readonly ids: readonly string[] }): ReactElement {
@@ -21,23 +21,6 @@ export function Sources({ ids }: { readonly ids: readonly string[] }): ReactElem
   );
 }
 
-/** A titled section of the view. */
-export function Part({
-  title,
-  children,
-}: {
-  readonly title: ReactNode;
-  readonly children: ReactNode;
-}): ReactElement {
-  const id = useId();
-  return (
-    <section className="sec" aria-labelledby={id}>
-      <h2 id={id}>{title}</h2>
-      {children}
-    </section>
-  );
-}
-
 /** A figure worked as a column of sums: each input as the ledger shows it, then the total as the ledger formats it. */
 export function Calc({ found }: { readonly found: Figure }): ReactElement {
   return (
@@ -45,7 +28,7 @@ export function Calc({ found }: { readonly found: Figure }): ReactElement {
       kind="calc"
       rows={found.working.inputs.map((input) => ({
         label: input.label,
-        figure: `${String(displayValue(input))} ${input.unit}`,
+        figure: amountText(displayValue(input), input.unit),
       }))}
       total={{ label: found.label, figure: formatFigure(found) }}
     />
@@ -61,11 +44,11 @@ export interface StepProps {
 /** A purifier step: the sizing worked as a column of sums, then the advice and its sources. */
 export function PurifierStep({ step, language }: StepProps): ReactElement {
   return (
-    <Part title={<span {...langOf(language)}>{step.title}</span>}>
+    <Section title={<span lang={language}>{step.title}</span>}>
       {step.figure === null ? null : <Calc found={step.figure} />}
-      <p {...langOf(language)}>{step.detail}</p>
+      <p lang={language}>{step.detail}</p>
       <Sources ids={step.factIds} />
-    </Part>
+    </Section>
   );
 }
 
@@ -73,8 +56,8 @@ export function PurifierStep({ step, language }: StepProps): ReactElement {
 export function Note({ step, language }: StepProps): ReactElement {
   return (
     <li className={step.topic === 'myth' ? 'myth' : undefined}>
-      <h3 {...langOf(language)}>{step.title}</h3>
-      <p {...langOf(language)}>{step.detail}</p>
+      <h3 lang={language}>{step.title}</h3>
+      <p lang={language}>{step.detail}</p>
       {step.figure === null && step.topic !== 'myth' ? <p className="small">{INDOOR.noFigure}</p> : null}
       {step.figure === null ? null : <Workings workings={[step.figure]} />}
       <Sources ids={step.factIds} />
@@ -98,14 +81,14 @@ export function Swap({
     <li>
       <dl className="pair">
         <dt>{INDOOR.instead}</dt>
-        <dd className="from" {...langOf(language)}>
+        <dd className="from" lang={language}>
           {swap.instead}
         </dd>
         <dt>{INDOOR.doThis}</dt>
-        <dd {...langOf(language)}>{swap.doThis}</dd>
+        <dd lang={language}>{swap.doThis}</dd>
       </dl>
       <LeaderRows rows={rows} />
-      <p {...langOf(language)}>{swap.reason}</p>
+      <p lang={language}>{swap.reason}</p>
       {swap.effect === null ? null : <Workings workings={[swap.effect]} />}
       <Sources ids={swap.factIds} />
     </li>

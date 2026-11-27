@@ -10,7 +10,7 @@ import { useAnnounce } from '../hooks/announcer.js';
 import { useAppActions, useAppState } from '../state/app-state.js';
 import type { ModelChoiceValue } from '../storage.js';
 import { localNotice } from './local.js';
-import { COMMUNITY } from './strings.js';
+import { COMMUNITY } from './words.js';
 
 interface Sent {
   readonly community: CommunityInput;

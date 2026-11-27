@@ -1,7 +1,6 @@
 // Builders for community tests: readings by band, a synthetic forecast day, a GRAP notice and full inputs.
 // All values are synthetic test data, not facts.
 import type { AirReading, GrapNotice, HourCurve } from '../../../src/features/air/types.js';
-import type { ActionText, PerKind } from '../../../src/features/community/text-en.js';
 import type {
   CommunityContext,
   CommunityInput,
@@ -10,6 +9,7 @@ import type {
 import type { AqiBand } from '../../../src/features/naqi/types.js';
 import { analyseTiming } from '../../../src/features/community/timing.js';
 import { templateValues } from '../../../src/features/community/values.js';
+import { forKind, type ActionWords } from '../../../src/features/community/words.js';
 import { TEST_FORECAST_SOURCE } from '../../support/fake-air.js';
 import { sampleSource } from '../../support/samples.js';
 
@@ -213,16 +213,12 @@ export function unknownPlaceholders(strings: readonly string[]): string[] {
 
 const KINDS: readonly CommunityKind[] = ['school', 'housing_society'];
 
-/** Actions whose Hindi line uses other placeholders than the English line, or that exist in one language only. */
-export function placeholderMismatches(
-  english: Readonly<Record<string, ActionText>>,
-  hindi: Readonly<Record<string, PerKind>>,
-): string[] {
+/** Actions whose Hindi line uses other placeholders than the English line, for either kind. */
+export function placeholderMismatches(actions: Readonly<Record<string, ActionWords>>): string[] {
   const names = (text: string): string => [...new Set(placeholdersIn(text))].sort().join(',');
-  return Object.entries(hindi).flatMap(([id, lines]) => {
-    const line = Object.entries(english).find(([key]) => key === id)?.[1].line;
-    return KINDS.filter((kind) => line === undefined || names(line[kind]) !== names(lines[kind])).map(
+  return Object.entries(actions).flatMap(([id, { line }]) =>
+    KINDS.filter((kind) => names(forKind(line.en, kind)) !== names(forKind(line.hi, kind))).map(
       (kind) => `${id} ${kind}`,
-    );
-  });
+    ),
+  );
 }

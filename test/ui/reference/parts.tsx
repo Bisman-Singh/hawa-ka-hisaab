@@ -9,7 +9,6 @@ import { RequestFailure } from '../../../src/ui/components/RequestFailure.js';
 import { Segmented } from '../../../src/ui/components/Segmented.js';
 import { StateMessage } from '../../../src/ui/components/StateMessage.js';
 import { WrittenBy } from '../../../src/ui/components/WrittenBy.js';
-import { Passage } from '../../../src/ui/i18n/lang.js';
 
 export function Part({
   id,
@@ -174,8 +173,11 @@ export function Ledger(): ReactElement {
           { label: 'Travel CO₂ with this plan', value: '0.49 kg' },
         ]}
         total={{ label: 'Difference', value: '1.85 kg less' }}
-        note="Doses are relative to each person's usual day. They are not added across people."
-      />
+      >
+        <p className="note">
+          {"Doses are relative to each person's usual day. They are not added across people."}
+        </p>
+      </TotalTable>
       <LeaderRows
         kind="calc"
         rows={[
@@ -221,9 +223,9 @@ export function Sheet(): ReactElement {
           <pre className="raw">{'{ "items": [ { "candidateId": "reschedule-a2" } ] }'}</pre>
         </section>
       </DialogSheet>
-      <Passage language="hi">
+      <div lang="hi">
         <p>प्रदूषण से बचने के लिए खिड़कियाँ दोपहर में खोलें। स्कूल, विद्यालय, शुद्ध, क्षेत्र, ज्ञान, श्रमिक।</p>
-      </Passage>
+      </div>
     </Part>
   );
 }

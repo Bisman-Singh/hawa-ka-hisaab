@@ -4,8 +4,8 @@ import type { ReactElement } from 'react';
 import { Field } from '../components/Field.js';
 import { Segmented } from '../components/Segmented.js';
 import type { CommunityForm, FormKey, GeneratorChoice } from './community-form.js';
-import { COMMUNITY } from './strings.js';
-import { texting } from '../plan/handlers.js';
+import { COMMUNITY } from './words.js';
+import { texting } from '../handlers.js';
 
 /** A field the form holds as text. */
 export type TextKey = Exclude<FormKey, 'periods'>;

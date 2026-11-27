@@ -1,8 +1,7 @@
 // The sheet that opens over the page for "how this was made": a native modal dialog labelled by its heading.
 // Escape and the Close button shut it, and focus goes back to the control that opened it.
-import { useEffect, useId, useRef } from 'react';
-import type { ReactElement, ReactNode } from 'react';
-import { UI } from '../i18n/strings.js';
+import { type ReactElement, type ReactNode, useEffect, useId, useRef } from 'react';
+import { UI } from './words.js';
 
 /** Props of the sheet. The opener keeps open in its own state and sets it false in onClose. */
 export interface DialogSheetProps {

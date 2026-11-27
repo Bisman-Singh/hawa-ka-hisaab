@@ -1,7 +1,7 @@
 // The plan's words in its language: looking up the vocabulary, filling templates, naming activities and groups.
 import type { Language } from '../../lib/types.js';
 import type { Activity, Household, Member } from '../household/types.js';
-import { fill } from '../ledger/display-words.js';
+import { fill } from '../../lib/template.js';
 import { LEXICON_EN, LEXICON_HI, type Lexicon, type TextKey } from './words-lexicon.js';
 
 /** The words of one language and a key of its text tables, for callers that only need the types. */

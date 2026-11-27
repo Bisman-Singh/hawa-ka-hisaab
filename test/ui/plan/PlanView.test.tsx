@@ -53,7 +53,8 @@ describe('PlanView with a plan', () => {
     expect(air.direction).toBe('mixed');
     expect(bus.getByText('Up to 2.4× as much')).toHaveClass('fig');
     expect(bus.getByText(/^or 8% less/)).toHaveClass('range');
-    expect(bus.getByText(need(air.note))).toBeInTheDocument();
+    expect(bus.queryByText(need(air.note))).toBeNull();
+    expect(bus.getByText(need(swap.tradeOff))).toBeInTheDocument();
     expect(announced()).toBe('Your plan is ready.');
     const aside = within(screen.getByRole('complementary', { name: 'This account' }));
     expect(aside.getByText(peopleLine(sample('family-car-asthma').members))).toBeInTheDocument();

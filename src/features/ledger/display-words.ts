@@ -33,11 +33,6 @@ export interface EffectWords {
 /** The effect words for a language, from effect-words.json and checked against EffectWords. */
 export const EFFECT_WORDS: Readonly<Record<Language, EffectWords>> = WORDS;
 
-/** Fills {names} in a template; a name with no value stays as written. */
-export function fill(template: string, values: Readonly<Record<string, string>>): string {
-  return template.replace(/\{(\w+)\}/g, (match: string, name: string) => values[name] ?? match);
-}
-
 /** Text with CO2 written with its subscript, for display. Other text is unchanged. */
 export function withSubscripts(text: string): string {
   return text.replace(/\bCO2\b/g, 'CO₂');

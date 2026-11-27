@@ -1,11 +1,9 @@
 // The app: shared state, the router and the frame with every registered view.
-import { useState } from 'react';
-import type { ReactElement } from 'react';
+import { type ReactElement, useState } from 'react';
 import { AppShell } from './components/AppShell.js';
 import { RouterProvider } from './router.js';
 import { AppStateProvider } from './state/app-state.js';
-import type { ViewDef } from './view-types.js';
-import { VIEWS } from './views.js';
+import { VIEWS, type ViewDef } from './views.js';
 
 /** Local storage, or null where the browser blocks it, as some private modes do. */
 export function browserStorage(): Storage | null {

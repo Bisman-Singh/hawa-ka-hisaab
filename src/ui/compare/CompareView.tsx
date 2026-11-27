@@ -1,5 +1,6 @@
 // Compare: the person's own household against a sample household in the same air. Two plan requests for the same
 // place, or with the model off two plans made in this browser on the air it read, then the planner's comparePlans.
+import { Button } from '../components/Button.js';
 import type { ReactElement } from 'react';
 import type { Location } from '../../features/air/types.js';
 import { SAMPLE_HOUSEHOLDS } from '../../features/household/samples.js';
@@ -9,14 +10,14 @@ import { Field } from '../components/Field.js';
 import { ViewHeading } from '../components/Navigation.js';
 import { RequestFailure } from '../components/RequestFailure.js';
 import { ModelChoice } from '../consent/ModelChoice.js';
-import { CONSENT } from '../consent/strings.js';
+import { CONSENT } from '../consent/words.js';
 import type { RequestState } from '../data/request.js';
 import { useAppState } from '../state/app-state.js';
 import { useComparison } from './useComparison.js';
 import { Missing } from '../plan/states.js';
 import { CompareResult } from './CompareResult.js';
-import { COMPARE } from './strings.js';
-import { texting } from '../plan/handlers.js';
+import { COMPARE } from './words.js';
+import { texting } from '../handlers.js';
 
 type Failed = Extract<RequestState<PlanResponse>, { status: 'failed' }>;
 
@@ -58,9 +59,9 @@ function Comparison({
   return (
     <>
       <SamplePicker picked={picked} onPick={pick} />
-      <button className="btn" type="button" onClick={run} disabled={busy}>
+      <Button look="main" onClick={run} disabled={busy}>
         {COMPARE.run}
-      </button>
+      </Button>
       {busy ? (
         <p className="status" role="status">
           {COMPARE.busy}

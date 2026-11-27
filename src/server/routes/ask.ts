@@ -15,17 +15,15 @@ import {
   candidatesView,
   citedByAnswer,
   householdView,
+  planBrief,
   stationNames,
 } from '../../features/assistant/plan-view.js';
 import { askRoute } from '../../features/assistant/contract.js';
-import { askTools, householdFacts } from '../../features/assistant/tools.js';
+import { askTools } from '../../features/assistant/tools.js';
 import type { AskRequest, AskResponse } from '../../features/assistant/types.js';
 import type { AqiBand } from '../../features/naqi/types.js';
 import { buildCandidates } from '../../features/planner/candidates.js';
-import { buildFactSet, factSetTimes } from '../../features/planner/fact-set.js';
-import type { CandidateSet } from '../../features/planner/context.js';
 import { contextAt } from '../../features/planner/request-context.js';
-import { wordedActions, wordedActivityIds } from '../../features/planner/worded.js';
 import { ok } from '../../lib/result.js';
 import { factIdSchema } from '../../lib/schemas/facts.js';
 import type { Trace } from '../../lib/types.js';
@@ -33,7 +31,6 @@ import type { RouteModule, ServerDeps } from '../deps.js';
 import { createModelRoute, logFallback, runFor } from '../model-route.js';
 import { mountPost } from '../mount.js';
 
-const MAX_FACTS = 500;
 const MAX_FACT_IDS = 12;
 const citing = z.object({ factIds: z.array(factIdSchema) });
 
@@ -79,23 +76,17 @@ async function askInput(
   const air = await readAir(deps.air, deps.clock, body.location);
   const ctx = { ...contextAt(body.household, air, now), language: body.language };
   const set = buildCandidates(ctx);
-  const scoped: CandidateSet = { ...set, actions: wordedActions(set, body.household) };
-  const ids = wordedActivityIds(body.household);
   const reading = airFacts(air.reading);
-  const household = { ...body.household, activities: body.household.activities.filter((a) => ids.has(a.id)) };
-  const facts = [...reading.facts, ...householdFacts(household), ...buildFactSet(ctx, scoped)];
+  const { scoped, activityIds: ids, facts, times } = planBrief(ctx, set, reading);
+  const starts = body.household.activities.filter((activity) => ids.has(activity.id)).map((a) => a.start);
   const plan = candidatesView(scoped, scoped.actions);
   return {
     question: body.question,
     language: body.language,
     band: ctx.band,
     context: { household: householdView(body.household, ids), air: { ...reading.summary }, plan },
-    sources: [
-      { ...reading.summary, station: null },
-      ...household.activities.map((a) => a.start),
-      ...factSetTimes(ctx, scoped),
-    ],
-    facts: facts.slice(0, MAX_FACTS),
+    sources: [{ ...reading.summary, station: null }, ...starts, ...times],
+    facts,
     tools: askTools(ctx, set),
     names: stationNames(reading.summary),
     cite: (text) => citedByAnswer(text, scoped.actions, body.household),

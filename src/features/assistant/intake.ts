@@ -4,8 +4,9 @@ import type { z } from 'zod';
 import { intakeReplySchema } from '../household/contract.js';
 import { withTripDefaults } from '../household/trip-defaults.js';
 import type { Household } from '../household/types.js';
+import type { GuardCheck } from '../../lib/types.js';
 import { runGuarded, type Guarded, type ModelRun } from './guarded.js';
-import { INTAKE_INSTRUCTIONS, type GuardProblem } from './instructions.js';
+import { INTAKE_INSTRUCTIONS } from './instructions.js';
 import { findNumerals } from './numerals.js';
 import { nameLikeWords, repeatsName } from './text-guard.js';
 
@@ -44,7 +45,7 @@ export function guessedMeasure(household: Household, stated: readonly number[]):
 const labelsOf = (reply: IntakeReply): string[] =>
   reply.household.activities.flatMap((activity) => (activity.label === null ? [] : [activity.label]));
 
-function intakeProblem(reply: IntakeReply, text: string): GuardProblem | null {
+function intakeProblem(reply: IntakeReply, text: string): GuardCheck | null {
   if (!reply.unplaced.every((phrase) => text.includes(phrase))) {
     return 'unplaced';
   }

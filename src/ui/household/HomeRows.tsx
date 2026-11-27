@@ -1,5 +1,6 @@
 // The home block of the household form: cooking fuel, what burns or smokes at home, and each room with its rough
 // area and purifier. A purifier's CADR is optional; the plan sizes a purifier only where the numbers are given.
+import { fill } from '../../lib/template.js';
 import type { ReactElement } from 'react';
 import { Check, Checks } from './checks.js';
 import { Choice, TextInput } from './controls.js';
@@ -7,7 +8,7 @@ import type { Draft, DraftRoom } from './draft.js';
 import { binder, MAX_ROWS, NEW_ROW, replaceAt } from './edits.js';
 import { OPTIONS } from './options.js';
 import { AddButton, RowTitle, UndoLine } from './rows.js';
-import { FORM } from './strings.js';
+import { FORM } from './words.js';
 import type { HouseholdFormState } from './useHouseholdForm.js';
 
 const withRooms = (draft: Draft, rooms: readonly DraftRoom[]): Draft => ({
@@ -26,13 +27,18 @@ function RoomRow({ form, room, index }: { form: HouseholdFormState; room: DraftR
       draft,
       draft.home.rooms.filter((_, at) => at !== index),
     );
-    form.remove({ block: 'rooms', said: FORM.removed(FORM.room(index + 1)), next, back: path('kind').id });
+    form.remove({
+      block: 'rooms',
+      said: fill(FORM.removed, { what: fill(FORM.room, { n: index + 1 }) }),
+      next,
+      back: path('kind').id,
+    });
   };
   return (
     <div className="row-form" role="group" aria-labelledby={path().id}>
       <RowTitle
         id={path().id}
-        title={`${FORM.room(index + 1)}, ${OPTIONS.room[room.kind]}`}
+        title={`${fill(FORM.room, { n: index + 1 })}, ${OPTIONS.room[room.kind]}`}
         onRemove={remove}
       />
       <div className="grid-2">

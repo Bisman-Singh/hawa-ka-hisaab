@@ -6,9 +6,17 @@ import type {
   planResponseSchema,
   whatIfContextSchema,
 } from './contract.js';
-import type { actionKindSchema, actionTextSchema, alternativeSchema } from './schemas.js';
-import type { candidateActionSchema, indoorStepSchema, planItemSchema } from './schemas.js';
-import type { planSchema, slotSchema, whatIfSchema } from './schemas.js';
+import type {
+  actionKindSchema,
+  actionTextSchema,
+  alternativeSchema,
+  candidateActionSchema,
+  indoorStepSchema,
+  planItemSchema,
+  planSchema,
+  slotSchema,
+  whatIfSchema,
+} from './schemas.js';
 import type { planWordingSchema } from './wording.js';
 
 /** A part of the day. */

@@ -2,13 +2,13 @@
 // the people in short, in the plan's language where the plan shows them.
 import { describeMember, membersOf } from '../../features/household/members.js';
 import type { Activity, Household, Member } from '../../features/household/types.js';
-import { fill } from '../../features/ledger/display-words.js';
+import { fill } from '../../lib/template.js';
 import { activityName, capitalise } from '../../features/planner/text.js';
 import type { PlanItem } from '../../features/planner/types.js';
 import { lexiconFor, nameOf } from '../../features/planner/words.js';
 import { PEOPLE_EN } from '../../features/planner/words-people.js';
 import type { Language } from '../../lib/types.js';
-import { PLAN_LABELS } from './labels.js';
+import { PLAN_LABELS } from './words.js';
 import { activityOf } from './plan-data.js';
 
 /** What to call an activity in a title, in the plan's language. Hindi uses the plain name of its kind. */

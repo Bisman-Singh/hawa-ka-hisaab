@@ -1,6 +1,6 @@
 // Turns a drafted action for one activity into a candidate with a stable id, slot and clock time.
 import type { Activity } from '../household/types.js';
-import { clockOf } from '../ledger/format.js';
+import { clockOf } from '../../lib/time.js';
 import type { Effect } from '../ledger/types.js';
 import { slotOf } from './effects.js';
 import type { ActionKind, ActionText, CandidateAction, WhatIf } from './types.js';

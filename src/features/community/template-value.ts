@@ -1,7 +1,8 @@
 // Building blocks for placeholder values: plain words, numbers, clock times, lists and dates, each with the
 // fact values behind the numbers it shows.
 import type { FactValue, Language } from '../../lib/types.js';
-import { clockText, dateText, formatNumber, joinList } from './format.js';
+import { clockOf, dateText } from '../../lib/time.js';
+import { formatNumber, joinList } from './format.js';
 
 /** A placeholder value in English and Hindi, with the fact values behind any number it shows. */
 export interface TemplateValue {
@@ -35,14 +36,14 @@ export function clockValue(
   label: string,
   [hour, minute]: readonly [number, number],
 ): TemplateValue {
-  return shown(clockText(hour, minute), [
+  return shown(clockOf(hour * 60 + minute), [
     { id, label: `${label}, hour`, value: hour, unit: 'hour' },
     { id, label: `${label}, minute`, value: minute, unit: 'minute' },
   ]);
 }
 
 /** The hour and minute of an HH:MM clock time. */
-export const clockOf = (clock: string): [number, number] => [
+export const hourMinute = (clock: string): [number, number] => [
   Number(clock.slice(0, 2)),
   Number(clock.slice(3, 5)),
 ];

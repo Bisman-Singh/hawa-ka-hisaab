@@ -1,7 +1,7 @@
 // The masthead: the drawn mark, the wordmark in Hindi and English that leads home, and today's date in IST.
 import type { ReactElement } from 'react';
 import { APP_NAME } from '../../config/app.js';
-import { UI } from '../i18n/strings.js';
+import { UI } from './words.js';
 import { HOME } from '../router.js';
 import { ViewLink } from './Navigation.js';
 

@@ -1,8 +1,7 @@
 // Quote marks in model prose may hold only official wording, word for word: a passage of a quoted fact or a CPCB
 // band name. A rendering of the advisory in other words, in Hindi above all, is never put in quotes.
 import { FACT_LIST } from '../../config/facts/index.js';
-import { BAND_EN } from '../community/text-en.js';
-import { BAND_HI } from '../community/text-hi.js';
+import { BAND_NAMES } from '../community/words.js';
 
 const QUOTED = /["“”]([^"“”]*)["“”]/gu;
 
@@ -17,8 +16,8 @@ function squash(text: string): string {
 
 const OFFICIAL: readonly string[] = [
   ...FACT_LIST.flatMap((fact) => (fact.kind === 'text' ? [fact.text] : [])),
-  ...Object.values(BAND_EN),
-  ...Object.values(BAND_HI),
+  ...Object.values(BAND_NAMES.en),
+  ...Object.values(BAND_NAMES.hi),
 ].map((text) => ` ${squash(text)} `);
 
 /** The passages inside quote marks in a text, in order. */

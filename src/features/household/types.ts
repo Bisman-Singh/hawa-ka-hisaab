@@ -2,9 +2,20 @@
 import type { z } from 'zod';
 import type { intakeRequestSchema, intakeResponseSchema } from './contract.js';
 import type { householdPatchSchema } from './patch.js';
-import type { activityKindSchema, activitySchema, ageGroupSchema, fuelSchema } from './schemas.js';
-import type { homeSchema, householdSchema, indoorSourceSchema, memberFlagSchema } from './schemas.js';
-import type { memberSchema, roomSchema, travelModeSchema, travelSchema } from './schemas.js';
+import type {
+  activityKindSchema,
+  activitySchema,
+  ageGroupSchema,
+  fuelSchema,
+  homeSchema,
+  householdSchema,
+  indoorSourceSchema,
+  memberFlagSchema,
+  memberSchema,
+  roomSchema,
+  travelModeSchema,
+  travelSchema,
+} from './schemas.js';
 
 /** An age group. */
 export type AgeGroup = z.infer<typeof ageGroupSchema>;

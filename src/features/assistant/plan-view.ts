@@ -1,10 +1,14 @@
 // What the model reads about a household and its plan: people and activities in words, each candidate with its
 // effects as plain sentences and its template text. No working, no forecast values, so the view stays small.
 import { describeMember } from '../household/members.js';
-import type { AirSummary } from '../air/reading-facts.js';
+import type { FactValue } from '../../lib/types.js';
+import type { CandidateSet, PlanContext } from '../planner/context.js';
+import { buildFactSet, factSetTimes } from '../planner/fact-set.js';
+import { wordedActions, wordedActivityIds } from '../planner/worded.js';
+import { householdFacts } from './tools.js';
+import type { airFacts, AirSummary } from '../air/reading-facts.js';
 import type { Activity, Household, Travel } from '../household/types.js';
 import { effectDisplay } from '../ledger/display.js';
-import type { CandidateSet } from '../planner/context.js';
 import { activityName } from '../planner/text.js';
 import type { CandidateAction } from '../planner/types.js';
 
@@ -111,4 +115,36 @@ export function citedByAnswer(
     .filter((action) => action.activityId !== null && named.has(action.activityId))
     .flatMap((action) => [...action.factIds, ...action.effects.flatMap((effect) => effect.working.factIds)]);
   return [...new Set(ids)].slice(0, 12);
+}
+
+/** What a model request about a plan holds: the candidates of the activities it covers, their facts and times. */
+export interface PlanBrief {
+  readonly scoped: CandidateSet;
+  readonly activityIds: ReadonlySet<string>;
+  readonly facts: readonly FactValue[];
+  readonly times: readonly string[];
+}
+
+/** Most facts one request may send, as the trace allows. */
+const MAX_FACTS = 500;
+
+/**
+ * The candidates of at most MAX_WORDED_ACTIVITIES activities and only the facts behind them, the household's own
+ * numbers for those activities and the air, so a plan or ask request stays small however large the household is.
+ */
+export function planBrief(
+  ctx: PlanContext,
+  set: CandidateSet,
+  reading: ReturnType<typeof airFacts>,
+): PlanBrief {
+  const { household } = ctx;
+  const scoped: CandidateSet = { ...set, actions: wordedActions(set, household) };
+  const activityIds = wordedActivityIds(household);
+  const activities = household.activities.filter((activity) => activityIds.has(activity.id));
+  const facts = [
+    ...reading.facts,
+    ...householdFacts({ ...household, activities }),
+    ...buildFactSet(ctx, scoped),
+  ];
+  return { scoped, activityIds, facts: facts.slice(0, MAX_FACTS), times: factSetTimes(ctx, scoped) };
 }

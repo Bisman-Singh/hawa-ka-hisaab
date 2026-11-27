@@ -1,7 +1,6 @@
 // The day plan view: each state it can be in, and the plan itself with the forecast, the three slots, the
 // reckoning and the ask box, beside the air card, a short account of the household and links to the other views.
-import { useId } from 'react';
-import type { ReactElement } from 'react';
+import { type ReactElement, useId } from 'react';
 import type { AirResponse } from '../../features/air/types.js';
 import type { Household } from '../../features/household/types.js';
 import type { AirBasis } from '../../features/planner/types.js';
@@ -21,9 +20,8 @@ import { otherAir } from './air-basis.js';
 import { whatIfOf } from './plan-data.js';
 import { peopleLine } from './plan-words.js';
 import { NotReady } from './states.js';
-import { PLAN } from './strings.js';
-import { useDayPlan } from './useDayPlan.js';
-import type { DayPlan } from './useDayPlan.js';
+import { PLAN } from './words.js';
+import { type DayPlan, useDayPlan } from './useDayPlan.js';
 
 const LINKS: readonly (keyof typeof PLAN.links)[] = ['indoor', 'compare', 'community'];
 

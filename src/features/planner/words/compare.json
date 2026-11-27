@@ -1,0 +1,12 @@
+{
+  "none": {
+    "protected": "No one needs extra protection",
+    "moved": "Nothing moved",
+    "indoors": "Nothing kept indoors",
+    "travel": "No travel change",
+    "largest_cut": "No cut in what is breathed in",
+    "indoor_steps": "No indoor steps"
+  },
+  "movedTo": "{name} to {time}",
+  "cutFor": "{cut} breathed in, for {name}"
+}

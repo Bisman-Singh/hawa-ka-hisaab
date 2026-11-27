@@ -1,26 +1,19 @@
 // The comparison of two plans made on the same air: both households, then one row per topic marked as differing
 // or the same with the reason, or the different-air message when the readings under the two plans differ.
+import { Button } from '../components/Button.js';
 import type { ReactElement } from 'react';
 import { describeMember } from '../../features/household/members.js';
 import type { Household } from '../../features/household/types.js';
-import { comparePlans } from '../../features/planner/compare.js';
+import { COMPARE_TOPICS, comparePlans } from '../../features/planner/compare.js';
 import type { CompareTopic, PlanDifference } from '../../features/planner/compare.js';
 import type { AirBasis, PlanResponse } from '../../features/planner/types.js';
 import { StateMessage } from '../components/StateMessage.js';
 import { WrittenBy } from '../components/WrittenBy.js';
-import { AirBasisLine, istClock } from '../plan/air-basis.js';
+import { istClock } from '../../lib/time.js';
+import { AirBasisLine } from '../plan/air-basis.js';
 import { BandLabel } from '../components/Band.js';
 import { useAppState } from '../state/app-state.js';
-import { COMPARE, TOPICS } from './strings.js';
-
-const ORDER: readonly CompareTopic[] = [
-  'protected',
-  'moved',
-  'indoors',
-  'travel',
-  'largest_cut',
-  'indoor_steps',
-];
+import { COMPARE, TOPICS } from './words.js';
 
 /** One row: the topic, whether it differs, each side's words and the reason. */
 export function CompareRow({
@@ -85,9 +78,7 @@ export function CompareResult({ mine, theirs, again }: CompareResultProps): Reac
     return (
       <StateMessage tone="alert" glyph="stale" title={COMPARE.airTitle}>
         <p>{COMPARE.airBody}</p>
-        <button className="btn btn-quiet" type="button" onClick={again}>
-          {COMPARE.again}
-        </button>
+        <Button onClick={again}>{COMPARE.again}</Button>
       </StateMessage>
     );
   }
@@ -114,7 +105,7 @@ export function CompareResult({ mine, theirs, again }: CompareResultProps): Reac
         </div>
       </div>
       <ol className="cmp">
-        {ORDER.map((topic) => (
+        {COMPARE_TOPICS.map((topic) => (
           <CompareRow key={topic} topic={topic} found={result.value.find((line) => line.topic === topic)} />
         ))}
       </ol>

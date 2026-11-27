@@ -1,16 +1,11 @@
-// Tests for the parts of the plain pages: a section named by its heading and labelled lines.
+// Tests for the labelled lines of the plain pages: each label sits beside its text.
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import { Lines, Part } from '../../../src/ui/legal/parts.js';
+import { Lines } from '../../../src/ui/legal/parts.js';
 
-describe('Part and Lines', () => {
-  it('name the section by its heading and list each label beside its text', () => {
-    render(
-      <Part title="Kept">
-        <Lines lines={[{ label: 'Here', text: 'Nothing.' }]} />
-      </Part>,
-    );
-    expect(screen.getByRole('region', { name: 'Kept' })).toBeInTheDocument();
+describe('Lines', () => {
+  it('lists each label beside its text', () => {
+    render(<Lines lines={[{ label: 'Here', text: 'Nothing.' }]} />);
     expect(screen.getByRole('listitem')).toHaveTextContent('HereNothing.');
   });
 });

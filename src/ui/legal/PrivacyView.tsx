@@ -1,12 +1,12 @@
 // The privacy page: what is sent where, Google's free tier terms in plain words, what is kept and where, the control
 // that clears what this browser keeps, and how to get in touch.
-import { useId } from 'react';
-import type { ReactElement } from 'react';
+import { type ReactElement, useId } from 'react';
 import { ViewHeading } from '../components/Navigation.js';
 import { ModelSwitch } from '../consent/ModelChoice.js';
 import { ClearHousehold } from './ClearHousehold.js';
-import { Lines, Part } from './parts.js';
-import { GEMINI_TERMS_URL, ISSUES_URL, PRIVACY } from './strings.js';
+import { Section } from '../components/Section.js';
+import { Lines } from './parts.js';
+import { GEMINI_TERMS_URL, ISSUES_URL, PRIVACY } from './words.js';
 
 /** How to get in touch: the repository's issue page, linked once its address is set. */
 export function ContactLine({ url }: { readonly url: string | null }): ReactElement {
@@ -25,29 +25,29 @@ export function PrivacyView(): ReactElement {
       <div className="page-left">
         <ViewHeading>{PRIVACY.title}</ViewHeading>
         <p className="lede">{PRIVACY.lede}</p>
-        <Part title={PRIVACY.sent}>
+        <Section title={PRIVACY.sent}>
           <Lines lines={PRIVACY.sentLines} />
-        </Part>
-        <Part title={PRIVACY.google}>
+        </Section>
+        <Section title={PRIVACY.google}>
           <p>
             {PRIVACY.googleTerms} <a href={GEMINI_TERMS_URL}>{PRIVACY.googleLink}</a>.
           </p>
           <p>{PRIVACY.googleAsk}</p>
-        </Part>
+        </Section>
       </div>
       <div className="page-right">
-        <Part title={PRIVACY.kept}>
+        <Section title={PRIVACY.kept}>
           <Lines lines={PRIVACY.keptLines} />
-        </Part>
-        <Part title={PRIVACY.model}>
+        </Section>
+        <Section title={PRIVACY.model}>
           <ModelSwitch />
-        </Part>
-        <Part title={PRIVACY.clear}>
+        </Section>
+        <Section title={PRIVACY.clear}>
           <ClearHousehold id={id} />
-        </Part>
-        <Part title={PRIVACY.contact}>
+        </Section>
+        <Section title={PRIVACY.contact}>
           <ContactLine url={ISSUES_URL} />
-        </Part>
+        </Section>
       </div>
     </div>
   );

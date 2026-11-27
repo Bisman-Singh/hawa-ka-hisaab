@@ -4,7 +4,7 @@ import { screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ModelChoice, ModelNote, ModelSwitch } from '../../../src/ui/consent/ModelChoice.js';
-import { CONSENT } from '../../../src/ui/consent/strings.js';
+import { CONSENT } from '../../../src/ui/consent/words.js';
 import { loadState } from '../../../src/ui/storage.js';
 import { axeViolations, renderInApp } from '../helpers.js';
 

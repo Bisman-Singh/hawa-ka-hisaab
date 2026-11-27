@@ -7,8 +7,14 @@ import type { AqiBand } from '../naqi/types.js';
 import type { DayKind } from '../planner/day-kind.js';
 import type { noticeRequestSchema, noticeResponseSchema } from './contract.js';
 import type { Timing } from './timing.js';
-import type { communityActionSchema, communityInputSchema, noticeReplySchema } from './schemas.js';
-import type { noticeSchema, noticeTextSchema, noticeWordingSchema } from './schemas.js';
+import type {
+  communityActionSchema,
+  communityInputSchema,
+  noticeReplySchema,
+  noticeSchema,
+  noticeTextSchema,
+  noticeWordingSchema,
+} from './schemas.js';
 
 /** What a society or school enters. */
 export type CommunityInput = z.infer<typeof communityInputSchema>;

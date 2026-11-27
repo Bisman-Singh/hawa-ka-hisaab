@@ -1,5 +1,5 @@
 // Plan wording: the model chooses, orders and words candidate actions computed in code. It adds no numbers.
-import type { FactValue, Language } from '../../lib/types.js';
+import type { FactValue, GuardCheck, Language } from '../../lib/types.js';
 import type { AirSummary } from '../air/reading-facts.js';
 import type { Household } from '../household/types.js';
 import type { CandidateSet } from '../planner/context.js';
@@ -7,7 +7,7 @@ import { choiceKey } from '../planner/rules-plan.js';
 import type { CandidateAction, Plan, PlanWording } from '../planner/types.js';
 import { planWordingSchema } from '../planner/wording.js';
 import { runGuarded, type Guarded, type ModelRun } from './guarded.js';
-import { PLAN_INSTRUCTIONS, type GuardProblem } from './instructions.js';
+import { PLAN_INSTRUCTIONS } from './instructions.js';
 import { candidatesView, householdView, stationNames } from './plan-view.js';
 import { misquotes } from './quotes.js';
 
@@ -46,10 +46,7 @@ const shownText = (candidates: readonly CandidateAction[]): string[] =>
   ]);
 
 /** Names an id that was not sent, or two actions for the same place in the plan, such as keep and move. */
-function wordingProblem(
-  byId: ReadonlyMap<string, CandidateAction>,
-  wording: PlanWording,
-): GuardProblem | null {
+function wordingProblem(byId: ReadonlyMap<string, CandidateAction>, wording: PlanWording): GuardCheck | null {
   const places: string[] = [];
   for (const item of wording.items) {
     const candidate = byId.get(item.candidateId);

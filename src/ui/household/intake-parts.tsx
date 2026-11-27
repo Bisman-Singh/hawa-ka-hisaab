@@ -1,7 +1,10 @@
-// The parts of the intake box: the text box with its count and problem, and the samples to start from.
-import type { ReactElement } from 'react';
-import { SAMPLE_HOUSEHOLDS } from '../../features/household/samples.js';
-import { INTAKE } from './strings.js';
+// The parts of the intake: the text box with its count and problem, and the samples to start from, which the
+// household view offers too.
+import { Button } from '../components/Button.js';
+import { type ReactElement, useId } from 'react';
+import { SAMPLE_HOUSEHOLDS, type SampleHousehold } from '../../features/household/samples.js';
+import { calling } from '../handlers.js';
+import { charsText, INTAKE } from './words.js';
 
 /** Props of the intake text box. problem is why the last send was refused, if it was. */
 export interface IntakeTextProps {
@@ -38,39 +41,36 @@ export function IntakeText({ id, text, problem, onText }: IntakeTextProps): Reac
         </p>
       )}
       <p className="hint" id={`${id}-count`}>
-        {INTAKE.count(text.length)}
+        {charsText(text.length)}
       </p>
     </div>
   );
 }
 
-/** Three made-up samples, each with a button that copies it into the box. */
-export function IntakeSamples({
-  id,
-  onUse,
-}: {
-  readonly id: string;
-  readonly onUse: (text: string) => void;
-}): ReactElement {
+/** Props of a sample list: its title and heading level, the button words, how many to offer and what a pick does. */
+export interface SampleListProps {
+  readonly title: string;
+  readonly heading: 'h2' | 'h3';
+  readonly use: string;
+  readonly onUse: (sample: SampleHousehold) => void;
+  readonly count?: number;
+}
+
+/** The made-up sample households, each with a button that takes it. */
+export function SampleList({ title, heading: Heading, use, onUse, count }: SampleListProps): ReactElement {
+  const id = useId();
   return (
     <>
-      <h3 className="label" id={`${id}-samples`}>
-        {INTAKE.samples}
-      </h3>
-      <ul className="samples" aria-labelledby={`${id}-samples`}>
-        {SAMPLE_HOUSEHOLDS.slice(0, 3).map((sample) => (
+      <Heading className="label" id={id}>
+        {title}
+      </Heading>
+      <ul className="samples" aria-labelledby={id}>
+        {SAMPLE_HOUSEHOLDS.slice(0, count).map((sample) => (
           <li key={sample.id}>
             <q id={`${id}-${sample.id}`}>{sample.description}</q>
-            <button
-              className="btn btn-quiet"
-              type="button"
-              aria-describedby={`${id}-${sample.id}`}
-              onClick={() => {
-                onUse(sample.description);
-              }}
-            >
-              {INTAKE.use}
-            </button>
+            <Button describedBy={`${id}-${sample.id}`} onClick={calling(onUse, sample)}>
+              {use}
+            </Button>
           </li>
         ))}
       </ul>

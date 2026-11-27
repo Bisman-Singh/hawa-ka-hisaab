@@ -3,6 +3,7 @@
 import { MIN_MODEL_CALL_MS, MIN_RETRY_MS } from '../../config/limits.js';
 import type { Clock } from '../../lib/clock.js';
 import type { CallBudget, ModelPort, ModelRequest } from '../../lib/model.js';
+import { callBudget } from './call-budget.js';
 import type { RateDecision } from '../../lib/rate-limit.js';
 import type { FallbackReason, ModelFailureKind, NumberCheck, Trace } from '../../lib/types.js';
 import { attempt, type Attempt, type GuardedTask, type Rejected } from './attempt.js';
@@ -21,17 +22,16 @@ export type Guarded<T> =
 /** A checked reply, the only kind the short cache keeps. */
 export type Checked<T> = Extract<Guarded<T>, { kind: 'checked' }>;
 
-/** Most model HTTP calls one request may make, tool rounds, the retry and fallback models included. */
-export const MAX_MODEL_CALLS_PER_REQUEST = 3;
-
 /**
  * What a route hands a model task. allow takes one unit of the per-client limit and is called before every model
- * HTTP call, never for a cached reply. cache holds checked replies to identical requests. deadline is in epoch ms.
+ * HTTP call, never for a cached reply. cache holds checked replies to identical requests and inFlight the ones
+ * still being worked out, both shared by every request to the route. deadline is in epoch ms.
  */
 export interface ModelRun<T> {
   readonly model: ModelPort;
   readonly allow: () => Promise<RateDecision>;
   readonly cache: ReplyCache<Checked<T>>;
+  readonly inFlight: Map<string, Promise<Guarded<T>>>;
   readonly clock: Clock;
   readonly deadline: number;
 }
@@ -59,36 +59,6 @@ function settle<T>(request: ModelRequest<T>, outcome: Attempt<T>, history: Histo
   const check = checkOf(rejected?.numbers ?? null, history.attempts);
   const refused = rejected ? { problem: rejected.problem, reply: rejected.reply } : null;
   return { kind: 'fallback', reason, trace: traceOf(request.facts, { reason, reply: null, check, refused }) };
-}
-
-/**
- * The budget for one request. The first unit is taken before the model is asked, so a client over its limit makes
- * no call; the adapter's first take uses that unit and every later HTTP call takes one more, up to the size.
- */
-function budgetFor(run: ModelRun<unknown>): CallBudget & { readonly open: () => Promise<boolean> } {
-  let used = 0;
-  let reserved = false;
-  const charge = async (): Promise<boolean> => {
-    if (used >= MAX_MODEL_CALLS_PER_REQUEST || !(await run.allow()).allowed) {
-      return false;
-    }
-    used += 1;
-    return true;
-  };
-  return {
-    open: async () => {
-      reserved = await charge();
-      return reserved;
-    },
-    take: async () => {
-      if (reserved) {
-        reserved = false;
-        return true;
-      }
-      return charge();
-    },
-    left: () => MAX_MODEL_CALLS_PER_REQUEST - used,
-  };
 }
 
 /** A retry is worth a call only for a reply that came back with text a check refused, with time and calls left. */
@@ -120,24 +90,14 @@ async function ask<T>(run: ModelRun<T>, task: GuardedTask<T>, budget: CallBudget
   return settle(task.request, second, { earlier: first, attempts: 2 });
 }
 
-/**
- * Runs a task. An identical request answered in the last few minutes is served from the cache with no model call
- * and no unit of the limit. Too close to the deadline, or over the per-client limit, it never calls the model. A
- * request makes at most MAX_MODEL_CALLS_PER_REQUEST HTTP calls, each one a unit of the per-client limit. A reply
- * whose text fails a check is retried once with a fixed note on what failed, if time and calls are left; a reply
- * with no text is not retried. A second failure, or any model failure, becomes the labelled fallback, and the
- * trace names the refusing check but never carries the refused text.
- */
-export async function runGuarded<T>(run: ModelRun<T>, task: GuardedTask<T>): Promise<Guarded<T>> {
-  const key = keyOf(task.request);
-  const hit = run.cache.get(key);
-  if (hit) {
-    return { ...hit, trace: { ...hit.trace, cached: true } };
+async function guardedCall<T>(run: ModelRun<T>, task: GuardedTask<T>, key: string): Promise<Guarded<T>> {
+  if (run.model.modelId === null) {
+    return failedBefore(task.request, 'disabled');
   }
   if (run.deadline - run.clock.now() < MIN_MODEL_CALL_MS) {
     return failedBefore(task.request, 'timeout');
   }
-  const budget = budgetFor(run);
+  const budget = callBudget(run.allow);
   if (!(await budget.open())) {
     return failedBefore(task.request, 'rate_limited');
   }
@@ -146,4 +106,39 @@ export async function runGuarded<T>(run: ModelRun<T>, task: GuardedTask<T>): Pro
     run.cache.set(key, result);
   }
   return result;
+}
+
+const reused = <T>(result: Checked<T>): Guarded<T> => ({
+  ...result,
+  trace: { ...result.trace, cached: true },
+});
+
+/**
+ * Runs a task. An identical request answered in the last few minutes is served from the cache, and one still in
+ * flight shares that request's outcome, both with no model call and no unit of the limit; only a refusal by the
+ * first caller's own limit is not shared. With no model configured it says so and takes no unit of the limit. Too
+ * close to the deadline, or over the per-client limit, it never calls the model. A request makes at most
+ * MAX_MODEL_CALLS_PER_REQUEST HTTP calls, each one a unit of the per-client limit. A reply whose text fails a check
+ * is retried once with a fixed note on what failed, if time and calls are left; a reply with no text is not
+ * retried. A second failure, or any model failure, becomes the labelled fallback, and the trace names the refusing
+ * check but never carries the refused text.
+ */
+export async function runGuarded<T>(run: ModelRun<T>, task: GuardedTask<T>): Promise<Guarded<T>> {
+  const key = keyOf(task.request);
+  const hit = run.cache.get(key);
+  if (hit) {
+    return reused(hit);
+  }
+  const inFlight = run.inFlight.get(key);
+  const shared = inFlight === undefined ? null : await inFlight;
+  if (shared !== null && (shared.kind === 'checked' || shared.reason !== 'rate_limited')) {
+    return shared.kind === 'checked' ? reused(shared) : shared;
+  }
+  const pending = guardedCall(run, task, key);
+  run.inFlight.set(key, pending);
+  try {
+    return await pending;
+  } finally {
+    run.inFlight.delete(key);
+  }
 }

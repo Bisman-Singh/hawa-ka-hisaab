@@ -7,7 +7,7 @@ import { Choice, TextInput } from './controls.js';
 import type { DraftActivity, DraftTravel } from './draft.js';
 import { binder, VEHICLES, withMode } from './edits.js';
 import { OPTIONS } from './options.js';
-import { FORM } from './strings.js';
+import { FORM } from './words.js';
 import type { FieldAt } from './useHouseholdForm.js';
 
 /** Finds a field of this outing by the rest of its path. */

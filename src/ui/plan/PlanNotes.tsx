@@ -1,19 +1,19 @@
 // Notes above the plan: the severe-day bulletin with the health ministry's words, the note shown when fixed rules
 // wrote the plan, with the reason and a way to ask the model again, and the note on a plan made in this browser.
-import { useId } from 'react';
-import type { ReactElement } from 'react';
+import { Button } from '../components/Button.js';
+import { type ReactElement, useId } from 'react';
 import { adviceFactId } from '../../config/facts/advice.js';
 import { factQuote } from '../../config/facts/index.js';
 import type { AqiBand } from '../../features/naqi/types.js';
 import type { PlanResponse } from '../../features/planner/types.js';
 import { BandGlyph } from '../components/Band.js';
 import { StateMessage } from '../components/StateMessage.js';
-import { CONSENT } from '../consent/strings.js';
-import { useAppActions } from '../state/app-state.js';
-import { BAND_TEXT } from '../i18n/strings.js';
-import { fallbackText } from '../trace/strings.js';
+import { ChoiceButton } from '../consent/ModelChoice.js';
+import { CONSENT } from '../consent/words.js';
+import { BAND_TEXT } from '../components/words.js';
+import { fallbackText } from '../trace/words.js';
 import { AirBasisLine, type AirBasisLineProps } from './air-basis.js';
-import { PLAN } from './strings.js';
+import { PLAN } from './words.js';
 
 /** The severe-day bulletin: the band, the reading and the health ministry's words for everyone and the vulnerable. */
 export function Bulletin({ band, ...line }: AirBasisLineProps & { readonly band: AqiBand }): ReactElement {
@@ -32,19 +32,10 @@ export function Bulletin({ band, ...line }: AirBasisLineProps & { readonly band:
 
 /** The note on a plan made in this browser with the model off, with the way to turn the model on. */
 export function LocalNote(): ReactElement {
-  const { save } = useAppActions();
   return (
     <StateMessage tone="status" glyph="model" title={CONSENT.state.off} quiet level={2}>
       <p>{CONSENT.madeHere}</p>
-      <button
-        className="btn btn-quiet"
-        type="button"
-        onClick={() => {
-          save({ modelChoice: 'on' });
-        }}
-      >
-        {CONSENT.turnOn}
-      </button>
+      <ChoiceButton choice="on" />
     </StateMessage>
   );
 }
@@ -72,11 +63,7 @@ export function ModelNote({
       level={2}
     >
       <p>{`${PLAN.modelDownBody} ${fallbackText(trace, reason)}`}</p>
-      {reason === 'disabled' ? null : (
-        <button className="btn btn-quiet" type="button" onClick={again}>
-          {PLAN.tryModel}
-        </button>
-      )}
+      {reason === 'disabled' ? null : <Button onClick={again}>{PLAN.tryModel}</Button>}
     </StateMessage>
   );
 }

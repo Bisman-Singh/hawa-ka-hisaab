@@ -1,7 +1,6 @@
 // A plan item as a line of the day: its sums, trade-off, what-if choices and working. A what-if choice
 // recomputes in the browser at once with the planner's own function and is announced.
-import { useState } from 'react';
-import type { ReactElement, ReactNode } from 'react';
+import { type ReactElement, type ReactNode, useState } from 'react';
 import type { Household } from '../../features/household/types.js';
 import type { Effect } from '../../features/ledger/types.js';
 import type { PlanContext } from '../../features/planner/context.js';
@@ -14,7 +13,7 @@ import { Workings } from '../trace/Working.js';
 import { notesOf, rowsOf, sumsOf, sumsSentence, usableToggles, whatIfEffectsOf } from './plan-data.js';
 import type { Sum } from './plan-data.js';
 import { fixityOf, whoLine } from './plan-words.js';
-import { PLAN_LABELS } from './labels.js';
+import { PLAN_LABELS } from './words.js';
 
 /** Props of a plan item entry: the item, the household and plan context it was made from, and its language. */
 export interface ItemEntryProps {
@@ -38,7 +37,8 @@ interface More {
 
 function moreOf({ item, language, choice, hidden, effects, sums }: More): ReactNode {
   const words = PLAN_LABELS[language];
-  const notes = notesOf(sums);
+  const explained = item.kind === 'swap_mode' && item.tradeOff !== null;
+  const notes = notesOf(explained ? sums.filter((sum) => sum.kind !== 'exposure') : sums);
   if (item.tradeOff === null && choice === null && effects.length === 0) {
     return undefined;
   }
@@ -77,7 +77,7 @@ export function ItemEntry({ item, household, ctx, language }: ItemEntryProps): R
   const choose = (id: string): void => {
     setChoice(id);
     const label = toggles.find((found) => found.id === id)?.label ?? words.asPlanned;
-    announce(`${label}. ${sumsSentence(sumsOf(effectsFor(id), mild, language))}`);
+    announce(`${label}. ${sumsSentence(sumsOf(effectsFor(id), mild, language))}`, language);
   };
   const options = [
     { value: PLANNED, label: words.asPlanned },

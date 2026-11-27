@@ -1,8 +1,8 @@
 // The air reading in one sentence for the live region, kept apart from the air card so the first screen can say it
 // before the card's own code has loaded.
 import type { AirResponse } from '../../features/air/types.js';
-import { BAND_TEXT } from '../i18n/strings.js';
-import { AIR, NO_AQI } from './strings.js';
+import { BAND_TEXT } from '../components/words.js';
+import { AIR, NO_AQI } from './words.js';
 
 /** One sentence for the live region when a reading arrives, such as "CPCB AQI 246, Poor.". */
 export function airSummary({ reading }: AirResponse): string {

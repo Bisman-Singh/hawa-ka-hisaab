@@ -6,8 +6,19 @@ import type { Language } from '../../lib/types.js';
 import { ViewHeading } from '../components/Navigation.js';
 import { NotReady } from '../plan/states.js';
 import { useDayPlan } from '../plan/useDayPlan.js';
-import { Note, Part, PurifierStep, Swap } from './IndoorParts.js';
-import { INDOOR, STEP_PART } from './strings.js';
+import { Section } from '../components/Section.js';
+import { Note, PurifierStep, Swap } from './IndoorParts.js';
+import { INDOOR } from './words.js';
+
+/** Which part of the view each kind of indoor step belongs to. */
+const STEP_PART: Readonly<Record<IndoorStep['topic'], 'purifier' | 'home' | 'claims'>> = {
+  purifier: 'purifier',
+  ventilation: 'home',
+  source_control: 'home',
+  wet_mopping: 'home',
+  mask: 'home',
+  myth: 'claims',
+};
 
 function Notes({ steps, language }: { readonly steps: readonly IndoorStep[]; readonly language: Language }) {
   return steps.length === 0 ? (
@@ -37,15 +48,15 @@ export function IndoorView(): ReactElement {
         {part('purifier').map((step) => (
           <PurifierStep key={step.id} step={step} language={language} />
         ))}
-        <Part title={INDOOR.atHome}>
+        <Section title={INDOOR.atHome}>
           <Notes steps={part('home')} language={language} />
-        </Part>
-        <Part title={INDOOR.claims}>
+        </Section>
+        <Section title={INDOOR.claims}>
           <Notes steps={part('claims')} language={language} />
-        </Part>
+        </Section>
       </div>
       <div className="page-right">
-        <Part title={INDOOR.swaps}>
+        <Section title={INDOOR.swaps}>
           <p className="lede">{INDOOR.swapsLede}</p>
           {alternatives.length === 0 ? (
             <p className="small">{INDOOR.noSwaps}</p>
@@ -56,7 +67,7 @@ export function IndoorView(): ReactElement {
               ))}
             </ol>
           )}
-        </Part>
+        </Section>
       </div>
     </div>
   );

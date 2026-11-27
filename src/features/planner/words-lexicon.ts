@@ -2,7 +2,7 @@
 // rooms and parts of the day, the health ministry advice in the plan's language and words for people.
 import { adviceText, type AdviceGroup } from '../../config/facts/advice.js';
 import type { Language } from '../../lib/types.js';
-import { ADVICE_HI, BAND_HI_BEFORE_NOUN } from '../community/text-hi.js';
+import { ADVICE_HI, BAND_HI_BEFORE_NOUN } from '../community/words.js';
 import type { ActivityKind, Room, TravelMode } from '../household/types.js';
 import type { AqiBand } from '../naqi/types.js';
 import type { Slot } from './types.js';

@@ -2,7 +2,8 @@
 import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { IntakeSamples, IntakeText } from '../../../src/ui/household/intake-parts.js';
+import type { SampleHousehold } from '../../../src/features/household/samples.js';
+import { IntakeText, SampleList } from '../../../src/ui/household/intake-parts.js';
 
 describe('intake parts', () => {
   it('labels the box by its heading and ties the count, hint and problem to it', async () => {
@@ -21,12 +22,12 @@ describe('intake parts', () => {
   });
 
   it('offers three samples, each described by its own sentence', async () => {
-    const onUse = vi.fn<(text: string) => void>();
-    render(<IntakeSamples id="s" onUse={onUse} />);
+    const onUse = vi.fn<(sample: SampleHousehold) => void>();
+    render(<SampleList title="Or start from a sample" heading="h3" use="Use this" count={3} onUse={onUse} />);
     const buttons = screen.getAllByRole('button', { name: 'Use this' });
     expect(buttons).toHaveLength(3);
     await userEvent.click(buttons[2] ?? document.body);
-    expect(onUse.mock.calls[0]?.[0]).toMatch(/delivery rider/);
+    expect(onUse.mock.calls[0]?.[0]?.description).toMatch(/delivery rider/);
     expect(buttons[2]).toHaveAccessibleDescription(/delivery rider/);
   });
 });

@@ -3,17 +3,17 @@
 import type { ReactElement } from 'react';
 import { SLOT_START_HOURS } from '../../config/limits.js';
 import type { Household } from '../../features/household/types.js';
-import { clockOf } from '../../features/ledger/format.js';
+import { clockOf } from '../../lib/time.js';
 import type { Plan, Slot, WhatIfContext } from '../../features/planner/types.js';
 import { HINDI_ADVICE_NOTE } from '../../features/planner/words-lexicon.js';
 import type { Language } from '../../lib/types.js';
-import { LedgerSlot } from '../components/Ledger.js';
-import { contextFor, entriesBySlot, itemsOf, SLOTS, sumsOf } from './plan-data.js';
+import { LedgerSlot, TotalTable } from '../components/Ledger.js';
+import { contextFor, entriesBySlot, type Entry, SLOTS, sumsOf } from './plan-data.js';
+import { planItems } from '../../features/planner/assemble.js';
 import { activityTitle } from './plan-words.js';
-import type { Entry } from './plan-data.js';
 import { MovedEntry } from './OtherEntries.js';
 import { ItemEntry } from './PlanEntry.js';
-import { PLAN_LABELS } from './labels.js';
+import { PLAN_LABELS } from './words.js';
 
 const NEXT: Readonly<Record<Slot, Slot>> = { morning: 'afternoon', afternoon: 'evening', evening: 'morning' };
 
@@ -69,27 +69,16 @@ export function PlanSlots({ plan, household, whatIf }: PlanSlotsProps): ReactEle
 export function Reckoning({ plan }: { readonly plan: Plan }): ReactElement {
   const { language } = plan;
   const words = PLAN_LABELS[language];
-  const rows = itemsOf(plan).flatMap((item) =>
+  const rows = planItems(plan).flatMap((item) =>
     sumsOf(item.effects, false, language).flatMap((sum) =>
-      sum.none ? [] : [{ label: `${item.title}, ${sum.label}`, text: sum.text }],
+      sum.none ? [] : [{ label: `${item.title}, ${sum.label}`, value: sum.text }],
     ),
   );
-  const shown = rows.length === 0 ? [{ label: words.reckoningEmpty, text: words.reckoningNo }] : rows;
+  const shown = rows.length === 0 ? [{ label: words.reckoningEmpty, value: words.reckoningNo }] : rows;
   return (
-    <section className="reckon" aria-label={words.reckoning} lang={language}>
-      <table>
-        <caption>{words.reckoning}</caption>
-        <tbody>
-          {shown.map((row, index) => (
-            <tr key={index}>
-              <th scope="row">{row.label}</th>
-              <td className="num">{row.text}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <TotalTable caption={words.reckoning} rows={shown} lang={language}>
       <p className="note">{rows.length === 0 ? words.reckoningNone : words.reckoningNote}</p>
       {language === 'hi' ? <p className="note">{HINDI_ADVICE_NOTE}</p> : null}
-    </section>
+    </TotalTable>
   );
 }

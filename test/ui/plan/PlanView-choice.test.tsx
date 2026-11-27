@@ -3,7 +3,7 @@
 import { screen, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { CONSENT } from '../../../src/ui/consent/strings.js';
+import { CONSENT } from '../../../src/ui/consent/words.js';
 import { Announcer } from '../../../src/ui/hooks/announcer.js';
 import { IndoorView } from '../../../src/ui/indoor/IndoorView.js';
 import { PlanView } from '../../../src/ui/plan/PlanView.js';

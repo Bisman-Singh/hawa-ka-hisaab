@@ -1,12 +1,10 @@
 // The band glyph, the band name with its glyph, and the six-step scale with a sentence for screen readers.
 // Hatch density tells the band in black and white; the CPCB colour appears once, as a chip over today's cell.
-import { useRef } from 'react';
-import type { ReactElement } from 'react';
+import { type ReactElement, useRef } from 'react';
 import type { AqiBand } from '../../features/naqi/types.js';
 import { BAND_ORDER, BANDS, rangeText, scalePosition } from '../bands.js';
 import { useCssVars } from '../hooks/useCssVars.js';
-import { BAND_TEXT, scaleSentence } from '../i18n/strings.js';
-import type { ScaleValue } from '../i18n/strings.js';
+import { BAND_TEXT, scaleSentence, type ScaleValue } from './words.js';
 
 /** The hatched square of a band. Decorative: the band's name always sits beside it. */
 export function BandGlyph({ band }: { readonly band: AqiBand }): ReactElement {

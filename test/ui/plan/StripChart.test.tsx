@@ -27,6 +27,15 @@ describe('Chart', () => {
     expect(container.querySelector('.ds-chart')).toHaveAttribute('aria-hidden', 'true');
   });
 
+  it('names the parts of the day in the language of the plan, marked with it', () => {
+    const plan = planResponse('family-car-asthma', 'poor').plan;
+    const { container, rerender } = render(<Chart hours={hours} selected={0} plan={plan} madeAt={null} />);
+    expect(container.querySelector('.ds-slots')).toHaveTextContent('Morning');
+    rerender(<Chart hours={hours} selected={0} plan={{ ...plan, language: 'hi' }} madeAt={null} />);
+    expect(container.querySelector('.ds-slots')).toHaveTextContent('सुबह');
+    expect(container.querySelector('.ds-slots')).toHaveAttribute('lang', 'hi');
+  });
+
   it('lists every hour in the hidden table', () => {
     const { container } = render(<HourTable hours={hours} />);
     expect([...container.querySelectorAll('td')].map((cell) => cell.textContent)).toEqual([

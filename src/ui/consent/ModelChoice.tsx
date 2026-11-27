@@ -1,11 +1,12 @@
 // The model note with its choice: use the model, or keep it off for this browser. The choice is kept with the
 // household, so it is asked once, before anything first goes to the model on any path.
-import { useId } from 'react';
 import type { ReactElement } from 'react';
+import { Button } from '../components/Button.js';
 import { ViewLink } from '../components/Navigation.js';
+import { Section } from '../components/Section.js';
 import type { ModelChoiceValue } from '../storage.js';
 import { useAppActions, useAppState } from '../state/app-state.js';
-import { CONSENT } from './strings.js';
+import { CONSENT } from './words.js';
 
 /**
  * The note itself: what is sent, the free tier terms, what not to add and what is kept, with the privacy link. lead
@@ -29,23 +30,38 @@ export function ModelNote({ id, lead }: { readonly id?: string; readonly lead?: 
   );
 }
 
+/** A model choice that is made: on or off. */
+type Choice = Exclude<ModelChoiceValue, null>;
+
+/** Props of a choice button. label defaults to "Turn the model on" or off; strong draws the main button. */
+export interface ChoiceButtonProps {
+  readonly choice: Choice;
+  readonly label?: string;
+  readonly strong?: boolean;
+  readonly onChoose?: ((choice: Choice) => void) | undefined;
+}
+
+/** A button that keeps a model choice for this browser. */
+export function ChoiceButton({ choice, label, strong = false, onChoose }: ChoiceButtonProps): ReactElement {
+  const { save } = useAppActions();
+  const choose = (): void => {
+    save({ modelChoice: choice });
+    onChoose?.(choice);
+  };
+  return (
+    <Button look={strong ? 'main' : 'quiet'} onClick={choose}>
+      {label ?? (choice === 'on' ? CONSENT.turnOn : CONSENT.turnOff)}
+    </Button>
+  );
+}
+
 /** The choice as it stands for this browser, with the button that changes it. */
 export function ModelSwitch(): ReactElement {
   const { modelChoice } = useAppState();
-  const { save } = useAppActions();
-  const next = modelChoice === 'on' ? 'off' : 'on';
   return (
     <>
       <p>{modelChoice === null ? CONSENT.notChosen : CONSENT.state[modelChoice]}</p>
-      <button
-        className="btn btn-quiet"
-        type="button"
-        onClick={() => {
-          save({ modelChoice: next });
-        }}
-      >
-        {next === 'on' ? CONSENT.turnOn : CONSENT.turnOff}
-      </button>
+      <ChoiceButton choice={modelChoice === 'on' ? 'off' : 'on'} />
     </>
   );
 }
@@ -53,42 +69,19 @@ export function ModelSwitch(): ReactElement {
 /** Props of the choice: what happens with the model off, and what to do once the choice is kept. */
 export interface ModelChoiceProps {
   readonly without: string;
-  readonly onChoose?: (choice: Exclude<ModelChoiceValue, null>) => void;
+  readonly onChoose?: (choice: Choice) => void;
 }
 
 /** The note, what the app does without the model, and the two buttons that keep the choice. */
 export function ModelChoice({ without, onChoose }: ModelChoiceProps): ReactElement {
-  const id = useId();
-  const { save } = useAppActions();
-  const choose = (choice: Exclude<ModelChoiceValue, null>): void => {
-    save({ modelChoice: choice });
-    onChoose?.(choice);
-  };
   return (
-    <section className="sec" aria-labelledby={id}>
-      <h2 id={id}>{CONSENT.title}</h2>
+    <Section title={CONSENT.title}>
       <ModelNote />
       <p>{without}</p>
       <div className="actions">
-        <button
-          className="btn"
-          type="button"
-          onClick={() => {
-            choose('on');
-          }}
-        >
-          {CONSENT.use}
-        </button>
-        <button
-          className="btn btn-quiet"
-          type="button"
-          onClick={() => {
-            choose('off');
-          }}
-        >
-          {CONSENT.off}
-        </button>
+        <ChoiceButton choice="on" label={CONSENT.use} strong onChoose={onChoose} />
+        <ChoiceButton choice="off" label={CONSENT.off} onChoose={onChoose} />
       </div>
-    </section>
+    </Section>
   );
 }

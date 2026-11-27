@@ -1,8 +1,8 @@
 // Tests for the notice under the guards: the community request is sent as it is, a reply the community checks
 // refuse is retried with its reason, and markup, a third script or a number not sent is refused by the guards.
 import { describe, expect, it } from 'vitest';
-import { wordNotice } from '../../../src/features/assistant/notice.js';
-import { noticeModelRequest } from '../../../src/features/community/notice.js';
+import { noticeModelRequest, wordNotice } from '../../../src/features/assistant/notice.js';
+import { noticeReplySchema } from '../../../src/features/community/schemas.js';
 import { buildCommunityReport } from '../../../src/features/community/report.js';
 import type { NoticeReply } from '../../../src/features/community/types.js';
 import { createFakeModel } from '../../support/fake-model.js';
@@ -87,5 +87,27 @@ describe('wordNotice', () => {
     const checked = await run([extra]).result;
     expect(checked).toMatchObject({ kind: 'fallback', reason: 'number_check_failed' });
     expect(checked.trace.numberCheck.unmatched).toEqual(['500']);
+  });
+});
+
+describe('noticeModelRequest', () => {
+  it('asks for the notice task with the fact set, the reply schema and no tools', () => {
+    const request = noticeModelRequest(report);
+    expect(request).toMatchObject({
+      task: 'notice',
+      facts: report.factSet,
+      schema: noticeReplySchema,
+      tools: [],
+    });
+    expect(request.instructions).toContain('Keep every action id');
+    const data: unknown = JSON.parse(request.data);
+    expect(data).toMatchObject({ audience: 'parents and staff', wording: report.wording });
+  });
+
+  it('describes a society as residents', () => {
+    const society = buildCommunityReport(
+      context({ community: { ...context().community, kind: 'housing_society', pupils: null, homes: 90 } }),
+    );
+    expect(JSON.parse(noticeModelRequest(society).data)).toMatchObject({ audience: 'residents' });
   });
 });

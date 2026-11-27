@@ -1,18 +1,17 @@
 // The society or school view: the form on one page, and on the other the model choice when none is made yet, then
 // the facts, actions and notice once sent.
-import { useState } from 'react';
-import type { ReactElement } from 'react';
+import { type ReactElement, useState } from 'react';
 import type { Location } from '../../features/air/types.js';
 import type { CommunityKind } from '../../features/community/types.js';
 import { ViewHeading } from '../components/Navigation.js';
 import { RequestFailure } from '../components/RequestFailure.js';
 import { ModelChoice } from '../consent/ModelChoice.js';
-import { CONSENT } from '../consent/strings.js';
+import { CONSENT } from '../consent/words.js';
 import { Missing } from '../plan/states.js';
 import { useAppState } from '../state/app-state.js';
 import { CommunityFormView } from './CommunityForm.js';
 import { NoticeResult } from './NoticeResult.js';
-import { COMMUNITY } from './strings.js';
+import { COMMUNITY } from './words.js';
 import { useCommunityNotice } from './useCommunityNotice.js';
 
 /** The community view. It needs a place first, since the notice states today's air there. */

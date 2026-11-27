@@ -1,16 +1,15 @@
 // The forecast strip: modelled PM2.5 for each hour of the plan's day from the curve the server planned with, the
 // airing window and the planning time marked, a stepper, a hidden table and the credit the forecast's licence asks.
-import { useId, useState } from 'react';
-import type { ReactElement } from 'react';
+import { Button } from '../components/Button.js';
+import { type ReactElement, useId, useState } from 'react';
 import type { HourCurve } from '../../features/air/types.js';
-import { clockText } from '../../features/community/format.js';
+import { clockOf } from '../../lib/time.js';
 import { dayCurve } from '../../features/ledger/curve.js';
 import type { AirBasis, Plan, WhatIfContext } from '../../features/planner/types.js';
 import { Credit } from '../components/Credit.js';
-import { Chart, HourTable } from './StripChart.js';
-import type { StripHour, StripPartProps } from './StripChart.js';
-import { STRIP } from './strings.js';
-import { calling } from './handlers.js';
+import { Chart, HourTable, type StripHour, type StripPartProps } from './StripChart.js';
+import { STRIP } from './words.js';
+import { calling } from '../handlers.js';
 
 const FIRST_HOUR = 5;
 const DAY_HOURS = Array.from({ length: 19 }, (_, index) => index + FIRST_HOUR);
@@ -38,30 +37,20 @@ export function Stepper({
   );
   return (
     <div className="ds-step">
-      <button
-        className="btn btn-quiet"
-        type="button"
-        disabled={selected === 0}
-        onClick={calling(onSelect, Math.max(0, selected - 1))}
-      >
+      <Button disabled={selected === 0} onClick={calling(onSelect, Math.max(0, selected - 1))}>
         {arrow('M13 4L6 10L13 16Z')}
         <span className="vh">{STRIP.earlier}</span>
-      </button>
+      </Button>
       <output aria-live="polite">
         {hours
           .slice(selected, selected + 1)
-          .map((hour) => `${clockText(hour.hour, 0)}, ${STRIP.pm25} ${String(hour.pm25)} ${STRIP.unit}`)
+          .map((hour) => `${clockOf(hour.hour * 60)}, ${STRIP.pm25} ${String(hour.pm25)} ${STRIP.unit}`)
           .join('')}
       </output>
-      <button
-        className="btn btn-quiet"
-        type="button"
-        disabled={selected === last}
-        onClick={calling(onSelect, Math.min(last, selected + 1))}
-      >
+      <Button disabled={selected === last} onClick={calling(onSelect, Math.min(last, selected + 1))}>
         {arrow('M7 4L14 10L7 16Z')}
         <span className="vh">{STRIP.later}</span>
-      </button>
+      </Button>
     </div>
   );
 }

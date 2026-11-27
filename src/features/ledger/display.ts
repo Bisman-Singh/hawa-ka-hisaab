@@ -2,7 +2,8 @@
 // is wide, and one plain sentence for screen readers and the model's fact labels. Numbers come from format.ts.
 import type { Language, Range } from '../../lib/types.js';
 import { co2Display } from './display-co2.js';
-import { EFFECT_WORDS, fill, type EffectWords, type ExposureBasis } from './display-words.js';
+import { fill } from '../../lib/template.js';
+import { EFFECT_WORDS, type EffectWords, type ExposureBasis } from './display-words.js';
 import { percentOf, plannedChange, timesOf } from './format.js';
 import type { Effect } from './types.js';
 

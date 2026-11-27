@@ -1,7 +1,7 @@
 // Tests for the building blocks of placeholder values.
 import { describe, expect, it } from 'vitest';
 import {
-  clockOf,
+  hourMinute,
   clockValue,
   dateValue,
   listValue,
@@ -28,7 +28,7 @@ describe('template values', () => {
   });
 
   it('split clock times and dates into the numbers they show', () => {
-    expect(clockOf('07:45')).toEqual([7, 45]);
+    expect(hourMinute('07:45')).toEqual([7, 45]);
     expect(clockValue('input-assembly', 'assembly', [7, 45]).facts.map((fact) => fact.value)).toEqual([
       7, 45,
     ]);

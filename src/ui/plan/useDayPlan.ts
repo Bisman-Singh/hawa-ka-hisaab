@@ -12,7 +12,7 @@ import { useAppActions, useAppState } from '../state/app-state.js';
 import type { ModelChoiceValue } from '../storage.js';
 import { localPlan } from './local.js';
 import { useAirQuery } from './useAirQuery.js';
-import { PLAN } from './strings.js';
+import { PLAN } from './words.js';
 
 /** What the plan screens can show. again asks the model afresh; local marks a plan made in this browser. */
 export type DayPlan =

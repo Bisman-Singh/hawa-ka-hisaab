@@ -1,0 +1,20 @@
+{
+  "medical": {
+    "en": "This app does not advise on symptoms, medicines, doses or diagnosis. Please ask a doctor.",
+    "hi": "यह ऐप लक्षण, दवा, खुराक या बीमारी की पहचान पर सलाह नहीं देता। कृपया डॉक्टर से पूछें।"
+  },
+  "emergency": {
+    "en": "This sounds urgent. If someone is struggling to breathe, has chest pain, has blue or grey lips or has fainted, get medical help now. Call 112 or go to the nearest hospital.",
+    "hi": "यह आपात स्थिति लगती है। अगर किसी को साँस लेने में बहुत तकलीफ़ है, सीने में दर्द है, होंठ नीले पड़ रहे हैं या वह बेहोश हो गया है, तो तुरंत चिकित्सा सहायता लें। 112 पर कॉल करें या नज़दीकी अस्पताल जाएँ।"
+  },
+  "unanswered": {
+    "unavailable": {
+      "en": "Questions are answered by the model, which is not available right now, so nothing was worked out for this one. The plan above comes from the app's own rules and gives the reason for each step.",
+      "hi": "सवालों के जवाब मॉडल देता है, जो अभी उपलब्ध नहीं है, इसलिए इस सवाल पर कुछ नहीं निकाला गया। ऊपर की योजना ऐप के अपने नियमों से बनी है और हर कदम का कारण बताती है।"
+    },
+    "refused": {
+      "en": "The model's answer to this question did not pass the app's checks, so it is not shown. The plan above gives the reason and the effect of each step.",
+      "hi": "इस सवाल पर मॉडल का जवाब ऐप की जाँच में पास नहीं हुआ, इसलिए उसे नहीं दिखाया गया। ऊपर की योजना हर कदम का कारण और असर बताती है।"
+    }
+  }
+}

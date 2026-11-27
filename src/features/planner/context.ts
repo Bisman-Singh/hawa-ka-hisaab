@@ -4,12 +4,13 @@ import type { Language } from '../../lib/types.js';
 import type { HourCurve } from '../air/types.js';
 import { isVulnerable, membersOf } from '../household/members.js';
 import type { Household, Member } from '../household/types.js';
-import { minutesOf } from '../ledger/format.js';
+import { minutesOf } from '../../lib/time.js';
 import { dayCurve, type DayCurve } from '../ledger/curve.js';
 import type { AqiBand } from '../naqi/types.js';
 import { dayKindForBand, type DayKind } from './day-kind.js';
 import type { Alternative, CandidateAction, IndoorStep } from './types.js';
 import { lexiconFor, type Lexicon } from './words.js';
+import type { SmokyFuel } from './words-lexicon.js';
 
 /**
  * Everything a plan needs. band is the AQI band of the reading, null when unknown. curve is the forecast, null
@@ -51,6 +52,13 @@ export function situationOf(ctx: PlanContext): Situation {
     notBefore: ctx.notBefore === null ? 0 : minutesOf(ctx.notBefore),
     lex: lexiconFor(ctx.language ?? 'en'),
   };
+}
+
+const SMOKY_FUELS: ReadonlySet<string> = new Set<SmokyFuel>(['biomass', 'coal', 'kerosene']);
+
+/** True for a cooking fuel that smokes indoors. */
+export function isSmokyFuel(fuel: string): fuel is SmokyFuel {
+  return SMOKY_FUELS.has(fuel);
 }
 
 const ORDER: readonly AqiBand[] = ['good', 'satisfactory', 'moderate', 'poor', 'very_poor', 'severe'];

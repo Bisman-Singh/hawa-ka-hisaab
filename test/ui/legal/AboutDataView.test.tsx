@@ -6,7 +6,7 @@ import { dataGovInCredit } from '../../../src/config/facts/air.js';
 import { factQuote, findFact } from '../../../src/config/facts/index.js';
 import { AboutDataView, DataGovCredit, SourceItem } from '../../../src/ui/legal/AboutDataView.js';
 import { citedSources } from '../../../src/ui/legal/sources.js';
-import { ABOUT } from '../../../src/ui/legal/strings.js';
+import { ABOUT } from '../../../src/ui/legal/words.js';
 import { axeViolations, renderInApp } from '../helpers.js';
 
 const words = (id: string): string =>

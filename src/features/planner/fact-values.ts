@@ -1,7 +1,8 @@
 // Builders for the labelled numbers in a fact set: cited facts, clock times, shown effects and figures.
 import { findFact } from '../../config/facts/index.js';
 import type { FactValue } from '../../lib/types.js';
-import { displayNumbers, displayValue, figureValue, minutesOf } from '../ledger/format.js';
+import { minutesOf } from '../../lib/time.js';
+import { displayNumbers, displayValue, figureValue } from '../ledger/format.js';
 import type { Effect, Figure, WorkingInput } from '../ledger/types.js';
 
 const NUMERAL = /\d+(?:\.\d+)?/g;

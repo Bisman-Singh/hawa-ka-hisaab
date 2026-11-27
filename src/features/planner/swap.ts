@@ -2,37 +2,21 @@
 // what it costs, and what to add when a missing distance or rider count is why there is no CO2 figure.
 import type { Activity, Travel } from '../household/types.js';
 import { changeInWords } from '../ledger/display.js';
-import { minutesOf } from '../ledger/format.js';
+import { minutesOf } from '../../lib/time.js';
 import type { Effect } from '../ledger/types.js';
 import type { Situation } from './context.js';
 import { candidateFor, unique } from './draft.js';
 import { namesIn } from './text.js';
-import { PRIVATE_MODES, travelOptions, type OptionKey, type TravelOption } from './travel.js';
+import { PRIVATE_MODES, travelOptions, type TravelOption } from './travel.js';
 import type { CandidateAction, WhatIf } from './types.js';
-import { say, type TextKey } from './words.js';
-
-const ACTION: Readonly<Record<OptionKey, TextKey>> = {
-  bus: 'swap_bus',
-  metro: 'swap_metro',
-  carpool: 'swap_carpool',
-};
-const TOGGLE: Readonly<Record<OptionKey, TextKey>> = {
-  bus: 'toggle_bus',
-  metro: 'toggle_metro',
-  carpool: 'toggle_carpool',
-};
-const WHY: Readonly<Record<OptionKey, TextKey>> = {
-  bus: 'swap_why_bus',
-  metro: 'swap_why_metro',
-  carpool: 'swap_why_carpool',
-};
+import { say } from './words.js';
 
 /** A what-if toggle for an option, citing every fact behind its effects. */
 export function toggleFor(s: Situation, activity: Activity, choice: TravelOption): WhatIf {
   const factIds = unique(choice.effects.flatMap((effect) => effect.working.factIds)).slice(0, 12);
   return {
     id: `${choice.key}-${activity.id}`,
-    label: say(s.lex, TOGGLE[choice.key]),
+    label: say(s.lex, `toggle_${choice.key}`),
     patch: choice.patch,
     factIds,
   };
@@ -79,10 +63,10 @@ export function swapAction(s: Situation, activity: Activity): CandidateAction | 
     return null;
   }
   const names = namesIn(s, activity);
-  const reason = say(s.lex, travel.mode === 'cycle' ? 'swap_why_cycle' : WHY[primary.key]);
+  const reason = say(s.lex, travel.mode === 'cycle' ? 'swap_why_cycle' : `swap_why_${primary.key}`);
   const missing = missingFigure(s, travel, primary.effects);
   const template = {
-    title: say(s.lex, 'swap_title', { ...names, action: say(s.lex, ACTION[primary.key]) }),
+    title: say(s.lex, 'swap_title', { ...names, action: say(s.lex, `swap_${primary.key}`) }),
     why: missing === null ? reason : `${reason} ${missing}`,
     tradeOff: swapTradeOff(s, primary.effects),
   };

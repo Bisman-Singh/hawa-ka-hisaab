@@ -3,7 +3,7 @@
 import { screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { focusOn, AskBox } from '../../../src/ui/ask/AskBox.js';
+import { AskBox } from '../../../src/ui/ask/AskBox.js';
 import { Announcer } from '../../../src/ui/hooks/announcer.js';
 import { sample } from '../../support/plan-fixtures.js';
 import { axeViolations, fakeDialog, renderInApp } from '../helpers.js';
@@ -32,18 +32,6 @@ async function ask(question: string): Promise<void> {
 
 beforeEach(() => {
   fakeDialog();
-});
-
-describe('focusOn', () => {
-  it('focuses an element and does nothing without one', () => {
-    const button = document.createElement('button');
-    document.body.append(button);
-    focusOn(button);
-    expect(document.activeElement).toBe(button);
-    focusOn(null);
-    expect(document.activeElement).toBe(button);
-    button.remove();
-  });
 });
 
 describe('AskBox', () => {

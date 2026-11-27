@@ -4,11 +4,9 @@ import {
   acceptNoticeReply,
   assembleNotice,
   MAX_NOTICE_CHARS,
-  noticeModelRequest,
   noticeToPlainText,
 } from '../../../src/features/community/notice.js';
 import { buildCommunityReport } from '../../../src/features/community/report.js';
-import { noticeReplySchema } from '../../../src/features/community/schemas.js';
 import type { NoticeReply } from '../../../src/features/community/types.js';
 import { context } from './support.js';
 
@@ -91,28 +89,6 @@ describe('acceptNoticeReply', () => {
       ok: false,
       error: 'too_long',
     });
-  });
-});
-
-describe('noticeModelRequest', () => {
-  it('asks for the notice task with the fact set, the reply schema and no tools', () => {
-    const request = noticeModelRequest(report);
-    expect(request).toMatchObject({
-      task: 'notice',
-      facts: report.factSet,
-      schema: noticeReplySchema,
-      tools: [],
-    });
-    expect(request.instructions).toContain('Keep every action id');
-    const data: unknown = JSON.parse(request.data);
-    expect(data).toMatchObject({ audience: 'parents and staff', wording: report.wording });
-  });
-
-  it('describes a society as residents', () => {
-    const society = buildCommunityReport(
-      context({ community: { ...context().community, kind: 'housing_society', pupils: null, homes: 90 } }),
-    );
-    expect(JSON.parse(noticeModelRequest(society).data)).toMatchObject({ audience: 'residents' });
   });
 });
 

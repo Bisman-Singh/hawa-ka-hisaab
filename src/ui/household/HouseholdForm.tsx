@@ -1,5 +1,7 @@
 // The household form: people, outings and home, then Save. A saved household offers today's plan; a form with
 // problems says how many and moves focus to the first.
+import { calling } from '../handlers.js';
+import { Button } from '../components/Button.js';
 import type { ReactElement } from 'react';
 import { ViewLink } from '../components/Navigation.js';
 import { StateMessage } from '../components/StateMessage.js';
@@ -7,7 +9,7 @@ import { HOME, useRoute } from '../router.js';
 import { ActivityRows } from './ActivityRows.js';
 import { HomeRows } from './HomeRows.js';
 import { MemberRows } from './MemberRows.js';
-import { FORM, HOUSEHOLD } from './strings.js';
+import { FORM, fixText, HOUSEHOLD } from './words.js';
 import type { HouseholdFormState } from './useHouseholdForm.js';
 
 function SaveState({ form, kept }: { readonly form: HouseholdFormState; readonly kept: boolean }) {
@@ -15,23 +17,16 @@ function SaveState({ form, kept }: { readonly form: HouseholdFormState; readonly
   if (!form.saved) {
     return form.problems === 0 ? null : (
       <p className="hint">
-        <b>{FORM.fix(form.problems)}</b>
+        <b>{fixText(form.problems)}</b>
       </p>
     );
   }
   return (
     <StateMessage tone="status" glyph="start" title={kept ? FORM.saved : FORM.notKept}>
       {kept ? null : <p>{FORM.notKeptBody}</p>}
-      <button
-        className="btn"
-        type="button"
-        id={form.ids.plan}
-        onClick={() => {
-          navigate('plan');
-        }}
-      >
+      <Button look="main" id={form.ids.plan} onClick={calling(navigate, 'plan')}>
         {FORM.plan}
-      </button>
+      </Button>
     </StateMessage>
   );
 }

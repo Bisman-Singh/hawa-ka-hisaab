@@ -1,13 +1,40 @@
-// The community notice worded by the model under the guards. What a notice is, its request and its own checks
-// come from the community feature; this file only runs that request the way every model task is run.
-import { acceptNoticeReply, noticeModelRequest } from '../community/notice.js';
-import type { CommunityReport, NoticeReply, NoticeWording } from '../community/types.js';
+// The community notice worded by the model under the guards: the request that asks for a rewording of the rules
+// notice, run the way every model task is run, with the community feature's own checks on the reply.
+import type { ModelRequest } from '../../lib/model.js';
+import { acceptNoticeReply } from '../community/notice.js';
+import { noticeReplySchema } from '../community/schemas.js';
+import type { CommunityKind, CommunityReport, NoticeReply, NoticeWording } from '../community/types.js';
 import { runGuarded, type Guarded, type ModelRun } from './guarded.js';
+import { NOTICE_INSTRUCTIONS } from './instructions.js';
+
+const AUDIENCE: Readonly<Record<CommunityKind, string>> = {
+  school: 'parents and staff',
+  housing_society: 'residents',
+};
 
 const textsOf = (wording: NoticeWording): string[] => [
   wording.title,
   ...wording.actions.map((line) => line.text),
 ];
+
+/** The request that asks the model to reword the rules notice. The fact set is every number it may use. */
+export function noticeModelRequest(report: CommunityReport): ModelRequest<NoticeReply> {
+  const data = {
+    audience: AUDIENCE[report.kind],
+    band: report.band,
+    opening: { en: report.frame.en.opening, hi: report.frame.hi.opening },
+    wording: report.wording,
+    reasons: report.actions.map((action) => ({ id: action.id, reason: action.detail })),
+  };
+  return {
+    task: 'notice',
+    instructions: NOTICE_INSTRUCTIONS,
+    data: JSON.stringify(data),
+    facts: report.factSet,
+    schema: noticeReplySchema,
+    tools: [],
+  };
+}
 
 /**
  * Words the notice in both languages. The reply may repeat numbers from the fact set and from the rules wording,

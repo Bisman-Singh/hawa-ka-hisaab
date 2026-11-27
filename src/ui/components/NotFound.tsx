@@ -1,8 +1,8 @@
 // The view for an address that names no view, with a way back to the first screen.
 import type { ReactElement } from 'react';
-import { UI } from '../i18n/strings.js';
+import { UI } from './words.js';
 import { HOME } from '../router.js';
-import type { ViewDef } from '../view-types.js';
+import type { ViewDef } from '../views.js';
 import { ViewHeading, ViewLink } from './Navigation.js';
 import { StateMessage } from './StateMessage.js';
 

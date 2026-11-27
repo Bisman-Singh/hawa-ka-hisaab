@@ -1,13 +1,12 @@
 // The page frame: skip link, masthead, offline notice, the current view inside main, footer and live region.
 // Each view is wrapped so a failing or loading view never takes the frame down with it.
-import { Suspense, useEffect } from 'react';
-import type { ReactElement } from 'react';
+import { type ReactElement, Suspense, useEffect } from 'react';
 import { APP_NAME } from '../../config/app.js';
 import { Announcer } from '../hooks/announcer.js';
 import { useOnline } from '../hooks/useOnline.js';
-import { UI } from '../i18n/strings.js';
+import { UI } from './words.js';
 import { useRoute } from '../router.js';
-import type { ViewDef } from '../view-types.js';
+import type { ViewDef } from '../views.js';
 import { ErrorBoundary } from './ErrorBoundary.js';
 import { Footer } from './Footer.js';
 import { Masthead } from './Masthead.js';

@@ -1,7 +1,7 @@
 // Where the day's outdoor periods sit in the model forecast: the cleanest three hours and which periods fall in
 // the dirtier half of the day. Only relative positions are kept; no concentration leaves this file.
 import type { HourCurve } from '../air/types.js';
-import { istParts, minutesOf } from './format.js';
+import { istParts, minutesOf } from '../../lib/time.js';
 import type { CommunityInput, CommunityKind } from './types.js';
 
 const WINDOW_HOURS = 3;

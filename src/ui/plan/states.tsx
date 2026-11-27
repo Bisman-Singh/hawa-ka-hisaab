@@ -2,13 +2,12 @@
 // yet, loading with its steps and skeleton entries, or a failed request with a retry.
 import type { ReactElement } from 'react';
 import { ViewHeading, ViewLink } from '../components/Navigation.js';
-import { ProgressSteps, Skeleton } from '../components/Progress.js';
-import type { ProgressStep } from '../components/Progress.js';
+import { type ProgressStep, ProgressSteps, Skeleton } from '../components/Progress.js';
 import { RequestFailure } from '../components/RequestFailure.js';
 import { StateMessage } from '../components/StateMessage.js';
 import { ModelChoice } from '../consent/ModelChoice.js';
-import { CONSENT } from '../consent/strings.js';
-import { PLAN } from './strings.js';
+import { CONSENT } from '../consent/words.js';
+import { PLAN } from './words.js';
 import type { DayPlan } from './useDayPlan.js';
 
 /** A view that cannot show its content yet, with a link to the earlier view that fixes it. */

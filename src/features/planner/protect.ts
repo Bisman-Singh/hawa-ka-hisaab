@@ -2,7 +2,7 @@
 // fitted N95 on poor or worse days, breaks away from traffic for outdoor work, and plain words about children.
 import { isYoungChild, membersOf } from '../household/members.js';
 import type { Activity, ActivityKind, Member, TravelMode } from '../household/types.js';
-import { minutesOf } from '../ledger/format.js';
+import { minutesOf } from '../../lib/time.js';
 import { closedCarEffect, lightPaceEffect, maskEffect } from '../ledger/protection.js';
 import type { Effect } from '../ledger/types.js';
 import type { AqiBand } from '../naqi/types.js';

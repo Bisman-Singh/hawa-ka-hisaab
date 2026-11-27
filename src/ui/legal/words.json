@@ -1,0 +1,82 @@
+{
+  "privacy": {
+    "title": "Privacy",
+    "lede": "What this app sends, where it goes and what it keeps. There are no accounts, no analytics and no cookies.",
+    "sent": "What is sent, and where",
+    "sentLines": [
+      {
+        "label": "Your place",
+        "text": "A town or city you type goes to our server and on to Open-Meteo's place search. A PIN code is looked up in a table on our server and goes no further. With “Use my location”, the point is rounded to about a kilometre before it leaves this device."
+      },
+      {
+        "label": "The air",
+        "text": "Our server sends the rounded point to Open-Meteo for the forecast and, where no station is near, the model estimate. It reads CPCB's station feed in full, or the same CPCB data from data.gov.in for your state, and finds the nearest station itself."
+      },
+      {
+        "label": "Your words",
+        "text": "What you type about your household goes to our server and on to Google's Gemini model, which reads it into the form."
+      },
+      {
+        "label": "Plans, questions, notices",
+        "text": "To word a plan, answer a question or word a notice, our server sends Google's model the household as the form holds it, with conditions as general flags such as asthma or pregnancy and the times of the day's outings, your question or the society or school details, today's reading and the steps the app worked out. Questions about symptoms, medicines or diagnosis get a fixed reply and are not sent."
+      }
+    ],
+    "google": "Google's free tier",
+    "googleTerms": "This app uses the free tier of the Gemini API. Google's terms for it say that Google uses what is sent, and the replies, to provide, improve and develop its products and machine learning technologies, and that human reviewers may read, annotate and process it. They also say not to send sensitive, confidential or personal information.",
+    "googleLink": "Read Google's terms",
+    "googleAsk": "So the app asks before anything first goes to the model, and keeps your choice in this browser. Describe people by age and condition in general words, and do not add names, record numbers or anything else that identifies a person. With the model off, plans and notices are made in this browser with fixed wording and nothing about your household goes to Google; questions then need the model.",
+    "kept": "What is kept",
+    "keptLines": [
+      {
+        "label": "On our server",
+        "text": "Nothing is stored on disk or in a database. An identical request made in the last five minutes gets the same answer from the server's memory, so the model is not asked twice; after five minutes it is gone. The app's own log lines record the route, the time taken and the outcome, never what you typed."
+      },
+      {
+        "label": "By the host",
+        "text": "Our host, Vercel, keeps request logs for up to a day. Each entry holds the address of the request, which includes a place you searched for and the rounded point, with your IP address and browser."
+      },
+      {
+        "label": "In this browser",
+        "text": "The household, the place with its rounded point, the plan language and your choice about the model, in this browser's local storage until you clear them. What you typed in the description box is held only while the page is open."
+      }
+    ],
+    "clear": "Clear what this browser keeps",
+    "clearButton": "Clear my household",
+    "clearNote": "This removes the household, the place, the plan language and the model choice from this browser, and the description you typed.",
+    "confirm": "Clear the household, the place, the plan language and the model choice from this browser?",
+    "yes": "Yes, clear them",
+    "no": "Keep them",
+    "nothing": "This browser keeps nothing for this app right now.",
+    "cleared": "Cleared from this browser: the household, the place, the plan language, the model choice and the description you typed.",
+    "undo": "Undo",
+    "restored": "Put back, except the typed description.",
+    "model": "The model in this browser",
+    "contact": "Contact",
+    "contactText": "For a question or a request about your data, open an issue on the",
+    "contactLink": "app's code repository"
+  },
+  "about": {
+    "title": "About the data",
+    "lede": "Where each number comes from, what is measured and what is modelled, and what this app is not.",
+    "sources": "Sources and credits",
+    "feedLabel": "Station readings",
+    "feedNote": "CPCB states no licence for this feed. The app shows CPCB's AQI as published.",
+    "dataGovLabel": "Through data.gov.in",
+    "dataGovNote": "When CPCB's feed cannot be reached, the same CPCB data is read from data.gov.in. Its credit:",
+    "licence": "Licence:",
+    "modelLabel": "Forecast and estimate",
+    "placesLabel": "PIN code places",
+    "studies": "Studies and documents behind the factors",
+    "studiesNote": "Every factor, quote and band in the app names one of these.",
+    "measured": "Measured and modelled",
+    "measuredText": "Station readings are measurements, published by CPCB every hour. The app shows CPCB's AQI as published and never works one out for a station. On the data.gov.in copy it uses CPCB's own rule:",
+    "modelledText": "The forecast by hour, and the estimate shown when no station is within {radius} km, are model output from CAMS through Open-Meteo. They are not measurements and tend to read low in cities, so the plan uses the forecast to compare hours, not as a reading.",
+    "figuresText": "Every figure in a plan is worked out in code from a published factor and shown as a change with a range, with its working and source one tap away. Where no measured factor exists, no figure is shown.",
+    "advice": "General guidance, not medical advice",
+    "adviceText": "This app gives general guidance and quotes the health ministry's advisory for each AQI band. It is not medical advice. For symptoms, medicines or a diagnosis, see a doctor. In an emergency, call",
+    "samples": "Sample households",
+    "samplesText": "The sample households and the sample society and school are made up. They describe no real family, society or school."
+  },
+  "geminiTermsUrl": "https://ai.google.dev/gemini-api/terms",
+  "issuesUrl": null
+}

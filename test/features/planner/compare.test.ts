@@ -57,7 +57,7 @@ describe('comparePlans', () => {
     expect(cut).toEqual({
       topic: 'largest_cut',
       left: 'No cut in what is breathed in',
-      right: 'a cut of 30 to 60 percent, for football practice',
+      right: '30 to 60% less breathed in, for football practice',
     });
   });
 });

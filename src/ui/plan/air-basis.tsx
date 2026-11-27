@@ -3,15 +3,9 @@
 import type { ReactElement } from 'react';
 import { factQuote } from '../../config/facts/index.js';
 import type { AirResponse, StationReading } from '../../features/air/types.js';
-import { clockText, istParts } from '../../features/community/format.js';
+import { istClock } from '../../lib/time.js';
 import type { AirBasis } from '../../features/planner/types.js';
-import { PLAN } from './strings.js';
-
-/** The IST clock time of an ISO instant, such as 22:00. */
-export function istClock(iso: string): string {
-  const parts = istParts(Date.parse(iso));
-  return clockText(parts.hour, parts.minute);
-}
+import { PLAN } from './words.js';
 
 function readingHour({ reading }: AirResponse): string | null {
   if (reading.path === 'station') {

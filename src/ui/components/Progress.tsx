@@ -1,6 +1,6 @@
 // Waiting states: skeleton lines in pencil grey, and the steps of a long piece of work as they finish.
 import type { ReactElement } from 'react';
-import { UI } from '../i18n/strings.js';
+import { UI } from './words.js';
 
 /** Sizes of a skeleton line, as a share of the width, or a big figure or a sum. */
 export type SkeletonSize = 'w30' | 'w45' | 'w60' | 'w80' | 'big' | 'num';

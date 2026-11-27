@@ -1,24 +1,14 @@
 // The parts of the "how this was made" sheet from an answer's trace: who wrote it and whether it was reused, the
 // number check, the facts sent, the reply used as plain text or why one was refused, and the calculator calls.
-import { useId } from 'react';
-import type { ReactElement, ReactNode } from 'react';
+import type { ReactElement } from 'react';
 import type { GuardCheck, ToolCallRecord, Trace } from '../../lib/types.js';
+import { Section } from '../components/Section.js';
 import { WrittenBy } from '../components/WrittenBy.js';
 import { FactsTable } from './FactsTable.js';
-import { CALL_FAILURE, CHECK, FALLBACK, MADE_BY, refusalText, TRACE } from './strings.js';
+import { CALL_FAILURE, CHECK, FALLBACK, MADE_BY, refusalText, TRACE } from './words.js';
 
 /** Reasons the model was never asked, so the facts made for it were not sent. */
 const NOT_ASKED: ReadonlySet<Trace['fallbackReason']> = new Set(['disabled', 'rate_limited', 'daily_cap']);
-
-function Part({ title, children }: { readonly title: string; readonly children: ReactNode }): ReactElement {
-  const id = useId();
-  return (
-    <section className="sec" aria-labelledby={id}>
-      <h3 id={id}>{title}</h3>
-      {children}
-    </section>
-  );
-}
 
 /** One calculator call: its name, the arguments it was given and what it returned or why it failed. */
 export function CallLine({ call }: { readonly call: ToolCallRecord }): ReactElement {
@@ -54,12 +44,12 @@ export function Reply({ trace }: { readonly trace: Trace }): ReactElement {
   const check = trace.refusedBy;
   const shown = trace.producedBy === 'model' ? trace.modelReply : null;
   return (
-    <Part title={check === undefined ? TRACE.reply : TRACE.refused}>
+    <Section level={3} title={check === undefined ? TRACE.reply : TRACE.refused}>
       {check === undefined ? null : <Refusal check={check} trace={trace} />}
       {shown === null && check === undefined ? <p>{TRACE.noReply}</p> : null}
       {shown === null ? null : <pre className="raw">{shown}</pre>}
       <p className="small">{TRACE.replyNote}</p>
-    </Part>
+    </Section>
   );
 }
 
@@ -68,7 +58,7 @@ export function TraceSections({ trace }: { readonly trace: Trace }): ReactElemen
   const { numberCheck } = trace;
   return (
     <>
-      <Part title={TRACE.who}>
+      <Section level={3} title={TRACE.who}>
         <p>
           <WrittenBy producedBy={trace.producedBy} />
           {trace.modelId === null ? null : <span className="small"> {trace.modelId}</span>}
@@ -78,19 +68,19 @@ export function TraceSections({ trace }: { readonly trace: Trace }): ReactElemen
         {trace.fallbackReason === null || trace.refusedBy !== undefined ? null : (
           <p>{FALLBACK[trace.fallbackReason]}</p>
         )}
-      </Part>
-      <Part title={TRACE.check}>
+      </Section>
+      <Section level={3} title={TRACE.check}>
         <p className="check">{CHECK[numberCheck.status]}</p>
         {numberCheck.unmatched.length === 0 ? null : (
           <p>{`${TRACE.unmatched} ${numberCheck.unmatched.join(', ')}`}</p>
         )}
         <p className="small">{TRACE.checkNote}</p>
-      </Part>
-      <Part title={NOT_ASKED.has(trace.fallbackReason) ? TRACE.factsNotSent : TRACE.facts}>
+      </Section>
+      <Section level={3} title={NOT_ASKED.has(trace.fallbackReason) ? TRACE.factsNotSent : TRACE.facts}>
         <FactsTable trace={trace} />
-      </Part>
+      </Section>
       <Reply trace={trace} />
-      <Part title={TRACE.calls}>
+      <Section level={3} title={TRACE.calls}>
         {trace.toolCalls.length === 0 ? (
           <p>{TRACE.noCalls}</p>
         ) : (
@@ -100,7 +90,7 @@ export function TraceSections({ trace }: { readonly trace: Trace }): ReactElemen
             ))}
           </ol>
         )}
-      </Part>
+      </Section>
     </>
   );
 }

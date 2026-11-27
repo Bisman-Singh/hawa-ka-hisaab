@@ -1,0 +1,109 @@
+{
+  "place": {
+    "title": "Today's air for your place",
+    "lede": "The official air reading for your place, and a plan for your household's day. Every figure shows its working.",
+    "heading": "Your place",
+    "label": "City, town or PIN code",
+    "hint": "Any place in India.",
+    "find": "Find",
+    "finding": "Finding places",
+    "choose": "Which place do you mean?",
+    "locate": "Use my location",
+    "asking": "Asking the browser for your location",
+    "yourLocation": "your location",
+    "rounded": "From this device, rounded to about a kilometre before it is used.",
+    "blank": "Type a city, town or PIN code first.",
+    "denied": {
+      "title": "Location is turned off for this site",
+      "body": "Type your city, town or PIN code instead. To allow location later, open the site settings from the icon beside the address bar."
+    },
+    "unavailable": {
+      "title": "Your location could not be found",
+      "body": "Type your city, town or PIN code instead."
+    },
+    "outside": {
+      "title": "This location is outside India",
+      "body": "Readings here cover places in India. Type a city, town or PIN code in India."
+    },
+    "notFound": {
+      "pin": {
+        "error": "No place found for PIN {query}.",
+        "hint": "Check the six digits, or type the town."
+      },
+      "name": {
+        "error": "No place in India matches “{query}”.",
+        "hint": "Check the spelling, or try a PIN code."
+      }
+    },
+    "matches": "{count} places match. Choose one.",
+    "exactNote": "Approximate centre of the PIN area, used only to find the nearest monitoring station.",
+    "prefixNote": "This PIN is not in the table, so this is the approximate centre of the {pins} known PINs starting {prefix}, most within {km} km of it, used only to find the nearest monitoring station. Your town name gives a closer match."
+  },
+  "air": {
+    "heading": "Today's air",
+    "start": {
+      "title": "Start with your place",
+      "body": "The air card shows the reading from the nearest CPCB station. If none is within {radius} km, it shows a model estimate and says so."
+    },
+    "station": "Station reading",
+    "cpcbAqi": "CPCB AQI",
+    "main": "Main pollutant",
+    "subHeading": "Hourly sub-index by pollutant",
+    "subNote": "CPCB hourly sub-index, not the AQI.",
+    "mainMark": ", main pollutant",
+    "noHourly": "CPCB published no hourly sub-index for this station.",
+    "stale": "This reading is stale",
+    "down": "The CPCB feed did not answer",
+    "retry": "Try again",
+    "modelled": "Modelled estimate",
+    "modelledLabel": "Modelled estimate from CAMS via Open-Meteo. Not a measurement. It tends to read low in cities.",
+    "estimated": "Estimated index",
+    "orMore": "meaning 401 or more",
+    "ledBy": "Led by",
+    "modelHeading": "Model values behind the estimate",
+    "modelNote": "Trailing 24 hour means in µg/m³. Ozone and CO are 8 hour means, CO in mg/m³.",
+    "insufficient": "The model gave too few pollutants for an index, so none is shown.",
+    "unavailable": "The air reading could not be fetched",
+    "grapLead": "GRAP, Delhi NCR only.",
+    "loading": "Reading the air for {where}",
+    "staleBody": "It is for {hour}, {age} ago. CPCB has not published a newer one. The plan treats it as old.",
+    "downBody": "Showing the last good reading, from {hour}.",
+    "leadsMark": ", leads the estimate"
+  },
+  "noAqi": {
+    "cpcb_feed": {
+      "short": "CPCB published no AQI for this station this hour.",
+      "note": "This app shows CPCB's AQI as published and never works one out for a station."
+    },
+    "data_gov_in": {
+      "short": "No AQI for this station this hour.",
+      "note": "CPCB's rule needs at least three pollutants, one of them PM2.5 or PM10, and this station has fewer this hour."
+    }
+  },
+  "grapStages": {
+    "none": "No GRAP stage is in force",
+    "I": "Stage I is in force",
+    "II": "Stages I and II are in force",
+    "III": "Stages I to III are in force",
+    "IV": "Stages I to IV are in force"
+  },
+  "modelledWhy": {
+    "feed_unavailable": "The CPCB feed did not answer, and no earlier reading is saved for this place.",
+    "no_station_reading": "No CPCB station within {radius} km published a reading this hour.",
+    "no_station_in_range": "No CPCB station within {radius} km.{nearest}",
+    "nearest": " The nearest is {km} km away."
+  },
+  "unavailableWhy": {
+    "feed_and_model_down": "The CPCB feed and the model did not answer, and no earlier reading is saved.",
+    "no_station_and_model_down": "No CPCB station is within {radius} km, and the model did not answer."
+  },
+  "pollutants": {
+    "pm25": "PM2.5",
+    "pm10": "PM10",
+    "no2": "NO₂",
+    "so2": "SO₂",
+    "co": "CO",
+    "o3": "Ozone",
+    "nh3": "NH₃"
+  }
+}

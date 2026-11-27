@@ -1,8 +1,13 @@
 // What-if patches: small structured changes to a household that the browser applies and recomputes at once.
 import { z } from 'zod';
 import { clockTimeSchema } from '../../lib/schemas/common.js';
-import { cookingFuelSchema, fuelSchema, indoorSourceSchema, localIdSchema } from './schemas.js';
-import { travelModeSchema } from './schemas.js';
+import {
+  cookingFuelSchema,
+  fuelSchema,
+  indoorSourceSchema,
+  localIdSchema,
+  travelModeSchema,
+} from './schemas.js';
 
 /** One change a what-if toggle makes. Only toggles with a cited factor carry a patch. */
 export const householdPatchSchema = z.discriminatedUnion('op', [

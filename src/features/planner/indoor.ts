@@ -1,7 +1,7 @@
 // Indoor air steps sized to the home: when to air the rooms, purifier size per room, masks, wet mopping, each
 // listed smoke source, and corrections of common beliefs. Every step names its source.
 import { meanPm25 } from '../ledger/curve.js';
-import { clockOf } from '../ledger/format.js';
+import { clockOf } from '../../lib/time.js';
 import type { Figure, WorkingInput } from '../ledger/types.js';
 import { bandAtLeast, type Situation } from './context.js';
 import { guidanceSteps } from './indoor-guidance.js';

@@ -7,8 +7,7 @@ import type { NoticeRequest, NoticeResponse } from '../../features/community/typ
 import { planRoute } from '../../features/planner/contract.js';
 import type { PlanRequest, PlanResponse } from '../../features/planner/types.js';
 import { postJson } from '../api-client.js';
-import { useAction, useQuery } from './request.js';
-import type { Action, Call, OnDone, Query } from './request.js';
+import { type Action, type Call, type OnDone, type Query, useAction, useQuery } from './request.js';
 
 const planCall: Call<PlanRequest, PlanResponse> = (body, signal) => postJson(planRoute, body, { signal });
 const askCall: Call<AskRequest, AskResponse> = (body, signal) => postJson(askRoute, body, { signal });

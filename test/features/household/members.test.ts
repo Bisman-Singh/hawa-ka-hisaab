@@ -1,7 +1,6 @@
 // Tests for who counts as vulnerable and how members are named.
 import { describe, expect, it } from 'vitest';
 import {
-  describeGroup,
   describeMember,
   isVulnerable,
   isYoungChild,
@@ -46,13 +45,6 @@ describe('describing members', () => {
       'adult with a heart condition and who works outdoors',
     );
     expect(describeMember(member('older_adult'))).toBe('older adult');
-  });
-
-  it('names one or two members and calls a larger group everyone going', () => {
-    expect(describeGroup([member('infant')])).toBe('the baby');
-    expect(describeGroup([member('teen'), member('adult')])).toBe('the teen and the adult');
-    expect(describeGroup([member('adult'), member('adult'), member('adult')])).toBe('everyone going');
-    expect(describeGroup([])).toBe('everyone going');
   });
 
   it('finds members by id in household order', () => {

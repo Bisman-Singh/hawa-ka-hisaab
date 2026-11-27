@@ -1,15 +1,14 @@
 // The about-the-data page: each data source with the credit and licence it asks for, the studies behind the
 // factors, what is measured and what is modelled, that this is not medical advice, and that samples are made up.
-import { useState } from 'react';
-import type { ReactElement, ReactNode } from 'react';
+import { type ReactElement, type ReactNode, useState } from 'react';
 import { dataGovInCredit } from '../../config/facts/air.js';
 import { factNumber, factQuote } from '../../config/facts/index.js';
 import type { Source } from '../../lib/types.js';
 import { Credit, factSource } from '../components/Credit.js';
 import { ViewHeading } from '../components/Navigation.js';
-import { Part } from './parts.js';
+import { Section } from '../components/Section.js';
 import { citedSources } from './sources.js';
-import { ABOUT } from './strings.js';
+import { ABOUT } from './words.js';
 
 /** One cited document: its title as a link, its publisher and when it was published. */
 export function SourceItem({ source }: { readonly source: Source }): ReactElement {
@@ -67,34 +66,34 @@ export function AboutDataView(): ReactElement {
       <div className="page-left">
         <ViewHeading>{ABOUT.title}</ViewHeading>
         <p className="lede">{ABOUT.lede}</p>
-        <Part title={ABOUT.sources}>
+        <Section title={ABOUT.sources}>
           <Credits today={today} />
-        </Part>
-        <Part title={ABOUT.measured}>
+        </Section>
+        <Section title={ABOUT.measured}>
           <p>
             {ABOUT.measuredText} {factQuote('naqi-worst-sub-index')}
           </p>
           <p>{ABOUT.modelledText}</p>
           <p>{ABOUT.figuresText}</p>
-        </Part>
-        <Part title={ABOUT.advice}>
+        </Section>
+        <Section title={ABOUT.advice}>
           <p>
             {ABOUT.adviceText} <span className="fig">{factNumber('india-emergency-number').value}</span>.
           </p>
-        </Part>
-        <Part title={ABOUT.samples}>
+        </Section>
+        <Section title={ABOUT.samples}>
           <p>{ABOUT.samplesText}</p>
-        </Part>
+        </Section>
       </div>
       <div className="page-right">
-        <Part title={ABOUT.studies}>
+        <Section title={ABOUT.studies}>
           <p className="small">{ABOUT.studiesNote}</p>
           <ul className="cite">
             {citedSources().map((source) => (
               <SourceItem key={source.url} source={source} />
             ))}
           </ul>
-        </Part>
+        </Section>
       </div>
     </div>
   );

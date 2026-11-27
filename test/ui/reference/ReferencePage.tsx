@@ -9,7 +9,7 @@ import { ViewHeading, ViewLink } from '../../../src/ui/components/Navigation.js'
 import { Segmented } from '../../../src/ui/components/Segmented.js';
 import { BAND_ORDER } from '../../../src/ui/bands.js';
 import { useAnnounce } from '../../../src/ui/hooks/announcer.js';
-import type { ViewDef } from '../../../src/ui/view-types.js';
+import type { ViewDef } from '../../../src/ui/views.js';
 import { Ledger, Part, Sheet, States } from './parts.js';
 
 function Crosshair(): ReactElement {

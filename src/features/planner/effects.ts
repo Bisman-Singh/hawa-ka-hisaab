@@ -5,7 +5,7 @@ import type { Activity } from '../household/types.js';
 import { co2ChangeEffect } from '../ledger/co2-change.js';
 import { meanPm25 } from '../ledger/curve.js';
 import { modeEffect, shiftEffect, type ForecastSpan } from '../ledger/exposure.js';
-import { clockOf, minutesOf } from '../ledger/format.js';
+import { clockOf, minutesOf } from '../../lib/time.js';
 import type { Effect } from '../ledger/types.js';
 import type { Situation } from './context.js';
 import type { Slot } from './types.js';

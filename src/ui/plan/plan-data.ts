@@ -3,9 +3,10 @@
 import { isVulnerable, membersOf } from '../../features/household/members.js';
 import type { Activity, Household } from '../../features/household/types.js';
 import { effectDisplay } from '../../features/ledger/display.js';
-import { minutesOf } from '../../features/ledger/format.js';
+import { minutesOf } from '../../lib/time.js';
 import type { Effect } from '../../features/ledger/types.js';
 import type { PlanContext } from '../../features/planner/context.js';
+import { planItems } from '../../features/planner/assemble.js';
 import { slotOf } from '../../features/planner/effects.js';
 import type { Language } from '../../lib/types.js';
 import type {
@@ -18,13 +19,14 @@ import type {
 } from '../../features/planner/types.js';
 import { whatIfEffects } from '../../features/planner/what-if.js';
 import type { SumRow } from '../components/Ledger.js';
-import { PLAN_LABELS } from './labels.js';
+import { PLAN_LABELS } from './words.js';
 
 /**
- * A sum beside an entry: the headline figure, its range or basis line, the reason a range is wide or null, and one
- * plain sentence to read out. none marks the reason there is no figure, with no detail.
+ * A sum beside an entry: the kind of effect, the headline figure, its range or basis line, the reason a range is
+ * wide or null, and one plain sentence to read out. none marks the reason there is no figure, with no detail.
  */
 export interface Sum {
+  readonly kind: Effect['kind'] | null;
   readonly label: string;
   readonly text: string;
   readonly detail: string;
@@ -47,11 +49,6 @@ export type Entry =
 /** The three parts of the day, in order. */
 export const SLOTS: readonly Slot[] = ['morning', 'afternoon', 'evening'];
 
-/** Every item of the plan, morning first. */
-export function itemsOf(plan: Plan): PlanItem[] {
-  return SLOTS.flatMap((slot) => plan.slots[slot]);
-}
-
 /** The household activity an item is about, or null when it is not about one. */
 export function activityOf(household: Household, id: string | null): Activity | null {
   return household.activities.find((activity) => activity.id === id) ?? null;
@@ -64,7 +61,7 @@ const leads = (plan: Plan, household: Household, entry: Entry): boolean =>
   membersOf(household, entry.item.memberIds).some(isVulnerable);
 
 function allEntries(plan: Plan, household: Household): Entry[] {
-  const items = itemsOf(plan);
+  const items = planItems(plan);
   return [
     ...items.map((item): Entry => ({ kind: 'item', item, at: item.start ?? '00:00', slot: item.slot })),
     ...items.flatMap((item): Entry[] => {
@@ -98,13 +95,21 @@ export function sumsOf(effects: readonly Effect[], mild: boolean, language: Lang
   if (effects.length === 0) {
     const text = mild ? words.noneNeeded : words.noFigure;
     return [
-      { label: words.effect, text, detail: '', note: null, sentence: `${words.effect}: ${text}`, none: true },
+      {
+        kind: null,
+        label: words.effect,
+        text,
+        detail: '',
+        note: null,
+        sentence: `${words.effect}: ${text}`,
+        none: true,
+      },
     ];
   }
   return effects.map((effect): Sum => {
     const { headline, detail, note, sentence } = effectDisplay(effect, language);
     const label = effect.kind === 'exposure' ? words.breathedIn : words.co2;
-    return { label, text: headline, detail, note, sentence, none: false };
+    return { kind: effect.kind, label, text: headline, detail, note, sentence, none: false };
   });
 }
 

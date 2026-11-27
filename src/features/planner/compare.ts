@@ -3,9 +3,12 @@
 import { err, ok, type Result } from '../../lib/result.js';
 import { describeMember, membersOf } from '../household/members.js';
 import type { Household } from '../household/types.js';
-import { describeChange } from '../ledger/format.js';
+import { effectDisplay } from '../ledger/display.js';
+import { fill } from '../../lib/template.js';
+import { planItems } from './assemble.js';
 import { activityName } from './text.js';
 import type { AirBasis, Plan, PlanItem } from './types.js';
+import WORDS from './words/compare.json' with { type: 'json' };
 
 /** One side of a comparison: the household, its plan and the air the plan was built on. */
 export interface ComparedPlan {
@@ -24,68 +27,44 @@ export interface PlanDifference {
   readonly right: string;
 }
 
-const itemsOf = (plan: Plan): PlanItem[] => [
-  ...plan.slots.morning,
-  ...plan.slots.afternoon,
-  ...plan.slots.evening,
-];
-
-function listOr(values: readonly string[], none: string): string {
-  return values.length > 0 ? [...new Set(values)].join('; ') : none;
-}
+const ofKind = (side: ComparedPlan, kinds: readonly PlanItem['kind'][]): PlanItem[] =>
+  planItems(side.plan).filter((item) => kinds.includes(item.kind));
 
 function nameOf(side: ComparedPlan, item: PlanItem): string {
   const activity = side.household.activities.find((found) => found.id === item.activityId);
   return activity ? activityName(activity) : item.title;
 }
 
-function protectedMembers(side: ComparedPlan): string {
-  const ids = itemsOf(side.plan)
-    .filter((item) => item.kind === 'protect' || item.kind === 'move_indoors')
-    .flatMap((item) => item.memberIds);
-  return listOr(membersOf(side.household, ids).map(describeMember), 'No one needs extra protection');
-}
-
-function largestCut(side: ComparedPlan): string {
-  const cuts = itemsOf(side.plan).flatMap((item) =>
+function largestCut(side: ComparedPlan): string[] {
+  const cuts = planItems(side.plan).flatMap((item) =>
     item.effects.flatMap((effect) =>
       effect.kind === 'exposure' && effect.change.high < 0 ? [{ item, effect }] : [],
     ),
   );
   const best = cuts.sort((a, b) => a.effect.change.low - b.effect.change.low)[0];
   return best
-    ? `${describeChange(best.effect.change)}, for ${nameOf(side, best.item)}`
-    : 'No cut in what is breathed in';
+    ? [fill(WORDS.cutFor, { cut: effectDisplay(best.effect).headline, name: nameOf(side, best.item) })]
+    : [];
 }
 
-const SUMMARY: Readonly<Record<CompareTopic, (side: ComparedPlan) => string>> = {
-  protected: protectedMembers,
+const ITEMS: Readonly<Record<CompareTopic, (side: ComparedPlan) => string[]>> = {
+  protected: (side) =>
+    membersOf(
+      side.household,
+      ofKind(side, ['protect', 'move_indoors']).flatMap((item) => item.memberIds),
+    ).map(describeMember),
   moved: (side) =>
-    listOr(
-      itemsOf(side.plan).flatMap((item) =>
-        item.kind === 'reschedule' ? [`${nameOf(side, item)} to ${item.start ?? ''}`] : [],
-      ),
-      'Nothing moved',
+    ofKind(side, ['reschedule']).map((item) =>
+      fill(WORDS.movedTo, { name: nameOf(side, item), time: item.start ?? '' }),
     ),
-  indoors: (side) =>
-    listOr(
-      itemsOf(side.plan).flatMap((item) => (item.kind === 'move_indoors' ? [nameOf(side, item)] : [])),
-      'Nothing kept indoors',
-    ),
-  travel: (side) =>
-    listOr(
-      itemsOf(side.plan).flatMap((item) => (item.kind === 'swap_mode' ? [item.title] : [])),
-      'No travel change',
-    ),
+  indoors: (side) => ofKind(side, ['move_indoors']).map((item) => nameOf(side, item)),
+  travel: (side) => ofKind(side, ['swap_mode']).map((item) => item.title),
   largest_cut: largestCut,
-  indoor_steps: (side) =>
-    listOr(
-      side.plan.indoor.map((step) => step.title),
-      'No indoor steps',
-    ),
+  indoor_steps: (side) => side.plan.indoor.map((step) => step.title),
 };
 
-const TOPICS: readonly CompareTopic[] = [
+/** The topics a comparison covers, in the order the page shows them. */
+export const COMPARE_TOPICS: readonly CompareTopic[] = [
   'protected',
   'moved',
   'indoors',
@@ -93,6 +72,12 @@ const TOPICS: readonly CompareTopic[] = [
   'largest_cut',
   'indoor_steps',
 ];
+
+/** One side's words for a topic: its items once each, or the words for none. */
+function summary(side: ComparedPlan, topic: CompareTopic): string {
+  const items = ITEMS[topic](side);
+  return items.length > 0 ? [...new Set(items)].join('; ') : WORDS.none[topic];
+}
 
 function sameAir(left: AirBasis, right: AirBasis): boolean {
   const keys: readonly (keyof AirBasis)[] = ['path', 'band', 'readingHour', 'forecastIssuedAt'];
@@ -108,8 +93,10 @@ export function comparePlans(
     return err('different_air');
   }
   return ok(
-    TOPICS.map((topic) => ({ topic, left: SUMMARY[topic](left), right: SUMMARY[topic](right) })).filter(
-      (line) => line.left !== line.right,
-    ),
+    COMPARE_TOPICS.map((topic) => ({
+      topic,
+      left: summary(left, topic),
+      right: summary(right, topic),
+    })).filter((line) => line.left !== line.right),
   );
 }

@@ -43,11 +43,3 @@ export function describeMember(member: Member): string {
   const extras = member.flags.flatMap((flag) => (flag === 'pregnant' ? [] : [FLAG_WORDS[flag]]));
   return extras.length === 0 ? base : `${base} ${extras.join(' and ')}`;
 }
-
-/** A group in plain words with "the", such as "the child with asthma and the older adult". Large groups are "everyone going". */
-export function describeGroup(members: readonly Member[]): string {
-  if (members.length === 0 || members.length > 2) {
-    return 'everyone going';
-  }
-  return members.map((member) => `the ${describeMember(member)}`).join(' and ');
-}

@@ -1,6 +1,6 @@
 // A native disclosure for the working behind a figure: a summary line that opens a ruled sheet.
 import type { ReactElement, ReactNode } from 'react';
-import { UI } from '../i18n/strings.js';
+import { UI } from './words.js';
 
 /** Props of a disclosure. summary defaults to "Show the working". open sets the first state only. */
 export interface DisclosureProps {

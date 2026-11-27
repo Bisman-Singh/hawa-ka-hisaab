@@ -1,5 +1,6 @@
 // The outings block of the household form: who goes, what, a short description that is never a name, and the
 // when and how of each outing.
+import { fill } from '../../lib/template.js';
 import type { ReactElement } from 'react';
 import { describeMember } from '../../features/household/members.js';
 import { Checks } from './checks.js';
@@ -8,9 +9,8 @@ import type { DraftActivity } from './draft.js';
 import { binder, MAX_ROWS, NEW_ROW, replaceAt } from './edits.js';
 import { OPTIONS } from './options.js';
 import { AddButton, RowTitle, UndoLine } from './rows.js';
-import { FORM } from './strings.js';
-import { TripFields } from './TripFields.js';
-import type { OutingPath } from './TripFields.js';
+import { FORM } from './words.js';
+import { type OutingPath, TripFields } from './TripFields.js';
 import type { HouseholdFormState } from './useHouseholdForm.js';
 
 function ActivityRow(props: { form: HouseholdFormState; activity: DraftActivity; index: number }) {
@@ -22,18 +22,21 @@ function ActivityRow(props: { form: HouseholdFormState; activity: DraftActivity;
   };
   const bind = binder(activity, set);
   const who = Object.fromEntries(
-    draft.members.map((member, n) => [member.id, `${FORM.person(n + 1)}, ${describeMember(member)}`]),
+    draft.members.map((member, n) => [
+      member.id,
+      `${fill(FORM.person, { n: n + 1 })}, ${describeMember(member)}`,
+    ]),
   );
   const remove = (): void => {
     const next = { ...draft, activities: draft.activities.filter((_, at) => at !== index) };
     form.remove({
       block: 'activities',
-      said: FORM.removed(FORM.outing(index + 1)),
+      said: fill(FORM.removed, { what: fill(FORM.outing, { n: index + 1 }) }),
       next,
       back: path('kind').id,
     });
   };
-  const title = `${FORM.outing(index + 1)}, ${activity.label ?? OPTIONS.kind[activity.kind]}`;
+  const title = `${fill(FORM.outing, { n: index + 1 })}, ${activity.label ?? OPTIONS.kind[activity.kind]}`;
   return (
     <div className="row-form" role="group" aria-labelledby={path().id}>
       <RowTitle id={path().id} title={title} onRemove={remove} />

@@ -6,7 +6,9 @@ import { displayValue } from '../../features/ledger/format.js';
 import type { Effect, Figure, Working } from '../../features/ledger/types.js';
 import type { Fact, Source } from '../../lib/types.js';
 import { Disclosure } from '../components/Disclosure.js';
-import { INPUT_FROM, TRACE } from './strings.js';
+import { fill } from '../../lib/template.js';
+import { amountText } from '../components/words.js';
+import { EFFECT_NAMES, INPUT_FROM, TRACE } from './words.js';
 
 /** The facts with these ids from the registry, each once; an id with no record stays as an id. */
 export function factsFor(ids: readonly string[]): (Fact | string)[] {
@@ -64,18 +66,23 @@ export function SourceItems({ ids }: { readonly ids: readonly string[] }): React
   );
 }
 
-function Steps({ working }: { readonly working: Working }): ReactElement {
+/** What a figure or effect is called in its working: the figure's label, or the kind of effect. */
+const nameOf = (found: Effect | Figure): string => ('kind' in found ? EFFECT_NAMES[found.kind] : found.label);
+
+function Steps({ working, name }: { readonly working: Working; readonly name: string | null }): ReactElement {
+  const named = (heading: string, template: string): string =>
+    name === null ? heading : fill(template, { name });
   return (
     <>
-      <h4>{TRACE.inputs}</h4>
+      <h4>{named(TRACE.inputs, TRACE.namedInputs)}</h4>
       <ul>
         {working.inputs.map((input) => (
           <li key={`${input.label}-${String(input.value)}`}>
-            {input.label}: {displayValue(input)} {input.unit}, {INPUT_FROM[input.from]}.
+            {`${input.label}: ${amountText(displayValue(input), input.unit)}, ${INPUT_FROM[input.from]}.`}
           </li>
         ))}
       </ul>
-      <h4>{TRACE.formula}</h4>
+      <h4>{named(TRACE.formula, TRACE.namedFormula)}</h4>
       <p>{working.formula}</p>
     </>
   );
@@ -96,7 +103,7 @@ export function Workings({
     <Disclosure {...(summary === undefined ? {} : { summary })}>
       <div lang="en">
         {workings.map((found, index) => (
-          <Steps key={index} working={found.working} />
+          <Steps key={index} working={found.working} name={workings.length > 1 ? nameOf(found) : null} />
         ))}
         <h4>{TRACE.sources}</h4>
         <ul>

@@ -1,8 +1,8 @@
 // The facts for the model as the "how this was made" sheet shows them: one row each, a clock time as one row.
 import type { ReactElement } from 'react';
-import { clockOf } from '../../features/ledger/format.js';
+import { clockOf } from '../../lib/time.js';
 import type { FactValue, Trace } from '../../lib/types.js';
-import { TRACE } from './strings.js';
+import { TRACE } from './words.js';
 
 /** A fact sent as the table shows it: its label, its value with the unit, and its id. */
 export interface FactRow {

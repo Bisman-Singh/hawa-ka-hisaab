@@ -6,8 +6,7 @@ import type { AirResponse, Location, PlacesResponse } from '../../features/air/t
 import { intakeRoute } from '../../features/household/contract.js';
 import type { IntakeRequest, IntakeResponse } from '../../features/household/types.js';
 import { getJson, postJson } from '../api-client.js';
-import { useAction, useQuery } from './request.js';
-import type { Action, Call, OnDone, Query } from './request.js';
+import { type Action, type Call, type OnDone, type Query, useAction, useQuery } from './request.js';
 
 /** Rounds a coordinate to two decimals, about a kilometre, as the air route requires. */
 export function roundCoordinate(value: number): number {

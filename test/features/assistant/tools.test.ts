@@ -18,7 +18,7 @@ describe('activity_options', () => {
       start: '08:30',
     });
     const text = JSON.stringify(result?.ok ? result.value : null);
-    expect(text).toMatch(/kg less CO2 a trip/);
+    expect(text).toMatch(/kg less CO2 for each person/);
     expect(text).toMatch(/co2-car-petrol/);
   });
 
@@ -34,7 +34,7 @@ describe('switch_travel', () => {
     const result = travel?.call({ activityId: 'a1', mode: 'bus' });
     const value = result?.ok ? JSON.stringify(result.value) : '';
     expect(value).toMatch(/"co2Figure":true/);
-    expect(value).toMatch(/kg less CO2 a trip for each person/);
+    expect(value).toMatch(/kg less CO2 for each person/);
     expect(value).toMatch(/co2-bus/);
   });
 

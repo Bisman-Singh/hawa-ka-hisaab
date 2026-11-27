@@ -3,7 +3,7 @@
 import { membersOf } from '../household/members.js';
 import { protect } from './protect.js';
 import type { Activity, ActivityKind } from '../household/types.js';
-import { clockOf, minutesOf } from '../ledger/format.js';
+import { clockOf, minutesOf } from '../../lib/time.js';
 import type { AqiBand } from '../naqi/types.js';
 import { vulnerableAmong, type Situation } from './context.js';
 import { candidateFor } from './draft.js';

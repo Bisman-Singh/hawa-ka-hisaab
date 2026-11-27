@@ -6,7 +6,7 @@ import type { NoticeText } from '../../features/community/types.js';
 import type { Language } from '../../lib/types.js';
 import { factQuote } from '../../config/facts/index.js';
 import { Credit } from '../components/Credit.js';
-import { COMMUNITY } from './strings.js';
+import { COMMUNITY } from './words.js';
 
 /** Copies text to the clipboard. The promise settles false where the browser refuses or has no clipboard. */
 export function copyText(text: string): Promise<boolean> {

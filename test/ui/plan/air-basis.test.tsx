@@ -4,7 +4,8 @@ import { render } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { factQuote } from '../../../src/config/facts/index.js';
 import type { AirResponse, StationReading } from '../../../src/features/air/types.js';
-import { AirBasisLine, istClock, otherAir } from '../../../src/ui/plan/air-basis.js';
+import { istClock } from '../../../src/lib/time.js';
+import { AirBasisLine, otherAir } from '../../../src/ui/plan/air-basis.js';
 import { modelledReading } from '../place/air-fixtures.js';
 import { airResponse, planResponse, READING_HOUR, stationReading } from './fixtures.js';
 

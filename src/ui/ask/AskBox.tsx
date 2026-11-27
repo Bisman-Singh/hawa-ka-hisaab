@@ -1,7 +1,6 @@
 // The question box under the plan: a question about today goes to the ask route with the household, and the
 // answer, a failure with a retry, or the waiting line shows below it.
-import { useId, useRef, useState } from 'react';
-import type { ReactElement, SubmitEvent } from 'react';
+import { type ReactElement, type SubmitEvent, useRef, useState } from 'react';
 import { MAX_QUESTION_CHARS } from '../../config/limits.js';
 import type { Location } from '../../features/air/types.js';
 import type { AskResponse } from '../../features/assistant/types.js';
@@ -9,19 +8,15 @@ import type { Household } from '../../features/household/types.js';
 import type { Language } from '../../lib/types.js';
 import { Field } from '../components/Field.js';
 import { RequestFailure } from '../components/RequestFailure.js';
+import { Section } from '../components/Section.js';
 import { useAsk } from '../data/plan-api.js';
 import type { RequestState } from '../data/request.js';
-import { CONSENT } from '../consent/strings.js';
+import { ChoiceButton } from '../consent/ModelChoice.js';
+import { CONSENT } from '../consent/words.js';
 import { useAnnounce } from '../hooks/announcer.js';
-import { useAppActions } from '../state/app-state.js';
 import { FixedReply, ModelAnswer } from './Answer.js';
-import { ASK } from './strings.js';
-import { calling, texting } from '../plan/handlers.js';
-
-/** Moves focus to an element when there is one, such as a field after a refused send. */
-export function focusOn(element: HTMLElement | null): void {
-  element?.focus();
-}
+import { ASK } from './words.js';
+import { calling, texting } from '../handlers.js';
 
 /** Props of the ask box: what the question is about. */
 export interface AskBoxProps {
@@ -67,28 +62,16 @@ export function AskResult({
 
 /** Where the ask box goes when the model is off for this browser: why there is none, and how to turn it on. */
 export function AskOff(): ReactElement {
-  const id = useId();
-  const { save } = useAppActions();
   return (
-    <section className="sec ask" aria-labelledby={id}>
-      <h2 id={id}>{ASK.title}</h2>
+    <Section title={ASK.title} className="ask">
       <p>{CONSENT.offAsk}</p>
-      <button
-        className="btn btn-quiet"
-        type="button"
-        onClick={() => {
-          save({ modelChoice: 'on' });
-        }}
-      >
-        {CONSENT.turnOn}
-      </button>
-    </section>
+      <ChoiceButton choice="on" />
+    </Section>
   );
 }
 
 /** The ask box. An empty question is refused in place; the answer is announced when it arrives. */
 export function AskBox({ household, location, language }: AskBoxProps): ReactElement {
-  const id = useId();
   const announce = useAnnounce();
   const ask = useAsk(calling(announce, ASK.ready));
   const [question, setQuestion] = useState('');
@@ -100,15 +83,14 @@ export function AskBox({ household, location, language }: AskBoxProps): ReactEle
     const text = question.trim();
     setEmpty(text === '');
     if (text === '') {
-      focusOn(box.current);
+      box.current?.focus();
       return;
     }
     setAsked(text);
     ask.run({ question: text, household, location, language });
   };
   return (
-    <section className="sec ask" aria-labelledby={id}>
-      <h2 id={id}>{ASK.title}</h2>
+    <Section title={ASK.title} className="ask">
       <form onSubmit={send} noValidate>
         <Field label={ASK.label} hint={ASK.hint} {...(empty ? { error: ASK.empty } : {})}>
           {(control) => (
@@ -127,6 +109,6 @@ export function AskBox({ household, location, language }: AskBoxProps): ReactEle
         </button>
       </form>
       <AskResult state={ask.state} asked={asked} retry={ask.retry} />
-    </section>
+    </Section>
   );
 }

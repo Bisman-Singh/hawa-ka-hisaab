@@ -1,26 +1,26 @@
 // The household intake on the first screen: the text box, samples, the model note before sending, and each outcome.
 // Reading with the model keeps that choice; with the model off the box points to the hand form, never an error.
-import { useId, useRef, useState } from 'react';
-import type { ReactElement, SubmitEvent } from 'react';
+import { type ReactElement, type SubmitEvent, useId, useRef, useState } from 'react';
 import { MAX_INTAKE_TEXT_CHARS } from '../../config/limits.js';
 import { ViewLink } from '../components/Navigation.js';
 import { RequestFailure } from '../components/RequestFailure.js';
 import { useIntake } from '../data/api.js';
 import { useAnnounce } from '../hooks/announcer.js';
-import { useFocusLater } from '../place/focus.js';
-import { CONSENT } from '../consent/strings.js';
-import { ModelNote } from '../consent/ModelChoice.js';
+import { useFocusLater } from '../hooks/focus.js';
+import { CONSENT } from '../consent/words.js';
+import { ChoiceButton, ModelNote } from '../consent/ModelChoice.js';
 import { useRoute } from '../router.js';
 import { useAppActions, useAppState } from '../state/app-state.js';
-import { IntakeSamples, IntakeText } from './intake-parts.js';
+import { IntakeText, SampleList } from './intake-parts.js';
+import type { SampleHousehold } from '../../features/household/samples.js';
 import { setIntake } from './intake-store.js';
-import { INTAKE } from './strings.js';
+import { charsText, INTAKE } from './words.js';
 
 const problemOf = (text: string): string | null => {
   if (text.trim() === '') {
     return INTAKE.empty;
   }
-  return text.length > MAX_INTAKE_TEXT_CHARS ? INTAKE.tooLong(text.length) : null;
+  return text.length > MAX_INTAKE_TEXT_CHARS ? charsText(text.length, true) : null;
 };
 
 /** The send button, or with the model off the way to turn it on, and the link to the hand form. */
@@ -31,21 +31,12 @@ export function IntakeActions({
   readonly busy: boolean;
   readonly off: boolean;
 }): ReactElement {
-  const { save } = useAppActions();
   return (
     <>
       {off ? <p>{CONSENT.offIntake}</p> : null}
       <div className="actions">
         {off ? (
-          <button
-            className="btn btn-quiet"
-            type="button"
-            onClick={() => {
-              save({ modelChoice: 'on' });
-            }}
-          >
-            {CONSENT.turnOn}
-          </button>
+          <ChoiceButton choice="on" />
         ) : (
           <button className="btn" type="submit" aria-disabled={busy}>
             {INTAKE.read}
@@ -85,7 +76,7 @@ export function IntakeBox(): ReactElement {
       intake.run({ text: sent.current });
     }
   };
-  const takeSample = (description: string): void => {
+  const takeSample = ({ description }: SampleHousehold): void => {
     setText(description);
     setProblem(null);
     focusLater(`${id}-text`);
@@ -95,7 +86,7 @@ export function IntakeBox(): ReactElement {
     <section className="sec" aria-labelledby={`${id}-h`}>
       <form onSubmit={submit} noValidate>
         <IntakeText id={id} text={text} problem={problem} onText={setText} />
-        <IntakeSamples id={id} onUse={takeSample} />
+        <SampleList title={INTAKE.samples} heading="h3" use={INTAKE.use} count={3} onUse={takeSample} />
         <ModelNote id={`${id}-privacy`} lead={CONSENT.lead} />
         <div role="status">{busy ? <p className="status">{INTAKE.reading}</p> : null}</div>
         {intake.state.status === 'failed' ? (

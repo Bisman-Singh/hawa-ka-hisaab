@@ -5,7 +5,7 @@ import { factQuote } from '../../config/facts/index.js';
 import type { ModelledReading, StationProvider, StationReading } from '../../features/air/types.js';
 import type { Source } from '../../lib/types.js';
 import { Credit, factSource } from '../components/Credit.js';
-import { istClock, istDay } from './hours.js';
+import { istClock, istDay } from '../../lib/time.js';
 
 /** What a provider means for the AQI: the closing sentence of the source line and the licence to link, if any. */
 export interface ProviderWords {

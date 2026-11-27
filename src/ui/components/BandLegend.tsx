@@ -1,7 +1,7 @@
 // What the six bands mean: a native disclosure around a real table of CPCB's ranges and health statements.
 import type { ReactElement } from 'react';
 import { BAND_ORDER, rangeText } from '../bands.js';
-import { BAND_TEXT, UI } from '../i18n/strings.js';
+import { BAND_TEXT, UI } from './words.js';
 import { BandLabel } from './Band.js';
 import { Disclosure } from './Disclosure.js';
 

@@ -5,33 +5,21 @@ import { readingBand } from '../air/reading-facts.js';
 import type { AirReading } from '../air/types.js';
 import { dayKindForBand } from '../planner/day-kind.js';
 import { buildFigures } from './figures.js';
-import { istParts } from './format.js';
+import { istParts } from '../../lib/time.js';
 import { assembleNotice } from './notice.js';
 import { createRenderer, uniqueFacts, type Renderer } from './render.js';
 import { selectActions, type ActionId } from './rules.js';
-import {
-  ACTIONS_EN_DAY,
-  type ActionText,
-  type FrameText,
-  type PerKind,
-  type ReadingState,
-} from './text-en.js';
-import { ACTIONS_EN_MORE, FRAME_EN } from './text-en-more.js';
-import { ACTIONS_EN_TIME } from './text-en-time.js';
-import { ACTIONS_HI_MORE } from './text-hi-more.js';
-import { ACTIONS_HI_DAY, FRAME_HI } from './text-hi.js';
 import { analyseTiming } from './timing.js';
-import type { CommunityAction, CommunityContext, CommunityKind, CommunityReport } from './types.js';
-import type { NoticeFrame, NoticeWording } from './types.js';
+import type {
+  CommunityAction,
+  CommunityContext,
+  CommunityKind,
+  CommunityReport,
+  NoticeFrame,
+  NoticeWording,
+} from './types.js';
 import { templateValues } from './values.js';
-
-const ACTIONS_EN: Readonly<Record<ActionId, ActionText>> = {
-  ...ACTIONS_EN_DAY,
-  ...ACTIONS_EN_TIME,
-  ...ACTIONS_EN_MORE,
-};
-const ACTIONS_HI: Readonly<Record<ActionId, PerKind>> = { ...ACTIONS_HI_DAY, ...ACTIONS_HI_MORE };
-const FRAMES: Readonly<Record<Language, FrameText>> = { en: FRAME_EN, hi: FRAME_HI };
+import { ACTIONS, forKind, FRAMES, type ReadingState } from './words.js';
 
 function readingState(reading: AirReading): ReadingState {
   if (reading.path === 'station') {
@@ -54,17 +42,17 @@ function frameIn(lang: Language, context: CommunityContext, { fill }: Renderer):
   const kind = context.community.kind;
   const stale = context.reading.path === 'station' && context.reading.stale ? frame.stale : '';
   const early = nightReading(context.reading) ? frame.early : '';
-  const opening = `${frame.greeting[kind]} ${frame.reading[readingState(context.reading)]}${stale}${early}`;
-  return { opening: fill(opening, lang), closing: fill(frame.closing[kind], lang) };
+  const opening = `${forKind(frame.greeting, kind)} ${frame.reading[readingState(context.reading)]}${stale}${early}`;
+  return { opening: fill(opening, lang), closing: fill(forKind(frame.closing, kind), lang) };
 }
 
 function actionOf(id: ActionId, kind: CommunityKind, { fill }: Renderer): CommunityAction {
-  const text = ACTIONS_EN[id];
+  const text = ACTIONS[id];
   return {
     id,
-    title: fill(text.title[kind], 'en'),
-    detail: fill(text.detail[kind], 'en'),
-    factIds: text.factIds[kind].map((factId) => fill(factId, 'en')),
+    title: fill(forKind(text.title, kind), 'en'),
+    detail: fill(forKind(text.detail, kind), 'en'),
+    factIds: forKind(text.factIds, kind).map((factId) => fill(factId, 'en')),
   };
 }
 
@@ -75,9 +63,9 @@ interface Draft {
 }
 
 function wordingIn(lang: Language, { ids, kind, renderer }: Draft): NoticeWording {
-  const line = (id: ActionId): string => (lang === 'en' ? ACTIONS_EN[id].line[kind] : ACTIONS_HI[id][kind]);
+  const line = (id: ActionId): string => forKind(ACTIONS[id].line[lang], kind);
   return {
-    title: renderer.fill(FRAMES[lang].title[kind], lang),
+    title: renderer.fill(forKind(FRAMES[lang].title, kind), lang),
     actions: ids.map((id) => ({ id, text: renderer.fill(line(id), lang) })),
   };
 }

@@ -1,7 +1,6 @@
 // Where the air card goes: the card loads on demand, so the facts it cites stay out of the first screen's bundle,
 // and the waiting card stands in until its code arrives.
-import { lazy, Suspense } from 'react';
-import type { ReactElement } from 'react';
+import { lazy, type ReactElement, Suspense } from 'react';
 import type { AirCardProps } from './AirCard.js';
 import { AirSkeleton } from './AirSkeleton.js';
 

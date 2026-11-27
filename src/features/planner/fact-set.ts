@@ -2,7 +2,7 @@
 // number check has one source of truth: cited facts, every shown figure as shown, clock times and household inputs.
 import type { FactValue } from '../../lib/types.js';
 import type { Activity, Household } from '../household/types.js';
-import { clockOf, minutesOf } from '../ledger/format.js';
+import { clockOf, minutesOf } from '../../lib/time.js';
 import type { CandidateSet, PlanContext } from './context.js';
 import { cited, clock, figure, shown, value } from './fact-values.js';
 import type { CandidateAction, IndoorStep } from './types.js';

@@ -1,7 +1,7 @@
 // Tests for travel CO₂ laid out for the page: kilograms for one person, there and back or one way, who shares the
 // vehicle, a reason for a range, and a range across zero never headlined as a saving.
 import { describe, expect, it } from 'vitest';
-import { co2ChangeEffect, co2ForPeriod } from '../../../src/features/ledger/co2-change.js';
+import { co2ChangeEffect } from '../../../src/features/ledger/co2-change.js';
 import { effectDisplay } from '../../../src/features/ledger/display.js';
 import type { Travel } from '../../../src/features/household/types.js';
 import type { Effect } from '../../../src/features/ledger/types.js';
@@ -41,7 +41,7 @@ describe('effectDisplay for CO2', () => {
     expect(pool && effectDisplay(pool).detail).toBe('there and back, shared by 2');
     const oneWay = co2ChangeEffect({ ...car, roundTrip: false }, { ...bus, roundTrip: false });
     expect(oneWay && effectDisplay(oneWay).detail).toBe('one way, 1 in the vehicle now');
-    const week = pool && co2ForPeriod(pool, 'week', 5);
+    const week: Effect | null = pool?.kind === 'co2' ? { ...pool, per: 'week' } : null;
     expect(week && effectDisplay(week).detail).toBe('a week, shared by 2');
   });
 

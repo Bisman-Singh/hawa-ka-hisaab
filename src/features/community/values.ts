@@ -3,13 +3,13 @@
 import type { AirReading } from '../air/types.js';
 import type { AqiBand } from '../naqi/types.js';
 import { factPlaceholders, factText } from './facts.js';
-import { istParts, numeralsIn } from './format.js';
-import { clockOf, clockValue, dateValue, listValue, numberValue, plain, shown } from './template-value.js';
+import { istParts } from '../../lib/time.js';
+import { numeralsIn } from './format.js';
+import { clockValue, dateValue, hourMinute, listValue, numberValue, plain, shown } from './template-value.js';
 import type { TemplateValue, TemplateValues } from './template-value.js';
-import { BAND_EN } from './text-en.js';
-import { ADVICE_HI, BAND_HI_BEFORE_NOUN } from './text-hi.js';
 import type { Timing } from './timing.js';
 import type { CommunityContext, CommunityInput, DayBasis } from './types.js';
+import { ADVICE_HI, BAND_HI_BEFORE_NOUN, BAND_NAMES } from './words.js';
 
 type Values = Record<string, TemplateValue>;
 
@@ -19,7 +19,7 @@ function bandValues(band: AqiBand | null): Values {
   }
   const slug = band.replace('_', '-');
   return {
-    band: plain(BAND_EN[band], BAND_HI_BEFORE_NOUN[band]),
+    band: plain(BAND_NAMES.en[band], BAND_HI_BEFORE_NOUN[band]),
     bandSlug: plain(slug),
     gen: plain(factText(`advice-${slug}-general`), ADVICE_HI[band].general),
     vuln: plain(factText(`advice-${slug}-vulnerable`), ADVICE_HI[band].vulnerable),
@@ -51,13 +51,13 @@ function readingValues(reading: AirReading): Values {
 
 function timingValues(community: CommunityInput, timing: Timing): Values {
   const period = (start: string): TemplateValue =>
-    clockValue('input-outdoor-period', 'outdoor period start', clockOf(start));
+    clockValue('input-outdoor-period', 'outdoor period start', hourMinute(start));
   const worse = timing.periods.filter((item) => item.worse === true);
   const window = timing.window;
   return {
     ...(community.assembly === null
       ? {}
-      : { assembly: clockValue('input-assembly', 'assembly time', clockOf(community.assembly)) }),
+      : { assembly: clockValue('input-assembly', 'assembly time', hourMinute(community.assembly)) }),
     periodTimes: listValue(timing.periods.map((item) => period(item.start))),
     worseTimes: listValue(worse.map((item) => period(item.start))),
     ...(window === null

@@ -1,5 +1,6 @@
 // Tests for the plan helpers: entries by slot with moved activities and severe-day protection first, sums laid out
 // by the ledger in the plan's language with a range across zero never headlined as a saving, and what-if effects.
+import { planItems } from '../../../src/features/planner/assemble.js';
 import { describe, expect, it } from 'vitest';
 import { effectDisplay } from '../../../src/features/ledger/display.js';
 import type { PlanItem, WhatIf } from '../../../src/features/planner/types.js';
@@ -8,7 +9,6 @@ import {
   contextFor,
   whatIfOf,
   entriesBySlot,
-  itemsOf,
   notesOf,
   rowsOf,
   sumsOf,
@@ -50,11 +50,12 @@ describe('entriesBySlot', () => {
 
 describe('sums and what-if', () => {
   it('lays effects out with the ledger, figure then range, and says why when there is none', () => {
-    const effect = need(itemsOf(planResponse('family-car-asthma', 'poor').plan)[1]?.effects[0]);
+    const effect = need(planItems(planResponse('family-car-asthma', 'poor').plan)[1]?.effects[0]);
     expect(effect.kind).toBe('co2');
     const shown = effectDisplay(effect);
     const [sum] = sumsOf([effect], false);
     expect(sum).toEqual({
+      kind: 'co2',
       label: 'Travel CO₂',
       text: shown.headline,
       detail: shown.detail,
@@ -65,7 +66,7 @@ describe('sums and what-if', () => {
     expect(rowsOf(sumsOf([effect], false))).toEqual([
       { label: 'Travel CO₂', figure: shown.headline, range: shown.detail },
     ]);
-    const none = { label: 'Effect', text: 'None needed.', detail: '', note: null, none: true };
+    const none = { kind: null, label: 'Effect', text: 'None needed.', detail: '', note: null, none: true };
     expect(sumsOf([], true)).toEqual([{ ...none, sentence: 'Effect: None needed.' }]);
     expect(sumsOf([], false)[0]?.text).toBe('No figure. No measured factor for this step.');
     expect(rowsOf(sumsOf([], true))).toEqual([{ label: 'Effect', none: 'None needed.' }]);
@@ -74,7 +75,7 @@ describe('sums and what-if', () => {
 
   it('headlines a range that could be a cut or a rise by its rise, with the reason it is wide, in either language', () => {
     const bus = need(
-      itemsOf(planResponse('family-car-asthma', 'poor').plan).find((i) => i.candidateId === 'swap-a1'),
+      planItems(planResponse('family-car-asthma', 'poor').plan).find((i) => i.candidateId === 'swap-a1'),
     );
     const sums = sumsOf(bus.effects, false);
     const mixed = need(sums.find((sum) => sum.label === 'Breathed in'));

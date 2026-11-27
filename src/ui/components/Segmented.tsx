@@ -1,6 +1,5 @@
 // A segmented choice on native radios inside a fieldset: arrow keys move the choice, as browsers do for radios.
-import { useId } from 'react';
-import type { ReactElement, ReactNode } from 'react';
+import { type ReactElement, type ReactNode, useId } from 'react';
 import type { Language } from '../../lib/types.js';
 
 /** One option. lang marks an option written in another language, such as the Hindi language choice. */

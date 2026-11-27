@@ -1,16 +1,12 @@
 // The form a housing society or school fills in, with the two samples to start from. It is checked with the
 // community schema before it is sent, and a refused field keeps the text typed and takes the focus.
-import { useId, useState } from 'react';
-import type { ReactElement, SubmitEvent } from 'react';
+import { type ReactElement, type SubmitEvent, useId, useState } from 'react';
 import type { CommunityInput } from '../../features/community/types.js';
-import { focusOn } from '../ask/AskBox.js';
 import { Segmented } from '../components/Segmented.js';
-import { EMPTY_FORM, readForm } from './community-form.js';
-import type { CommunityForm, FormKey } from './community-form.js';
-import { Counts, Sources, TextField } from './FormParts.js';
+import { type CommunityForm, EMPTY_FORM, type FormKey, readForm } from './community-form.js';
+import { Counts, type Kit, Sources, TextField } from './FormParts.js';
 import { Periods, SampleList } from './FormPeriods.js';
-import type { Kit } from './FormParts.js';
-import { COMMUNITY } from './strings.js';
+import { COMMUNITY } from './words.js';
 
 const MESSAGE: Readonly<Partial<Record<FormKey, string>>> = {
   count: COMMUNITY.countError,
@@ -67,7 +63,7 @@ export function CommunityFormView({ onSend, busy }: CommunityFormProps): ReactEl
       return;
     }
     read.problems.slice(0, 1).forEach((key) => {
-      focusOn(document.getElementById(kit.idOf(key)));
+      document.getElementById(kit.idOf(key))?.focus();
     });
   };
   return (

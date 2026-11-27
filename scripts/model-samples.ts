@@ -92,6 +92,7 @@ export function runOf<T>(model: ModelPort): ModelRun<T> {
     model,
     allow: () => Promise.resolve({ allowed: true, remaining: 1 }),
     cache: createReplyCache<Checked<T>>({ ttlMs: 0, maxEntries: 1, clock: systemClock }),
+    inFlight: new Map(),
     clock: systemClock,
     deadline: systemClock.now() + 60_000,
   };

@@ -1,13 +1,15 @@
 // The station path of the air card: CPCB's AQI as published, never worked out here, its band, the sub-indices and
 // the source. An old reading is drawn dim with its hour; compact leaves out the scale and sub-indices.
-import { useId, useState } from 'react';
-import type { ReactElement, ReactNode } from 'react';
+import { Button } from '../components/Button.js';
+import { type ReactElement, type ReactNode, useId, useState } from 'react';
 import type { FeedStatus, StationReading } from '../../features/air/types.js';
+import { fill } from '../../lib/template.js';
 import { StateMessage } from '../components/StateMessage.js';
-import { ageWords, istClock, istDay, isStale } from './hours.js';
+import { istClock, istDay } from '../../lib/time.js';
+import { ageWords, isStale } from './hours.js';
 import { StationSource } from './SourceLine.js';
 import { StationAqi, SubIndices } from './station-parts.js';
-import { AIR } from './strings.js';
+import { AIR } from './words.js';
 
 /** Props of the station slip. where names the place the distance is from; children hold the GRAP note. */
 export interface StationSlipProps {
@@ -33,16 +35,14 @@ function OldReading({
   if (feed.fetch === 'failed') {
     return (
       <StateMessage tone="status" glyph="feed" title={AIR.down}>
-        <p>{AIR.downBody(`${hour} IST`)}</p>
-        <button className="btn btn-quiet" type="button" onClick={retry}>
-          {AIR.retry}
-        </button>
+        <p>{fill(AIR.downBody, { hour: `${hour} IST` })}</p>
+        <Button onClick={retry}>{AIR.retry}</Button>
       </StateMessage>
     );
   }
   return (
     <StateMessage tone="status" glyph="stale" title={AIR.stale}>
-      <p>{AIR.staleBody(`${hour} IST`, age)}</p>
+      <p>{fill(AIR.staleBody, { hour: `${hour} IST`, age })}</p>
     </StateMessage>
   );
 }

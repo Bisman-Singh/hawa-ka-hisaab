@@ -1,5 +1,5 @@
-// A model run for pipeline tests: a fake clock, a fresh short cache, a far deadline and a limit decision the test
-// chooses, with a count of how many units were taken.
+// A model run for pipeline tests: a fake clock, a fresh short cache and in-flight map, a far deadline and a limit
+// decision the test chooses, with a count of how many units were taken.
 import type { Checked, ModelRun } from '../../src/features/assistant/guarded.js';
 import {
   createReplyCache,
@@ -41,6 +41,7 @@ export function testRun<T>(
       maxEntries: MODEL_CACHE_ENTRIES,
       clock,
     }),
+    inFlight: new Map(),
     clock,
     deadline: clock.now() + (options.leftMs ?? 60_000),
     allowCalls: () => calls,

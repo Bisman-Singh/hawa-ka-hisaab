@@ -5,7 +5,7 @@ import { userEvent } from '@testing-library/user-event';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { SAMPLE_HOUSEHOLDS } from '../../../src/features/household/samples.js';
 import { CompareView } from '../../../src/ui/compare/CompareView.js';
-import { CONSENT } from '../../../src/ui/consent/strings.js';
+import { CONSENT } from '../../../src/ui/consent/words.js';
 import { Announcer } from '../../../src/ui/hooks/announcer.js';
 import { airResponse, announced, json, saveSample, stubApi } from '../plan/fixtures.js';
 import { renderInApp } from '../helpers.js';

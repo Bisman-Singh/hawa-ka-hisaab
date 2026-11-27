@@ -1,36 +1,18 @@
 // The control that clears what this browser keeps for the app: the household, the place, the plan language and the
 // model choice, and the typed description held in memory. It asks first, says what it cleared, and can undo it.
-import { useState } from 'react';
-import type { ReactElement } from 'react';
+import { type ReactElement, useState } from 'react';
+import { Button } from '../components/Button.js';
+import { calling } from '../handlers.js';
 import { useAnnounce } from '../hooks/announcer.js';
 import { setIntake } from '../household/intake-store.js';
-import { useFocusLater } from '../place/focus.js';
-import { useAppActions, useAppState } from '../state/app-state.js';
-import type { SavedFields } from '../state/app-state.js';
-import { PRIVACY } from './strings.js';
+import { useFocusLater } from '../hooks/focus.js';
+import { type SavedFields, useAppActions, useAppState } from '../state/app-state.js';
+import { PRIVACY } from './words.js';
 
 type Step =
   | { readonly at: 'start' }
   | { readonly at: 'confirm' }
   | { readonly at: 'cleared'; readonly kept: SavedFields };
-
-function Button(props: {
-  id?: string;
-  quiet?: boolean;
-  onClick: () => void;
-  children: string;
-}): ReactElement {
-  return (
-    <button
-      id={props.id}
-      className={props.quiet === true ? 'btn btn-quiet' : 'btn'}
-      type="button"
-      onClick={props.onClick}
-    >
-      {props.children}
-    </button>
-  );
-}
 
 /** The steps of clearing: ask, clear, undo; each move focuses the control that comes next and says what happened. */
 function useClearing(id: string) {
@@ -85,10 +67,10 @@ export function ClearHousehold({ id }: { readonly id: string }): ReactElement {
           <b>{PRIVACY.confirm}</b>
         </p>
         <div className="actions">
-          <Button onClick={clear}>{PRIVACY.yes}</Button>
-          <Button quiet onClick={keep}>
-            {PRIVACY.no}
+          <Button look="main" onClick={clear}>
+            {PRIVACY.yes}
           </Button>
+          <Button onClick={keep}>{PRIVACY.no}</Button>
         </div>
       </>
     );
@@ -97,13 +79,7 @@ export function ClearHousehold({ id }: { readonly id: string }): ReactElement {
     return (
       <div className="actions">
         <p role="status">{PRIVACY.cleared}</p>
-        <Button
-          id={`${id}-undo`}
-          quiet
-          onClick={() => {
-            undo(step.kept);
-          }}
-        >
+        <Button id={`${id}-undo`} onClick={calling(undo, step.kept)}>
           {PRIVACY.undo}
         </Button>
       </div>
@@ -112,7 +88,7 @@ export function ClearHousehold({ id }: { readonly id: string }): ReactElement {
   return held ? (
     <>
       <p>{PRIVACY.clearNote}</p>
-      <Button id={`${id}-clear`} onClick={ask}>
+      <Button look="main" id={`${id}-clear`} onClick={ask}>
         {PRIVACY.clearButton}
       </Button>
     </>

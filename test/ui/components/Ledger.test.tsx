@@ -57,8 +57,9 @@ describe('ledger parts', () => {
           caption="The day's reckoning"
           rows={[{ label: 'Travel CO₂ on your usual day', value: '2.34 kg' }]}
           total={{ label: 'Difference', value: '1.85 kg less' }}
-          note="Doses are not added across people."
-        />
+        >
+          <p className="note">Doses are not added across people.</p>
+        </TotalTable>
         <LedgerSlot title="Evening" hours="17:00 to 23:00">
           <LedgerEntry time="Night" fixity="bedroom" title="Mosquito coil" />
         </LedgerSlot>

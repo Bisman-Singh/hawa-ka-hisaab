@@ -1,9 +1,8 @@
 // One call to the model and the checks on its reply: the schema, prose rules, task rules and the number guard.
 import type { JsonValue } from '../../lib/json.js';
 import type { ModelPort, ModelReply, ModelRequest } from '../../lib/model.js';
-import type { ModelFailureKind } from '../../lib/types.js';
+import type { GuardCheck, ModelFailureKind } from '../../lib/types.js';
 import type { Written } from './guard-trace.js';
-import type { GuardProblem } from './instructions.js';
 import { checkNumbers, collectAllowed, type NumberVerdict } from './number-guard.js';
 import { proseProblem } from './text-guard.js';
 
@@ -16,7 +15,7 @@ export interface GuardedTask<T> {
   readonly request: ModelRequest<T>;
   readonly sources: (value: T) => readonly JsonValue[];
   readonly prose: (value: T) => readonly string[];
-  readonly check: (value: T) => GuardProblem | null;
+  readonly check: (value: T) => GuardCheck | null;
   readonly names?: readonly string[];
 }
 
@@ -34,7 +33,7 @@ export function withoutNames(text: string, names: readonly string[]): string {
 /** A reply a check refused, with the problem, what was written and the number verdict if it got that far. */
 export interface Rejected {
   readonly kind: 'rejected';
-  readonly problem: GuardProblem;
+  readonly problem: GuardCheck;
   readonly reply: Written | null;
   readonly numbers: NumberVerdict | null;
 }

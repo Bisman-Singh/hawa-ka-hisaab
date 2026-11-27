@@ -1,13 +1,11 @@
 // The household form's state: the working copy, problems by field, the last removal for undo and the saved mark.
 // Focus follows each action: a new row's first field, the Undo button, the restored row, the first problem, the plan.
-import { useId, useState } from 'react';
-import type { SubmitEvent } from 'react';
+import { type SubmitEvent, useId, useState } from 'react';
 import type { Household } from '../../features/household/types.js';
 import { useAnnounce } from '../hooks/announcer.js';
-import { useFocusLater } from '../place/focus.js';
-import { checkDraft, fieldKey } from './draft.js';
-import type { Draft } from './draft.js';
-import { FORM } from './strings.js';
+import { useFocusLater } from '../hooks/focus.js';
+import { checkDraft, type Draft, fieldKey } from './draft.js';
+import { FORM, fixText } from './words.js';
 
 /** The id and problem of the field at a path in the household. */
 export interface FieldAt {
@@ -62,7 +60,7 @@ function useSave(draft: Draft, onSave: (household: Household) => void, idOf: (ke
       onSave(checked.household);
       announce(FORM.savedSay);
     } else {
-      announce(FORM.fix(Object.keys(checked.errors).length));
+      announce(fixText(Object.keys(checked.errors).length));
     }
     focusLater(idOf(checked.ok ? 'plan' : checked.first));
   };

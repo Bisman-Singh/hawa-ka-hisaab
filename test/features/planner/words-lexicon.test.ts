@@ -2,7 +2,7 @@
 // terms kept on purpose, the same digits as the English, and the advice as the community notice renders it.
 import { describe, expect, it } from 'vitest';
 import { adviceText } from '../../../src/config/facts/advice.js';
-import { ADVICE_HI } from '../../../src/features/community/text-hi.js';
+import { ADVICE_HI } from '../../../src/features/community/words.js';
 import { HINDI_ADVICE_NOTE, LEXICON_EN, LEXICON_HI } from '../../../src/features/planner/words-lexicon.js';
 
 /** The nukta on these five letters, which the notice spelling leaves out; the two flapped letters are letters. */

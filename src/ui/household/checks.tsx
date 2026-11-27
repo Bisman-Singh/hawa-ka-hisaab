@@ -1,7 +1,6 @@
 // Checkboxes for the household form: one checkbox drawn as a flag, and a group of them with its problem.
 import type { ReactElement } from 'react';
-import { keysOf } from './controls.js';
-import type { FieldProps } from './controls.js';
+import { type FieldProps, keysOf } from './controls.js';
 
 /** Props of one checkbox. */
 export interface CheckProps {

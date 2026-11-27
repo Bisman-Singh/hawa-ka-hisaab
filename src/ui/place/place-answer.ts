@@ -1,8 +1,7 @@
 // What a place answer means: the words for what was understood and, for a PIN, how rough the point is.
 import type { Place } from '../../features/air/types.js';
-import { PLACE } from './strings.js';
-
-const USE = 'used only to find the nearest monitoring station.';
+import { fill } from '../../lib/template.js';
+import { PLACE } from './words.js';
 
 /** The place as understood, such as "PIN 110092, East Delhi, Delhi". Repeated parts such as a city named like its district show once. */
 export function placeLabel(place: Place): string {
@@ -18,11 +17,11 @@ export function placeWhere(place: Place | null): string {
 /** How exact the point is. A PIN answer is the approximate centre of its area; a town answer needs no note. */
 export function placeNote(place: Place): string | null {
   if (place.resolution === 'pin_exact') {
-    return `Approximate centre of the PIN area, ${USE}`;
+    return PLACE.exactNote;
   }
   if (place.resolution !== 'pin_prefix' || !place.roughness) {
     return null;
   }
   const { prefix, pins, spreadKm } = place.roughness;
-  return `This PIN is not in the table, so this is the approximate centre of the ${String(pins)} known PINs starting ${prefix}, most within ${spreadKm.toFixed(0)} km of it, ${USE} Your town name gives a closer match.`;
+  return fill(PLACE.prefixNote, { pins, prefix, km: spreadKm.toFixed(0) });
 }

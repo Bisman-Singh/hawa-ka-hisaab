@@ -1,11 +1,11 @@
 // The struck-through line a moved activity leaves at its usual time, carried to the time it moved to.
 import type { ReactElement } from 'react';
 import type { Activity } from '../../features/household/types.js';
-import { fill } from '../../features/ledger/display-words.js';
+import { fill } from '../../lib/template.js';
 import type { PlanItem } from '../../features/planner/types.js';
 import type { Language } from '../../lib/types.js';
 import { LedgerEntry } from '../components/Ledger.js';
-import { PLAN_LABELS } from './labels.js';
+import { PLAN_LABELS } from './words.js';
 
 /** Props of a moved entry: the move, the activity, its title in the plan's language, and that language. */
 export interface MovedEntryProps {

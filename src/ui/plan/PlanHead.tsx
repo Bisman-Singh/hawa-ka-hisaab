@@ -8,11 +8,10 @@ import { BandLabel } from '../components/Band.js';
 import { ViewHeading } from '../components/Navigation.js';
 import { Segmented } from '../components/Segmented.js';
 import { WrittenBy } from '../components/WrittenBy.js';
-import { langOf } from '../i18n/lang.js';
 import { useAppActions, useAppState } from '../state/app-state.js';
 import { HowMade } from '../trace/HowMade.js';
 import { AirBasisLine, type AirBasisLineProps } from './air-basis.js';
-import { PLAN } from './strings.js';
+import { PLAN } from './words.js';
 
 /** Props of the plan head: the response, the air held on this page and the household the plan is for. */
 export interface PlanHeadProps {
@@ -71,7 +70,7 @@ export function PlanHead({ response, air, household }: PlanHeadProps): ReactElem
     <header className="plan-head">
       <ViewHeading>{PLAN.title}</ViewHeading>
       <ForLine response={response} air={air} household={household} />
-      <p className="lede" {...langOf(plan.language)}>
+      <p className="lede" lang={plan.language}>
         {plan.headline}
       </p>
       <div className="path">

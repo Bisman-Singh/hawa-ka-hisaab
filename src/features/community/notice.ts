@@ -1,19 +1,17 @@
 // The notice as served: code-written opening and closing lines around the worded lines, plain text for a chat
-// app, the model request for rewording, and the checks a model's wording must pass before it replaces the rules.
-import type { ModelRequest } from '../../lib/model.js';
+// app, and the checks a model's wording must pass before it replaces the rules.
 import { err, ok, type Result } from '../../lib/result.js';
 import type { Language } from '../../lib/types.js';
 import { numeralsIn, pairs } from './format.js';
-import { noticeReplySchema, noticeTextSchema } from './schemas.js';
+import { noticeTextSchema } from './schemas.js';
 import type {
-  CommunityKind,
   CommunityReport,
   Notice,
   NoticeFrame,
   NoticeReply,
   NoticeText,
+  NoticeWording,
 } from './types.js';
-import type { NoticeWording } from './types.js';
 
 /** Most characters a notice may hold in one language, title included, so it fits one printed page. */
 export const MAX_NOTICE_CHARS = 3000;
@@ -26,23 +24,6 @@ export type NoticeReplyProblem = 'actions_changed' | 'wrong_script' | 'numbers_d
 
 const LANGUAGES: readonly Language[] = ['en', 'hi'];
 const DEVANAGARI = /[ऀ-ॿ]/;
-const AUDIENCE: Readonly<Record<CommunityKind, string>> = {
-  school: 'parents and staff',
-  housing_society: 'residents',
-};
-
-/** Fixed instructions for rewording a notice. They hold no user text and no numbers. */
-export const NOTICE_INSTRUCTIONS = [
-  'Task: reword an air quality notice that a housing society or school will print or paste into a group chat.',
-  'DATA holds the rules wording in English and Hindi, keyed by action id, and the reason for each action.',
-  'Return the same shape. Keep every action id exactly once and in the same order, in both languages.',
-  "Keep each action's meaning, times and numbers, times as HH:MM. Use only numbers in FACTS or in the rules wording.",
-  'Address the audience named in DATA. Write short, plain sentences.',
-  'Write the Hindi in simple, natural Devanagari as a society secretary or school office would, with numbers in international digits.',
-  'Keep the health ministry advice as the rules wording gives it: word for word in quote marks in English, our plain rendering without quote marks in Hindi.',
-  'No HTML, no markdown, no emoji, no links, phone numbers or email addresses, no names and no medical advice.',
-].join(' ');
-
 type Frames = Readonly<Record<Language, NoticeFrame>>;
 
 function noticeText(wording: NoticeReply, frame: Frames, lang: Language): NoticeText {
@@ -60,25 +41,6 @@ export function assembleNotice(wording: NoticeReply, frame: Frames): Notice {
 /** Notice text ready to paste into a chat app: the title and each line as its own paragraph. */
 export function noticeToPlainText(text: NoticeText): string {
   return [text.title, ...text.lines].join('\n\n');
-}
-
-/** The request that asks the model to reword the rules notice. The fact set is every number it may use. */
-export function noticeModelRequest(report: CommunityReport): ModelRequest<NoticeReply> {
-  const data = {
-    audience: AUDIENCE[report.kind],
-    band: report.band,
-    opening: { en: report.frame.en.opening, hi: report.frame.hi.opening },
-    wording: report.wording,
-    reasons: report.actions.map((action) => ({ id: action.id, reason: action.detail })),
-  };
-  return {
-    task: 'notice',
-    instructions: NOTICE_INSTRUCTIONS,
-    data: JSON.stringify(data),
-    facts: report.factSet,
-    schema: noticeReplySchema,
-    tools: [],
-  };
 }
 
 const textsOf = (wording: NoticeWording): string[] => [

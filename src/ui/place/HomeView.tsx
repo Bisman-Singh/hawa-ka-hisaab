@@ -1,7 +1,6 @@
 // The first screen: the lead line, the place field and, once a place is set, the air card, which loads on demand.
 // Beside them, the household intake. A chosen place moves focus to the air card, and its reading is announced.
-import { useCallback, useId } from 'react';
-import type { ReactElement } from 'react';
+import { type ReactElement, useCallback, useId } from 'react';
 import type { Location, Place } from '../../features/air/types.js';
 import { ViewHeading } from '../components/Navigation.js';
 import { StateMessage } from '../components/StateMessage.js';
@@ -11,10 +10,10 @@ import { IntakeBox } from '../household/IntakeBox.js';
 import { useAppActions, useAppState } from '../state/app-state.js';
 import { airSummary } from './air-summary.js';
 import { AirCardSlot } from './AirCardSlot.js';
-import { useFocusLater } from './focus.js';
+import { useFocusLater } from '../hooks/focus.js';
 import { placeNote, placeWhere } from './place-answer.js';
 import { PlaceSearch } from './PlaceSearch.js';
-import { AIR, PLACE } from './strings.js';
+import { AIR, PLACE } from './words.js';
 
 /** The home view: place and air on the left page, the household intake on the right. */
 export function HomeView(): ReactElement {

@@ -35,6 +35,41 @@ describe('Announcer', () => {
     expect(region).toHaveTextContent('School ride by cycle. No CO2.');
   });
 
+  it('marks each announcement with its language, English unless the text is Hindi', async () => {
+    function SayBoth(): ReactElement {
+      const announce = useAnnounce();
+      return (
+        <>
+          <button
+            type="button"
+            onClick={() => {
+              announce('Ready.');
+            }}
+          >
+            English
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              announce('योजना तैयार है।', 'hi');
+            }}
+          >
+            Hindi
+          </button>
+        </>
+      );
+    }
+    render(
+      <Announcer>
+        <SayBoth />
+      </Announcer>,
+    );
+    await userEvent.click(screen.getByRole('button', { name: 'Hindi' }));
+    expect(screen.getByText('योजना तैयार है।')).toHaveAttribute('lang', 'hi');
+    await userEvent.click(screen.getByRole('button', { name: 'English' }));
+    expect(screen.getByText('Ready.')).toHaveAttribute('lang', 'en');
+  });
+
   it('does nothing outside the frame', async () => {
     render(<Say />);
     await userEvent.click(screen.getByRole('button', { name: 'Cycle' }));

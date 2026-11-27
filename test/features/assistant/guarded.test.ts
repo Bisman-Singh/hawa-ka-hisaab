@@ -138,6 +138,29 @@ describe('runGuarded before any call', () => {
     expect(run.allowCalls()).toBe(1);
   });
 
+  it('shares one call between identical requests in flight together, the second marked cached', async () => {
+    const model = createFakeModel([{ reply: { text: 'Fine.' } }]);
+    const run = testRun<{ text: string }>(model);
+    const [first, second] = await Promise.all([runGuarded(run, task()), runGuarded(run, task())]);
+    expect(model.requests).toHaveLength(1);
+    expect(run.allowCalls()).toBe(1);
+    expect(first.trace.cached).toBe(false);
+    expect(second).toEqual({ ...first, trace: { ...first.trace, cached: true } });
+  });
+
+  it('shares a fallback in flight too, but not a refusal by the first client limit', async () => {
+    const model = createFakeModel([{ failure: 'quota' }, { reply: { text: 'Fine.' } }]);
+    const run = testRun<{ text: string }>(model);
+    const quota = await Promise.all([runGuarded(run, task()), runGuarded(run, task())]);
+    expect(quota.map((result) => result.kind === 'fallback' && result.reason)).toEqual(['quota', 'quota']);
+    expect(model.requests).toHaveLength(1);
+    const other = task({ request: { ...task().request, data: '{"other":true}' } });
+    const limited = { ...testRun<{ text: string }>(model, { decision: LIMITED }), inFlight: run.inFlight };
+    const [refused, own] = await Promise.all([runGuarded(limited, other), runGuarded(run, other)]);
+    expect(refused).toMatchObject({ kind: 'fallback', reason: 'rate_limited' });
+    expect(own.kind).toBe('checked');
+  });
+
   it('asks again when anything in the request differs, and never caches a fallback', async () => {
     const model = createFakeModel([{ failure: 'quota' }, { reply: { text: 'Fine.' } }]);
     const run = testRun<{ text: string }>(model);

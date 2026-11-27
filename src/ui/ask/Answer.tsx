@@ -5,13 +5,12 @@ import type { AskResponse } from '../../features/assistant/types.js';
 import type { Trace } from '../../lib/types.js';
 import { Disclosure } from '../components/Disclosure.js';
 import { WrittenBy } from '../components/WrittenBy.js';
-import { langOf } from '../i18n/lang.js';
-import { PLAN } from '../plan/strings.js';
+import { PLAN } from '../plan/words.js';
 import { HowMade } from '../trace/HowMade.js';
-import { fallbackText } from '../trace/strings.js';
+import { fallbackText } from '../trace/words.js';
 import { CallLine } from '../trace/TraceSections.js';
 import { SourceItems } from '../trace/Working.js';
-import { ASK } from './strings.js';
+import { ASK } from './words.js';
 
 const paragraphs = (text: string): string[] => text.split(/\n+/).filter((part) => part.trim() !== '');
 
@@ -41,7 +40,7 @@ export function FixedReply({ answer }: { readonly answer: AskResponse }): ReactE
         <p>
           <WrittenBy producedBy="fixed_reply" />
         </p>
-        <div {...langOf(answer.language)}>
+        <div lang={answer.language}>
           {paragraphs(answer.text).map((part, index) => (
             <p key={index}>{part}</p>
           ))}
@@ -68,7 +67,7 @@ export function ModelAnswer({ answer }: { readonly answer: AskResponse }): React
   const { trace } = answer;
   return (
     <>
-      <div {...langOf(answer.language)}>
+      <div lang={answer.language}>
         {paragraphs(answer.text).map((part, index) => (
           <p key={index}>{part}</p>
         ))}

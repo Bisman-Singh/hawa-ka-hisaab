@@ -1,31 +1,18 @@
-// Tests for display rounding and the wording of effects.
+// Tests for display rounding of effects and figures.
 import { describe, expect, it } from 'vitest';
 import { purifierNeed } from '../../../src/features/ledger/purifier.js';
 import { figure } from '../../../src/features/planner/fact-values.js';
 import type { Effect } from '../../../src/features/ledger/types.js';
 import {
-  clockOf,
-  describeChange,
   displayNumbers,
   displayValue,
   figureValue,
-  formatEffect,
   formatFigure,
-  minutesOf,
   percentOf,
   roundKg,
   timesOf,
 } from '../../../src/features/ledger/format.js';
 import { sampleCo2Effect, sampleExposureEffect, sampleWorking } from '../../support/samples.js';
-
-describe('clock times', () => {
-  it('convert both ways and wrap past midnight', () => {
-    expect(minutesOf('07:30')).toBe(450);
-    expect(clockOf(450)).toBe('07:30');
-    expect(clockOf(1500)).toBe('01:00');
-    expect(clockOf(-60)).toBe('23:00');
-  });
-});
 
 describe('rounding at the edge', () => {
   it('rounds percents, multiples and kilograms for display only', () => {
@@ -44,23 +31,7 @@ describe('rounding at the edge', () => {
   });
 });
 
-describe('describeChange', () => {
-  it('words cuts, rises, multiples and spans across zero', () => {
-    expect(describeChange({ low: 0, high: 0.001 })).toBe('no change');
-    expect(describeChange({ low: -0.45, high: -0.3 })).toBe('a cut of 30 to 45 percent');
-    expect(describeChange({ low: -0.69, high: -0.69 })).toBe('a cut of about 69 percent');
-    expect(describeChange({ low: 0.2, high: 0.6 })).toBe('a rise of 20 to 60 percent');
-    expect(describeChange({ low: 0.4, high: 2.6 })).toBe('1.4 to 3.6 times as much');
-    expect(describeChange({ low: -0.08, high: 1.4 })).toBe(
-      'anywhere from a cut of 8 percent to 2.4 times as much',
-    );
-    expect(describeChange({ low: -0.08, high: 0.3 })).toBe(
-      'anywhere from a cut of 8 percent to a rise of 30 percent',
-    );
-  });
-});
-
-describe('formatEffect and displayNumbers', () => {
+describe('displayNumbers', () => {
   const co2: Effect = {
     kind: 'co2',
     changeKg: -2.7,
@@ -72,15 +43,6 @@ describe('formatEffect and displayNumbers', () => {
       inputs: [{ label: 'people in the vehicle', value: 2, unit: 'people', from: 'household', factId: null }],
     },
   };
-
-  it('words an exposure effect and a CO2 effect with or without a range', () => {
-    expect(formatEffect(sampleExposureEffect())).toBe('a cut of 30 to 60 percent in what is breathed in');
-    expect(formatEffect(sampleCo2Effect())).toBe('2.8 kg less CO2 a trip for each person');
-    expect(formatEffect(co2)).toBe('1.8 to 3.6 kg less CO2 a trip for each person, with 2 in the vehicle');
-    expect(formatEffect({ ...co2, changeKg: 0.15, range: null })).toBe(
-      '0.15 kg more CO2 a trip for each person, with 2 in the vehicle',
-    );
-  });
 
   it('lists every number an effect shows, as shown', () => {
     expect(displayNumbers(sampleExposureEffect())).toEqual([60, 0.4, 30, 0.7]);

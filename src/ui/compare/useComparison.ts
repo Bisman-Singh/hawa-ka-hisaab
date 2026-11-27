@@ -9,10 +9,10 @@ import { useAir } from '../data/api.js';
 import { usePlan } from '../data/plan-api.js';
 import type { RequestState } from '../data/request.js';
 import { useAnnounce } from '../hooks/announcer.js';
-import { calling } from '../plan/handlers.js';
+import { calling } from '../handlers.js';
 import { localPlan } from '../plan/local.js';
 import { useAppActions, useAppState } from '../state/app-state.js';
-import { COMPARE } from './strings.js';
+import { COMPARE } from './words.js';
 
 /** Both plans of a comparison. */
 export interface Pair {

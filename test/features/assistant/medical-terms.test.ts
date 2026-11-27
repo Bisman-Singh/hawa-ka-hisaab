@@ -15,7 +15,7 @@ describe('medical term tables', () => {
     ['medical', MEDICAL_TERMS],
   ])('%s terms compile and include Hindi and romanised Hindi', (_name, terms) => {
     expect(() => terms.latin.map((term) => new RegExp(term, 'iu'))).not.toThrow();
-    expect(terms.devanagari.split('|').every((term) => /\p{Script=Devanagari}/u.test(term))).toBe(true);
+    expect(terms.devanagari.every((term) => /\p{Script=Devanagari}/u.test(term))).toBe(true);
     expect(terms.latin.some((term) => /[a-z]{4,} ?(nahi|mein|me|aa)\b|dawa|khaa|saa/.test(term))).toBe(true);
   });
 
@@ -24,7 +24,7 @@ describe('medical term tables', () => {
     ['treatment', TREATMENT_TERMS],
   ])('%s terms compile and include Hindi and romanised Hindi', (_name, terms) => {
     expect(() => terms.latin.map((term) => new RegExp(term, 'iu'))).not.toThrow();
-    expect(terms.devanagari.split('|').every((term) => /\p{Script=Devanagari}/u.test(term))).toBe(true);
+    expect(terms.devanagari.every((term) => /\p{Script=Devanagari}/u.test(term))).toBe(true);
     expect(terms.latin.some((term) => /daktar|ilaa|shahad/.test(term))).toBe(true);
   });
 });
