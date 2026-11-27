@@ -1,5 +1,5 @@
-// The top of the plan: the bulletin on a severe day, the title, who and where it is for on what air, the
-// headline, the written-by stamp with the number check, the plan language and the note when the model is down.
+// The top of the plan: the title, who and where it is for on what air, the headline, the written-by stamp with the
+// number check and the plan language switch.
 import type { ReactElement } from 'react';
 import type { Household } from '../../features/household/types.js';
 import type { PlanResponse } from '../../features/planner/types.js';
@@ -46,8 +46,8 @@ const LANGUAGES = [
   { value: 'hi', label: PLAN.hindi, lang: 'hi' },
 ] satisfies { value: Language; label: string; lang?: Language }[];
 
-/** The language switch. A new language drops the plan, so the next one is made in it. */
-export function LanguageSwitch({ planLanguage }: { readonly planLanguage: Language }): ReactElement {
+/** The language switch. A new language drops the plan, so the next one is made in it on either path. */
+export function LanguageSwitch(): ReactElement {
   const { language } = useAppState();
   const { save } = useAppActions();
   return (
@@ -60,7 +60,6 @@ export function LanguageSwitch({ planLanguage }: { readonly planLanguage: Langua
           save({ language: next });
         }}
       />
-      {language === planLanguage ? null : <p className="small">{PLAN.hindiNeedsModel}</p>}
     </div>
   );
 }
@@ -80,7 +79,7 @@ export function PlanHead({ response, air, household }: PlanHeadProps): ReactElem
         <span>{trace.numberCheck.status === 'passed' ? PLAN.checked : PLAN.workedOut}</span>
         <HowMade trace={trace} />
       </div>
-      <LanguageSwitch planLanguage={plan.language} />
+      <LanguageSwitch />
     </header>
   );
 }

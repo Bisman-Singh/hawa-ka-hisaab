@@ -2,10 +2,16 @@
 // facts, the context or the tools may be stated, never one the question supplied.
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
-import { answerQuestion, unavailableAnswer, type AskInput } from '../../../src/features/assistant/ask.js';
+import {
+  answerQuestion,
+  unansweredBy,
+  unavailableAnswer,
+  type AskInput,
+} from '../../../src/features/assistant/ask.js';
 import { defineTool } from '../../../src/lib/model.js';
 import { createFakeModel } from '../../support/fake-model.js';
 import { LIMITED, testRun } from '../../support/model-run.js';
+import { sampleTrace } from '../../support/samples.js';
 
 const tripTool = defineTool({
   name: 'trip_co2',
@@ -137,7 +143,37 @@ describe('answerQuestion', () => {
   });
 });
 
+describe('answer checks', () => {
+  it('refuses home remedies and other treatment advice, and quotes that are not the official text', async () => {
+    const remedy = createFakeModel([{ reply: { text: 'Give him warm water with honey and keep him in.' } }]);
+    const treated = await answerQuestion(testRun(remedy), input('Can he go out?'));
+    expect(treated).toMatchObject({ kind: 'fallback', trace: { refusedBy: 'treatment', modelReply: null } });
+    expect(remedy.requests[1]?.instructions).toMatch(/treating symptoms or illness/);
+    const quoted = createFakeModel([{ reply: { text: 'The ministry says "stay in all day".' } }]);
+    expect((await answerQuestion(testRun(quoted), input('Can he go out?'))).trace.refusedBy).toBe('quotes');
+  });
+
+  it('counts station name digits only inside the whole name', async () => {
+    const named = createFakeModel([{ reply: { text: 'The Sector 62 station shows Poor air.' } }]);
+    const ok = await answerQuestion(testRun(named), input('How is the air?', { names: ['Sector 62'] }));
+    expect(ok.kind).toBe('checked');
+    const loose = createFakeModel([{ reply: { text: 'Wait 62 minutes.' } }]);
+    expect((await answerQuestion(testRun(loose), input('How long?', { names: ['Sector 62'] }))).kind).toBe(
+      'fallback',
+    );
+  });
+});
+
 describe('unavailableAnswer', () => {
+  it('says plainly when the answer was refused by a check rather than the model being away', () => {
+    expect(unavailableAnswer('en', null, 'refused').text).toMatch(
+      /did not pass the app's checks, so it is not shown/,
+    );
+    expect(unavailableAnswer('hi', null, 'refused').text).toMatch(/जाँच में पास नहीं हुआ/);
+    expect(unansweredBy({ ...sampleTrace(), refusedBy: 'numbers' })).toBe('refused');
+    expect(unansweredBy(sampleTrace())).toBe('unavailable');
+  });
+
   it('says the model is not available and adds the band advice when the band is known', () => {
     const answer = unavailableAnswer('en', 'severe');
     expect(answer.text).toMatch(/^Questions are answered by the model, which is not available right now/);

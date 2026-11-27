@@ -36,10 +36,20 @@ describe('the airing window', () => {
     ).toBeNull();
   });
 
-  it('is not shown on a better than poor day', () => {
-    expect(
-      indoorSteps(situationOf(planContext(withRooms([]), 'moderate'))).map((step) => step.id),
-    ).not.toContain('ventilate');
+  it('on a moderate day only names the cleanest early afternoon hour, with no restriction', () => {
+    const [step] = indoorSteps(situationOf(planContext(withRooms([]), 'moderate')));
+    expect(step).toMatchObject({ id: 'ventilate', window: { start: '14:00', end: '15:00' }, figure: null });
+    expect(step?.title).toBe('If you air the rooms, the cleanest early afternoon hour is 14:00 to 15:00');
+    expect(step?.detail).toContain('only on poor to severe days');
+  });
+
+  it('on a mild day says the windows can open whenever, and with unknown air says nothing', () => {
+    const [mild] = indoorSteps(situationOf(planContext(withRooms([]), 'good')));
+    expect(mild).toMatchObject({ id: 'ventilate', title: 'Open the windows when you like', window: null });
+    const unknown = indoorSteps(situationOf(planContext(withRooms([]), null)));
+    expect(unknown.map((step) => step.id)).not.toContain('ventilate');
+    const flat = indoorSteps(situationOf(planContext(withRooms([]), 'moderate', null)));
+    expect(flat.map((step) => step.id)).not.toContain('ventilate');
   });
 });
 

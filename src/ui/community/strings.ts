@@ -47,7 +47,7 @@ export const COMMUNITY = {
   copyFailed: 'Copy did not work here. Select the notice text and copy it.',
   noticeEnglish: 'Notice in English',
   noticeHindi: 'हिन्दी में सूचना',
-  noHindi: 'No Hindi notice this time. The Hindi wording needs the model, which did not word this notice.',
+  noHindi: 'This notice came without a Hindi version.',
   stampNote: 'Numbers come from the facts above, worked out in code.',
   photocopy: 'Each notice prints alone on one sheet, in black and white.',
   madeWith: 'Made with',

@@ -1,9 +1,8 @@
-// A scripted model for the journeys. It answers each task from the request itself, as a well behaved model would,
-// so the real guards check its replies; or it fails every call as over quota, for the journey without the model.
+// A scripted model for the journeys. It answers each task from the request itself, so the real guards check its
+// replies; or it fails every call as over quota; or its plan wording carries a number no fact backs.
 import { z } from 'zod';
 import { noticeReplySchema } from '../../src/features/community/schemas.js';
 import { SAMPLE_HOUSEHOLDS } from '../../src/features/household/samples.js';
-import { householdSchema } from '../../src/features/household/schemas.js';
 import { rulesChoice } from '../../src/features/planner/rules-plan.js';
 import { candidateActionSchema } from '../../src/features/planner/schemas.js';
 import type { JsonValue } from '../../src/lib/json.js';
@@ -11,9 +10,14 @@ import type { ModelPort, ModelRequest } from '../../src/lib/model.js';
 import { err, ok } from '../../src/lib/result.js';
 import type { ToolCallRecord } from '../../src/lib/types.js';
 
-const planData = z.object({ candidates: z.array(candidateActionSchema) });
+const candidateView = z.object(
+  candidateActionSchema.pick({ id: true, kind: true, activityId: true, template: true }).shape,
+);
+const planData = z.object({ candidates: z.array(candidateView) });
 const noticeData = z.object({ wording: noticeReplySchema });
-const askData = z.object({ context: z.object({ household: householdSchema }) });
+const askData = z.object({
+  context: z.object({ household: z.object({ activities: z.array(z.object({ id: z.string() })) }) }),
+});
 const optionList = z.object({ options: z.array(z.object({ title: z.string() })) });
 
 interface Answer {
@@ -36,11 +40,16 @@ function intakeReply(text: string): JsonValue {
   return { household: { ...found.household, home: { ...home, rooms } }, unplaced: [], assumed: [] };
 }
 
-function planReply(data: string): JsonValue {
+/** A number no fact or calculator gives, which the number check must refuse. */
+export const UNBACKED = '999';
+
+function planReply(data: string, unbacked: boolean): JsonValue {
   const items = rulesChoice(planData.parse(JSON.parse(data)).candidates).map((candidate) => ({
     candidateId: candidate.id,
     title: candidate.template.title,
-    why: candidate.template.why,
+    why: unbacked
+      ? `${candidate.template.why} It is ${UNBACKED} times worse outside.`
+      : candidate.template.why,
     tradeOff: candidate.template.tradeOff,
   }));
   return { headline: 'A very poor air day. The steps for those most at risk come first.', items };
@@ -61,12 +70,12 @@ function askReply(request: ModelRequest<unknown>): Answer {
   return { reply: { text }, calls: [call] };
 }
 
-function replyFor(request: ModelRequest<unknown>): Answer {
+function replyFor(request: ModelRequest<unknown>, behaviour: Behaviour): Answer {
   switch (request.task) {
     case 'intake':
       return { reply: intakeReply(request.data), calls: [] };
     case 'plan':
-      return { reply: planReply(request.data), calls: [] };
+      return { reply: planReply(request.data, behaviour === 'misnumbers'), calls: [] };
     case 'notice':
       return { reply: noticeData.parse(JSON.parse(request.data)).wording, calls: [] };
     case 'ask':
@@ -76,8 +85,8 @@ function replyFor(request: ModelRequest<unknown>): Answer {
   }
 }
 
-/** How the scripted model behaves: answers well, or is over its quota on every call. */
-export type Behaviour = 'answers' | 'over_quota';
+/** How the scripted model behaves: answers well, is over its quota on every call, or words plans with a stray number. */
+export type Behaviour = 'answers' | 'over_quota' | 'misnumbers';
 
 /** The scripted model, with the tasks it was asked, in order. */
 export function scriptedModel(behaviour: Behaviour): ModelPort & { readonly tasks: string[] } {
@@ -90,7 +99,7 @@ export function scriptedModel(behaviour: Behaviour): ModelPort & { readonly task
       if (behaviour === 'over_quota') {
         return Promise.resolve(err({ kind: 'quota' }));
       }
-      const { reply, calls } = replyFor(request);
+      const { reply, calls } = replyFor(request, behaviour);
       const parsed = request.schema.safeParse(reply);
       const rawText = JSON.stringify(reply);
       return Promise.resolve(

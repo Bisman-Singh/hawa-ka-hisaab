@@ -1,7 +1,6 @@
 // Fixtures for the model routes: air at a chosen band in Delhi or Mumbai, and a model that answers in one of six
 // ways built from the request it gets. Station values and the forecast are synthetic test data, not facts.
 import { z } from 'zod';
-import { householdSchema } from '../../src/features/household/schemas.js';
 import { noticeReplySchema } from '../../src/features/community/schemas.js';
 import type { AirSources, Location, StationFeed, StationRecord } from '../../src/features/air/types.js';
 import type { AqiBand } from '../../src/features/naqi/types.js';
@@ -69,13 +68,19 @@ export function airAt(place: Location, aqi: number): AirSources {
 /** How the fake model answers: well, with an invented number, with HTML, with unknown ids, over quota or late. */
 export type Behaviour = 'good' | 'invents_number' | 'html' | 'unknown_ids' | 'quota' | 'timeout';
 
+const candidateView = z.object(
+  candidateActionSchema.pick({ id: true, kind: true, activityId: true, template: true }).shape,
+);
 const planData = z.object({
   language: languageSchema,
   air: z.object({ aqi: z.number().nullable(), time: z.string().nullable() }),
-  candidates: z.array(candidateActionSchema),
+  candidates: z.array(candidateView),
 });
 const noticeData = z.object({ wording: noticeReplySchema });
-const askData = z.object({ language: languageSchema, context: z.object({ household: householdSchema }) });
+const askData = z.object({
+  language: languageSchema,
+  context: z.object({ household: z.object({ activities: z.array(z.object({ id: z.string() })) }) }),
+});
 
 const DEVANAGARI_DIGITS = (text: string): string =>
   text.replace(/\d/g, (digit) => String.fromCharCode(0x0966 + Number(digit)));

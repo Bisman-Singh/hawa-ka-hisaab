@@ -1,12 +1,6 @@
-// Tests for the numeral readers: digit normalisation across scripts and the readers for each kind of match.
+// Tests for the numeral readers: the readers for each kind of match, and the unit mark on a measured number.
 import { describe, expect, it } from 'vitest';
-import {
-  dateBy,
-  normalizeNumerals,
-  readNumbers,
-  readWord,
-  timeBy,
-} from '../../../src/features/assistant/numeral-readers.js';
+import { dateBy, readNumbers, readWord, timeBy } from '../../../src/features/assistant/numeral-readers.js';
 
 const match = (pattern: RegExp, text: string): RegExpExecArray => {
   const found = pattern.exec(text);
@@ -15,12 +9,6 @@ const match = (pattern: RegExp, text: string): RegExpExecArray => {
   }
   return found;
 };
-
-describe('normalizeNumerals', () => {
-  it('turns digits of any script into 0 to 9', () => {
-    expect(normalizeNumerals('२४६ ৯৯৯ ௫ ４５ 𝟗𝟖 ٣')).toBe('246 999 5 45 98 3');
-  });
-});
 
 describe('dateBy', () => {
   it('reads two digit years as this century and refuses impossible dates', () => {
@@ -66,6 +54,15 @@ describe('readNumbers and readWord', () => {
     expect(readWord(match(/\w+/, 'fifty percent'))).toEqual([
       { kind: 'number', raw: 'fifty', value: 50, percent: true },
     ]);
+  });
+
+  it('marks a number followed by a unit of measure, and only then', () => {
+    expect(readNumbers(match(/\d+/, '1 kg of CO2'))).toEqual([
+      { kind: 'number', raw: '1', value: 1, percent: false, measured: true },
+    ]);
+    expect(readNumbers(match(/\d+/, '2 गुना'))[0]).toMatchObject({ measured: true });
+    expect(readNumbers(match(/\d+/, '1 bus'))[0]).not.toHaveProperty('measured');
+    expect(readNumbers(match(/\d+/, '1 kgs'))[0]).not.toHaveProperty('measured');
   });
 
   it('gives a word missing from the table a value that matches nothing', () => {

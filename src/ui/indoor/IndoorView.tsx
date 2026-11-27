@@ -2,19 +2,20 @@
 // corrections of common claims, beside "instead of, do" pairs. A step or swap with no cited figure says so.
 import type { ReactElement } from 'react';
 import type { IndoorStep } from '../../features/planner/types.js';
+import type { Language } from '../../lib/types.js';
 import { ViewHeading } from '../components/Navigation.js';
 import { NotReady } from '../plan/states.js';
 import { useDayPlan } from '../plan/useDayPlan.js';
 import { Note, Part, PurifierStep, Swap } from './IndoorParts.js';
 import { INDOOR, STEP_PART } from './strings.js';
 
-function Notes({ steps }: { readonly steps: readonly IndoorStep[] }): ReactElement {
+function Notes({ steps, language }: { readonly steps: readonly IndoorStep[]; readonly language: Language }) {
   return steps.length === 0 ? (
     <p className="small">{INDOOR.noSteps}</p>
   ) : (
     <ul className="notes">
       {steps.map((step) => (
-        <Note key={step.id} step={step} />
+        <Note key={step.id} step={step} language={language} />
       ))}
     </ul>
   );
@@ -26,7 +27,7 @@ export function IndoorView(): ReactElement {
   if (day.status !== 'ready') {
     return <NotReady day={day} title={INDOOR.title} />;
   }
-  const { indoor, alternatives } = day.response.plan;
+  const { indoor, alternatives, language } = day.response.plan;
   const part = (name: string): IndoorStep[] => indoor.filter((step) => STEP_PART[step.topic] === name);
   return (
     <div className="spread even">
@@ -34,13 +35,13 @@ export function IndoorView(): ReactElement {
         <ViewHeading>{INDOOR.title}</ViewHeading>
         <p className="lede">{INDOOR.lede}</p>
         {part('purifier').map((step) => (
-          <PurifierStep key={step.id} step={step} />
+          <PurifierStep key={step.id} step={step} language={language} />
         ))}
         <Part title={INDOOR.atHome}>
-          <Notes steps={part('home')} />
+          <Notes steps={part('home')} language={language} />
         </Part>
         <Part title={INDOOR.claims}>
-          <Notes steps={part('claims')} />
+          <Notes steps={part('claims')} language={language} />
         </Part>
       </div>
       <div className="page-right">
@@ -51,7 +52,7 @@ export function IndoorView(): ReactElement {
           ) : (
             <ol className="swap">
               {alternatives.map((swap) => (
-                <Swap key={swap.id} swap={swap} />
+                <Swap key={swap.id} swap={swap} language={language} />
               ))}
             </ol>
           )}

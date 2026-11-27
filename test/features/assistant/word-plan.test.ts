@@ -22,8 +22,11 @@ function candidate(id: string, start: string | null = '16:00'): CandidateAction 
 }
 
 function input(): PlanWordingInput {
+  const home: CandidateAction = { ...candidate('home-1', null), activityId: null };
+  const candidates = [candidate('move-a2'), candidate('mask-a1', null), home];
   return {
-    candidates: [candidate('move-a2'), candidate('mask-a1', null)],
+    candidates,
+    set: { actions: candidates, indoor: [], alternatives: [] },
     facts: [
       { id: 'air-aqi', label: 'CPCB AQI', value: 246, unit: 'AQI' },
       { id: 'move-a2', label: 'Shown figure for move-a2', value: 30, unit: '' },
@@ -80,8 +83,9 @@ describe('wordPlan', () => {
       modelId: 'fake-model',
       fallbackReason: 'number_check_failed',
       numberCheck: { status: 'failed', attempts: 2, unmatched: ['999'] },
+      refusedBy: 'numbers',
     });
-    expect(result.trace.modelReply).toContain('999');
+    expect(result.trace.modelReply).toBeNull();
   });
 
   it('rejects a Devanagari numeral that was not sent', async () => {
@@ -170,5 +174,41 @@ describe('wordPlan', () => {
     const result = await wordPlan(testRun(both), input());
     expect(result).toMatchObject({ kind: 'fallback', reason: 'invalid_reply' });
     expect(both.requests[1]?.instructions).toMatch(/two actions for the same activity/);
+  });
+
+  it('refuses words in quote marks that are not the official text, such as a Hindi rendering of the advice', async () => {
+    const hindi = createFakeModel([{ reply: wording('स्वास्थ्य मंत्रालय की सलाह: "बाहर मेहनत से बचें"।') }]);
+    const result = await wordPlan(testRun(hindi), input());
+    expect(result).toMatchObject({ kind: 'fallback', reason: 'invalid_reply' });
+    expect(result.trace.refusedBy).toBe('quotes');
+    expect(hindi.requests[1]?.instructions).toMatch(/not the official text word for word/);
+    const verbatim = createFakeModel([
+      { reply: wording('Health ministry advice: "Avoid prolonged or strenuous outdoor physical exertion".') },
+    ]);
+    expect((await wordPlan(testRun(verbatim), input())).kind).toBe('checked');
+  });
+
+  it('sends each candidate with its effects in words, not its working, and the household in words', async () => {
+    const model = createFakeModel([{ reply: wording('AQI 246.') }]);
+    await wordPlan(testRun(model), input());
+    const data: unknown = JSON.parse(model.requests[0]?.data ?? '{}');
+    expect(JSON.stringify(data)).not.toContain('"working"');
+    expect(JSON.stringify(data)).toContain('30 to 60% less breathed in');
+    expect(JSON.stringify(data)).toContain('child with asthma');
+  });
+
+  it('counts digits in the station name only as part of the whole name', async () => {
+    const nameFact = { id: 'air-station-name', label: 'Number in the station name', value: 62, unit: 'name' };
+    const named = {
+      ...input(),
+      facts: [...input().facts, nameFact],
+      air: { ...input().air, station: 'Sector 62, Noida - IMD' },
+    };
+    const whole = createFakeModel([
+      { reply: wording('At the Sector 62, Noida - IMD station the AQI is 246.') },
+    ]);
+    expect((await wordPlan(testRun(whole), named)).kind).toBe('checked');
+    const loose = createFakeModel([{ reply: wording('Stay in for 62 minutes.') }]);
+    expect((await wordPlan(testRun(loose), named)).trace.numberCheck.unmatched).toEqual(['62']);
   });
 });

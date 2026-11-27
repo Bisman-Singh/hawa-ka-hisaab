@@ -9,13 +9,13 @@ const steps = () => planResponse('family-car-asthma', 'poor').plan.indoor;
 describe('indoor parts', () => {
   it('shows a purifier step with no figure as advice only, and a note with a figure with its working', () => {
     const purifier = need(steps().find((step) => step.topic === 'purifier'));
-    const { container } = render(<PurifierStep step={{ ...purifier, figure: null }} />);
+    const { container } = render(<PurifierStep step={{ ...purifier, figure: null }} language="en" />);
     expect(container.querySelector('dl.calc')).toBeNull();
     expect(screen.getByText(purifier.detail)).toBeInTheDocument();
     const airing = need(steps().find((step) => step.topic === 'ventilation'));
     render(
       <ul>
-        <Note step={airing} />
+        <Note step={airing} language="en" />
       </ul>,
     );
     expect(screen.getByText('Show the working')).toBeInTheDocument();
@@ -26,9 +26,22 @@ describe('indoor parts', () => {
     const step = { ...need(steps()[0]), factIds: ['no-such-fact'] };
     render(
       <ul>
-        <Note step={step} />
+        <Note step={step} language="en" />
       </ul>,
     );
     expect(screen.getByText('no-such-fact, no source record on this page.')).toBeInTheDocument();
+  });
+
+  it('marks text the plan wrote in Hindi as Hindi and keeps its sources English', () => {
+    const hindi = planResponse('family-car-asthma', 'poor', { language: 'hi' }).plan.indoor;
+    const airing = need(hindi.find((step) => step.topic === 'ventilation'));
+    const { container } = render(
+      <ul>
+        <Note step={airing} language="hi" />
+      </ul>,
+    );
+    expect(screen.getByRole('heading', { name: airing.title })).toHaveAttribute('lang', 'hi');
+    expect(screen.getByText(airing.detail)).toHaveAttribute('lang', 'hi');
+    expect(container.querySelector('ul.cite')?.closest('[lang="hi"]')).toBeNull();
   });
 });

@@ -1,24 +1,40 @@
-// Checks on model prose besides numbers: no markup, no hidden characters, no third script, and no names from the
-// person's text. Names in Devanagari or typed in lower case cannot be told apart from other words.
+// Checks on model prose besides numbers: no markup, no links or contact details, no hidden characters, no third
+// script, and no names from the person's text. Names in Devanagari or typed in lower case cannot be told apart.
 
 /** What is wrong with a piece of prose. */
-export type ProseProblem = 'markup' | 'hidden' | 'script';
+export type ProseProblem = 'markup' | 'link' | 'hidden' | 'script';
 
 const MARKUP = /[<>]|&#?\w+;|javascript:|data:text/iu;
+const LINKS: readonly RegExp[] = [
+  /\b(?:https?|ftp):\/\/|\bwww\.|@/iu,
+  /\b[\p{L}\p{N}-]{2,}(?:\.[\p{L}\p{N}-]+)*\.(?:com|in|org|net|co|io|app|gov|info|me|ai|ly|xyz|site|online|biz)(?![\p{L}\p{N}])/u,
+  /(?<![\p{N}.:/-])(?:\+\s?91[\s-]*)?[6-9]\d{4}[\s-]?\d{5}(?!\p{N})/u,
+  /(?<![\p{N}.:/-])(?:1800|1860)[\s-]?\d{3}[\s-]?\d{4}(?!\p{N})|\+\s?\d{1,3}(?:[\s-]?\d){7,}/u,
+];
 const HIDDEN = /[\p{Cc}\p{Cf}]/u;
-const ALLOWED_INVISIBLE = /[\n\t\u{200C}\u{200D}]/gu;
+const LINE_BREAKS = /[\n\t]/gu;
+const JOINER = /(?<=\p{Script=Devanagari})[\u{200C}\u{200D}](?=\p{Script=Devanagari})/gu;
+const STRAY_MARK = /(?<![\p{L}\p{M}])\p{M}/u;
 const OTHER_SCRIPT = /[^\p{Script=Latin}\p{Script=Devanagari}\p{Script=Common}\p{Script=Inherited}]/u;
 
+const hidden = (text: string): boolean =>
+  HIDDEN.test(text.replace(LINE_BREAKS, '').replace(JOINER, '')) || STRAY_MARK.test(text);
+
 /**
- * Finds markup, hidden characters or letters of a third script. Angle brackets, entities and script URLs are
- * refused. Control and format characters are refused, except line breaks, tabs and the two joiners Hindi uses.
- * Only Latin and Devanagari letters are accepted, so a stray letter from another script is caught.
+ * Finds markup, links, hidden characters or letters of a third script. Angle brackets, entities and script URLs
+ * are refused, and so are web addresses, domains, email addresses and phone numbers, since a notice is pasted into
+ * chats that turn them into links. Control and format characters are refused, except line breaks, tabs and the two
+ * joiners Hindi uses between Devanagari letters; so is a combining mark that follows no letter. Only Latin and
+ * Devanagari letters are accepted, so a stray letter from another script is caught.
  */
 export function proseProblem(texts: readonly string[]): ProseProblem | null {
   if (texts.some((text) => MARKUP.test(text))) {
     return 'markup';
   }
-  if (texts.some((text) => HIDDEN.test(text.replace(ALLOWED_INVISIBLE, '')))) {
+  if (texts.some((text) => LINKS.some((link) => link.test(text)))) {
+    return 'link';
+  }
+  if (texts.some(hidden)) {
     return 'hidden';
   }
   return texts.some((text) => OTHER_SCRIPT.test(text)) ? 'script' : null;

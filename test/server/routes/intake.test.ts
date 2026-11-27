@@ -111,8 +111,8 @@ describe('POST /api/intake', () => {
     expect(response.headers.get('content-type')).toMatch(/^application\/json/);
     const result = await body(response);
     expect(result.outcome).toBe('unavailable');
-    expect(JSON.stringify({ ...result, trace: null })).not.toContain('<img');
-    expect(result.trace.modelReply).toContain('<img');
+    expect(JSON.stringify(result)).not.toContain('<img');
+    expect(result.trace).toMatchObject({ modelReply: null, refusedBy: 'markup' });
   });
 
   it('refuses text over the limit before any model call', async () => {

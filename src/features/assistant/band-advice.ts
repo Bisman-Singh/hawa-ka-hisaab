@@ -3,7 +3,7 @@
 import { adviceFactId, adviceText } from '../../config/facts/advice.js';
 import type { Language } from '../../lib/types.js';
 import { BAND_EN, ACTIONS_EN_DAY } from '../community/text-en.js';
-import { ACTIONS_HI_DAY, ADVICE_HI, BAND_HI } from '../community/text-hi.js';
+import { ACTIONS_HI_DAY, ADVICE_HI, BAND_HI_BEFORE_NOUN } from '../community/text-hi.js';
 import type { AqiBand } from '../naqi/types.js';
 
 /** The advice sentence and the facts it quotes. */
@@ -24,7 +24,7 @@ const TEMPLATE: Readonly<Record<Language, string>> = {
 export function bandAdvice(band: AqiBand, language: Language): BandAdvice {
   const english = language === 'en';
   const words = {
-    band: english ? BAND_EN[band] : BAND_HI[band],
+    band: english ? BAND_EN[band] : BAND_HI_BEFORE_NOUN[band],
     vuln: english ? adviceText(band, 'vulnerable') : ADVICE_HI[band].vulnerable,
     gen: english ? adviceText(band, 'general') : ADVICE_HI[band].general,
   };

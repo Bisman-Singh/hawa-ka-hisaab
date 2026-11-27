@@ -1,13 +1,17 @@
 // Readers that turn one regular expression match into numerals: dates, times of day, numbers and number words.
 // The numeral finder decides which pattern runs; these decide what a match means.
-import { MONTH_NAMES, NUMBER_WORDS } from './numeral-words.js';
+import { MONTH_NAMES, NUMBER_WORDS, wordKey } from './numeral-words.js';
 
-/** A number as written. percent is set when a percent sign or word follows it or the end of its range. */
+/**
+ * A number as written. percent is set when a percent sign or word follows it or the end of its range. measured is
+ * true when a unit of measure such as kg, km or times follows it, and absent otherwise.
+ */
 export interface NumberNumeral {
   readonly kind: 'number';
   readonly raw: string;
   readonly value: number;
   readonly percent: boolean;
+  readonly measured?: boolean;
 }
 
 /** A time of day in minutes after midnight. A time without am or pm, such as 6:30, has both readings. */
@@ -39,20 +43,8 @@ const tidy = (raw: string): string => raw.trim().replace(/(?<!\.\p{L})\.$/u, '')
 const percentAfter = (match: RegExpExecArray, length: number): boolean =>
   PERCENT.test(match.input.slice(match.index + length));
 
-function asciiDigit(char: string): string {
-  let code = Number(char.codePointAt(0));
-  let back = 0;
-  while (/\p{Nd}/u.test(String.fromCodePoint(code - 1))) {
-    code -= 1;
-    back += 1;
-  }
-  return String(back % 10);
-}
-
-/** NFKC form with every decimal digit of any script turned into 0 to 9. Lengths can change, so scan this form. */
-export function normalizeNumerals(text: string): string {
-  return text.normalize('NFKC').replace(/[^\P{Nd}0-9]/gu, asciiDigit);
-}
+const UNIT =
+  /^\s*(?:×|µg|μg|m3|m³|(?:kg|km|mg|ug|g|m|cm|ft|sq|cfm|ppm|aqi|x|times|litres?|liters?|l|किलो|किमी|गुना)(?![\p{L}\p{M}]))/iu;
 
 const yearOf = (text: string | undefined): number | null =>
   text === undefined ? null : Number(text) + (text.length === 2 ? 2000 : 0);
@@ -62,7 +54,7 @@ const isDate = (day: number, month: number): boolean => day >= 1 && day <= 31 &&
 export function dateBy(groups: { day: number; month: number; year: number; named: boolean }): Read {
   return (match) => {
     const day = Number(match[groups.day]);
-    const monthText = (match[groups.month] ?? '').toLowerCase();
+    const monthText = wordKey(match[groups.month] ?? '');
     const month = groups.named ? (MONTH_NAMES.get(monthText) ?? 0) : Number(monthText);
     const year = yearOf(match[groups.year]);
     return isDate(day, month) ? [{ kind: 'date', raw: tidy(match[0]), day, month, year }] : [];
@@ -97,11 +89,13 @@ export const readNumbers: Read = (match) => {
   const raw = match[0].replace(/,+$/, '');
   const percent = percentAfter(match, raw.length);
   const parts = GROUPED.test(raw) ? [raw] : raw.split(',').filter((part) => part !== '');
+  const measured = UNIT.test(match.input.slice(match.index + raw.length)) ? { measured: true } : {};
   return parts.map((part) => ({
     kind: 'number',
     raw: percent ? `${part}%` : part,
     value: Number(part.replaceAll(',', '')),
     percent,
+    ...measured,
   }));
 };
 
@@ -110,7 +104,7 @@ export const readWord: Read = (match) => [
   {
     kind: 'number',
     raw: match[0],
-    value: NUMBER_WORDS.get(match[0].toLowerCase()) ?? Number.NaN,
+    value: NUMBER_WORDS.get(wordKey(match[0])) ?? Number.NaN,
     percent: percentAfter(match, match[0].length),
   },
 ];

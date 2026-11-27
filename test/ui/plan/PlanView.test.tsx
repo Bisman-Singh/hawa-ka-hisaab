@@ -3,11 +3,12 @@
 import { screen, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { describeChange, formatEffect } from '../../../src/features/ledger/format.js';
+import { effectDisplay } from '../../../src/features/ledger/display.js';
 import { whatIfEffects } from '../../../src/features/planner/what-if.js';
 import { Announcer } from '../../../src/ui/hooks/announcer.js';
 import { PlanView } from '../../../src/ui/plan/PlanView.js';
 import { contextFor } from '../../../src/ui/plan/plan-data.js';
+import { peopleLine } from '../../../src/ui/plan/plan-words.js';
 import { sample } from '../../support/plan-fixtures.js';
 import { axeViolations, fakeDialog, renderInApp } from '../helpers.js';
 import { airResponse, announced, json, need, planResponse, saveSample, stubApi } from './fixtures.js';
@@ -44,9 +45,18 @@ describe('PlanView with a plan', () => {
       expect(screen.getByRole('heading', { level: 2, name: slot })).toBeInTheDocument();
     }
     const swap = need(response.plan.slots.morning.find((item) => item.candidateId === 'swap-a1'));
-    const co2 = need(swap.effects.find((effect) => effect.kind === 'co2'));
-    expect(within(entryOf('Office commute: take the bus')).getByText(formatEffect(co2))).toBeInTheDocument();
+    const bus = within(entryOf('Office commute: take the bus'));
+    const co2 = effectDisplay(need(swap.effects.find((effect) => effect.kind === 'co2')));
+    expect(bus.getByText(co2.headline)).toHaveClass('fig');
+    expect(bus.getByText(co2.detail)).toHaveClass('range');
+    const air = effectDisplay(need(swap.effects.find((effect) => effect.kind === 'exposure')));
+    expect(air.direction).toBe('mixed');
+    expect(bus.getByText('Up to 2.4× as much')).toHaveClass('fig');
+    expect(bus.getByText(/^or 8% less/)).toHaveClass('range');
+    expect(bus.getByText(need(air.note))).toBeInTheDocument();
     expect(announced()).toBe('Your plan is ready.');
+    const aside = within(screen.getByRole('complementary', { name: 'This account' }));
+    expect(aside.getByText(peopleLine(sample('family-car-asthma').members))).toBeInTheDocument();
     expect(await axeViolations(container)).toEqual([]);
   }, 30_000);
 
@@ -62,13 +72,13 @@ describe('PlanView with a plan', () => {
     const ctx = contextFor(response.plan, sample('family-car-asthma'), need(response.whatIfContext));
     const expected = whatIfEffects(ctx, toggle.patch);
     const co2 = need(expected.ok ? expected.value.find((effect) => effect.kind === 'co2') : undefined);
-    const text = formatEffect(co2);
-    expect(within(entry).queryByText(text)).toBeNull();
+    const { headline, sentence } = effectDisplay(co2);
+    expect(within(entry).queryByText(headline)).toBeNull();
     await userEvent.click(within(entry).getByRole('radio', { name: 'Share the ride with one more person' }));
-    expect(within(entry).getByText(text)).toBeInTheDocument();
-    expect(announced()).toContain(`Share the ride with one more person. Travel CO₂: ${text}`);
+    expect(within(entry).getByText(headline)).toBeInTheDocument();
+    expect(announced()).toContain(`Share the ride with one more person. ${sentence}`);
     await userEvent.click(within(entry).getByRole('radio', { name: 'As planned' }));
-    expect(within(entry).queryByText(text)).toBeNull();
+    expect(within(entry).queryByText(headline)).toBeNull();
     expect(announced()).toContain('As planned.');
   });
 
@@ -81,7 +91,7 @@ describe('PlanView with a plan', () => {
     const moved = entryOf('Walk in the park');
     expect(moved).toHaveClass('moved');
     expect(within(moved).getByText('Moved to 14:00')).toBeInTheDocument();
-    const entry = entryOf('Move walk in the park to 14:00');
+    const entry = entryOf('Walk in the park: go at 14:00 instead of 07:00');
     expect(within(entry).getByText('from 07:00')).toBeInTheDocument();
     const toggles = response.plan.slots.afternoon.flatMap((item) => item.whatIfs);
     const toggle = need(toggles.find((found) => found.id === 'start-a3-1300'));
@@ -92,7 +102,7 @@ describe('PlanView with a plan', () => {
     const exposure = need(
       expected.ok ? expected.value.find((effect) => effect.kind === 'exposure') : undefined,
     );
-    const text = describeChange(exposure.change);
+    const text = effectDisplay(exposure).headline;
     expect(within(entry).queryByText(text)).toBeNull();
     await userEvent.click(within(entry).getByRole('radio', { name: 'Start at 13:00' }));
     expect(within(entry).getByText(text)).toBeInTheDocument();
@@ -124,7 +134,9 @@ describe('PlanView with a plan', () => {
     });
     renderPlan();
     expect(
-      await screen.findByText('The air is good today. Most things are fine as they are.'),
+      await screen.findByText(
+        'The air is good today. Most things are fine as they are, so the day can go ahead as planned.',
+      ),
     ).toBeInTheDocument();
     expect(screen.getAllByText('None needed.')).toHaveLength(2);
     expect(screen.queryByRole('note')).toBeNull();

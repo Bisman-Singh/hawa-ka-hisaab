@@ -1,19 +1,19 @@
-// Tests for the working sheet: inputs shown as the ledger displays them, the formula, and each factor linked to its
-// source, every fact found in the registry alone and an unknown id named rather than hidden.
+// Tests for the working: inputs as the ledger shows them, the formula, each source once with its factors and a
+// link, facts from the registry alone, an unknown id named, and the sheet English under a Hindi summary.
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { findFact } from '../../../src/config/facts/index.js';
 import { displayValue } from '../../../src/features/ledger/format.js';
-import { factsFor, Workings, WorkingSheet } from '../../../src/ui/trace/Working.js';
+import { factsFor, sourceGroups, Workings } from '../../../src/ui/trace/Working.js';
 import { need, planResponse } from '../plan/fixtures.js';
 
 const effect = () =>
   need(planResponse('family-car-asthma', 'poor').plan.slots.morning.flatMap((item) => item.effects)[0]);
 
-describe('WorkingSheet', () => {
+describe('Workings', () => {
   it('shows each input as the ledger displays it, the formula and a link to every source', () => {
     const { working } = effect();
-    render(<WorkingSheet working={working} />);
+    render(<Workings workings={[effect()]} />);
     const first = need(working.inputs[0]);
     expect(
       screen.getByText(new RegExp(`${first.label}: ${String(displayValue(first))}`)),
@@ -24,6 +24,42 @@ describe('WorkingSheet', () => {
       'href',
       fact.source.url,
     );
+  });
+
+  it('shows nothing without a figure, and one sheet per figure with the sources listed once', () => {
+    const { container, rerender } = render(<Workings workings={[]} />);
+    expect(container).toBeEmptyDOMElement();
+    rerender(<Workings workings={[effect(), effect()]} />);
+    expect(screen.getByText('Show the working')).toBeInTheDocument();
+    expect(screen.getAllByRole('heading', { name: 'Formula' })).toHaveLength(2);
+    expect(screen.getAllByRole('heading', { name: 'Factors and sources' })).toHaveLength(1);
+    const links = screen.getAllByRole('link').map((link) => link.getAttribute('href'));
+    expect(new Set(links).size).toBe(links.length);
+  });
+
+  it('takes a summary in the plan language and keeps the sheet English', () => {
+    const { container } = render(<Workings workings={[effect()]} summary="पूरा हिसाब देखें" />);
+    expect(screen.getByText('पूरा हिसाब देखें')).toBeInTheDocument();
+    expect(container.querySelector('.sheet > div')).toHaveAttribute('lang', 'en');
+  });
+
+  it('names a factor id with no record in the working', () => {
+    const working = { ...effect().working, factIds: ['no-such-fact'] };
+    render(<Workings workings={[{ ...effect(), working }]} />);
+    expect(screen.getByText('no-such-fact, no source record on this page.')).toBeInTheDocument();
+  });
+});
+
+describe('sourceGroups', () => {
+  it('lists a source once with the title of every fact it backs, and an unknown id alone', () => {
+    const one = need(findFact('exposure-ratio-car-ac'));
+    const same = need(findFact('exposure-ratio-bus'));
+    expect(same.source.url).toBe(one.source.url);
+    const groups = sourceGroups([one.id, same.id, 'no-such-fact', one.id]);
+    expect(groups).toEqual([
+      { key: one.source.url, titles: [one.title, same.title], source: one.source },
+      { key: 'no-such-fact', titles: ['no-such-fact'], source: null },
+    ]);
   });
 });
 
@@ -36,21 +72,5 @@ describe('factsFor', () => {
       community.id,
       'no-such-fact',
     ]);
-  });
-});
-
-describe('Workings', () => {
-  it('shows nothing without a figure and a disclosure with one sheet per figure', () => {
-    const { container, rerender } = render(<Workings workings={[]} />);
-    expect(container).toBeEmptyDOMElement();
-    rerender(<Workings workings={[effect(), effect()]} />);
-    expect(screen.getByText('Show the working')).toBeInTheDocument();
-    expect(screen.getAllByRole('heading', { name: 'Formula' })).toHaveLength(2);
-  });
-
-  it('names a factor id with no record in the working', () => {
-    const { working } = effect();
-    render(<WorkingSheet working={{ ...working, factIds: ['no-such-fact'] }} />);
-    expect(screen.getByText('no-such-fact, no source record on this page.')).toBeInTheDocument();
   });
 });

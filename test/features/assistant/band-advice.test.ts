@@ -18,7 +18,8 @@ describe('bandAdvice', () => {
 
   it('gives the same advice in Hindi with no placeholder left', () => {
     const advice = bandAdvice('good', 'hi');
-    expect(advice.text).toMatch(/^"अच्छा" हवा के लिए स्वास्थ्य सलाह।/);
+    expect(advice.text).toMatch(/^अच्छी हवा के लिए स्वास्थ्य सलाह।/);
+    expect(advice.text).not.toMatch(/["“”]/);
     expect(advice.text).not.toMatch(/[{}]/);
   });
 });

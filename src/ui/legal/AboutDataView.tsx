@@ -2,12 +2,13 @@
 // factors, what is measured and what is modelled, that this is not medical advice, and that samples are made up.
 import { useState } from 'react';
 import type { ReactElement, ReactNode } from 'react';
+import { dataGovInCredit } from '../../config/facts/air.js';
 import { factNumber, factQuote } from '../../config/facts/index.js';
 import type { Source } from '../../lib/types.js';
 import { Credit, factSource } from '../components/Credit.js';
 import { ViewHeading } from '../components/Navigation.js';
 import { Part } from './parts.js';
-import { citedSources, dataGovCredit } from './sources.js';
+import { citedSources } from './sources.js';
 import { ABOUT } from './strings.js';
 
 /** One cited document: its title as a link, its publisher and when it was published. */
@@ -25,7 +26,7 @@ export function DataGovCredit({ today }: { readonly today: string }): ReactEleme
   const licence = factSource('credit-data-gov-in');
   return (
     <>
-      {ABOUT.dataGovNote} {dataGovCredit(today)} {ABOUT.licence} <a href={licence.url}>{licence.title}</a>.
+      {ABOUT.dataGovNote} {dataGovInCredit(today)} {ABOUT.licence} <a href={licence.url}>{licence.title}</a>.
     </>
   );
 }

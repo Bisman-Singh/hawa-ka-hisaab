@@ -40,11 +40,21 @@ function readingState(reading: AirReading): ReadingState {
   return readingBand(reading) === null ? 'none' : 'modelled';
 }
 
+/** A reading from before this hour of the night says to check again in the morning. */
+export const EARLY_BEFORE_HOUR = 6;
+
+function nightReading(reading: AirReading): boolean {
+  const hour =
+    reading.path === 'station' ? reading.readingHour : reading.path === 'modelled' ? reading.modelHour : null;
+  return hour !== null && istParts(Date.parse(hour)).hour < EARLY_BEFORE_HOUR;
+}
+
 function frameIn(lang: Language, context: CommunityContext, { fill }: Renderer): NoticeFrame {
   const frame = FRAMES[lang];
   const kind = context.community.kind;
   const stale = context.reading.path === 'station' && context.reading.stale ? frame.stale : '';
-  const opening = `${frame.greeting[kind]} ${frame.reading[readingState(context.reading)]}${stale}`;
+  const early = nightReading(context.reading) ? frame.early : '';
+  const opening = `${frame.greeting[kind]} ${frame.reading[readingState(context.reading)]}${stale}${early}`;
   return { opening: fill(opening, lang), closing: fill(frame.closing[kind], lang) };
 }
 

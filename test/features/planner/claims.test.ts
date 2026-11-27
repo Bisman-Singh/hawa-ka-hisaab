@@ -14,15 +14,23 @@ import { buildFactSet } from '../../../src/features/planner/fact-set.js';
 import { rulesPlan } from '../../../src/features/planner/rules-plan.js';
 import { planSchema } from '../../../src/features/planner/schemas.js';
 import type { AirBasis, Plan } from '../../../src/features/planner/types.js';
+import type { Language } from '../../../src/lib/types.js';
 import { hourCurve } from '../../support/fake-air.js';
-import { planTexts, winterDay } from '../../support/plan-fixtures.js';
+import { notInHindi, planTexts, winterDay } from '../../support/plan-fixtures.js';
 
 const BANDS: readonly (AqiBand | null)[] = [...aqiBandSchema.options, null];
 const MILD: readonly AqiBand[] = ['good', 'satisfactory'];
 const BASIS: AirBasis = { path: 'station', band: 'very_poor', readingHour: null, forecastIssuedAt: null };
 
-function build(household: Household, band: AqiBand | null) {
-  const ctx = { household, band, curve: hourCurve(winterDay()), date: '2026-11-24', notBefore: null };
+function build(household: Household, band: AqiBand | null, language: Language = 'en') {
+  const ctx = {
+    household,
+    band,
+    curve: hourCurve(winterDay()),
+    date: '2026-11-24',
+    notBefore: null,
+    language,
+  };
   const set = buildCandidates(ctx);
   return { ctx, set, plan: rulesPlan(ctx, set) };
 }
@@ -207,6 +215,73 @@ describe('the rules plan', () => {
         band,
         issues: [],
       });
+    }
+  });
+});
+
+describe('a Hindi plan', () => {
+  it('is Hindi in every worded field, with the same items and effects as the English, for every sample and band', () => {
+    for (const sample of SAMPLE_HOUSEHOLDS) {
+      for (const band of BANDS) {
+        const hindi = build(sample.household, band, 'hi');
+        const english = build(sample.household, band).plan;
+        expect(planSchema.safeParse(hindi.plan).success).toBe(true);
+        expect({ id: sample.id, band, english: notInHindi(hindi.plan) }).toEqual({
+          id: sample.id,
+          band,
+          english: [],
+        });
+        expect(effectsOf(hindi.plan)).toEqual(effectsOf(english));
+        const facts = new Set(buildFactSet(hindi.ctx, hindi.set).map((fact) => fact.value));
+        const numerals = tracedTexts(hindi.plan).flatMap(({ text }) =>
+          [...text.matchAll(NUMERAL)].map(([raw]) => Number(raw)),
+        );
+        expect(numerals.filter((value) => !facts.has(value))).toEqual([]);
+      }
+    }
+  });
+});
+
+describe('every household', () => {
+  it('gets a step for each person outside on a moderate or worse day, the outdoor worker included', () => {
+    for (const sample of SAMPLE_HOUSEHOLDS) {
+      for (const band of ['moderate', 'poor', 'very_poor', 'severe'] satisfies AqiBand[]) {
+        const { plan } = build(sample.household, band);
+        const items = [...plan.slots.morning, ...plan.slots.afternoon, ...plan.slots.evening];
+        const outside = sample.household.activities.filter((activity) => activity.setting !== 'indoor');
+        const covered = outside.filter((activity) => items.some((item) => item.activityId === activity.id));
+        expect({ id: sample.id, band, missing: outside.length - covered.length }).toEqual({
+          id: sample.id,
+          band,
+          missing: 0,
+        });
+      }
+    }
+  });
+
+  it('reads as reassurance on a mild day, with every activity named as able to go ahead', () => {
+    for (const sample of SAMPLE_HOUSEHOLDS) {
+      const { plan } = build(sample.household, 'good');
+      const items = [...plan.slots.morning, ...plan.slots.afternoon, ...plan.slots.evening];
+      expect(items.filter((item) => item.kind === 'reassure').length).toBe(
+        sample.household.activities.length,
+      );
+      expect(plan.indoor.find((step) => step.id === 'ventilate')?.title).toBe(
+        'Open the windows when you like',
+      );
+    }
+  });
+});
+
+describe('the facts sent to the model', () => {
+  it('never hold a forecast concentration, which stays in the working', () => {
+    for (const { ctx, set } of everyPlan()) {
+      const forecast = new Set(
+        inputsOf(rulesPlan(ctx, set))
+          .filter((input) => input.from === 'forecast')
+          .map((input) => input.label),
+      );
+      expect(buildFactSet(ctx, set).filter((fact) => forecast.has(fact.label))).toEqual([]);
     }
   });
 });

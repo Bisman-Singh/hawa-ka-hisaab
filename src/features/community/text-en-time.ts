@@ -9,9 +9,9 @@ export const ACTIONS_EN_TIME = {
     title: same('Move outdoor activity to the cleaner hours'),
     line: {
       school:
-        "If the timetable allows, move outdoor activity at {worseTimes} to between {winStart} and {winEnd}, the cleanest hours in today's forecast.",
+        "If the timetable allows, move outdoor activity at {worseTimes} to the hours from {winStart} to {winEnd}, the cleanest in today's forecast.",
       housing_society:
-        "If you can, move outdoor activity at {worseTimes} to between {winStart} and {winEnd}, the cleanest hours in today's forecast.",
+        "If you can, move outdoor activity at {worseTimes} to the hours from {winStart} to {winEnd}, the cleanest in today's forecast.",
     },
     detail: same(
       'The forecast puts {worseTimes} in the dirtier half of the day. It is a model forecast, not a measurement.',
@@ -70,7 +70,7 @@ export const ACTIONS_EN_TIME = {
         'If you must go out, a well-fitted N{n95} or N{n99} mask helps for short spells. Cloth, paper masks, handkerchiefs and scarves do not work.',
     },
     detail: same(
-      'Worn by people in a lab test, an N{n95} filtered {n95Low} to {n95High}% of small particles without a fit test, and cloth masks {clothLow} to {clothHigh}%. Retail masks worn at rest let in {leakLow} to {leakHigh}%, mostly through poor fit.',
+      'Worn by people in a lab test without a fit test, N{n95} and CaN{n99} respirators filtered {n95Low} to {n95High}% of small particles, and cloth masks {clothLow} to {clothHigh}%. Worn at rest in a chamber test, retail masks let in {leakLow} to {leakHigh}% of diesel black carbon, mostly through poor fit.',
     ),
     factIds: same([
       'advice-masks',

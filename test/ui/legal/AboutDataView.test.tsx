@@ -2,9 +2,10 @@
 // credit with the licence linked, every cited source listed, measured and modelled, 112, samples, and axe.
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
+import { dataGovInCredit } from '../../../src/config/facts/air.js';
 import { factQuote, findFact } from '../../../src/config/facts/index.js';
 import { AboutDataView, DataGovCredit, SourceItem } from '../../../src/ui/legal/AboutDataView.js';
-import { citedSources, dataGovCredit } from '../../../src/ui/legal/sources.js';
+import { citedSources } from '../../../src/ui/legal/sources.js';
 import { ABOUT } from '../../../src/ui/legal/strings.js';
 import { axeViolations, renderInApp } from '../helpers.js';
 
@@ -30,7 +31,8 @@ describe('AboutDataView', () => {
 
   it('dates the data.gov.in credit and links its licence from the registry', () => {
     const { container } = render(<DataGovCredit today="2026-11-24T10:00:00Z" />);
-    expect(container).toHaveTextContent(dataGovCredit('2026-11-24T10:00:00Z'));
+    expect(container).toHaveTextContent(dataGovInCredit('2026-11-24T10:00:00Z'));
+    expect(container).toHaveTextContent(/Open Government Data Platform India, 24\/11,/);
     expect(screen.getByRole('link')).toHaveAttribute('href', findFact('credit-data-gov-in')?.source.url);
   });
 

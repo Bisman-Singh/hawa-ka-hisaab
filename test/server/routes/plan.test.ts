@@ -16,7 +16,7 @@ import { createApp } from '../../../src/server/app.js';
 import type { ServerDeps } from '../../../src/server/deps.js';
 import { planFromModel } from '../../../src/server/routes/plan.js';
 import { createFakeClock } from '../../support/fake-clock.js';
-import { sample as sampleHousehold } from '../../support/plan-fixtures.js';
+import { notInHindi, sample as sampleHousehold } from '../../support/plan-fixtures.js';
 import { sampleTrace } from '../../support/samples.js';
 import {
   AQI_AT,
@@ -95,7 +95,8 @@ describe('POST /api/plan', () => {
       fallbackReason: 'number_check_failed',
       numberCheck: { unmatched: ['999'] },
     });
-    expect(invented.plan.language).toBe('en');
+    expect(invented.plan.language).toBe('hi');
+    expect(notInHindi(invented.plan)).toEqual([]);
   });
 
   it('sends what the browser needs to recompute a toggle exactly as the server would', async () => {
@@ -174,14 +175,19 @@ describe('planFromModel', () => {
     const air = await readAir(airAt(PLACES.delhi, AQI_AT.severe), createFakeClock(MORNING_MS), PLACES.delhi);
     const ctx = contextAt(household, air, MORNING_MS);
     const set = buildCandidates(ctx);
-    const trace: Trace = { ...sampleTrace(), producedBy: 'model' };
+    const trace: Trace = { ...sampleTrace(), producedBy: 'model', modelReply: '{"headline":"Today."}' };
     const value: PlanWording = {
       headline: 'Today.',
       items: [{ candidateId: 'made-up', title: 'x', why: 'y', tradeOff: null }],
     };
     const worded: Guarded<PlanWording> = { kind: 'checked', value, trace };
     const result = planFromModel({ ctx, set, language: 'en' }, worded);
-    expect(result.trace).toMatchObject({ producedBy: 'rules', fallbackReason: 'invalid_reply' });
+    expect(result.trace).toMatchObject({
+      producedBy: 'rules',
+      fallbackReason: 'invalid_reply',
+      modelReply: null,
+      refusedBy: 'ids',
+    });
     expect(result.plan.language).toBe('en');
   });
 });

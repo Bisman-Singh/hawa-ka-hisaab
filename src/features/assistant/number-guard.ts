@@ -1,7 +1,7 @@
 // The number guard: every numeral in model text must match a value code sent, after normalising its format.
 // The rounding rules it accepts are listed on roundings below.
 import type { JsonValue } from '../../lib/json.js';
-import { findNumerals, type Numeral } from './numerals.js';
+import { findNumerals, type Numeral, type NumberNumeral } from './numerals.js';
 
 /** A date code sent, as day, month and year. */
 export interface AllowedDate {
@@ -77,13 +77,18 @@ interface Matcher {
   readonly allowed: AllowedValues;
 }
 
+/** A one that counts something, such as 1 bus, rather than a measure such as 1 kg or 1%. */
+const countOfOne = (numeral: NumberNumeral): boolean =>
+  numeral.value === 1 && !numeral.percent && numeral.measured !== true;
+
 function matches(numeral: Numeral, matcher: Matcher): boolean {
   switch (numeral.kind) {
     case 'number':
       return (
-        numeral.raw === '1' ||
-        matcher.plain.has(numeral.value) ||
-        (numeral.percent && matcher.percent.has(numeral.value))
+        Number.isFinite(numeral.value) &&
+        (countOfOne(numeral) ||
+          matcher.plain.has(numeral.value) ||
+          (numeral.percent && matcher.percent.has(numeral.value)))
       );
     case 'time':
       return numeral.minutes.some((minutes) => matcher.allowed.times.includes(minutes));
@@ -98,8 +103,9 @@ function matches(numeral: Numeral, matcher: Matcher): boolean {
 }
 
 /**
- * Checks every numeral in the texts against the allowed values. The bare digit 1 always passes, since a count of
- * one states no measurement; every other number, written in digits of any script or as a word, must match.
+ * Checks every numeral in the texts against the allowed values. A count of one passes, since it states no
+ * measurement, but 1 kg or 1% must match. Every other number must match, in digits of any script, as a word, a
+ * Roman numeral or a fraction; a number character the finder cannot read never matches.
  */
 export function checkNumbers(texts: readonly string[], allowed: AllowedValues): NumberVerdict {
   const matcher: Matcher = {

@@ -1,9 +1,10 @@
-// Tests for the plan view states: the rules plan when the model is down, Hindi, missing place or household,
-// loading, failure with retry, offline and no forecast, with axe where a state is new.
+// Tests for the plan view states: the rules plan when the model is down, Hindi from the model and from the rules,
+// missing place or household, loading, failure with retry, offline and no forecast, with axe where a state is new.
 import { act, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Announcer } from '../../../src/ui/hooks/announcer.js';
+import { HINDI_ADVICE_NOTE } from '../../../src/features/planner/words-lexicon.js';
 import { PlanView } from '../../../src/ui/plan/PlanView.js';
 import { axeViolations, fakeDialog, renderInApp } from '../helpers.js';
 import {
@@ -43,7 +44,7 @@ describe('PlanView when the model did not word the plan', () => {
     ).toBeInTheDocument();
     expect(screen.getAllByText('Wording by fixed rules')).not.toHaveLength(0);
     expect(screen.getByText(/used up its free quota/)).toBeInTheDocument();
-    expect(screen.getByText('Move walk in the park to 14:00')).toBeInTheDocument();
+    expect(screen.getByText('Walk in the park: go at 14:00 instead of 07:00')).toBeInTheDocument();
     expect(await axeViolations(container)).toEqual([]);
     await userEvent.click(screen.getByRole('button', { name: 'Try the model again' }));
     await waitFor(() => {
@@ -72,7 +73,7 @@ describe('PlanView in Hindi', () => {
     });
     renderPlan();
     expect(await screen.findByText('आज हवा बहुत ख़राब है।')).toHaveAttribute('lang', 'hi');
-    expect(screen.getAllByText('आज की योजना का कदम')[0]).toHaveAttribute('lang', 'hi');
+    expect(screen.getAllByText('आज की योजना का कदम')[0]?.closest('[lang]')).toHaveAttribute('lang', 'hi');
     expect(screen.getByText('Wording by Gemini')).toBeInTheDocument();
     expect(screen.getByText(/Every number in the wording matched a fact/)).toBeInTheDocument();
     await userEvent.click(screen.getByRole('radio', { name: 'English' }));
@@ -83,15 +84,30 @@ describe('PlanView in Hindi', () => {
     expect(body).toMatchObject({ language: 'en' });
   });
 
-  it('says why a plan asked for in Hindi came back in English', async () => {
+  it('shows a Hindi plan from the rules path in Hindi: labels, slots, reckoning, the advice note once, working English', async () => {
     saveSample('family-car-asthma', 'hi');
     stubApi({
       '/api/air': () => json(airResponse('poor')),
-      '/api/plan': () => json(planResponse('family-car-asthma', 'poor')),
+      '/api/plan': () => json(planResponse('family-car-asthma', 'poor', { language: 'hi' })),
     });
-    renderPlan();
-    expect(await screen.findByText(/Hindi wording needs the model/)).toBeInTheDocument();
-  });
+    const { container } = renderPlan();
+    expect(await screen.findByRole('heading', { level: 2, name: 'सुबह' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: 'दोपहर' }).closest('[lang]')).toHaveAttribute(
+      'lang',
+      'hi',
+    );
+    expect(screen.getAllByText('क्यों।').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('समझौता।').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('सफर का CO₂').length).toBeGreaterThan(0);
+    expect(screen.getByText('दिन का हिसाब')).toBeInTheDocument();
+    expect(screen.getAllByText(HINDI_ADVICE_NOTE)).toHaveLength(1);
+    expect(screen.queryByText(/Hindi wording needs the model/)).toBeNull();
+    expect(screen.queryByText('Why.')).toBeNull();
+    const summary = screen.getAllByText('पूरा हिसाब देखें, यह अंग्रेजी में है')[0];
+    expect(summary?.closest('details')?.querySelector('.sheet > div')).toHaveAttribute('lang', 'en');
+    expect(screen.getByRole('radio', { name: 'हिन्दी' })).toBeChecked();
+    expect(await axeViolations(container)).toEqual([]);
+  }, 30_000);
 });
 
 describe('PlanView before a plan', () => {
@@ -137,7 +153,7 @@ describe('PlanView before a plan', () => {
       await screen.findByRole('heading', { name: 'The server did not answer properly' }),
     ).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: 'Try again' }));
-    expect(await screen.findByText('Move walk in the park to 14:00')).toBeInTheDocument();
+    expect(await screen.findByText('Walk in the park: go at 14:00 instead of 07:00')).toBeInTheDocument();
   });
 
   it('says the plan on the page is the last one when the browser goes offline', async () => {
@@ -147,12 +163,14 @@ describe('PlanView before a plan', () => {
       '/api/plan': () => json(planResponse('family-car-asthma', 'poor')),
     });
     renderPlan();
-    await screen.findByText('Move walk in the park to 14:00');
+    await screen.findByText('Walk in the park: go at 14:00 instead of 07:00');
     vi.spyOn(navigator, 'onLine', 'get').mockReturnValue(false);
     act(() => {
       window.dispatchEvent(new Event('offline'));
     });
-    expect(screen.getByText('You are offline. This is the last plan made on this page.')).toBeInTheDocument();
+    expect(
+      await screen.findByText('You are offline. This is the last plan made on this page.'),
+    ).toBeInTheDocument();
   });
 
   it('says there was no forecast when the plan was made without one', async () => {

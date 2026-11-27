@@ -39,7 +39,8 @@ export const NOTICE_INSTRUCTIONS = [
   "Keep each action's meaning, times and numbers, times as HH:MM. Use only numbers in FACTS or in the rules wording.",
   'Address the audience named in DATA. Write short, plain sentences.',
   'Write the Hindi in simple, natural Devanagari as a society secretary or school office would, with numbers in international digits.',
-  'No HTML, no markdown, no emoji, no names and no medical advice.',
+  'Keep the health ministry advice as the rules wording gives it: word for word in quote marks in English, our plain rendering without quote marks in Hindi.',
+  'No HTML, no markdown, no emoji, no links, phone numbers or email addresses, no names and no medical advice.',
 ].join(' ');
 
 type Frames = Readonly<Record<Language, NoticeFrame>>;

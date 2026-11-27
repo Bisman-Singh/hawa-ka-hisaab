@@ -1,5 +1,5 @@
 // Phrases the medical gate looks for, as data. A condition alone, such as asthma or a heart condition, is not here:
-// those questions are planning questions.
+// those questions are planning questions. Text is normalised before matching, so one spelling of each is enough.
 
 /** Terms for one verdict: regular expressions for English and romanised Hindi, and Hindi phrases split by a bar. */
 export interface Terms {
@@ -11,41 +11,66 @@ export interface Terms {
 export const EMERGENCY_TERMS: Terms = {
   latin: [
     "\\b(can'?t|cannot|can not|unable to|struggling to|not able to) breathe|\\b(not|stopped) breathing\\b",
+    "\\bcan'?t breath\\b|\\bhard to breathe?\\b|\\b(trouble|difficulty|difficulties|problems?) (in |with )?breathing\\b",
+    '\\bbreathing (difficulty|difficulties|problems?|trouble)\\b|\\bchest (feels|is|gets|getting|got|feeling) (tight|heavy)\\b',
     '\\b(gasping|choking|chest pain|heart attack|fainted|fainting|passed out|unconscious|collapsed)\\b',
     '\\b(unresponsive|not responding|seizure|(asthma|severe) attack|coughing (up )?blood)\\b',
     '\\bpain in (his|her|my|the) chest\\b|\\b(lips|face|fingers|skin)\\b.{0,20}\\b(blue|grey|gray)\\b',
     '\\b(saa?ns nahi|dum ghut|s(ee|i)ne (mein|me) dard|chh?ati (mein|me) dard|dil ka daura|behosh)',
+    '\\bsaa?ns lene (mein|me|main) (dikkat|dikat|takli?e?e?f|pareshaa?ni)',
   ],
-  devanagari: 'सांस नहीं|साँस नहीं|दम घुट|सीने में दर्द|छाती में दर्द|दिल का दौरा|बेहोश|होंठ नीले|खून की उल्टी',
+  devanagari:
+    'सांस नहीं|दम घुट|सीने में दर्द|छाती में दर्द|दिल का दौरा|बेहोश|होंठ नीले|खून की उल्टी|' +
+    'सांस लेने में तकलीफ|सांस लेने में दिक्कत|सांस लेने में परेशानी',
 };
 
-/** Medicines, devices and doses. Model answers are checked against these too. */
+/** Medicines, devices and doses, with the brand names Indian households use. Model answers are checked too. */
 export const MEDICINE_TERMS: Terms = {
   latin: [
-    '\\b(medicines?|medications?|meds|tablets?|pills?|capsules?|syrups?|inhalers?|puffers?|nebuli[sz]ers?)\\b',
-    '\\b(steroids?|antibiotics?|antihistamines?|paracetamol|ibuprofen|cetirizine|levocetirizine|salbutamol)\\b',
+    '\\b(medicines?|medications?|meds|tablets?|pills?|capsules?|syrups?|inhalers?|puffers?|nebuli[sz]\\w*)\\b',
+    '\\b(steroids?|antibiotics?|antihistamines?|para ?cetamol|ibuprofen|cetirizine|levocetirizine|salbutamol)\\b',
     '\\b(albuterol|asthalin|budecort|montelukast|crocin|dolo|vitamins?|supplements?|eye ?drops|nasal spray)\\b',
+    '\\b(montair|allegra|levolin|seroflo|foracort|benadryl|vicks|vaporub|otrivin|combiflam|asthma pumps?|relievers?)\\b',
     '(?<!(inhaled|exposure|pollution|pollutant|air) )\\b(doses?|dosage|dosing)\\b|\\bmg\\b(?!\\s*/)|\\bpuffs?\\b',
     '\\b(dawai|dawa|davai|goli|khurh?aa?k)\\b',
   ],
-  devanagari: 'दवा|गोली|सिरप|इनहेलर|नेबुलाइ|खुराक|ख़ुराक|डोज़',
+  devanagari: 'दवा|गोली|सिरप|इनहेलर|नेबुलाइ|खुराक|डोज',
 };
 
-/** Symptoms, diagnosis, treatment and care. */
+/** Symptoms, illness and diagnosis. Model answers are checked against these too. */
 export const MEDICAL_TERMS: Terms = {
   latin: [
-    '\\b(symptoms?|coughs?|coughing|wheez\\w*|breathless\\w*|short(ness)? of breath|sore throat|itchy)\\b',
-    '\\b(burning eyes|eyes are burning|watery eyes|headaches?|fever|nausea|vomit\\w*|dizz\\w*|rash|runny nose)\\b',
+    '\\b(symptoms?|coughs?|coughing|hacking|wheez\\w*|breathless\\w*|short(ness)? of breath|sore throat|itch\\w*)\\b',
+    '\\b(burning eyes|eyes are burning|watery eyes|headaches?|fever|nause\\w*|vomit\\w*|dizz\\w*|rash|runny nose)\\b',
     '\\b(sneez\\w*|phlegm|mucus|congestion|chest tightness|tight chest|flu|sinus\\w*|sick|unwell|ill)\\b',
+    '\\b(allerg\\w*|throat|bleed\\w*|hurts?|hurting|stings?|stinging|nose is running)\\b',
     '\\b(has|have|got|caught) a cold\\b|\\bdoes (he|she|my \\w+) have\\b|\\b(what|which) disease\\b',
     '\\b(diagnos\\w*|is (it|this|that) (asthma|pneumonia|an? infection|an? allergy|bronchitis|covid))\\b',
     '\\b(spo2|oxygen (level|saturation)|oximeter|blood test|x-?ray|cancer|pneumonia|bronchitis|tuberculosis)\\b',
-    '\\b(infection|treat|treatment|treating|cures?|remed(y|ies)|steam inhalation|kadha|detox|heal)\\b',
-    '\\b(doctor|paediatrician|pediatrician|hospital|clinic)\\b',
     '\\b(lakshan|khaa?nsi|kharash|jalan|sir ?dard|bukhaa?r|zukaa?m|jukaa?m|ulti|chakkar aa)\\b',
-    '\\b(saa?ns phool|kaun ?si bee?mari|ilaa?j|upchar|nuskh[ae]|daktar|aspataa?l)\\b',
+    '\\b(saa?ns phool|kaun ?si bee?mari|tabiyat|tabiyet|tabeeyat|tabiat|bee?maa?r)\\b',
+    '\\b(gal[ae] (mein|me|main) (dard|kharash)|naak (beh|bah))',
   ],
   devanagari:
-    'लक्षण|खांसी|खाँसी|घरघराहट|सांस फूल|साँस फूल|खराश|जलन(?![\\p{L}\\p{M}])|सिरदर्द|सिर दर्द|बुखार|जुकाम|ज़ुकाम|' +
-    'नज़ला|उल्टी|चक्कर आ|कौन सी बीमारी|कौनसी बीमारी|इलाज|उपचार|नुस्खा|नुस्खे|काढ़ा|डॉक्टर|अस्पताल',
+    'लक्षण|खांसी|घरघराहट|सांस फूल|खराश|जलन(?![\\p{L}\\p{M}])|सिरदर्द|सिर दर्द|बुखार|जुकाम|' +
+    'नजला|उल्टी|चक्कर आ|कौन सी बीमारी|कौनसी बीमारी|बीमार(?![\\p{L}\\p{M}])|तबीयत|तबियत|गले में दर्द|' +
+    'आंखों से पानी|नाक बह|खुजली',
+};
+
+/** Asking for care, which a question may do; a model answer that tells someone to ask a doctor is fine. */
+export const CARE_TERMS: Terms = {
+  latin: ['\\b(doctor|paediatrician|pediatrician|hospital|clinic)\\b', '\\b(daktar|aspataa?l)\\b'],
+  devanagari: 'डॉक्टर|अस्पताल',
+};
+
+/** Treatment and home remedies, which only a doctor should advise on. Model answers are checked against these. */
+export const TREATMENT_TERMS: Terms = {
+  latin: [
+    '\\b(infection|treat|treatment|treating|cures?|remed(y|ies)|steam inhalation|detox|heal|soothe)\\b',
+    '\\b(honey|kadha|steam|gargl\\w*|tulsi|ginger|turmeric|haldi|ajwain|jaggery|saline|lukewarm)\\b',
+    '\\b(warm|hot) (water|milk|drinks?)\\b|\\b(once|twice|thrice|\\w+ times) a day\\b',
+    '\\bclear (his|her|their|the|your|my) (chest|lungs|throat|nose)\\b',
+    '\\b(ilaa?j|upchar|nuskh[ae]|shahad|bhaap|garare|adrak|gunguna paa?ni)\\b',
+  ],
+  devanagari: 'इलाज|उपचार|नुस्खा|नुस्खे|काढा|शहद|भाप|गरारे|गरारा|अदरक|हल्दी|तुलसी|गुनगुना पानी|गुनगुने पानी|गर्म पानी',
 };

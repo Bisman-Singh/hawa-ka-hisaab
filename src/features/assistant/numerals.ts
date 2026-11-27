@@ -1,15 +1,21 @@
-// Finds every numeral in a text: digits of any script, number words in English and Hindi, percentages, times of day
-// and dates. Pollutant and unit names such as PM2.5, CO2, N95 and m3 are names, not numbers.
-import { MONTH_NAMES, NUMBER_WORDS } from './numeral-words.js';
+// Finds every numeral in a text: digits of any script, number words in English and Hindi, Roman numerals, fractions,
+// percentages, times of day and dates. Pollutant and unit names such as PM2.5, CO2, N95 and m3 are names, not numbers.
 import {
-  dateBy,
   normalizeNumerals,
-  readNumbers,
-  readWord,
-  timeBy,
-  type Numeral,
-  type Read,
-} from './numeral-readers.js';
+  readCompound,
+  readFraction,
+  readFractionWord,
+  readRoman,
+  readUnknown,
+} from './numeral-forms.js';
+import {
+  ENGLISH_TENS,
+  ENGLISH_UNITS,
+  FRACTION_PREFIXES,
+  MONTH_NAMES,
+  NUMBER_WORDS,
+} from './numeral-words.js';
+import { dateBy, readNumbers, readWord, timeBy, type Numeral, type Read } from './numeral-readers.js';
 
 /** The numeral types, defined with their readers. */
 export type { DateNumeral, Numeral, NumberNumeral, TimeNumeral } from './numeral-readers.js';
@@ -32,6 +38,10 @@ const NAMES = new RegExp(
   'giu',
 );
 const RANGE_GAP = /^\s*(?:-|–|to|se|से)\s*$/iu;
+const WORDS = alternation(NUMBER_WORDS.keys());
+const LONE = '(?![\\p{L}\\p{M}\\p{N}])';
+const AFTER_STAGE =
+  '(?<![\\p{L}\\p{N}])(?:[Ss]tages?|STAGE|[Pp]hase|[Ll]evel|[Gg]rade|[Cc]lass|[Cc]ategory|चरण|स्टेज|स्तर)\\s+([IVX]{1,6})';
 
 const SCANNERS: readonly (readonly [RegExp, Read])[] = [
   [/(?<!\d)(\d{4})-(\d{1,2})-(\d{1,2})(?!\d)/gu, dateBy({ day: 3, month: 2, year: 1, named: false })],
@@ -56,8 +66,26 @@ const SCANNERS: readonly (readonly [RegExp, Read])[] = [
     timeBy({ hour: 1, minute: 2, half: 3 }),
   ],
   [/(?<![\d.:])(\d{1,2})(?::(\d{2}))?\s*(?:बजे|baje|o['’]clock)/giu, timeBy({ hour: 1, minute: 2, half: 0 })],
+  [
+    new RegExp(
+      `(?<![\\p{L}\\p{M}])(${alternation(FRACTION_PREFIXES.keys())})\\s+(\\d+(?:\\.\\d+)?|${WORDS})${END}`,
+      'giu',
+    ),
+    readFractionWord,
+  ],
+  [
+    new RegExp(
+      `(?<![\\p{L}\\p{M}])(${alternation(ENGLISH_TENS.keys())})[-\\s](${alternation(ENGLISH_UNITS.keys())})${END}`,
+      'giu',
+    ),
+    readCompound,
+  ],
+  [new RegExp(`${AFTER_STAGE}${LONE}`, 'gu'), readRoman],
+  [new RegExp(`(?<![\\p{L}\\p{N}])([IVX]{2,6})${LONE}`, 'gu'), readRoman],
+  [/(\d+)\u2044(\d+)/gu, readFraction],
   [/\d[\d,]*(?:\.\d+)?|\.\d+/gu, readNumbers],
-  [new RegExp(`(?<![\\p{L}\\p{M}])(?:${alternation(NUMBER_WORDS.keys())})${END}`, 'giu'), readWord],
+  [/[^\P{N}0-9]+/gu, readUnknown],
+  [new RegExp(`(?<![\\p{L}\\p{M}])(?:${WORDS})${END}`, 'giu'), readWord],
 ];
 
 const blank = (text: string, start: number, end: number): string =>

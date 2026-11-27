@@ -58,7 +58,9 @@ function useLocalPair(household: Household, location: Location, local: boolean):
   const run = (other: Household): void => {
     if (reading !== null) {
       const now = Date.now();
-      setPair({ mine: localPlan(household, reading, now), theirs: localPlan(other, reading, now) });
+      const plan = (made: Household): PlanResponse =>
+        localPlan({ household: made, language: 'en' }, reading, now);
+      setPair({ mine: plan(household), theirs: plan(other) });
       announce(COMPARE.ready);
     }
   };

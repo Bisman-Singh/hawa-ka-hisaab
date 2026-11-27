@@ -94,14 +94,14 @@ export const FRAME_EN: FrameText = {
   },
   greeting: { school: 'Dear parents and staff,', housing_society: 'Dear residents,' },
   reading: {
-    station:
-      "today's air is {band}, with an AQI of {aqi} at the {station} station in the CPCB reading for {time}.",
+    station: 'the latest CPCB reading, for {time}, is {band}, with an AQI of {aqi} at the {station} station.',
     station_no_aqi: 'CPCB published no AQI for the nearest station, {station}, for {time}.',
     modelled:
       "a modelled estimate puts today's air at {band}, with an AQI of about {aqi}. It comes from CAMS via Open-Meteo for {time}, is not a measurement and tends to read low in cities.",
     none: 'no air reading is available right now.',
   },
   stale: ' This reading is more than three hours old.',
+  early: ' The air changes through the day, so check the AQI again in the morning before outdoor activity.',
   closing: {
     school:
       "This notice from the school office follows the health ministry's air pollution advisory. It is general guidance, not medical advice. Anyone with breathlessness, cough or chest pain should see a doctor.",

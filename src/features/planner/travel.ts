@@ -1,13 +1,9 @@
 // Travel changes for one trip: the bus, the metro or one more person in the car, each with the effects code
-// computed. The best becomes a swap item in the day plan; the others are its what-if toggles.
+// computed. swap.ts makes the best one a swap item in the day plan and the others its what-if toggles.
 import type { Activity, ActivityKind, HouseholdPatch, Travel, TravelMode } from '../household/types.js';
-import { minutesOf } from '../ledger/format.js';
 import type { Effect } from '../ledger/types.js';
 import { bandAtLeast, type Situation } from './context.js';
-import { candidateFor, unique } from './draft.js';
 import { effectsBetween } from './effects.js';
-import { activityName, capitalise } from './text.js';
-import type { CandidateAction, WhatIf } from './types.js';
 
 /** Which change a travel option makes. */
 export type OptionKey = 'bus' | 'metro' | 'carpool';
@@ -76,67 +72,4 @@ export function travelOptions(s: Situation, activity: Activity): TravelOption[] 
     ...modes.map((mode) => modeOption(s, trip, mode)),
     people === null ? null : carpoolOption(s, trip, people + 1),
   ].filter((found) => found !== null);
-}
-
-const ACTION: Readonly<Record<OptionKey, string>> = {
-  bus: 'take the bus',
-  metro: 'take the metro',
-  carpool: 'share the ride with one more person',
-};
-
-/** A what-if toggle for an option, citing every fact behind its effects. */
-export function toggleFor(activity: Activity, choice: TravelOption): WhatIf {
-  const factIds = unique(choice.effects.flatMap((effect) => effect.working.factIds)).slice(0, 12);
-  return {
-    id: `${choice.key}-${activity.id}`,
-    label: capitalise(ACTION[choice.key]),
-    patch: choice.patch,
-    factIds,
-  };
-}
-
-const WHY: Readonly<Record<OptionKey, string>> = {
-  bus: 'A city bus carries many people, so each one accounts for less CO2 than in a private vehicle.',
-  metro:
-    'Inside a metro carriage the Delhi study measured cleaner air than outside. There is no verified CO2 figure for the metro, so none is shown.',
-  carpool: 'Sharing the car splits its CO2 among more people.',
-};
-
-const WHY_OFF_THE_CYCLE =
-  'On a bad air day a ride cuts what you breathe in on the way, since on a cycle you breathe much harder.';
-
-function tradeOffFor(effects: readonly Effect[]): string | null {
-  const co2Up = effects.some((effect) => effect.kind === 'co2' && effect.changeKg > 0);
-  const breatheMore = effects.some((effect) => effect.kind === 'exposure' && effect.change.high > 0);
-  if (co2Up) {
-    return 'It adds CO2 that cycling does not, in exchange for breathing less on the way.';
-  }
-  return breatheMore
-    ? 'You may breathe in more on the way than you do now; the working shows the range.'
-    : null;
-}
-
-/** The swap item for a trip: the first option with a CO2 figure, or else the first option, with the rest as toggles. */
-export function swapAction(s: Situation, activity: Activity): CandidateAction | null {
-  const options = travelOptions(s, activity);
-  const primary =
-    options.find((choice) => choice.effects.some((effect) => effect.kind === 'co2')) ?? options[0];
-  if (!primary) {
-    return null;
-  }
-  const name = activityName(activity);
-  const title = `${capitalise(name)}: ${ACTION[primary.key]}`;
-  const why = activity.travel?.mode === 'cycle' ? WHY_OFF_THE_CYCLE : WHY[primary.key];
-  const template = { title, why, tradeOff: tradeOffFor(primary.effects) };
-  const whatIfs = options.filter((choice) => choice !== primary).map((choice) => toggleFor(activity, choice));
-  const start = minutesOf(activity.start);
-  return candidateFor(activity, {
-    kind: 'swap_mode',
-    prefix: 'swap',
-    start,
-    effects: primary.effects,
-    factIds: [],
-    template,
-    whatIfs,
-  });
 }

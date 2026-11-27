@@ -97,3 +97,22 @@ describe('formatFigure', () => {
     expect(figure('size-r2', need)[0]?.value).toBe(figureValue(need));
   });
 });
+
+describe('plannedChange', () => {
+  it('is the change at the new start of a move, and its figures go in the shown numbers', async () => {
+    const { shiftEffect } = await import('../../../src/features/ledger/exposure.js');
+    const { displayNumbers, plannedChange } = await import('../../../src/features/ledger/format.js');
+    const move = shiftEffect(['m1'], { from: { label: 'a', pm25: 200 }, to: { label: 'b', pm25: 50 } }, [
+      { label: 'c', pm25: 100 },
+    ]);
+    expect(move && plannedChange(move)).toBeCloseTo(-0.75);
+    expect(move && displayNumbers(move)).toContain(75);
+    const other = { ...move, working: { ...move?.working, factIds: ['x'] } };
+    expect(move && plannedChange({ ...move, working: { ...move.working, factIds: ['other'] } })).toBeNull();
+    expect(other).toBeDefined();
+    expect(
+      move &&
+        plannedChange({ ...move, working: { ...move.working, inputs: move.working.inputs.slice(0, 1) } }),
+    ).toBeNull();
+  });
+});

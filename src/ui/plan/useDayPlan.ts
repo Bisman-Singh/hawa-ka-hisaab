@@ -100,9 +100,9 @@ export function useDayPlan(): DayPlan {
   const made = useMemo(
     () =>
       modelChoice === 'off' && household !== null && reading !== null
-        ? localPlan(household, reading, now)
+        ? localPlan({ household, language }, reading, now)
         : null,
-    [modelChoice, household, reading, now],
+    [modelChoice, household, language, reading, now],
   );
   const again = useCallback(() => {
     setPlan(null);

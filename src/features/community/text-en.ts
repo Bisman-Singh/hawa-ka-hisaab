@@ -29,6 +29,7 @@ export interface FrameText {
   readonly greeting: PerKind;
   readonly reading: Readonly<Record<ReadingState, string>>;
   readonly stale: string;
+  readonly early: string;
   readonly closing: PerKind;
 }
 

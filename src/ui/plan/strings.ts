@@ -1,8 +1,9 @@
 // Words of the day plan, indoor air, ask and "how this was made" screens. Plain English; generated text is not here.
-import type { Slot } from '../../features/planner/types.js';
+import { PLAN_LABELS } from './labels.js';
 
-/** Strings of the plan view and its parts. */
+/** Strings of the plan view and its parts. The English plan labels are among them. */
 export const PLAN = {
+  ...PLAN_LABELS.en,
   title: "Today's plan",
   for: 'For a household of',
   in: 'in',
@@ -19,11 +20,11 @@ export const PLAN = {
   language: 'Plan language',
   english: 'English',
   hindi: 'हिन्दी',
-  hindiNeedsModel: 'Hindi wording needs the model, which did not write this plan, so it is in English.',
   workedOut: 'Numbers worked out in code, as always.',
   checked: 'Numbers worked out in code. Every number in the wording matched a fact.',
   modelDown: 'The model is not answering right now',
   modelOff: 'This plan uses fixed wording',
+  modelRefused: 'The model wording did not pass the checks',
   modelDownBody:
     'So this plan uses fixed wording. The steps, order and numbers come from the same rules and calculators.',
   tryModel: 'Try the model again',
@@ -42,31 +43,6 @@ export const PLAN = {
     link: 'Describe your household',
   },
   offline: 'You are offline. This is the last plan made on this page.',
-  fixed: 'fixed',
-  canMove: 'can move',
-  from: 'from',
-  movedTo: 'Moved to',
-  minutes: 'minutes',
-  why: 'Why.',
-  tradeOff: 'Trade-off.',
-  effect: 'Effect',
-  breathedIn: 'Breathed in',
-  co2: 'Travel CO₂',
-  noFigure: 'No figure. No measured factor for this step.',
-  noneNeeded: 'None needed.',
-  whatIf: 'What if',
-  asPlanned: 'As planned',
-  whatIfNeedsForecast:
-    'Other start times need the forecast this plan was made with, which did not come with it.',
-  slots: { morning: 'Morning', afternoon: 'Afternoon', evening: 'Evening' } satisfies Record<Slot, string>,
-  hoursTo: 'to',
-  empty: 'Nothing planned in this part of the day.',
-  reckoning: "The day's reckoning",
-  reckoningNote:
-    'Each line is the change for one person against their usual day. Lines are not added across people or trips. Where no measured factor exists, no figure is shown.',
-  reckoningNone: 'Nothing to change today, so nothing to add up.',
-  reckoningEmpty: 'Changes with a measured figure',
-  reckoningNo: 'None',
   aside: 'This account',
   otherAir: 'This card shows a different reading from the one this plan was made on.',
   household: 'Household',

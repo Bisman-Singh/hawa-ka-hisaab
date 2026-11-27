@@ -7,7 +7,7 @@ import { istParts, numeralsIn } from './format.js';
 import { clockOf, clockValue, dateValue, listValue, numberValue, plain, shown } from './template-value.js';
 import type { TemplateValue, TemplateValues } from './template-value.js';
 import { BAND_EN } from './text-en.js';
-import { ADVICE_HI, BAND_HI } from './text-hi.js';
+import { ADVICE_HI, BAND_HI_BEFORE_NOUN } from './text-hi.js';
 import type { Timing } from './timing.js';
 import type { CommunityContext, CommunityInput, DayBasis } from './types.js';
 
@@ -19,7 +19,7 @@ function bandValues(band: AqiBand | null): Values {
   }
   const slug = band.replace('_', '-');
   return {
-    band: plain(BAND_EN[band], BAND_HI[band]),
+    band: plain(BAND_EN[band], BAND_HI_BEFORE_NOUN[band]),
     bandSlug: plain(slug),
     gen: plain(factText(`advice-${slug}-general`), ADVICE_HI[band].general),
     vuln: plain(factText(`advice-${slug}-vulnerable`), ADVICE_HI[band].vulnerable),

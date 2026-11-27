@@ -23,7 +23,7 @@ function vulnerable(c: CommunityInput): FigureSpec | null {
     value === null || value === undefined ? [] : [entered(id, [label, 'people'], value)],
   );
   const value = terms.reduce((sum, term) => sum + term.input.value, 0);
-  const label = 'People you entered in groups the health advisory counts as vulnerable';
+  const label = 'People the health advisory counts as vulnerable, from your counts';
   const formula = `The sum of the counts you entered: ${terms.map((term) => term.input.label).join(', ')}.`;
   const factIds = ['community-advice-vulnerable-groups'];
   return value === 0

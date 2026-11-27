@@ -34,7 +34,8 @@ describe('runGuarded', () => {
     expect(result).toMatchObject({ kind: 'fallback', reason: 'invalid_reply' });
     expect(result.trace).toMatchObject({
       modelId: 'fake-model',
-      modelReply: '{"text":"Fine."}',
+      modelReply: null,
+      refusedBy: 'schema',
       numberCheck: { status: 'not_run', attempts: 2 },
     });
   });
@@ -47,16 +48,23 @@ describe('runGuarded', () => {
     expect(result.trace.numberCheck).toEqual({ status: 'passed', attempts: 2, unmatched: [] });
   });
 
-  it('keeps the raw text of a reply that failed the schema, so the trace shows what came back', async () => {
+  it('never carries the text of a refused reply, only which model wrote it and the check that refused it', async () => {
     const model = createFakeModel([{ reply: { wrong: '<script>' } }], 'gemini-test');
     const result = await runGuarded(testRun<{ text: string }>(model), task());
     expect(result).toMatchObject({ kind: 'fallback', reason: 'invalid_reply' });
-    expect(result.trace).toMatchObject({ modelId: 'gemini-test', modelReply: '{"wrong":"<script>"}' });
-    const empty = await runGuarded(
-      testRun<{ text: string }>(createFakeModel([{ failure: 'invalid_reply' }])),
-      task(),
-    );
-    expect(empty.trace).toMatchObject({ modelId: null, modelReply: null, numberCheck: { attempts: 2 } });
+    expect(result.trace).toMatchObject({ modelId: 'gemini-test', modelReply: null, refusedBy: 'schema' });
+    expect(JSON.stringify(result.trace)).not.toContain('script');
+    const dose = createFakeModel([{ reply: { text: 'Give him 10 mg tonight.' } }]);
+    const refused = await runGuarded(testRun<{ text: string }>(dose), task({ check: () => 'medicine' }));
+    expect(refused.trace).toMatchObject({ modelReply: null, refusedBy: 'medicine' });
+    expect(JSON.stringify(refused.trace)).not.toContain('10 mg');
+  });
+
+  it('does not retry a reply that came back with no text, since there is nothing to correct', async () => {
+    const model = createFakeModel([{ failure: 'invalid_reply' }]);
+    const empty = await runGuarded(testRun<{ text: string }>(model), task());
+    expect(model.requests).toHaveLength(1);
+    expect(empty.trace).toMatchObject({ modelId: null, modelReply: null, numberCheck: { attempts: 1 } });
   });
 
   it('keeps the first check in the trace when the retry hits a model failure', async () => {
@@ -65,7 +73,8 @@ describe('runGuarded', () => {
     expect(result).toMatchObject({ kind: 'fallback', reason: 'quota' });
     expect(result.trace).toMatchObject({
       producedBy: 'rules',
-      modelReply: '{"text":"AQI 999."}',
+      modelReply: null,
+      refusedBy: 'numbers',
       numberCheck: { status: 'failed', attempts: 2, unmatched: ['999'] },
     });
   });

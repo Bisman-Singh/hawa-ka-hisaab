@@ -1,0 +1,122 @@
+{
+  "en": {
+    "less": "{size} less",
+    "more": "{size} more",
+    "times": {
+      "display": "{size}× as much",
+      "plain": "{size} times as much"
+    },
+    "co2": {
+      "display": "CO₂",
+      "plain": "CO2"
+    },
+    "none": "No change",
+    "upTo": "Up to {size}",
+    "span": "{low} to {high}",
+    "range": "range {span}",
+    "or": "or {size}",
+    "kg": "{size} kg",
+    "breathedIn": "{headline} breathed in",
+    "forEach": "{headline} {co2} for each person",
+    "forecastOnly": "by the model forecast",
+    "stop": ".",
+    "basis": {
+      "start_hour": "starting an hour earlier or later",
+      "vehicle_air": "same minutes on the road",
+      "closed_car": "windows up with AC, against windows open",
+      "pace": "light pace against a usual moderate to hard pace",
+      "mask_fit": "a loose mask to a well fitted N95",
+      "other": "as worked out"
+    },
+    "crossing": {
+      "start_hour": "depending on the start hour",
+      "vehicle_air": "depending on the car's windows and AC",
+      "closed_car": "depending on the car",
+      "pace": "depending on the usual pace",
+      "mask_fit": "depending on fit",
+      "other": "depending on the inputs"
+    },
+    "wide": {
+      "start_hour": "Wide because the forecast changes quickly around these hours.",
+      "vehicle_air": "Wide because a closed car with AC keeps out far more than one with the windows open.",
+      "closed_car": "Wide because cars differ.",
+      "pace": "Wide because it depends on how hard the usual pace is.",
+      "mask_fit": "Wide because fit decides most of it: a mask that leaks at the edges lets in far more.",
+      "other": "Wide because the inputs vary; the working shows each one."
+    },
+    "legs": {
+      "both": "there and back",
+      "one": "one way",
+      "day": "a day",
+      "week": "a week"
+    },
+    "riders": {
+      "now": "{count} in the vehicle now",
+      "shared": "shared by {count}"
+    },
+    "co2Range": {
+      "two_wheeler": "The range covers the factors for a motorcycle and a scooter.",
+      "fuel": "The range covers each fuel this vehicle can run on, since the fuel was not given."
+    }
+  },
+  "hi": {
+    "less": "{size} कम",
+    "more": "{size} ज्यादा",
+    "times": {
+      "display": "{size} गुना",
+      "plain": "{size} गुना"
+    },
+    "co2": {
+      "display": "CO₂",
+      "plain": "CO2"
+    },
+    "none": "कोई बदलाव नहीं",
+    "upTo": "{size} तक",
+    "span": "{low} से {high}",
+    "range": "दायरा {span}",
+    "or": "या {size}",
+    "kg": "{size} किलो",
+    "breathedIn": "साँस में जाने वाला प्रदूषण {headline}",
+    "forEach": "हर व्यक्ति का {co2} {headline}",
+    "forecastOnly": "मॉडल के पूर्वानुमान के अनुसार",
+    "stop": "।",
+    "basis": {
+      "start_hour": "एक घंटा पहले या बाद शुरू करने पर",
+      "vehicle_air": "सड़क पर उतने ही मिनट",
+      "closed_car": "खिड़कियाँ बंद और AC चालू, खुली खिड़कियों के मुकाबले",
+      "pace": "हल्की रफ्तार, आम मध्यम से तेज रफ्तार के मुकाबले",
+      "mask_fit": "ढीले मास्क से ठीक से फिट N95 तक",
+      "other": "हिसाब के अनुसार"
+    },
+    "crossing": {
+      "start_hour": "शुरू होने के समय पर निर्भर",
+      "vehicle_air": "गाड़ी की खिड़कियों और AC पर निर्भर",
+      "closed_car": "गाड़ी पर निर्भर",
+      "pace": "आम रफ्तार पर निर्भर",
+      "mask_fit": "फिटिंग पर निर्भर",
+      "other": "हिसाब के आंकड़ों पर निर्भर"
+    },
+    "wide": {
+      "start_hour": "दायरा बड़ा है क्योंकि इन घंटों में पूर्वानुमान तेजी से बदलता है।",
+      "vehicle_air": "दायरा बड़ा है क्योंकि AC वाली बंद गाड़ी खुली खिड़कियों वाली गाड़ी से कहीं ज्यादा प्रदूषण रोकती है।",
+      "closed_car": "दायरा बड़ा है क्योंकि हर गाड़ी अलग होती है।",
+      "pace": "दायरा बड़ा है क्योंकि यह आम रफ्तार पर निर्भर है।",
+      "mask_fit": "दायरा बड़ा है क्योंकि ज्यादातर फर्क फिटिंग से पड़ता है: किनारों से हवा आने देने वाला मास्क कहीं ज्यादा अंदर आने देता है।",
+      "other": "दायरा बड़ा है क्योंकि आंकड़े अलग-अलग हैं; हिसाब में हर एक दिखता है।"
+    },
+    "legs": {
+      "both": "आना-जाना",
+      "one": "एक तरफ",
+      "day": "एक दिन में",
+      "week": "एक हफ्ते में"
+    },
+    "riders": {
+      "now": "अभी गाड़ी में {count}",
+      "shared": "{count} लोगों में बँटा"
+    },
+    "co2Range": {
+      "two_wheeler": "दायरे में मोटरसाइकिल और स्कूटर दोनों के कारक हैं।",
+      "fuel": "ईंधन नहीं बताया गया, इसलिए दायरे में इस गाड़ी के हर ईंधन का कारक है।"
+    }
+  }
+}

@@ -1,4 +1,4 @@
-// Tests for a moved entry: struck through at its usual time with the time it moved to.
+// Tests for a moved entry: struck through at its usual time with the time it moved to, in English or Hindi.
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { MovedEntry } from '../../../src/ui/plan/OtherEntries.js';
@@ -11,7 +11,7 @@ describe('MovedEntry', () => {
     const activity = need(sample('older-couple-chulha').activities[0]);
     const { container, rerender } = render(
       <ol>
-        <MovedEntry item={item} activity={activity} />
+        <MovedEntry item={item} activity={activity} title="Morning walk" language="en" />
       </ol>,
     );
     expect(container.querySelector('li')).toHaveClass('moved');
@@ -19,9 +19,17 @@ describe('MovedEntry', () => {
     expect(screen.getByText('07:00')).toBeInTheDocument();
     rerender(
       <ol>
-        <MovedEntry item={{ ...item, start: null }} activity={activity} />
+        <MovedEntry item={{ ...item, start: null }} activity={activity} title="Morning walk" language="en" />
       </ol>,
     );
     expect(screen.getByText('Moved to')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Morning walk' })).toBeInTheDocument();
+    rerender(
+      <ol>
+        <MovedEntry item={item} activity={activity} title="बाहर की कसरत" language="hi" />
+      </ol>,
+    );
+    expect(screen.getByText('समय बदला, अब 14:00 बजे')).toBeInTheDocument();
+    expect(screen.getByText('बदल सकता है')).toBeInTheDocument();
   });
 });

@@ -78,6 +78,24 @@ describe('checkNumbers rejects numbers that were not sent', () => {
     expect(passes(text)).toEqual({ passed: false, unmatched });
   });
 
+  it.each([
+    ['It adds 1 kg of CO2.', ['1']],
+    ['GRAP Stage IV applies.', ['IV']],
+    ['Wait \u{24EF} minutes.', ['\u{24EF}']],
+    ['The AQI is 2\u{200D}4\u{200D}6\u{200D}1.', ['2461']],
+  ])('%s', (text, unmatched) => {
+    expect(passes(text)).toEqual({ passed: false, unmatched });
+  });
+
+  it('reads Roman numerals and compounds from code-sent text too, and never allows an unreadable digit', () => {
+    const sent = collectAllowed(['GRAP Stage II is in force.', 'Wait \u{24EF} minutes.', 25]);
+    expect(checkNumbers(['Stage II applies, for twenty-five minutes.'], sent)).toEqual({
+      passed: true,
+      unmatched: [],
+    });
+    expect(checkNumbers(['Wait \u{24EF} minutes.'], sent).passed).toBe(false);
+  });
+
   it('checks every text and lists each miss once', () => {
     expect(checkNumbers(['AQI 999', 'still 999', 'and 998'], facts)).toEqual({
       passed: false,

@@ -1,4 +1,5 @@
-// Protection that does not move an activity: a well fitted mask, and a light pace instead of a hard one.
+// Protection that does not move an activity: a well fitted mask, a light pace instead of a hard one, and a closed
+// car with the AC on instead of open windows.
 import { factEnds, factNumber } from '../../config/facts/index.js';
 import { isYoungChild } from '../household/members.js';
 import type { Member } from '../household/types.js';
@@ -18,8 +19,11 @@ export function maskEffect(members: readonly Member[]): Effect | null {
   if (wearers.length === 0) {
     return null;
   }
-  const best = topOf('An N95 worn well, share kept out, best case', 'mask-n95-filtered');
-  const worst = topOf('Masks worn by volunteers, share let in, worst case', 'mask-leakage');
+  const best = topOf('N95 and CaN99 worn in a lab test, share filtered, best case', 'mask-n95-filtered');
+  const worst = topOf(
+    'Diesel black carbon let into masks worn at rest in a chamber, worst case',
+    'mask-leakage',
+  );
   return {
     kind: 'exposure',
     change: changeRange([1 - best.value, worst.value]),
@@ -34,6 +38,39 @@ export function maskEffect(members: readonly Member[]): Effect | null {
         'mask-filtration-quote',
         'mask-leakage-quote',
         'advice-masks',
+      ],
+    },
+  };
+}
+
+function ratioInput(label: string, factId: string): WorkingInput {
+  return { label, value: factNumber(factId).value, unit: 'times the air outside', from: 'fact', factId };
+}
+
+/**
+ * A car trip with the windows up and the AC on, against the windows open, for the same minutes. The Delhi study
+ * measured both against the air outside; the health ministry advises AC on recirculate. Null with no one on it.
+ */
+export function closedCarEffect(memberIds: readonly string[]): Effect | null {
+  if (memberIds.length === 0) {
+    return null;
+  }
+  const closed = ratioInput('Windows up, AC on: air inside against outside', 'exposure-ratio-car-ac');
+  const open = ratioInput('Windows open: air inside against outside', 'exposure-ratio-car-open');
+  const change = closed.value / open.value - 1;
+  return {
+    kind: 'exposure',
+    change: { low: change, high: change },
+    memberIds: [...memberIds],
+    working: {
+      formula:
+        'Same car, same minutes, same breathing; only the air inside changes. The ratio with the windows up and the AC on, divided by the ratio with the windows open, minus one.',
+      inputs: [closed, open],
+      factIds: [
+        'advice-ac-recirculate',
+        'exposure-onroad-quote',
+        'exposure-ratio-car-ac',
+        'exposure-ratio-car-open',
       ],
     },
   };

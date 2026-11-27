@@ -33,3 +33,13 @@ describe('lightPaceEffect', () => {
     expect(lightPaceEffect([])).toBeNull();
   });
 });
+
+describe('closedCarEffect', () => {
+  it('compares a closed car with the AC on against open windows, from the Delhi ratios, and needs someone on board', async () => {
+    const { closedCarEffect } = await import('../../../src/features/ledger/protection.js');
+    const effect = closedCarEffect(['m1']);
+    expect(effect?.kind === 'exposure' ? effect.change.low : null).toBeCloseTo(0.5 / 1.3 - 1);
+    expect(effect?.working.factIds).toContain('advice-ac-recirculate');
+    expect(closedCarEffect([])).toBeNull();
+  });
+});

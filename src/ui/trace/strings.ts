@@ -1,5 +1,5 @@
 // Words of the "how this was made" sheet and the working behind a figure.
-import type { FallbackReason, NumberCheck, ToolCallRecord, Trace } from '../../lib/types.js';
+import type { FallbackReason, GuardCheck, NumberCheck, ToolCallRecord, Trace } from '../../lib/types.js';
 import type { WorkingInput } from '../../features/ledger/types.js';
 
 /** Strings of the sheet and the working. */
@@ -8,15 +8,16 @@ export const TRACE = {
   who: 'Who wrote it',
   check: 'Number check',
   checkNote:
-    'Every numeral in model text must match a fact sent or a calculator result. A miss rejects the reply; after one retry the fixed wording is used.',
+    'Every numeral in model text must match a fact sent or a calculator result. A miss rejects the reply; the model may get one retry, then the fixed wording is used.',
   facts: 'Facts sent to the model',
+  factsNotSent: 'Facts made for the model, not sent because it was not asked',
   factsCaption: 'Facts sent, with value, unit and id',
   factsHead: { label: 'Fact', value: 'Value', id: 'Id' },
   noFacts: 'No facts were sent, because the model was not asked.',
   reply: "The model's reply",
   refused: 'A reply the checks refused',
-  refusedWhy: 'The model did reply, but the reply failed a check and was not used. It is not advice.',
-  refusedShow: 'Show the refused text',
+  refusedWhy: 'The model did reply, but its reply was not used because it',
+  refusedNote: 'A refused reply is never kept or shown, so it cannot pass for advice.',
   replyNote:
     'The reply is checked against a schema. Text from it is shown as plain text, never as page code.',
   noReply: 'There is no model reply for this answer.',
@@ -47,9 +48,41 @@ export const FALLBACK: Readonly<Record<FallbackReason, string>> = {
   upstream: 'The model service failed to answer.',
   rate_limited: 'This browser asked the model too often in the last minute. Try again in a minute.',
   daily_cap: 'The app has reached its daily limit of model calls.',
-  number_check_failed:
-    'The model used a number that is not in the facts, twice, so its wording was not used.',
+  number_check_failed: 'The model used a number that is not in the facts, so its wording was not used.',
 };
+
+/** What a refused reply did, finishing the sentence "its reply was not used because it". */
+export const REFUSED: Readonly<Record<GuardCheck, string>> = {
+  schema: 'was not in the shape the app accepts',
+  markup: 'contained markup',
+  hidden: 'contained hidden characters',
+  script: 'used letters from a script other than English or Hindi',
+  link: 'contained a link, an email address or a phone number',
+  numbers: 'used numbers the app did not supply',
+  quotes: 'quoted words that are not the official text',
+  medicine: 'gave advice on medicines',
+  treatment: 'gave advice on treating symptoms or illness',
+  unplaced: 'listed phrases that are not in what was typed',
+  name: 'repeated a name from what was typed',
+  label: 'put a number in the name of an activity',
+  measure: 'gave a distance, room size, purifier rating or rider count that was not typed',
+  ids: 'named steps the app did not offer',
+  one_place: 'chose two steps for the same activity',
+  actions_changed: 'changed the list of actions',
+  wrong_script: 'mixed English and Hindi text',
+  numbers_dropped: 'left out a number or time the notice needs',
+  too_long: 'was longer than one printed page',
+};
+
+/** A reply refused by a check, in a sentence. */
+export function refusalText(check: GuardCheck): string {
+  return `${TRACE.refusedWhy} ${REFUSED[check]}.`;
+}
+
+/** Why fixed rules wrote the words: the check that refused the model's reply when one did, else the reason. */
+export function fallbackText(trace: Trace, reason: FallbackReason): string {
+  return trace.refusedBy === undefined ? FALLBACK[reason] : refusalText(trace.refusedBy);
+}
 
 /** The number check result in a sentence. */
 export const CHECK: Readonly<Record<NumberCheck['status'], string>> = {

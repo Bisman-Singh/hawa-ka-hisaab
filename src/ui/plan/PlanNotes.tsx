@@ -11,7 +11,7 @@ import { StateMessage } from '../components/StateMessage.js';
 import { CONSENT } from '../consent/strings.js';
 import { useAppActions } from '../state/app-state.js';
 import { BAND_TEXT } from '../i18n/strings.js';
-import { FALLBACK } from '../trace/strings.js';
+import { fallbackText } from '../trace/strings.js';
 import { AirBasisLine, type AirBasisLineProps } from './air-basis.js';
 import { PLAN } from './strings.js';
 
@@ -57,19 +57,21 @@ export function ModelNote({
   readonly response: PlanResponse;
   readonly again: () => void;
 }): ReactElement | null {
-  const reason = response.trace.fallbackReason;
-  if (response.trace.producedBy !== 'rules' || reason === null) {
+  const { trace } = response;
+  const reason = trace.fallbackReason;
+  if (trace.producedBy !== 'rules' || reason === null) {
     return null;
   }
+  const down = trace.refusedBy === undefined ? PLAN.modelDown : PLAN.modelRefused;
   return (
     <StateMessage
       tone="status"
       glyph="model"
-      title={reason === 'disabled' ? PLAN.modelOff : PLAN.modelDown}
+      title={reason === 'disabled' ? PLAN.modelOff : down}
       quiet
       level={2}
     >
-      <p>{`${PLAN.modelDownBody} ${FALLBACK[reason]}`}</p>
+      <p>{`${PLAN.modelDownBody} ${fallbackText(trace, reason)}`}</p>
       {reason === 'disabled' ? null : (
         <button className="btn btn-quiet" type="button" onClick={again}>
           {PLAN.tryModel}

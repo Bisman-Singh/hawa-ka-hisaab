@@ -1,0 +1,49 @@
+{
+  "kind": {
+    "commute": "the commute",
+    "school_run": "the school run",
+    "outdoor_exercise": "outdoor exercise",
+    "outdoor_play": "outdoor play",
+    "outdoor_work": "outdoor work",
+    "errand": "the errand",
+    "social": "the outing",
+    "other": "this activity"
+  },
+  "band": {
+    "good": "good",
+    "satisfactory": "satisfactory",
+    "moderate": "moderate",
+    "poor": "poor",
+    "very_poor": "very poor",
+    "severe": "severe"
+  },
+  "mode": {
+    "walk": "on foot",
+    "cycle": "by cycle",
+    "bus": "by bus",
+    "metro": "by metro",
+    "suburban_rail": "by suburban train",
+    "auto_rickshaw": "by auto rickshaw",
+    "two_wheeler": "by two-wheeler",
+    "car": "by car",
+    "taxi": "by taxi",
+    "school_bus": "by school bus"
+  },
+  "fuel": {
+    "biomass": "wood or other biomass",
+    "coal": "coal",
+    "kerosene": "kerosene"
+  },
+  "room": {
+    "bedroom": "bedroom",
+    "living": "living room",
+    "kitchen": "kitchen",
+    "study": "study",
+    "other": "room"
+  },
+  "slot": {
+    "morning": "morning",
+    "afternoon": "afternoon",
+    "evening": "evening"
+  }
+}

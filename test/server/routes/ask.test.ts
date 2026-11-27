@@ -100,7 +100,8 @@ describe('POST /api/ask', () => {
       kind: 'answer',
       trace: { producedBy: 'rules', fallbackReason: 'number_check_failed' },
     });
-    expect(result.text).toMatch(/^Questions are answered by the model, which is not available right now/);
+    expect(result.text).toMatch(/^The model's answer to this question did not pass the app's checks/);
+    expect(result.trace).toMatchObject({ modelReply: null, refusedBy: 'numbers' });
     expect(result.text).toContain('Health advice for Severe air.');
     expect(result.factIds).toContain('advice-severe-general');
   });
@@ -125,7 +126,7 @@ describe('POST /api/ask', () => {
       fallbackReason: 'number_check_failed',
       numberCheck: { unmatched: ['999'] },
     });
-    expect(invented.text).toMatch(/^सवालों के जवाब मॉडल देता है/);
+    expect(invented.text).toMatch(/^इस सवाल पर मॉडल का जवाब ऐप की जाँच में पास नहीं हुआ/);
   });
 
   it('answers on the fixed line, labelled rate_limited, over the client limit', async () => {

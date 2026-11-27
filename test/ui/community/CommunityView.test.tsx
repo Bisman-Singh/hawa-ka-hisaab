@@ -100,7 +100,7 @@ describe('CommunityView', () => {
     renderCommunity();
     await userEvent.click(screen.getByRole('button', { name: /A housing society of 120 flats/ }));
     await userEvent.click(screen.getByRole('button', { name: 'Work out the facts' }));
-    expect(await screen.findByText(/No Hindi notice this time/)).toBeInTheDocument();
+    expect(await screen.findByText(/came without a Hindi version/)).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Copy Hindi' })).toBeNull();
     expect(screen.getByText('Wording by fixed rules')).toBeInTheDocument();
   });

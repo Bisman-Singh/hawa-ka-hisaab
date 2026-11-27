@@ -11,7 +11,7 @@ import { findFact } from '../../src/config/facts/index.js';
 import type { Language, Trace } from '../../src/lib/types.js';
 import { createApp } from '../../src/server/app.js';
 import { createFakeClock } from '../support/fake-clock.js';
-import { planTexts } from '../support/plan-fixtures.js';
+import { notInHindi, planTexts } from '../support/plan-fixtures.js';
 import { AQI_AT, airAt, behavingModel, jsonPost, MORNING_MS, PLACES } from '../support/route-fixtures.js';
 import { untraced } from '../support/number-reader.js';
 import type { Behaviour, TestBand } from '../support/route-fixtures.js';
@@ -104,7 +104,8 @@ describe.each(BEHAVIOURS)('with a model that answers: %s', (behaviour) => {
           id: sample.id,
           label: [...EXPECTED[behaviour].plan],
         });
-        expect(body.plan.language).toBe(body.trace.producedBy === 'model' ? language : 'en');
+        expect(body.plan.language).toBe(language);
+        expect(language === 'hi' ? notInHindi(body.plan) : []).toEqual([]);
         expect(untraced(planTexts(body.plan), body.trace)).toEqual([]);
         expect(citedIds(body).filter((id) => findFact(id) === null)).toEqual([]);
       }

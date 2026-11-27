@@ -3,7 +3,7 @@
 import { screen, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { describeChange } from '../../../src/features/ledger/format.js';
+import { effectDisplay } from '../../../src/features/ledger/display.js';
 import { whatIfEffects } from '../../../src/features/planner/what-if.js';
 import { Announcer } from '../../../src/ui/hooks/announcer.js';
 import { PlanView } from '../../../src/ui/plan/PlanView.js';
@@ -61,8 +61,8 @@ describe('PlanView and the air', () => {
     const flat = hourCurve(flatDay(90), FORECAST.issuedAt);
     stubApi({ '/api/air': () => json(airResponse('poor', flat)), '/api/plan': () => json(response) });
     renderPlan();
-    await screen.findByText('Move walk in the park to 14:00');
-    const entry = entryOf('Move walk in the park to 14:00');
+    await screen.findByText('Walk in the park: go at 14:00 instead of 07:00');
+    const entry = entryOf('Walk in the park: go at 14:00 instead of 07:00');
     const toggle = need(
       response.plan.slots.afternoon.flatMap((item) => item.whatIfs).find((w) => w.id === 'start-a3-1300'),
     );
@@ -79,7 +79,7 @@ describe('PlanView and the air', () => {
       const exposure = need(
         result.ok ? result.value.find((effect) => effect.kind === 'exposure') : undefined,
       );
-      return describeChange(exposure.change);
+      return effectDisplay(exposure).headline;
     });
     expect(texts[0]).not.toBe(texts[1]);
     await userEvent.click(within(entry).getByRole('radio', { name: 'Start at 13:00' }));
@@ -95,8 +95,8 @@ describe('PlanView and the air', () => {
       '/api/plan': () => json(planResponse('family-car-asthma', 'poor', { withContext: false })),
     });
     renderPlan();
-    await screen.findByText('Move walk in the park to 14:00');
-    const entry = entryOf('Move walk in the park to 14:00');
+    await screen.findByText('Walk in the park: go at 14:00 instead of 07:00');
+    const entry = entryOf('Walk in the park: go at 14:00 instead of 07:00');
     expect(within(entry).queryByRole('radio', { name: 'Start at 13:00' })).toBeNull();
     expect(within(entry).getByText(/Other start times need the forecast/)).toBeInTheDocument();
     expect(screen.getByText(/came without the forecast it was made with/)).toBeInTheDocument();

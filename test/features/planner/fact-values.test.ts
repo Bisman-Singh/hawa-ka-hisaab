@@ -4,6 +4,7 @@ import { cited, clock, figure, shown, value } from '../../../src/features/planne
 import { factValueSchema } from '../../../src/lib/schemas/facts.js';
 import { purifierNeed } from '../../../src/features/ledger/purifier.js';
 import { sampleCo2Effect } from '../../support/samples.js';
+import type { WorkingInput } from '../../../src/features/ledger/types.js';
 
 describe('fact values', () => {
   it('make ids safe for the fact id rule and cut long labels', () => {
@@ -24,9 +25,19 @@ describe('fact values', () => {
     expect(clock('t', 'Start', '12:00').map((fact) => fact.value)).toEqual([12, 12, 0]);
   });
 
-  it('give an effect and a figure as shown, with their inputs', () => {
-    expect(shown('swap-a1', sampleCo2Effect()).map((fact) => fact.value)).toEqual([2.8, 1, 28, 0.1]);
+  it('give an effect as shown, without its working, and a figure with its inputs but no forecast values', () => {
+    expect(shown('swap-a1', sampleCo2Effect()).map((fact) => fact.value)).toEqual([2.8, 1]);
     const need = figure('purifier-r1', purifierNeed(100));
     expect(need.map((fact) => fact.value)).toEqual([110, 110, 100, 65, 1.69901]);
+    const forecastInput: WorkingInput = {
+      label: 'Forecast PM2.5, 14:00 hour, a model',
+      value: 61.2,
+      unit: 'µg/m³',
+      from: 'forecast',
+      factId: null,
+    };
+    const sized = purifierNeed(100);
+    const window = { ...sized, working: { ...sized.working, inputs: [forecastInput] } };
+    expect(figure('ventilate', window).map((fact) => fact.value)).toEqual([110, 110]);
   });
 });

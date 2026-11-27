@@ -2,7 +2,7 @@
 // checks, the number guard and one retry on a failed check. It always returns a complete trace.
 import { MIN_MODEL_CALL_MS, MIN_RETRY_MS } from '../../config/limits.js';
 import type { Clock } from '../../lib/clock.js';
-import type { ModelPort, ModelRequest } from '../../lib/model.js';
+import type { CallBudget, ModelPort, ModelRequest } from '../../lib/model.js';
 import type { RateDecision } from '../../lib/rate-limit.js';
 import type { FallbackReason, ModelFailureKind, NumberCheck, Trace } from '../../lib/types.js';
 import { attempt, type Attempt, type GuardedTask, type Rejected } from './attempt.js';
@@ -21,9 +21,12 @@ export type Guarded<T> =
 /** A checked reply, the only kind the short cache keeps. */
 export type Checked<T> = Extract<Guarded<T>, { kind: 'checked' }>;
 
+/** Most model HTTP calls one request may make, tool rounds, the retry and fallback models included. */
+export const MAX_MODEL_CALLS_PER_REQUEST = 3;
+
 /**
- * What a route hands a model task. allow takes one unit of the per-client limit and is called only when the model
- * is really about to be asked. cache holds checked replies to identical requests. deadline is in epoch ms.
+ * What a route hands a model task. allow takes one unit of the per-client limit and is called before every model
+ * HTTP call, never for a cached reply. cache holds checked replies to identical requests. deadline is in epoch ms.
  */
 export interface ModelRun<T> {
   readonly model: ModelPort;
@@ -54,11 +57,44 @@ function settle<T>(request: ModelRequest<T>, outcome: Attempt<T>, history: Histo
   const rejected = outcome.kind === 'rejected' ? outcome : history.earlier;
   const reason = reasonOf(outcome);
   const check = checkOf(rejected?.numbers ?? null, history.attempts);
-  return {
-    kind: 'fallback',
-    reason,
-    trace: traceOf(request.facts, { reason, reply: rejected?.reply ?? null, check }),
+  const refused = rejected ? { problem: rejected.problem, reply: rejected.reply } : null;
+  return { kind: 'fallback', reason, trace: traceOf(request.facts, { reason, reply: null, check, refused }) };
+}
+
+/**
+ * The budget for one request. The first unit is taken before the model is asked, so a client over its limit makes
+ * no call; the adapter's first take uses that unit and every later HTTP call takes one more, up to the size.
+ */
+function budgetFor(run: ModelRun<unknown>): CallBudget & { readonly open: () => Promise<boolean> } {
+  let used = 0;
+  let reserved = false;
+  const charge = async (): Promise<boolean> => {
+    if (used >= MAX_MODEL_CALLS_PER_REQUEST || !(await run.allow()).allowed) {
+      return false;
+    }
+    used += 1;
+    return true;
   };
+  return {
+    open: async () => {
+      reserved = await charge();
+      return reserved;
+    },
+    take: async () => {
+      if (reserved) {
+        reserved = false;
+        return true;
+      }
+      return charge();
+    },
+    left: () => MAX_MODEL_CALLS_PER_REQUEST - used,
+  };
+}
+
+/** A retry is worth a call only for a reply that came back with text a check refused, with time and calls left. */
+function retryable(run: ModelRun<unknown>, first: Attempt<unknown>, budget: CallBudget): first is Rejected {
+  const timeLeft = run.deadline - run.clock.now() >= MIN_RETRY_MS;
+  return first.kind === 'rejected' && first.reply !== null && timeLeft && budget.left() > 0;
 }
 
 const keyOf = (request: ModelRequest<unknown>): string =>
@@ -73,10 +109,10 @@ const keyOf = (request: ModelRequest<unknown>): string =>
 const failedBefore = <T>(request: ModelRequest<T>, failure: ModelFailureKind): Guarded<T> =>
   settle(request, { kind: 'failed', failure }, { earlier: null, attempts: 0 });
 
-async function ask<T>(run: ModelRun<T>, task: GuardedTask<T>): Promise<Guarded<T>> {
-  const request = { ...task.request, deadline: run.deadline };
+async function ask<T>(run: ModelRun<T>, task: GuardedTask<T>, budget: CallBudget): Promise<Guarded<T>> {
+  const request = { ...task.request, deadline: run.deadline, budget };
   const first = await attempt(run.model, task, request);
-  if (first.kind !== 'rejected' || run.deadline - run.clock.now() < MIN_RETRY_MS) {
+  if (!retryable(run, first, budget)) {
     return settle(task.request, first, { earlier: null, attempts: 1 });
   }
   const instructions = retryInstructions(task.request.instructions, first.problem);
@@ -87,8 +123,10 @@ async function ask<T>(run: ModelRun<T>, task: GuardedTask<T>): Promise<Guarded<T
 /**
  * Runs a task. An identical request answered in the last few minutes is served from the cache with no model call
  * and no unit of the limit. Too close to the deadline, or over the per-client limit, it never calls the model. A
- * reply that fails a check is retried once with a fixed note on what failed, if the time left allows; a second
- * failure, or any model failure, becomes the labelled fallback.
+ * request makes at most MAX_MODEL_CALLS_PER_REQUEST HTTP calls, each one a unit of the per-client limit. A reply
+ * whose text fails a check is retried once with a fixed note on what failed, if time and calls are left; a reply
+ * with no text is not retried. A second failure, or any model failure, becomes the labelled fallback, and the
+ * trace names the refusing check but never carries the refused text.
  */
 export async function runGuarded<T>(run: ModelRun<T>, task: GuardedTask<T>): Promise<Guarded<T>> {
   const key = keyOf(task.request);
@@ -99,10 +137,11 @@ export async function runGuarded<T>(run: ModelRun<T>, task: GuardedTask<T>): Pro
   if (run.deadline - run.clock.now() < MIN_MODEL_CALL_MS) {
     return failedBefore(task.request, 'timeout');
   }
-  if (!(await run.allow()).allowed) {
+  const budget = budgetFor(run);
+  if (!(await budget.open())) {
     return failedBefore(task.request, 'rate_limited');
   }
-  const result = await ask(run, task);
+  const result = await ask(run, task, budget);
   if (result.kind === 'checked') {
     run.cache.set(key, result);
   }

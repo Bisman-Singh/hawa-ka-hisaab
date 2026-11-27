@@ -5,6 +5,7 @@ import {
   fixedMedicalReply,
   medicalGate,
   mentionsMedicine,
+  mentionsTreatment,
   type MedicalVerdict,
 } from '../../../src/features/assistant/medical-gate.js';
 
@@ -121,6 +122,19 @@ describe('mentionsMedicine', () => {
   });
 });
 
+describe('mentionsTreatment', () => {
+  it('finds medicines, symptoms, emergency signs and remedies in an answer, but lets a referral to a doctor through', () => {
+    expect(mentionsTreatment('Give her two puffs of her inhaler first.')).toBe(true);
+    expect(mentionsTreatment('If he starts coughing, stop the game.')).toBe(true);
+    expect(mentionsTreatment('If her lips look blue, act fast.')).toBe(true);
+    expect(mentionsTreatment('Steam twice a day helps.')).toBe(true);
+    expect(mentionsTreatment('गरारे करें और अदरक लें।')).toBe(true);
+    expect(mentionsTreatment('Give him M\u{043E}ntair tonight.')).toBe(true);
+    expect(mentionsTreatment('Move the walk to 15:00. Ask a doctor about her heart condition.')).toBe(false);
+    expect(mentionsTreatment('Cycling raises the inhaled dose on a bad day.')).toBe(false);
+  });
+});
+
 describe('fixedMedicalReply', () => {
   it('tells the person to ask a doctor and adds the advice for the band when the band is known', () => {
     const reply = fixedMedicalReply('medical', 'en', 'very_poor');
@@ -130,7 +144,7 @@ describe('fixedMedicalReply', () => {
     expect(reply.text).toContain('"Remain indoors and keep activity levels low"');
     expect(reply.factIds).toContain('advice-very-poor-vulnerable');
     expect(reply.facts).toEqual([]);
-    expect(fixedMedicalReply('medical', 'hi', 'very_poor').text).toMatch(/डॉक्टर.*"बहुत खराब" हवा के लिए/);
+    expect(fixedMedicalReply('medical', 'hi', 'very_poor').text).toMatch(/डॉक्टर.*। बहुत खराब हवा के लिए/);
     const unknown = fixedMedicalReply('medical', 'en', null);
     expect(unknown.text).toMatch(/doctor\.$/);
     expect(unknown.factIds).toEqual([]);

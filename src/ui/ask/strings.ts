@@ -14,4 +14,5 @@ export const ASK = {
   notSent: 'This question was not sent to the model.',
   rulesNote: 'The model did not answer, so this reply is fixed text.',
   sources: 'Sources of this advice:',
+  answerSources: 'Sources of the facts in this answer:',
 };

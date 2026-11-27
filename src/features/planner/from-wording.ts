@@ -2,9 +2,11 @@
 // time and effect comes from the candidate, never from the reply. Protection the rules require is kept.
 import { err, ok, type Result } from '../../lib/result.js';
 import type { Language } from '../../lib/types.js';
+import { withSubscripts } from '../ledger/display-words.js';
 import { assemblePlan, leadsTheDay, type Pick } from './assemble.js';
 import { situationOf, type CandidateSet, type PlanContext } from './context.js';
 import { rulesChoice } from './rules-plan.js';
+import { unwordedChoice } from './worded.js';
 import type { PlanWording, Plan } from './types.js';
 
 /** Why a wording reply was refused: it named candidates that were never sent. The caller falls back to rules. */
@@ -26,7 +28,11 @@ function matchCandidates(set: CandidateSet, wording: PlanWording): { chosen: Pic
   for (const item of wording.items) {
     const candidate = byId.get(item.candidateId);
     if (candidate) {
-      chosen.push({ candidate, text: item });
+      const tradeOff = item.tradeOff === null ? null : withSubscripts(item.tradeOff);
+      chosen.push({
+        candidate,
+        text: { title: withSubscripts(item.title), why: withSubscripts(item.why), tradeOff },
+      });
     } else {
       unknown.push(item.candidateId);
     }
@@ -35,8 +41,9 @@ function matchCandidates(set: CandidateSet, wording: PlanWording): { chosen: Pic
 }
 
 /**
- * The plan in the model's order and words. On a severe day, protection for vulnerable members that the rules
- * would include and the model left out is added with its English template text, ahead of the rest.
+ * The plan in the model's order and words, with CO2 written with its subscript. On a severe day, protection for vulnerable members that the rules
+ * would include and the model left out is added with its template text, ahead of the rest. Activities the model was
+ * not asked about keep the rules' choice and template text.
  */
 export function planFromWording(
   ctx: PlanContext,
@@ -52,10 +59,13 @@ export function planFromWording(
   const required: Pick[] = rulesChoice(set.actions)
     .filter((candidate) => leadsTheDay(s, candidate) && !named.has(candidate.id))
     .map((candidate) => ({ candidate, text: candidate.template }));
+  const rest: Pick[] = unwordedChoice(set, ctx.household)
+    .filter((candidate) => !required.some((pick) => pick.candidate.id === candidate.id))
+    .map((candidate) => ({ candidate, text: candidate.template }));
   return ok(
     assemblePlan(ctx, set, {
-      picks: [...required, ...chosen],
-      headline: reply.wording.headline,
+      picks: [...required, ...chosen, ...rest],
+      headline: withSubscripts(reply.wording.headline),
       language: reply.language,
     }),
   );

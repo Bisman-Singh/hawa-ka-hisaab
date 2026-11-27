@@ -8,8 +8,15 @@ import type { AqiBand } from '../naqi/types.js';
 import { bandAdvice } from './band-advice.js';
 import { fixedReplyTrace } from './guard-trace.js';
 import { runGuarded, type Guarded, type ModelRun } from './guarded.js';
-import { ASK_INSTRUCTIONS } from './instructions.js';
-import { fixedMedicalReply, medicalGate, mentionsMedicine, type FixedReply } from './medical-gate.js';
+import { ASK_INSTRUCTIONS, type GuardProblem } from './instructions.js';
+import {
+  fixedMedicalReply,
+  medicalGate,
+  mentionsMedicine,
+  mentionsTreatment,
+  type FixedReply,
+} from './medical-gate.js';
+import { misquotes } from './quotes.js';
 import { askReplySchema } from './schemas.js';
 
 /** What the model returns for a question. */
@@ -28,6 +35,18 @@ export interface AskInput {
   readonly sources: readonly JsonValue[];
   readonly facts: readonly FactValue[];
   readonly tools: readonly ModelTool[];
+  readonly names?: readonly string[];
+}
+
+/** Names a medicine or a dose, gives treatment advice of any kind, or quotes words that are not official text. */
+function answerProblem(text: string): GuardProblem | null {
+  if (mentionsMedicine(text)) {
+    return 'medicine';
+  }
+  if (mentionsTreatment(text)) {
+    return 'treatment';
+  }
+  return misquotes([text]) ? 'quotes' : null;
 }
 
 /** The fixed medical reply, or the guarded model answer. */
@@ -56,23 +75,40 @@ export function answerQuestion(run: ModelRun<AskReply>, input: AskInput): Promis
     },
     sources: () => input.sources,
     prose: (reply) => [reply.text],
-    check: (reply) => (mentionsMedicine(reply.text) ? 'medicine' : null),
+    check: (reply) => answerProblem(reply.text),
+    names: input.names ?? [],
   });
 }
 
-const UNAVAILABLE: Readonly<Record<Language, string>> = {
-  en: "Questions are answered by the model, which is not available right now, so nothing was worked out for this one. The plan above comes from the app's own rules and gives the reason for each step.",
-  hi: 'सवालों के जवाब मॉडल देता है, जो अभी उपलब्ध नहीं है, इसलिए इस सवाल पर कुछ नहीं निकाला गया। ऊपर की योजना ऐप के अपने नियमों से बनी है और हर कदम का कारण बताती है।',
+/** Why no model answer is shown: the model could not be asked, or its answer did not pass the checks. */
+export type Unanswered = 'unavailable' | 'refused';
+
+const UNANSWERED: Readonly<Record<Unanswered, Readonly<Record<Language, string>>>> = {
+  unavailable: {
+    en: "Questions are answered by the model, which is not available right now, so nothing was worked out for this one. The plan above comes from the app's own rules and gives the reason for each step.",
+    hi: 'सवालों के जवाब मॉडल देता है, जो अभी उपलब्ध नहीं है, इसलिए इस सवाल पर कुछ नहीं निकाला गया। ऊपर की योजना ऐप के अपने नियमों से बनी है और हर कदम का कारण बताती है।',
+  },
+  refused: {
+    en: "The model's answer to this question did not pass the app's checks, so it is not shown. The plan above gives the reason and the effect of each step.",
+    hi: 'इस सवाल पर मॉडल का जवाब ऐप की जाँच में पास नहीं हुआ, इसलिए उसे नहीं दिखाया गया। ऊपर की योजना हर कदम का कारण और असर बताती है।',
+  },
 };
 
-/** The answer when the model path is unavailable: a fixed line, then the advice for the band when it is known. */
+/** Whether a fallback trace means the model could not be asked or its answer was refused by a check. */
+export function unansweredBy(trace: Trace): Unanswered {
+  return trace.refusedBy === undefined ? 'unavailable' : 'refused';
+}
+
+/** The answer when no model answer is shown: a fixed line saying why, then the advice for the band when known. */
 export function unavailableAnswer(
   language: Language,
   band: AqiBand | null,
+  why: Unanswered = 'unavailable',
 ): { text: string; factIds: string[] } {
   const advice = band === null ? null : bandAdvice(band, language);
+  const line = UNANSWERED[why][language];
   return {
-    text: advice === null ? UNAVAILABLE[language] : `${UNAVAILABLE[language]} ${advice.text}`,
+    text: advice === null ? line : `${line} ${advice.text}`,
     factIds: [...(advice?.factIds ?? [])],
   };
 }

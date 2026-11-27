@@ -1,21 +1,20 @@
-// Tests for the plan helpers: entries by slot with moved activities and severe-day protection first, sums worded by
-// the ledger, what-if effects from the planner, and words for who and when.
+// Tests for the plan helpers: entries by slot with moved activities and severe-day protection first, sums laid out
+// by the ledger in the plan's language with a range across zero never headlined as a saving, and what-if effects.
 import { describe, expect, it } from 'vitest';
-import { formatEffect } from '../../../src/features/ledger/format.js';
+import { effectDisplay } from '../../../src/features/ledger/display.js';
 import type { PlanItem, WhatIf } from '../../../src/features/planner/types.js';
 import {
   activityOf,
   contextFor,
   whatIfOf,
   entriesBySlot,
-  fixityOf,
   itemsOf,
+  notesOf,
   rowsOf,
   sumsOf,
   sumsSentence,
   usableToggles,
   whatIfEffectsOf,
-  whoLine,
 } from '../../../src/ui/plan/plan-data.js';
 import { sample } from '../../support/plan-fixtures.js';
 import { FORECAST, need, planResponse } from './fixtures.js';
@@ -50,22 +49,43 @@ describe('entriesBySlot', () => {
 });
 
 describe('sums and what-if', () => {
-  it('words effects with the ledger and says why when there is none', () => {
+  it('lays effects out with the ledger, figure then range, and says why when there is none', () => {
     const effect = need(itemsOf(planResponse('family-car-asthma', 'poor').plan)[1]?.effects[0]);
     expect(effect.kind).toBe('co2');
-    expect(sumsOf([effect], false)[0]?.text).toBe(formatEffect(effect));
-    expect(sumsOf([], true)).toEqual([{ label: 'Effect', text: 'None needed.', none: true }]);
+    const shown = effectDisplay(effect);
+    const [sum] = sumsOf([effect], false);
+    expect(sum).toEqual({
+      label: 'Travel CO₂',
+      text: shown.headline,
+      detail: shown.detail,
+      note: shown.note,
+      sentence: shown.sentence,
+      none: false,
+    });
+    expect(rowsOf(sumsOf([effect], false))).toEqual([
+      { label: 'Travel CO₂', figure: shown.headline, range: shown.detail },
+    ]);
+    const none = { label: 'Effect', text: 'None needed.', detail: '', note: null, none: true };
+    expect(sumsOf([], true)).toEqual([{ ...none, sentence: 'Effect: None needed.' }]);
     expect(sumsOf([], false)[0]?.text).toBe('No figure. No measured factor for this step.');
     expect(rowsOf(sumsOf([], true))).toEqual([{ label: 'Effect', none: 'None needed.' }]);
-    expect(rowsOf([{ label: 'CO2', text: '1 kg less', none: false }])).toEqual([
-      { label: 'CO2', figure: '1 kg less' },
-    ]);
-    expect(
-      sumsSentence([
-        { label: 'A', text: 'b', none: false },
-        { label: 'C', text: 'd', none: true },
-      ]),
-    ).toBe('A: b. C: d');
+    expect(sumsSentence(sumsOf([effect], false))).toBe(shown.sentence);
+  });
+
+  it('headlines a range that could be a cut or a rise by its rise, with the reason it is wide, in either language', () => {
+    const bus = need(
+      itemsOf(planResponse('family-car-asthma', 'poor').plan).find((i) => i.candidateId === 'swap-a1'),
+    );
+    const sums = sumsOf(bus.effects, false);
+    const mixed = need(sums.find((sum) => sum.label === 'Breathed in'));
+    expect(mixed.text).toBe('Up to 2.4× as much');
+    expect(mixed.text).not.toMatch(/less/);
+    expect(mixed.detail).toMatch(/^or 8% less/);
+    expect(notesOf([...sums, ...sums])).toEqual([need(mixed.note)]);
+    const hindi = sumsOf(bus.effects, false, 'hi');
+    expect(hindi.map((sum) => sum.label)).toEqual(['सफर का CO₂', 'साँस में प्रदूषण']);
+    expect(hindi[1]?.text).toBe('2.4 गुना तक');
+    expect(sumsOf([], false, 'hi')[0]?.label).toBe('असर');
   });
 
   it('gives no effects for a toggle the planner refuses, and keeps start toggles only with a curve', () => {
@@ -99,15 +119,9 @@ describe('sums and what-if', () => {
   });
 });
 
-describe('words for an item', () => {
-  it('names the people and minutes, the fixity and where a moved item came from', () => {
-    const { plan } = planResponse('family-car-asthma', 'poor');
-    const commute = need(plan.slots.morning[0]);
-    expect(whoLine(household, commute)).toMatch(/^adult, \d+ minutes$/);
-    expect(whoLine(household, { ...commute, activityId: null })).toBe('adult');
-    expect(fixityOf(household, commute)).toBe('fixed');
-    expect(fixityOf(household, need(plan.slots.afternoon[0]))).toMatch(/^from \d\d:\d\d$/);
-    expect(fixityOf(household, { ...commute, activityId: null })).toBe('can move');
+describe('activityOf', () => {
+  it('finds the activity an item is about, and none for an item about no activity', () => {
+    expect(activityOf(household, 'a1')?.id).toBe('a1');
     expect(activityOf(household, null)).toBeNull();
   });
 });

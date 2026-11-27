@@ -1,9 +1,9 @@
-// Tests for the slots and the reckoning: the hours each slot covers, an empty slot, and reckoning rows by activity.
+// Tests for the slots and the reckoning: the hours each slot covers, an empty slot, and reckoning rows by step.
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { PlanSlots, Reckoning, slotHours } from '../../../src/ui/plan/PlanSlots.js';
 import { sample } from '../../support/plan-fixtures.js';
-import { need, planResponse } from './fixtures.js';
+import { planResponse } from './fixtures.js';
 
 describe('slots', () => {
   it('cover the clock from the slot start hours, evening running to the next morning', () => {
@@ -26,12 +26,20 @@ describe('slots', () => {
 });
 
 describe('Reckoning', () => {
-  it('lists each figure by activity, and by title for an item not tied to one', () => {
+  it('lists each figure by the step it belongs to, so two steps for one activity read apart', () => {
     const { plan } = planResponse('family-car-asthma', 'poor');
-    const loose = { ...need(plan.slots.morning[1]), activityId: null };
-    const changed = { ...plan, slots: { ...plan.slots, morning: [loose] } };
-    render(<Reckoning plan={changed} household={sample('family-car-asthma')} />);
-    expect(screen.getByText(`${loose.title}, Travel CO₂`)).toBeInTheDocument();
+    render(<Reckoning plan={plan} />);
+    expect(screen.getByText('Office commute: windows up, AC on, Breathed in')).toBeInTheDocument();
+    expect(screen.getByText('Office commute: take the bus, Breathed in')).toBeInTheDocument();
+    expect(screen.getByText('Office commute: take the bus, Travel CO₂')).toBeInTheDocument();
     expect(screen.getByText(/not added across people or trips/)).toBeInTheDocument();
+  });
+
+  it('says there is nothing to add up when no step has a figure, in the plan language', () => {
+    const { plan } = planResponse('family-car-asthma', 'good', { language: 'hi' });
+    render(<Reckoning plan={{ ...plan, slots: { morning: [], afternoon: [], evening: [] } }} />);
+    expect(screen.getByRole('table', { name: 'दिन का हिसाब' })).toBeInTheDocument();
+    expect(screen.getByText('मापे हुए आँकड़े वाले बदलाव')).toBeInTheDocument();
+    expect(screen.getByText('आज कुछ बदलना नहीं है, इसलिए जोड़ने को कुछ नहीं।')).toBeInTheDocument();
   });
 });

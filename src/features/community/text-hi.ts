@@ -14,6 +14,12 @@ export const BAND_HI: Readonly<Record<AqiBand, string>> = {
   severe: 'गंभीर',
 };
 
+/**
+ * The band names as the Hindi text uses them, before हवा or श्रेणी. Both nouns are feminine, so good agrees as अच्छी;
+ * the other names do not change. The text names a band this way rather than in quote marks.
+ */
+export const BAND_HI_BEFORE_NOUN: Readonly<Record<AqiBand, string>> = { ...BAND_HI, good: 'अच्छी' };
+
 const LESS = 'बाहर देर तक या ज्यादा मेहनत वाली शारीरिक गतिविधि कम करें';
 const NO_SPECIAL = 'कोई खास सावधानी जरूरी नहीं';
 const AVOID_ACTIVITIES = 'बाहर की शारीरिक गतिविधियों से बचें';
@@ -38,13 +44,14 @@ export const FRAME_HI: FrameText = {
   },
   greeting: { school: 'आदरणीय अभिभावकगण एवं स्टाफ,', housing_society: 'आदरणीय निवासीगण,' },
   reading: {
-    station: 'आज हवा "{band}" श्रेणी में है। CPCB के {station} स्टेशन पर {time} बजे AQI {aqi} था।',
+    station: 'CPCB की {time} बजे की ताजा रीडिंग में {station} स्टेशन पर AQI {aqi} है, यानी हवा {band} श्रेणी में है।',
     station_no_aqi: 'CPCB ने नजदीकी स्टेशन {station} के लिए {time} बजे का AQI जारी नहीं किया है।',
     modelled:
-      'मॉडल के अनुमान से आज हवा "{band}" श्रेणी में है, अनुमानित AQI {aqi}। यह Open-Meteo के जरिए CAMS मॉडल का {time} बजे का अनुमान है, असली माप नहीं, और शहरों में अक्सर कम आंकता है।',
+      'मॉडल के अनुमान से आज हवा {band} श्रेणी में है, अनुमानित AQI {aqi}। यह Open-Meteo के जरिए CAMS मॉडल का {time} बजे का अनुमान है, असली माप नहीं, और शहरों में अक्सर कम आंकता है।',
     none: 'अभी हवा की कोई रीडिंग उपलब्ध नहीं है।',
   },
   stale: ' यह रीडिंग तीन घंटे से ज्यादा पुरानी है।',
+  early: ' हवा दिन में बदलती है, इसलिए सुबह बाहर की गतिविधि से पहले AQI दोबारा देखें।',
   closing: {
     school:
       'यह सूचना विद्यालय कार्यालय की ओर से है और स्वास्थ्य मंत्रालय की वायु प्रदूषण संबंधी सलाह पर आधारित है। यह सामान्य जानकारी है, चिकित्सा सलाह नहीं। साँस फूलने, खाँसी या सीने में दर्द होने पर डॉक्टर को दिखाएँ।',
@@ -57,9 +64,9 @@ export const FRAME_HI: FrameText = {
 export const ACTIONS_HI_DAY = {
   'health-advice': {
     school:
-      '"{band}" हवा के लिए स्वास्थ्य सलाह। सभी विद्यार्थियों के लिए, और उन स्टाफ सदस्यों के लिए जो गर्भवती हैं, बुजुर्ग हैं या जिन्हें दिल या फेफड़ों की बीमारी है: {vuln}। बाकी स्टाफ के लिए: {gen}।',
+      '{band} हवा के लिए स्वास्थ्य सलाह। सभी विद्यार्थियों के लिए, और उन स्टाफ सदस्यों के लिए जो गर्भवती हैं, बुजुर्ग हैं या जिन्हें दिल या फेफड़ों की बीमारी है: {vuln}। बाकी स्टाफ के लिए: {gen}।',
     housing_society:
-      '"{band}" हवा के लिए स्वास्थ्य सलाह। बच्चों, बुजुर्गों, गर्भवती महिलाओं और दिल या फेफड़ों की बीमारी वाले लोगों के लिए: {vuln}। बाकी सभी के लिए: {gen}।',
+      '{band} हवा के लिए स्वास्थ्य सलाह। बच्चों, बुजुर्गों, गर्भवती महिलाओं और दिल या फेफड़ों की बीमारी वाले लोगों के लिए: {vuln}। बाकी सभी के लिए: {gen}।',
   },
   'normal-day': {
     school: 'आज प्रार्थना सभा, बाहर के पीरियड और खेल सामान्य रूप से हो सकते हैं।',

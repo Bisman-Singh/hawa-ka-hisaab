@@ -53,8 +53,18 @@ export function defineTool<A>(spec: ToolSpec<A>): ModelTool {
 }
 
 /**
+ * A request's share of model HTTP calls. take is called before each call and says whether it may go ahead; left
+ * is how many calls remain after the ones taken. The caller sets the size and charges its per-client limit here.
+ */
+export interface CallBudget {
+  readonly take: () => Promise<boolean>;
+  readonly left: () => number;
+}
+
+/**
  * One request to the model. The reply must parse with schema or the call fails as invalid_reply. deadline, in
- * epoch milliseconds, is when the caller stops waiting; the adapter ends the call by then or sooner.
+ * epoch milliseconds, is when the caller stops waiting; the adapter ends the call by then or sooner. budget, when
+ * set, is taken before every HTTP call, tool rounds and fallback models included; a refusal ends the request.
  */
 export interface ModelRequest<T> {
   readonly task: ModelTask;
@@ -64,6 +74,7 @@ export interface ModelRequest<T> {
   readonly schema: z.ZodType<T>;
   readonly tools: readonly ModelTool[];
   readonly deadline?: number;
+  readonly budget?: CallBudget;
 }
 
 /** A validated model reply with the raw text and the tool calls that led to it. */

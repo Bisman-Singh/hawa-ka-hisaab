@@ -95,11 +95,25 @@ export function formatEffect(effect: Effect): string {
   return `${size} ${word} CO2 a ${effect.per} for each person${vehicle}`;
 }
 
+/**
+ * For a move to other hours, the change at the new start itself. Its working lists the usual hours first and the
+ * new hours second, so the planned change is their ratio. Null for every other effect.
+ */
+export function plannedChange(effect: Effect): number | null {
+  if (effect.kind !== 'exposure' || !effect.working.factIds.includes('exposure-dose-method')) {
+    return null;
+  }
+  const [usual, moved] = effect.working.inputs;
+  return usual && moved && usual.value > 0 ? moved.value / usual.value - 1 : null;
+}
+
 /** Every number an effect shows, as shown, for the fact set the model may quote from. */
 export function displayNumbers(effect: Effect): number[] {
   if (effect.kind === 'exposure') {
     const { low, high } = effect.change;
-    return [low, high].flatMap((value) => [Math.abs(percentOf(value)), timesOf(value)]);
+    const planned = plannedChange(effect);
+    const values = planned === null ? [low, high] : [low, high, planned];
+    return values.flatMap((value) => [Math.abs(percentOf(value)), timesOf(value)]);
   }
   const range = effect.range ? [effect.range.low, effect.range.high] : [];
   return [...[effect.changeKg, ...range].map((kg) => Math.abs(roundKg(kg))), effect.occupancy];

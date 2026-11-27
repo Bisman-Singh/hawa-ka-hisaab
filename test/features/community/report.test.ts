@@ -39,7 +39,7 @@ describe('buildCommunityReport', () => {
       'generator-essential',
     ]);
     const move = report.wording.en.actions.find((line) => line.id === 'outdoor-move');
-    expect(move?.text).toContain('move outdoor activity at 08:50 to between 13:00 and 16:00');
+    expect(move?.text).toContain('move outdoor activity at 08:50 to the hours from 13:00 to 16:00');
     expect(report.facts.find((fact) => fact.unit === 'outdoor periods')?.value).toBe(1);
   });
 
@@ -57,6 +57,26 @@ describe('buildCommunityReport', () => {
     const blank = buildCommunityReport(context({ reading: stationReading(null) }));
     expect(blank.notice.en.lines[0]).toContain('CPCB published no AQI for the nearest station');
     expect(blank.band).toBeNull();
+  });
+
+  it('calls the reading the latest one with its hour, and asks for a morning check after a night reading', () => {
+    const day = buildCommunityReport(context({ reading: stationReading('poor') }));
+    expect(day.notice.en.lines[0]).toContain('the latest CPCB reading, for 06:00, is Poor');
+    expect(day.notice.en.lines[0]).not.toContain('check the AQI again in the morning');
+    const night = { ...stationReading('poor'), readingHour: '2026-11-26T04:00:00+05:30' };
+    const early = buildCommunityReport(context({ reading: night }));
+    expect(early.notice.en.lines[0]).toContain('check the AQI again in the morning before outdoor activity');
+    expect(early.notice.hi?.lines[0]).toContain('सुबह बाहर की गतिविधि से पहले AQI दोबारा देखें');
+    expect(early.notice.hi?.lines[0]).toContain('04:00 बजे की ताजा रीडिंग');
+    const estimate = modelledReading('poor');
+    const nightly =
+      estimate.path === 'modelled' ? { ...estimate, modelHour: '2026-11-26T03:00:00+05:30' } : estimate;
+    const modelled = buildCommunityReport(context({ reading: nightly }));
+    expect(modelled.notice.en.lines[0]).toContain('check the AQI again in the morning');
+    const none = buildCommunityReport(
+      context({ reading: { path: 'unavailable', reason: 'feed_and_model_down' } }),
+    );
+    expect(none.notice.en.lines[0]).not.toContain('in the morning');
   });
 
   it('says when the reading is stale', () => {

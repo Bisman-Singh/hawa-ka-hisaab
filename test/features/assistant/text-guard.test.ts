@@ -1,4 +1,4 @@
-// Tests for the prose checks: no markup, no hidden characters, and no names repeated from the person's text.
+// Tests for the prose checks: no markup, no links, no hidden characters, no names repeated from the person's text.
 import { describe, expect, it } from 'vitest';
 import { nameLikeWords, proseProblem, repeatsName } from '../../../src/features/assistant/text-guard.js';
 
@@ -19,12 +19,44 @@ describe('proseProblem', () => {
     expect(proseProblem(['fine', text])).toBe('markup');
   });
 
-  it.each(['AQI \u202E54\u202C', 'zero\u200Bwidth', 'bell\u0007', 'bom\uFEFF', 'mark\u200F'])(
-    'rejects hidden characters: %j',
-    (text) => {
-      expect(proseProblem([text])).toBe('hidden');
-    },
-  );
+  it.each([
+    'AQI \u202E54\u202C',
+    'zero\u200Bwidth',
+    'bell\u0007',
+    'bom\uFEFF',
+    'mark\u200F',
+    'join\u200Dlatin',
+    '4\u200C5',
+    '2\u034F5',
+    '\u0301alone',
+  ])('rejects hidden characters: %j', (text) => {
+    expect(proseProblem([text])).toBe('hidden');
+  });
+
+  it.each([
+    'Visit https://example.org/claim',
+    'ftp://files.example',
+    'See www.example.in',
+    'Mail me@example.in',
+    'Read cleanair.co today',
+    'Call 9876543210 now',
+    'Call 98765-43210 now',
+    'Call +91 9876543210',
+    'Call +44 20 7946 0958',
+    'Dial 1860-123-4567',
+  ])('rejects a link or contact detail: %s', (text) => {
+    expect(proseProblem([text])).toBe('link');
+  });
+
+  it('keeps figures, times, units and names that look a little like links', () => {
+    expect(
+      proseProblem([
+        'PM2.5 is 3.2 times, 07:45 to 08:30, 12,690 PINs, CaN99 and N95, CO₂ +140%.',
+        'Ends at 9 a.m., e.g. by bus. 14 km.In short, 112 is the number.',
+        'एक्यूआई 246 है। 1234567 people.',
+      ]),
+    ).toBeNull();
+  });
 });
 
 describe('nameLikeWords', () => {

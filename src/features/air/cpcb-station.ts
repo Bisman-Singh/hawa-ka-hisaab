@@ -4,6 +4,7 @@ import { z } from 'zod';
 import type { PollutantId } from '../naqi/types.js';
 import { stationRecordSchema } from './schemas.js';
 import type { StationPollutant, StationRecord } from './types.js';
+import { cleanName } from '../../lib/clean-text.js';
 
 const CPCB_POLLUTANTS = new Map<string, PollutantId>([
   ['PM2.5', 'pm25'],
@@ -72,7 +73,13 @@ export function stationRecord(state: string, city: string, raw: unknown): Statio
   const { id, lastupdate, latitude, longitude, Pollutant_Index, Air_Quality_Index } = node.data;
   const aqi = reading(Air_Quality_Index?.Value);
   const record = stationRecordSchema.safeParse({
-    station: { name: id, city, state, lat: reading(latitude), lon: reading(longitude) },
+    station: {
+      name: cleanName(id),
+      city: cleanName(city),
+      state: cleanName(state),
+      lat: reading(latitude),
+      lon: reading(longitude),
+    },
     aqiValue: aqi,
     predominant: aqi === null ? null : pollutantOf(Air_Quality_Index?.Predominant_Parameter),
     pollutants: pollutantRows(Pollutant_Index),

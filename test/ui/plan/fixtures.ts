@@ -20,7 +20,7 @@ import { whatIfContextOf } from '../../../src/features/planner/request-context.j
 import { rulesChoice, rulesPlan } from '../../../src/features/planner/rules-plan.js';
 import type { PlanResponse } from '../../../src/features/planner/types.js';
 import type { Travel } from '../../../src/features/household/types.js';
-import type { FallbackReason, Trace } from '../../../src/lib/types.js';
+import type { FallbackReason, Language, Trace } from '../../../src/lib/types.js';
 import { hourCurve, jnuStation } from '../../support/fake-air.js';
 import { planContext, sample, winterDay } from '../../support/plan-fixtures.js';
 
@@ -85,14 +85,21 @@ export function rulesTrace(reason: FallbackReason | null = 'disabled'): Trace {
 
 /**
  * Options for a plan fixture: the forecast the plan used, the trace to attach, the IST time the server planned
- * from, and whether the response carries the what-if context, as every response from the real route does.
+ * from, whether the response carries the what-if context, as every response from the real route does, and the
+ * language the rules write in.
  */
 export interface PlanOptions {
   readonly curve?: HourCurve | null;
+  readonly language?: Language;
   readonly trace?: Trace;
   readonly notBefore?: string;
   readonly withContext?: boolean;
 }
+
+const contextOptions = ({ notBefore, language = 'en' }: PlanOptions) => ({
+  notBefore: notBefore ?? null,
+  language,
+});
 
 /**
  * A rules plan for a sample household on the given band, made by the real planner, with the what-if context the
@@ -100,7 +107,7 @@ export interface PlanOptions {
  */
 export function planResponse(id: string, band: AqiBand | null, options: PlanOptions = {}): PlanResponse {
   const curve = options.curve === undefined ? FORECAST : options.curve;
-  const ctx = { ...planContext(sample(id), band, curve), notBefore: options.notBefore ?? null };
+  const ctx = { ...planContext(sample(id), band, curve), ...contextOptions(options) };
   const set = buildCandidates(ctx);
   return planResponseSchema.parse({
     plan: rulesPlan(ctx, set),

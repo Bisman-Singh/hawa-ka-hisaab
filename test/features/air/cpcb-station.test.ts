@@ -31,6 +31,14 @@ describe('stationRecord', () => {
     ]);
   });
 
+  it('cleans control, format and bidi characters out of names before anything shows or sends them', () => {
+    const [record] = stationRecord('State\u0007', 'Town\u200B', {
+      ...node,
+      id: 'Station \u202Eevil\u202C \u0007',
+    });
+    expect(record?.station).toMatchObject({ name: 'Station evil', city: 'Town', state: 'State' });
+  });
+
   it('gives nothing for a node that is not a station or a station with a blank name', () => {
     expect(stationRecord('State', 'Town', 'text')).toEqual([]);
     expect(stationRecord('State', 'Town', { ...node, id: '  ' })).toEqual([]);

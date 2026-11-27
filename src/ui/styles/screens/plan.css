@@ -82,7 +82,7 @@
 .ds-chart {
   position: relative;
   margin-top: var(--s-3);
-  padding-top: 1.5rem;
+  padding-top: 2.75rem;
 }
 
 .ds-bars,
@@ -159,7 +159,9 @@
   white-space: nowrap;
 }
 
+/* The window sits a row below the planned-at mark, so their labels never run into each other. */
 .ds-win {
+  top: 1.25rem;
   left: calc(var(--from) / var(--hours, 19) * 100%);
   width: calc((var(--to) - var(--from)) / var(--hours, 19) * 100%);
   border-bottom: var(--bw-ctl) solid var(--ink);
@@ -186,6 +188,7 @@
 }
 
 .ds-now {
+  height: 2.75rem;
   left: calc(var(--at) / var(--hours, 19) * 100%);
   font-weight: var(--w-mid);
   padding-left: var(--s-1);
@@ -218,8 +221,9 @@
   white-space: normal;
 }
 
+/* Words wrap whole and ids break at their hyphens; only a token too long for its cell breaks inside. */
 .made .facts td {
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 ul.cite {

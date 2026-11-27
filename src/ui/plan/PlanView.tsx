@@ -6,7 +6,6 @@ import type { AirResponse } from '../../features/air/types.js';
 import type { Household } from '../../features/household/types.js';
 import type { AirBasis } from '../../features/planner/types.js';
 import { activityName, capitalise } from '../../features/planner/text.js';
-import { describeMember } from '../../features/household/members.js';
 import { AskBox, AskOff } from '../ask/AskBox.js';
 import { ViewLink } from '../components/Navigation.js';
 import type { Query } from '../data/request.js';
@@ -20,6 +19,7 @@ import { Bulletin, LocalNote, ModelNote } from './PlanNotes.js';
 import { PlanSlots, Reckoning } from './PlanSlots.js';
 import { otherAir } from './air-basis.js';
 import { whatIfOf } from './plan-data.js';
+import { peopleLine } from './plan-words.js';
 import { NotReady } from './states.js';
 import { PLAN } from './strings.js';
 import { useDayPlan } from './useDayPlan.js';
@@ -51,7 +51,7 @@ export function Account({ household, air, basis }: AccountProps): ReactElement {
         <ul className="abstract">
           <li>
             <b>{PLAN.people}</b>
-            <span>{household.members.map(describeMember).join('; ')}</span>
+            <span>{peopleLine(household.members)}</span>
           </li>
           <li>
             <b>{PLAN.outings}</b>
@@ -91,7 +91,7 @@ function PlanReady({ day }: { readonly day: Extract<DayPlan, { status: 'ready' }
         {online ? null : <p className="small">{PLAN.offline}</p>}
         <ForecastStrip plan={plan} basis={airBasis} whatIf={whatIf} />
         <PlanSlots plan={plan} household={day.household} whatIf={whatIf} />
-        <Reckoning plan={plan} household={day.household} />
+        <Reckoning plan={plan} />
         {day.local ? (
           <AskOff />
         ) : (

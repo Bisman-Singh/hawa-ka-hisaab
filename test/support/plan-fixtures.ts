@@ -46,6 +46,27 @@ export function planTexts(plan: Plan): string[] {
   ];
 }
 
+/** Every worded text a reader of the plan sees: headline, items, toggles, indoor steps and pairs, no working. */
+export function readerTexts(plan: Plan): string[] {
+  const items = [...plan.slots.morning, ...plan.slots.afternoon, ...plan.slots.evening];
+  return [
+    plan.headline,
+    ...items.flatMap((item) => [
+      item.title,
+      item.why,
+      item.tradeOff ?? '',
+      ...item.whatIfs.map((w) => w.label),
+    ]),
+    ...plan.indoor.flatMap((step) => [step.title, step.detail]),
+    ...plan.alternatives.flatMap((alt) => [alt.instead, alt.doThis, alt.reason]),
+  ].filter((text) => text !== '');
+}
+
+/** The texts of a Hindi plan a reader sees that hold no Devanagari, which should be none. */
+export function notInHindi(plan: Plan): string[] {
+  return readerTexts(plan).filter((text) => !/[\u0900-\u097F]/u.test(text));
+}
+
 /** A plan context for the fixture date with the winter curve unless another curve is given. */
 export function planContext(
   household: Household,

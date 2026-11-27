@@ -1,7 +1,7 @@
 // The main journey on a phone: a PIN, the air card, a sample sentence read into the household, the plan for a
 // severe day, its working, a what-if, how it was made, and two questions. Axe and the page policy at every step.
 import { expect, test } from '@playwright/test';
-import { formatEffect } from '../src/features/ledger/format.js';
+import { effectDisplay } from '../src/features/ledger/display.js';
 import { SAMPLE_HOUSEHOLDS } from '../src/features/household/samples.js';
 import { planResponseSchema } from '../src/features/planner/contract.js';
 import { whatIfEffects } from '../src/features/planner/what-if.js';
@@ -27,7 +27,7 @@ function carpoolSum(api: ApiLog): string {
   if (co2 === undefined) {
     throw new Error('the carpool what-if has no CO2 effect');
   }
-  return formatEffect(co2);
+  return effectDisplay(co2).headline;
 }
 
 test('a family in Delhi plans a very poor day from a PIN and a sample sentence', async ({ page }) => {
@@ -78,11 +78,26 @@ test('a family in Delhi plans a very poor day from a PIN and a sample sentence',
     await expectClean(page, problems);
   });
 
+  await test.step('a range that could be a cut or a rise is headlined by its rise, with why it is wide', async () => {
+    const entry = page
+      .getByRole('listitem')
+      .filter({ has: page.getByRole('heading', { name: 'Office commute: take the bus' }) });
+    await expect(entry.locator('.fig', { hasText: 'Up to 2.4× as much' })).toBeVisible();
+    await expect(entry.locator('.range', { hasText: /^or 8% less/ })).toBeVisible();
+    await expect(
+      entry.getByText('Wide because a closed car with AC keeps out far more', { exact: false }),
+    ).toBeVisible();
+  });
+
   await test.step('open a working, then change a what-if and see the figure change', async () => {
     const entry = page
       .getByRole('listitem')
       .filter({ has: page.getByRole('heading', { name: 'Office commute: take the bus' }) });
     await entry.getByText('Show the working').click();
+    const links = await entry
+      .locator('.sheet a')
+      .evaluateAll((all) => all.map((a) => a.getAttribute('href')));
+    expect(new Set(links).size).toBe(links.length);
     await expect(entry.getByRole('heading', { name: 'Formula' }).first()).toBeVisible();
     await expect(entry.getByRole('link').first()).toHaveAttribute('href', /^https:/);
     const sum = carpoolSum(api);

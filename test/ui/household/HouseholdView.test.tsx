@@ -1,14 +1,16 @@
 // Tests for the household view: the typed text beside the form read from it, what was not placed and what was
-// assumed, the model-down path, samples to start from, and the saved household kept in this browser.
+// assumed with trip defaults, the model-down path, samples to start from, and the saved household kept here.
 import { screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { beforeEach, describe, expect, it } from 'vitest';
+import { withDefaults } from '../../../src/features/assistant/intake.js';
 import { SAMPLE_HOUSEHOLDS } from '../../../src/features/household/samples.js';
 import type { Household } from '../../../src/features/household/types.js';
 import { Announcer } from '../../../src/ui/hooks/announcer.js';
 import { HouseholdView } from '../../../src/ui/household/HouseholdView.js';
 import { markIntakeUsed, readIntake, setIntake } from '../../../src/ui/household/intake-store.js';
 import { loadState, saveState } from '../../../src/ui/storage.js';
+import { sample } from '../../support/plan-fixtures.js';
 import { sampleHousehold, sampleTrace } from '../../support/samples.js';
 import { axeViolations, renderInApp } from '../helpers.js';
 
@@ -62,6 +64,24 @@ describe('HouseholdView', () => {
     expect(loadState(window.localStorage).household).toEqual(sampleHousehold());
     expect(readIntake()?.used).toBe(true);
   }, 30_000);
+
+  it('lists the stated default for who rides in a driven car among what was assumed', () => {
+    const household = sample('family-car-asthma');
+    const activities = household.activities.map((activity) =>
+      activity.travel?.mode === 'car'
+        ? { ...activity, travel: { ...activity.travel, occupancy: null } }
+        : activity,
+    );
+    const reply = withDefaults({ household: { ...household, activities }, unplaced: [], assumed: [] });
+    setIntake({
+      text: 'I drive to the office.',
+      response: { outcome: 'parsed', ...reply, trace: sampleTrace() },
+    });
+    view();
+    const assumed = screen.getByRole('region', { name: 'Assumed' });
+    expect(assumed).toHaveTextContent(/1 person in the car for .+, counting only who was named for it\./);
+    expect(assumed).toHaveTextContent('Filled in where your text did not say');
+  });
 
   it('leaves out empty lists and starts from the saved household once the read one was used', () => {
     const saved: Household = {

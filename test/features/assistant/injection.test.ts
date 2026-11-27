@@ -82,6 +82,7 @@ function plan(why: string): Promise<Guarded<PlanWording>> {
   };
   const input: PlanWordingInput = {
     candidates: [candidate],
+    set: { actions: [candidate], indoor: [], alternatives: [] },
     facts: [{ id: 'aqi', label: 'AQI', value: 246, unit: '' }],
     times: ['16:00'],
     household: sampleHousehold(),
@@ -154,6 +155,7 @@ describe('with no key', () => {
       await runIntake(testRun(disabledModel), 'Two adults.'),
       await wordPlan(testRun(disabledModel), {
         candidates: [],
+        set: { actions: [], indoor: [], alternatives: [] },
         facts: [],
         times: [],
         household,

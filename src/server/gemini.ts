@@ -3,59 +3,38 @@
 import { randomUUID } from 'node:crypto';
 import { GoogleGenAI, type Content } from '@google/genai';
 import { MIN_MODEL_CALL_MS } from '../config/limits.js';
-import type { Clock } from '../lib/clock.js';
-import type { ModelFailure, ModelPort, ModelReply, ModelRequest } from '../lib/model.js';
-import type { RateLimiter } from '../lib/rate-limit.js';
+import type { ModelFailure, ModelPort, ModelReply } from '../lib/model.js';
 import { err, ok, type Result } from '../lib/result.js';
 import type { ToolCallRecord } from '../lib/types.js';
 import { classify, configFor, MAX_CALLS_PER_ROUND, MAX_TOOL_ROUNDS, miss } from './gemini-request.js';
 import { unreadable, withinTime, type Miss } from './gemini-request.js';
+import { blocked, lastRound, noteFailure, resting, type QuotaPauses } from './gemini-limits.js';
 import { callsIn, dataTurn, readReply, replyText, runToolCall, toolTurn } from './gemini-turns.js';
+import type { Call, GeminiOptions } from './gemini-types.js';
 
-/** A fetch function. Tests pass a scripted one; the runtime leaves it unset and the SDK uses the global fetch. */
-export type Fetch = typeof globalThis.fetch;
-
-/**
- * Settings for the adapter. models is the order to try. timeoutMs bounds a whole generate call, every round and
- * model included; attemptMs bounds one model's turn, so a model that hangs leaves time for the next one. callCap
- * is taken once per HTTP call to the model, which is what the daily cap counts.
- */
-export interface GeminiOptions {
-  readonly apiKey: string;
-  readonly models: readonly string[];
-  readonly timeoutMs: number;
-  readonly attemptMs: number;
-  readonly callCap: RateLimiter;
-  readonly clock: Clock;
-  readonly fetch?: Fetch | undefined;
-}
-
-interface Call<T> {
-  readonly client: GoogleGenAI;
-  readonly options: GeminiOptions;
-  readonly request: ModelRequest<T>;
-  readonly model: string;
-  readonly marker: string;
-  readonly deadline: number;
-}
+/** The adapter's settings and fetch type, for callers that build it. */
+export type { Fetch, GeminiOptions } from './gemini-types.js';
 
 async function send<T>(
   call: Call<T>,
   contents: readonly Content[],
-  finalRound: boolean,
+  round: number,
 ): Promise<Result<Content, Miss>> {
-  const timeoutMs = call.deadline - call.options.clock.now();
-  if (timeoutMs <= 0) {
-    return err(miss('timeout'));
-  }
-  if (!(await call.options.callCap.take('model-calls')).allowed) {
-    return err(miss('daily_cap'));
+  const { deadline, options, request } = call;
+  const stop = await blocked({
+    deadline,
+    clock: options.clock,
+    callCap: options.callCap,
+    budget: request.budget,
+  });
+  if (stop) {
+    return err(stop);
   }
   try {
-    const config = configFor({ request: call.request, marker: call.marker, finalRound });
-    const request = { model: call.model, contents: [...contents] };
-    const response = await withinTime(timeoutMs, (abortSignal) =>
-      call.client.models.generateContent({ ...request, config: { ...config, abortSignal } }),
+    const config = configFor({ request, marker: call.marker, finalRound: lastRound(request.budget, round) });
+    const body = { model: call.model, contents: [...contents] };
+    const response = await withinTime(deadline - options.clock.now(), (abortSignal) =>
+      call.client.models.generateContent({ ...body, config: { ...config, abortSignal } }),
     );
     const content = response.candidates?.[0]?.content;
     return content ? ok(content) : err(miss('invalid_reply'));
@@ -68,7 +47,7 @@ async function runModel<T>(call: Call<T>): Promise<Result<ModelReply<T>, Miss>> 
   const contents: Content[] = [dataTurn(call.request, call.marker)];
   const toolCalls: ToolCallRecord[] = [];
   for (let round = 0; round <= MAX_TOOL_ROUNDS; round += 1) {
-    const sent = await send(call, contents, round === MAX_TOOL_ROUNDS);
+    const sent = await send(call, contents, round);
     if (!sent.ok) {
       return sent;
     }
@@ -80,7 +59,7 @@ async function runModel<T>(call: Call<T>): Promise<Result<ModelReply<T>, Miss>> 
         ? ok({ value: reply.value, rawText, modelId: call.model, toolCalls })
         : err(unreadable(rawText, call.model));
     }
-    if (calls.length > MAX_CALLS_PER_ROUND || round === MAX_TOOL_ROUNDS) {
+    if (calls.length > MAX_CALLS_PER_ROUND || lastRound(call.request.budget, round)) {
       break;
     }
     const records = calls.map((functionCall) => runToolCall(call.request.tools, functionCall));
@@ -92,9 +71,14 @@ async function runModel<T>(call: Call<T>): Promise<Result<ModelReply<T>, Miss>> 
 
 async function generateInOrder<T>(
   base: Omit<Call<T>, 'model'>,
+  paused: QuotaPauses,
 ): Promise<Result<ModelReply<T>, ModelFailure>> {
   let failure: ModelFailure = { kind: base.options.models.length === 0 ? 'upstream' : 'timeout' };
-  for (const model of base.options.models) {
+  const awake = base.options.models.filter((model) => !resting(paused, model, base.options.clock.now()));
+  if (awake.length < base.options.models.length) {
+    failure = { kind: 'quota' };
+  }
+  for (const model of awake) {
     const now = base.options.clock.now();
     if (base.deadline - now < MIN_MODEL_CALL_MS) {
       break;
@@ -106,6 +90,7 @@ async function generateInOrder<T>(
     }
     const { next, ...kept } = result.error;
     failure = kept;
+    noteFailure(paused, { model, kind: kept.kind, now });
     if (!next && kept.kind !== 'timeout') {
       break;
     }
@@ -116,9 +101,12 @@ async function generateInOrder<T>(
 /**
  * Builds the Gemini port. The key goes only to the SDK, which sends it as a header. Nothing here logs. A quota,
  * overload, missing model, server error or a model's own time running out moves to the next model while enough
- * time is left; any other failure ends the call. A call ends by its own limit or the request's deadline.
+ * time is left; any other failure ends the call. A call ends by its own limit or the request's deadline. A model
+ * that answered with a quota error rests for a minute. A request's budget is taken before every HTTP
+ * call, and the round that spends its last call may not call tools.
  */
 export function createGeminiModel(options: GeminiOptions): ModelPort {
+  const paused: QuotaPauses = new Map();
   const client = new GoogleGenAI({
     apiKey: options.apiKey,
     httpOptions: options.fetch ? { fetch: options.fetch } : {},
@@ -126,12 +114,15 @@ export function createGeminiModel(options: GeminiOptions): ModelPort {
   return {
     modelId: options.models[0] ?? null,
     generate: (request) =>
-      generateInOrder({
-        client,
-        options,
-        request,
-        marker: randomUUID(),
-        deadline: Math.min(options.clock.now() + options.timeoutMs, request.deadline ?? Infinity),
-      }),
+      generateInOrder(
+        {
+          client,
+          options,
+          request,
+          marker: randomUUID(),
+          deadline: Math.min(options.clock.now() + options.timeoutMs, request.deadline ?? Infinity),
+        },
+        paused,
+      ),
   };
 }

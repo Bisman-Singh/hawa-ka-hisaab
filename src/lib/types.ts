@@ -4,7 +4,7 @@ import type { apiErrorBodySchema, apiErrorCodeSchema } from './api-error.js';
 import type { healthResponseSchema } from './health.js';
 import type { languageSchema, rangeSchema } from './schemas/common.js';
 import type { factSchema, factValueSchema, sourceSchema } from './schemas/facts.js';
-import type { fallbackReasonSchema, modelFailureKindSchema } from './schemas/trace.js';
+import type { fallbackReasonSchema, guardCheckSchema, modelFailureKindSchema } from './schemas/trace.js';
 import type { numberCheckSchema, toolCallSchema, traceSchema } from './schemas/trace.js';
 
 /** A language code for generated text. */
@@ -27,6 +27,9 @@ export type ModelFailureKind = z.infer<typeof modelFailureKindSchema>;
 
 /** Why the rules path was used. */
 export type FallbackReason = z.infer<typeof fallbackReasonSchema>;
+
+/** The check that refused a model reply. */
+export type GuardCheck = z.infer<typeof guardCheckSchema>;
 
 /** One recorded calculator call. */
 export type ToolCallRecord = z.infer<typeof toolCallSchema>;

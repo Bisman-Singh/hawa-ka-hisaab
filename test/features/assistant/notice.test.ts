@@ -36,9 +36,10 @@ describe('wordNotice', () => {
     const { model, result } = run([reply()]);
     const checked = await result;
     expect(checked.kind).toBe('checked');
-    const { deadline, ...sent } = model.requests[0] ?? { deadline: null };
+    const { deadline, budget, ...sent } = model.requests[0] ?? { deadline: null, budget: null };
     expect(sent).toEqual(noticeModelRequest(report));
     expect(typeof deadline).toBe('number');
+    expect(budget?.left()).toBeGreaterThan(0);
     expect(checked.trace.factsSent).toEqual(report.factSet);
   });
 

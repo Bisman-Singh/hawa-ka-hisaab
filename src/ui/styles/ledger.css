@@ -168,6 +168,11 @@
   font-size: var(--t-16);
 }
 
+/* The label keeps its line, so a long range or basis line wraps under the figure instead. */
+.sums dt {
+  white-space: nowrap;
+}
+
 .sums > div:has(.none) {
   display: block;
 }

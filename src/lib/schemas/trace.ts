@@ -20,6 +20,32 @@ export const modelFailureKindSchema = z.enum([
 /** Why the rules path was used instead of the model. */
 export const fallbackReasonSchema = z.union([modelFailureKindSchema, z.literal('number_check_failed')]);
 
+/**
+ * The check that refused a model reply: its JSON shape, markup, hidden characters, a third script, a link, a
+ * number not supplied, a misquote, a medicine or treatment, or a task rule such as an unknown candidate id.
+ */
+export const guardCheckSchema = z.enum([
+  'schema',
+  'markup',
+  'hidden',
+  'script',
+  'link',
+  'numbers',
+  'quotes',
+  'medicine',
+  'treatment',
+  'unplaced',
+  'name',
+  'label',
+  'measure',
+  'ids',
+  'one_place',
+  'actions_changed',
+  'wrong_script',
+  'numbers_dropped',
+  'too_long',
+]);
+
 /** One calculator call the model made, with validated arguments and what the calculator returned. */
 export const toolCallSchema = z.strictObject({
   name: z.string().min(1).max(64),
@@ -41,6 +67,8 @@ export const numberCheckSchema = z.strictObject({
 /**
  * How an output was made: by the model, by the rules fallback or as a fixed reply written in code. cached is true
  * when a checked model reply to an identical request was reused from the last few minutes instead of a new call.
+ * refusedBy names the check that refused the model's last reply; a refused reply's text is never carried, so
+ * modelReply is null then, and what was refused is told only by the check and the unmatched numbers.
  */
 export const traceSchema = z.strictObject({
   producedBy: z.enum(['model', 'rules', 'fixed_reply']),
@@ -51,4 +79,5 @@ export const traceSchema = z.strictObject({
   toolCalls: z.array(toolCallSchema).max(20),
   numberCheck: numberCheckSchema,
   cached: z.boolean().optional(),
+  refusedBy: guardCheckSchema.optional(),
 });

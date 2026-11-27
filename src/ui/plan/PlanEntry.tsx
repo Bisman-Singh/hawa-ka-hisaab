@@ -10,18 +10,11 @@ import type { Language } from '../../lib/types.js';
 import { LedgerEntry } from '../components/Ledger.js';
 import { Segmented } from '../components/Segmented.js';
 import { useAnnounce } from '../hooks/announcer.js';
-import { langOf } from '../i18n/lang.js';
 import { Workings } from '../trace/Working.js';
-import {
-  fixityOf,
-  rowsOf,
-  sumsOf,
-  sumsSentence,
-  usableToggles,
-  whatIfEffectsOf,
-  whoLine,
-} from './plan-data.js';
-import { PLAN } from './strings.js';
+import { notesOf, rowsOf, sumsOf, sumsSentence, usableToggles, whatIfEffectsOf } from './plan-data.js';
+import type { Sum } from './plan-data.js';
+import { fixityOf, whoLine } from './plan-words.js';
+import { PLAN_LABELS } from './labels.js';
 
 /** Props of a plan item entry: the item, the household and plan context it was made from, and its language. */
 export interface ItemEntryProps {
@@ -33,16 +26,19 @@ export interface ItemEntryProps {
 
 const PLANNED = 'planned';
 
-/** What sits below an item: the trade-off, the what-if choice, a note on missing toggles and the working. */
+/** What sits below an item: the trade-off, why a range is wide, the what-if choice, a note and the working. */
 interface More {
   readonly item: PlanItem;
   readonly language: Language;
   readonly choice: ReactElement | null;
   readonly hidden: boolean;
   readonly effects: readonly Effect[];
+  readonly sums: readonly Sum[];
 }
 
-function moreOf({ item, language, choice, hidden, effects }: More): ReactNode {
+function moreOf({ item, language, choice, hidden, effects, sums }: More): ReactNode {
+  const words = PLAN_LABELS[language];
+  const notes = notesOf(sums);
   if (item.tradeOff === null && choice === null && effects.length === 0) {
     return undefined;
   }
@@ -50,12 +46,17 @@ function moreOf({ item, language, choice, hidden, effects }: More): ReactNode {
     <>
       {item.tradeOff === null ? null : (
         <p className="tradeoff">
-          <span className="lbl">{PLAN.tradeOff}</span> <span {...langOf(language)}>{item.tradeOff}</span>
+          <span className="lbl">{words.tradeOff}</span> {item.tradeOff}
         </p>
       )}
+      {notes.map((note) => (
+        <p key={note} className="small">
+          {note}
+        </p>
+      ))}
       {choice}
-      {hidden ? <p className="small">{PLAN.whatIfNeedsForecast}</p> : null}
-      <Workings workings={effects} />
+      {hidden ? <p className="small">{words.whatIfNeedsForecast}</p> : null}
+      <Workings workings={effects} summary={words.working} />
     </>
   );
 }
@@ -64,6 +65,7 @@ function moreOf({ item, language, choice, hidden, effects }: More): ReactNode {
 export function ItemEntry({ item, household, ctx, language }: ItemEntryProps): ReactElement {
   const [choice, setChoice] = useState(PLANNED);
   const announce = useAnnounce();
+  const words = PLAN_LABELS[language];
   const toggles = usableToggles(ctx, item);
   const effectsFor = (id: string): Effect[] => {
     const toggle = toggles.find((found) => found.id === id);
@@ -71,28 +73,30 @@ export function ItemEntry({ item, household, ctx, language }: ItemEntryProps): R
   };
   const mild = item.kind === 'reassure';
   const effects = effectsFor(choice);
+  const sums = sumsOf(effects, mild, language);
   const choose = (id: string): void => {
     setChoice(id);
-    const label = toggles.find((found) => found.id === id)?.label ?? PLAN.asPlanned;
-    announce(`${label}. ${sumsSentence(sumsOf(effectsFor(id), mild))}`);
+    const label = toggles.find((found) => found.id === id)?.label ?? words.asPlanned;
+    announce(`${label}. ${sumsSentence(sumsOf(effectsFor(id), mild, language))}`);
   };
   const options = [
-    { value: PLANNED, label: PLAN.asPlanned },
+    { value: PLANNED, label: words.asPlanned },
     ...toggles.map((t) => ({ value: t.id, label: t.label })),
   ];
-  const segmented = <Segmented legend={PLAN.whatIf} options={options} value={choice} onChange={choose} />;
+  const segmented = <Segmented legend={words.whatIf} options={options} value={choice} onChange={choose} />;
   const hidden = toggles.length < item.whatIfs.length;
+  const more = { item, language, choice: toggles.length === 0 ? null : segmented, hidden, effects, sums };
   return (
     <LedgerEntry
       time={item.start ?? ''}
-      fixity={fixityOf(household, item)}
-      title={<span {...langOf(language)}>{item.title}</span>}
-      who={whoLine(household, item)}
-      sums={rowsOf(sumsOf(effects, mild))}
-      more={moreOf({ item, language, choice: toggles.length === 0 ? null : segmented, hidden, effects })}
+      fixity={fixityOf(household, item, language)}
+      title={item.title}
+      who={whoLine(household, item, language)}
+      sums={rowsOf(sums)}
+      more={moreOf(more)}
     >
       <p className="why">
-        <span className="lbl">{PLAN.why}</span> <span {...langOf(language)}>{item.why}</span>
+        <span className="lbl">{words.why}</span> {item.why}
       </p>
     </LedgerEntry>
   );

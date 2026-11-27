@@ -2,6 +2,7 @@
 // with figures where a factor backs them and the reason alone where none does, the states before a plan, and axe.
 import { screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
+import { effectDisplay } from '../../../src/features/ledger/display.js';
 import { formatFigure } from '../../../src/features/ledger/format.js';
 import { Announcer } from '../../../src/ui/hooks/announcer.js';
 import { IndoorView } from '../../../src/ui/indoor/IndoorView.js';
@@ -40,7 +41,10 @@ describe('IndoorView', () => {
     expect(screen.getAllByText('No measured figure for this step.')).not.toHaveLength(0);
     const swaps = within(need(container.querySelector('ol.swap')));
     expect(swaps.getAllByText('Reason only. There is no measured figure for this swap.')).toHaveLength(2);
-    expect(swaps.getAllByText(/kg (less|more) CO2/)).not.toHaveLength(0);
+    const priced = need(response.plan.alternatives.find((swap) => swap.effect !== null)?.effect);
+    const shown = effectDisplay(priced);
+    expect(swaps.getAllByText(shown.headline)).not.toHaveLength(0);
+    expect(swaps.getAllByText(shown.detail)).not.toHaveLength(0);
     expect(await axeViolations(container)).toEqual([]);
   }, 30_000);
 

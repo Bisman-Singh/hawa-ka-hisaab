@@ -1,0 +1,41 @@
+{
+  "kind": {
+    "commute": "आना-जाना",
+    "school_run": "स्कूल आना-जाना",
+    "outdoor_exercise": "बाहर की कसरत",
+    "outdoor_play": "बाहर का खेल",
+    "outdoor_work": "बाहर का काम",
+    "errand": "बाहर जाने का काम",
+    "social": "बाहर घूमना",
+    "other": "यह काम"
+  },
+  "mode": {
+    "walk": "पैदल",
+    "cycle": "साइकिल से",
+    "bus": "बस से",
+    "metro": "मेट्रो से",
+    "suburban_rail": "लोकल ट्रेन से",
+    "auto_rickshaw": "ऑटो से",
+    "two_wheeler": "दोपहिया से",
+    "car": "कार से",
+    "taxi": "टैक्सी से",
+    "school_bus": "स्कूल बस से"
+  },
+  "fuel": {
+    "biomass": "लकड़ी या दूसरे बायोमास",
+    "coal": "कोयले",
+    "kerosene": "केरोसिन"
+  },
+  "room": {
+    "bedroom": "सोने के कमरे",
+    "living": "बैठक",
+    "kitchen": "रसोई",
+    "study": "पढ़ाई के कमरे",
+    "other": "कमरे"
+  },
+  "slot": {
+    "morning": "सुबह",
+    "afternoon": "दोपहर",
+    "evening": "शाम"
+  }
+}

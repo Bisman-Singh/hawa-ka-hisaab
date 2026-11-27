@@ -2,7 +2,7 @@
 import { findFact } from '../../config/facts/index.js';
 import type { FactValue } from '../../lib/types.js';
 import { displayNumbers, displayValue, figureValue, minutesOf } from '../ledger/format.js';
-import type { Effect, Figure } from '../ledger/types.js';
+import type { Effect, Figure, WorkingInput } from '../ledger/types.js';
 
 const NUMERAL = /\d+(?:\.\d+)?/g;
 
@@ -43,24 +43,30 @@ export function clock(id: string, label: string, time: string): FactValue[] {
   );
 }
 
-/** The numbers an effect shows and its working inputs, as displayed. */
-export function shown(id: string, effect: Effect): FactValue[] {
-  return [
-    ...displayNumbers(effect).map((amount) => value({ id, label: `Shown figure for ${id}` }, amount)),
-    ...effect.working.inputs.map((input) =>
-      value({ id, label: input.label, unit: input.unit }, displayValue(input)),
-    ),
-  ];
+/**
+ * Working inputs as the model may quote them. Forecast concentrations are left out: prose speaks of the change
+ * the forecast gives, and the modelled values stay in the working, one tap away.
+ */
+function quotable(id: string, inputs: readonly WorkingInput[]): FactValue[] {
+  return inputs
+    .filter((input) => input.from !== 'forecast')
+    .map((input) => value({ id, label: input.label, unit: input.unit }, displayValue(input)));
 }
 
-/** The numbers a computed figure shows, signed and unsigned, and its working inputs. */
+/**
+ * The numbers an effect shows, as displayed. Its working inputs stay in the working: the factors are in the facts
+ * the item cites and the household's own values are sent once, so the model quotes the effect, not the sums.
+ */
+export function shown(id: string, effect: Effect): FactValue[] {
+  return displayNumbers(effect).map((amount) => value({ id, label: `Shown figure for ${id}` }, amount));
+}
+
+/** The numbers a computed figure shows, signed and unsigned, and its quotable working inputs. */
 export function figure(id: string, found: Figure): FactValue[] {
   const rounded = figureValue(found);
   return [
     value({ id, label: found.label, unit: found.unit }, rounded),
     value({ id, label: found.label, unit: found.unit }, Math.abs(rounded)),
-    ...found.working.inputs.map((input) =>
-      value({ id, label: input.label, unit: input.unit }, displayValue(input)),
-    ),
+    ...quotable(id, found.working.inputs),
   ];
 }

@@ -1,7 +1,12 @@
 // Tests for intake: the household parse passes only when unplaced phrases are copied, no name is repeated and no
 // measure is guessed, and every number in labels and notes comes from the text or the household returned.
 import { describe, expect, it } from 'vitest';
-import { guessedMeasure, runIntake, type IntakeReply } from '../../../src/features/assistant/intake.js';
+import {
+  guessedMeasure,
+  runIntake,
+  withDefaults,
+  type IntakeReply,
+} from '../../../src/features/assistant/intake.js';
 import type { Household } from '../../../src/features/household/types.js';
 import { createFakeModel } from '../../support/fake-model.js';
 import { testRun } from '../../support/model-run.js';
@@ -108,5 +113,16 @@ describe('guessedMeasure', () => {
     expect(guessedMeasure({ ...household, home: { ...household.home, rooms } }, stated)).toBe(true);
     const cadr = household.home.rooms.map((room) => ({ ...room, purifier: { cadrM3PerHour: 300 } }));
     expect(guessedMeasure({ ...household, home: { ...household.home, rooms: cadr } }, stated)).toBe(true);
+  });
+});
+
+describe('withDefaults', () => {
+  it('fills the riders of a driven trip with no count after the checks, and says so in what was assumed', async () => {
+    const model = createFakeModel([{ reply: reply({ household: withTrip(14, null) }) }]);
+    const result = await runIntake(testRun(model), TEXT);
+    const value = result.kind === 'checked' ? result.value : null;
+    expect(value?.household.activities[0]?.travel?.occupancy).toBe(1);
+    expect(value?.assumed.at(-1)).toMatch(/^1 person in the car for .*Change it if others ride along\.$/);
+    expect(withDefaults(reply({ household: withTrip(14, 2) })).assumed).toEqual([]);
   });
 });

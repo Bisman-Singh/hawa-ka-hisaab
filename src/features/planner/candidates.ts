@@ -4,7 +4,7 @@ import { activityActions } from './activity-actions.js';
 import { alternativesFor } from './alternatives.js';
 import { situationOf, type CandidateSet, type PlanContext, type Situation } from './context.js';
 import { indoorSteps } from './indoor.js';
-import { swapAction } from './travel.js';
+import { swapAction } from './swap.js';
 import type { CandidateAction } from './types.js';
 
 function afterMove(household: Household, top: CandidateAction | undefined): Household {

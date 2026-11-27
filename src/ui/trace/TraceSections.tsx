@@ -1,11 +1,14 @@
-// The parts of the "how this was made" sheet, built from the trace of an answer: who wrote it and whether it was
-// reused, the number check, the facts sent, the model's raw reply as plain text and the calculator calls.
+// The parts of the "how this was made" sheet from an answer's trace: who wrote it and whether it was reused, the
+// number check, the facts sent, the reply used as plain text or why one was refused, and the calculator calls.
 import { useId } from 'react';
 import type { ReactElement, ReactNode } from 'react';
-import type { ToolCallRecord, Trace } from '../../lib/types.js';
-import { Disclosure } from '../components/Disclosure.js';
+import type { GuardCheck, ToolCallRecord, Trace } from '../../lib/types.js';
 import { WrittenBy } from '../components/WrittenBy.js';
-import { CALL_FAILURE, CHECK, FALLBACK, MADE_BY, TRACE } from './strings.js';
+import { FactsTable } from './FactsTable.js';
+import { CALL_FAILURE, CHECK, FALLBACK, MADE_BY, refusalText, TRACE } from './strings.js';
+
+/** Reasons the model was never asked, so the facts made for it were not sent. */
+const NOT_ASKED: ReadonlySet<Trace['fallbackReason']> = new Set(['disabled', 'rate_limited', 'daily_cap']);
 
 function Part({ title, children }: { readonly title: string; readonly children: ReactNode }): ReactElement {
   const id = useId();
@@ -30,52 +33,31 @@ export function CallLine({ call }: { readonly call: ToolCallRecord }): ReactElem
   );
 }
 
-function FactsTable({ trace }: { readonly trace: Trace }): ReactElement {
-  if (trace.factsSent.length === 0) {
-    return <p>{TRACE.noFacts}</p>;
-  }
+function Refusal({ check, trace }: { readonly check: GuardCheck; readonly trace: Trace }): ReactElement {
+  const { unmatched } = trace.numberCheck;
   return (
-    <table className="facts">
-      <caption className="vh">{TRACE.factsCaption}</caption>
-      <thead>
-        <tr>
-          <th scope="col">{TRACE.factsHead.label}</th>
-          <th scope="col">{TRACE.factsHead.value}</th>
-          <th scope="col">{TRACE.factsHead.id}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {trace.factsSent.map((fact, index) => (
-          <tr key={index}>
-            <td>{fact.label}</td>
-            <td className="num">{`${String(fact.value)} ${fact.unit}`}</td>
-            <td>{fact.id}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <>
+      <p className="check">{refusalText(check)}</p>
+      {check === 'numbers' && unmatched.length > 0 ? (
+        <p>{`${TRACE.unmatched} ${unmatched.join(', ')}`}</p>
+      ) : null}
+      <p className="small">{TRACE.refusedNote}</p>
+    </>
   );
 }
 
 /**
- * The model's reply. A reply the checks refused is never shown as an answer: it is titled as refused, says why, and
- * sits closed behind its own disclosure. An absent or masked reply is just text, so neither can break the sheet.
+ * The model's reply. Only a reply the app used is shown, as plain text. A reply a check refused is never kept: the
+ * part says so, names the check, and for the number check lists the numbers that matched nothing.
  */
 export function Reply({ trace }: { readonly trace: Trace }): ReactElement {
-  const refused = trace.producedBy === 'rules' && trace.modelReply !== null;
-  const reason = trace.fallbackReason;
+  const check = trace.refusedBy;
+  const shown = trace.producedBy === 'model' ? trace.modelReply : null;
   return (
-    <Part title={refused ? TRACE.refused : TRACE.reply}>
-      {trace.modelReply === null ? <p>{TRACE.noReply}</p> : null}
-      {refused ? (
-        <>
-          <p className="check">{`${TRACE.refusedWhy} ${reason === null ? '' : FALLBACK[reason]}`}</p>
-          <Disclosure summary={TRACE.refusedShow}>
-            <pre className="raw">{trace.modelReply}</pre>
-          </Disclosure>
-        </>
-      ) : null}
-      {trace.modelReply !== null && !refused ? <pre className="raw">{trace.modelReply}</pre> : null}
+    <Part title={check === undefined ? TRACE.reply : TRACE.refused}>
+      {check === undefined ? null : <Refusal check={check} trace={trace} />}
+      {shown === null && check === undefined ? <p>{TRACE.noReply}</p> : null}
+      {shown === null ? null : <pre className="raw">{shown}</pre>}
       <p className="small">{TRACE.replyNote}</p>
     </Part>
   );
@@ -93,7 +75,9 @@ export function TraceSections({ trace }: { readonly trace: Trace }): ReactElemen
         </p>
         <p>{MADE_BY[trace.producedBy]}</p>
         {trace.cached === true ? <p>{TRACE.cached}</p> : null}
-        {trace.fallbackReason === null ? null : <p>{FALLBACK[trace.fallbackReason]}</p>}
+        {trace.fallbackReason === null || trace.refusedBy !== undefined ? null : (
+          <p>{FALLBACK[trace.fallbackReason]}</p>
+        )}
       </Part>
       <Part title={TRACE.check}>
         <p className="check">{CHECK[numberCheck.status]}</p>
@@ -102,7 +86,7 @@ export function TraceSections({ trace }: { readonly trace: Trace }): ReactElemen
         )}
         <p className="small">{TRACE.checkNote}</p>
       </Part>
-      <Part title={TRACE.facts}>
+      <Part title={NOT_ASKED.has(trace.fallbackReason) ? TRACE.factsNotSent : TRACE.facts}>
         <FactsTable trace={trace} />
       </Part>
       <Reply trace={trace} />

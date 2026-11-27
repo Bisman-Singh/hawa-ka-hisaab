@@ -39,7 +39,7 @@ describe('PlanView and the model choice', () => {
     expect(calls(fetcher)).not.toContain('/api/plan');
     expect(await axeViolations(container)).toEqual([]);
     await userEvent.click(screen.getByRole('button', { name: CONSENT.use }));
-    expect(await screen.findByText('Move walk in the park to 14:00')).toBeInTheDocument();
+    expect(await screen.findByText('Walk in the park: go at 14:00 instead of 07:00')).toBeInTheDocument();
     expect(calls(fetcher)).toContain('/api/plan');
   }, 30_000);
 

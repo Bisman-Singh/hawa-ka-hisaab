@@ -43,7 +43,8 @@ export const HOUSEHOLD = {
   unplaced: 'Not placed',
   unplacedNote: 'Parts of your text the model could not put in a field. Add them by hand if they matter.',
   assumed: 'Assumed',
-  assumedNote: 'What the model filled in that your text did not say. Check these fields.',
+  assumedNote:
+    'Filled in where your text did not say, by the model or by a stated default for who rides along. Check these fields.',
   usesForm: 'The plan uses the form, not your text. You can fill or change every field by hand.',
   startFrom: 'Or start from a sample',
   useSample: 'Use this sample',

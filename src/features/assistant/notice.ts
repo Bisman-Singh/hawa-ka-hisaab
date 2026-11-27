@@ -12,10 +12,12 @@ const textsOf = (wording: NoticeWording): string[] => [
 /**
  * Words the notice in both languages. The reply may repeat numbers from the fact set and from the rules wording,
  * whose every number is in the fact set. A reply the community checks refuse is retried once with the reason.
+ * names are upstream names, such as the station's, whose digits count only as part of the whole name.
  */
 export function wordNotice(
   run: ModelRun<NoticeReply>,
   report: CommunityReport,
+  names: readonly string[] = [],
 ): Promise<Guarded<NoticeReply>> {
   return runGuarded(run, {
     request: noticeModelRequest(report),
@@ -25,5 +27,6 @@ export function wordNotice(
       const accepted = acceptNoticeReply(report, reply);
       return accepted.ok ? null : accepted.error;
     },
+    names,
   });
 }

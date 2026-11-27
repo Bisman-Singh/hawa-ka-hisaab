@@ -37,7 +37,7 @@ export const whatIfSchema = z.strictObject({
   factIds: factIds.min(1),
 });
 
-/** English template text written in code. It is used as is on the rules path. */
+/** Template text written in code in the plan's language, English or Hindi. It is used as is on the rules path. */
 export const actionTextSchema = z.strictObject({
   title: boundedText(120),
   why: boundedText(400),
@@ -97,8 +97,8 @@ const slotsSchema = z.strictObject({
 
 /**
  * The whole plan for one day. dayKind must match the band, and is unknown when the band is. A mild day carries
- * no restricting items. language is the language of the worded fields; labels, formulas and units written in
- * code are English, and on the rules path the whole plan is English.
+ * no restricting items. language is the language of every worded field, model or rules: titles, reasons, steps,
+ * pairs and toggle labels. Working labels, formulas and units are always English.
  */
 export const planSchema = z
   .strictObject({

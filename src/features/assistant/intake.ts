@@ -2,6 +2,7 @@
 // phrases are copied exactly, that labels carry no names or numbers, and that no measure is guessed.
 import type { z } from 'zod';
 import { intakeReplySchema } from '../household/contract.js';
+import { withTripDefaults } from '../household/trip-defaults.js';
 import type { Household } from '../household/types.js';
 import { runGuarded, type Guarded, type ModelRun } from './guarded.js';
 import { INTAKE_INSTRUCTIONS, type GuardProblem } from './instructions.js';
@@ -57,12 +58,21 @@ function intakeProblem(reply: IntakeReply, text: string): GuardProblem | null {
   return guessedMeasure(reply.household, stated) ? 'measure' : null;
 }
 
+const MAX_NOTES = 10;
+
+/** A checked reply with the disclosed trip defaults filled in and noted among what was assumed. */
+export function withDefaults(reply: IntakeReply): IntakeReply {
+  const filled = withTripDefaults(reply.household, MAX_NOTES - reply.assumed.length);
+  return { ...reply, household: filled.household, assumed: [...reply.assumed, ...filled.notes] };
+}
+
 /**
  * Turns the person's text into a household. Labels and notes may only repeat numbers from the text or from the
- * household returned, which the person sees and can edit.
+ * household returned, which the person sees and can edit. A driven trip with no rider count gets the disclosed
+ * default after the checks, written in code.
  */
-export function runIntake(run: ModelRun<IntakeReply>, text: string): Promise<Guarded<IntakeReply>> {
-  return runGuarded(run, {
+export async function runIntake(run: ModelRun<IntakeReply>, text: string): Promise<Guarded<IntakeReply>> {
+  const guarded = await runGuarded(run, {
     request: {
       task: 'intake',
       instructions: INTAKE_INSTRUCTIONS,
@@ -75,4 +85,5 @@ export function runIntake(run: ModelRun<IntakeReply>, text: string): Promise<Gua
     prose: (reply) => [...labelsOf(reply), ...reply.assumed],
     check: (reply) => intakeProblem(reply, text),
   });
+  return guarded.kind === 'checked' ? { ...guarded, value: withDefaults(guarded.value) } : guarded;
 }
