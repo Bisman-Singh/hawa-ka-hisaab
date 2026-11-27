@@ -2,7 +2,8 @@
 import type { ReactElement } from 'react';
 import { clockOf } from '../../lib/time.js';
 import type { FactValue, Trace } from '../../lib/types.js';
-import { TRACE } from './words.js';
+import { amountText } from '../components/words.js';
+import { factsWereSent, TRACE } from './words.js';
 
 /** A fact sent as the table shows it: its label, its value with the unit, and its id. */
 export interface FactRow {
@@ -27,6 +28,13 @@ function joins({ first, rest }: Group, fact: FactValue): boolean {
   );
 }
 
+function unitValue(first: FactValue, rest: readonly FactValue[], values: string): string {
+  if (first.unit === 'name') {
+    return values;
+  }
+  return rest.length === 0 ? amountText(first.value, first.unit) : `${values} ${first.unit}`;
+}
+
 function rowOf({ first, rest }: Group): FactRow {
   const last = rest.at(-1);
   if (last !== undefined && rest.length === PARTS[first.unit]) {
@@ -39,7 +47,7 @@ function rowOf({ first, rest }: Group): FactRow {
   const values = [first, ...rest].map((fact) => String(fact.value)).join(', ');
   return {
     label: first.label,
-    value: first.unit === 'name' ? values : `${values} ${first.unit}`,
+    value: unitValue(first, rest, values),
     id: first.id,
   };
 }
@@ -68,7 +76,7 @@ export function FactsTable({ trace }: { readonly trace: Trace }): ReactElement {
   }
   return (
     <table className="facts">
-      <caption className="vh">{TRACE.factsCaption}</caption>
+      <caption className="vh">{factsWereSent(trace) ? TRACE.factsCaption : TRACE.factsMadeCaption}</caption>
       <thead>
         <tr>
           <th scope="col">{TRACE.factsHead.label}</th>

@@ -6,7 +6,7 @@ import { err, ok, type Result } from './result.js';
 import type { FactValue, ModelFailureKind, ToolCallRecord } from './types.js';
 
 /** The jobs the model may be given. Arithmetic and facts are never among them. */
-export type ModelTask = 'intake' | 'plan' | 'ask' | 'notice' | 'translate';
+export type ModelTask = 'intake' | 'plan' | 'ask' | 'notice';
 
 /** Why a tool call gave no result: no such tool, arguments that failed the schema, or a calculator that failed. */
 export type ToolFailure = 'unknown_tool' | 'invalid_arguments' | 'failed';

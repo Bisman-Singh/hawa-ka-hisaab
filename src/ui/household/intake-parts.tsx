@@ -3,6 +3,7 @@
 import { Button } from '../components/Button.js';
 import { type ReactElement, useId } from 'react';
 import { SAMPLE_HOUSEHOLDS, type SampleHousehold } from '../../features/household/samples.js';
+import { fill } from '../../lib/template.js';
 import { calling } from '../handlers.js';
 import { charsText, INTAKE } from './words.js';
 
@@ -16,7 +17,7 @@ export interface IntakeTextProps {
 
 /** The text box with its heading label, hint, problem and character count. */
 export function IntakeText({ id, text, problem, onText }: IntakeTextProps): ReactElement {
-  const described = [problem === null ? '' : `${id}-error`, `${id}-hint`, `${id}-count`, `${id}-privacy`];
+  const described = [problem === null ? '' : `${id}-error`, `${id}-hint`, `${id}-count`];
   return (
     <div className="field">
       <h2 id={`${id}-h`}>
@@ -59,16 +60,21 @@ export interface SampleListProps {
 /** The made-up sample households, each with a button that takes it. */
 export function SampleList({ title, heading: Heading, use, onUse, count }: SampleListProps): ReactElement {
   const id = useId();
+  const shown = SAMPLE_HOUSEHOLDS.slice(0, count);
   return (
     <>
       <Heading className="label" id={id}>
         {title}
       </Heading>
       <ul className="samples" aria-labelledby={id}>
-        {SAMPLE_HOUSEHOLDS.slice(0, count).map((sample) => (
+        {shown.map((sample, index) => (
           <li key={sample.id}>
             <q id={`${id}-${sample.id}`}>{sample.description}</q>
-            <Button describedBy={`${id}-${sample.id}`} onClick={calling(onUse, sample)}>
+            <Button
+              describedBy={`${id}-${sample.id}`}
+              label={fill(INTAKE.named, { use, n: index + 1, total: shown.length })}
+              onClick={calling(onUse, sample)}
+            >
               {use}
             </Button>
           </li>

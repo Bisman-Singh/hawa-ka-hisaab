@@ -53,7 +53,8 @@ describe('ClearHousehold', () => {
     await userEvent.click(screen.getByRole('button', { name: PRIVACY.yes }));
     expect(window.localStorage.getItem(STORAGE_KEY)).toBeNull();
     expect(readIntake()).toBeNull();
-    expect(screen.getByText(PRIVACY.cleared, { selector: 'p[role="status"]' })).toBeInTheDocument();
+    expect(screen.getByText(PRIVACY.cleared, { selector: '.actions p' })).toBeInTheDocument();
+    expect(document.querySelector('.actions [role="status"]')).toBeNull();
     expect(announced()).toBe(PRIVACY.cleared);
     expect(screen.getByRole('button', { name: PRIVACY.undo })).toHaveFocus();
     await userEvent.click(screen.getByRole('button', { name: PRIVACY.undo }));

@@ -33,7 +33,7 @@ describe('HouseholdView', () => {
     const { container } = view();
     expect(screen.getByRole('heading', { level: 1, name: 'Your household' })).toBeInTheDocument();
     expect(people()).toHaveLength(1);
-    const use = screen.getAllByRole('button', { name: 'Use this sample' });
+    const use = screen.getAllByRole('button', { name: /^Use this sample, \d of \d$/ });
     expect(use).toHaveLength(SAMPLE_HOUSEHOLDS.length);
     await userEvent.click(use[0] ?? document.body);
     expect(people()).toHaveLength(SAMPLE_HOUSEHOLDS[0]?.household.members.length ?? 0);
@@ -124,7 +124,7 @@ describe('HouseholdView', () => {
     expect(
       screen.getByRole('heading', { name: 'The model is not reading descriptions right now' }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/This browser sent several descriptions in a short time/)).toBeInTheDocument();
+    expect(screen.getByText(/Your network sent several descriptions in a short time/)).toBeInTheDocument();
     expect(screen.queryByRole('alert')).toBeNull();
     expect(screen.getByRole('button', { name: 'Save household' })).toBeInTheDocument();
   });

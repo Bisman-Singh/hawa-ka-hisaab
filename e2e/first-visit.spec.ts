@@ -1,6 +1,7 @@
 // What a first-time visitor meets: no paint before the stylesheet or the type, a title for every view, back and
 // reload on every view, deep links that point to the step a view needs, and focus on each new view's heading.
 import { expect, test } from '@playwright/test';
+import type { Page } from '@playwright/test';
 import { PIN, serveApi } from './support/api.js';
 import { scriptedModel } from './support/model.js';
 import { expectClean, watch } from './support/page.js';
@@ -18,6 +19,22 @@ const VIEWS: readonly (readonly [string, string])[] = [
 
 const href = (view: string): string => (view === '' ? '/' : `/?view=${view}`);
 
+/** When the first contentful paint happened. It waits for the entry, which a loaded machine records late. */
+function firstPaint(page: Page): Promise<number> {
+  return page.evaluate(
+    () =>
+      new Promise<number>((resolve) => {
+        new PerformanceObserver((list, observer) => {
+          const entry = list.getEntriesByName('first-contentful-paint')[0];
+          if (entry !== undefined) {
+            observer.disconnect();
+            resolve(entry.startTime);
+          }
+        }).observe({ type: 'paint', buffered: true });
+      }),
+  );
+}
+
 test('nothing is painted before the stylesheet arrives, even when it is slow', async ({ page }) => {
   await page.route('**/assets/*.css', async (route) => {
     await new Promise((resolve) => setTimeout(resolve, 1500));
@@ -25,11 +42,12 @@ test('nothing is painted before the stylesheet arrives, even when it is slow', a
   });
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toBeAttached();
-  const timing = await page.evaluate(() => {
-    const paint = performance.getEntriesByName('first-contentful-paint')[0]?.startTime ?? 0;
-    const sheet = performance.getEntriesByType('resource').find((entry) => entry.name.endsWith('.css'));
-    return { paint, sheet: sheet instanceof PerformanceResourceTiming ? sheet.responseEnd : -1 };
+  const paint = await firstPaint(page);
+  const sheet = await page.evaluate(() => {
+    const css = performance.getEntriesByType('resource').find((entry) => entry.name.endsWith('.css'));
+    return css instanceof PerformanceResourceTiming ? css.responseEnd : -1;
   });
+  const timing = { paint, sheet };
   expect(timing.sheet).toBeGreaterThan(0);
   expect(timing.paint).toBeGreaterThanOrEqual(timing.sheet);
 });
@@ -47,13 +65,14 @@ test('on a slow connection the first paint already has the app type, so the text
   });
   await page.goto('/');
   await page.waitForLoadState('networkidle');
-  const timing = await page.evaluate(() => {
-    const ends = performance
+  const paint = await firstPaint(page);
+  const ends = await page.evaluate(() =>
+    performance
       .getEntriesByType('resource')
       .filter((entry) => entry.name.endsWith('.woff2'))
-      .map((entry) => (entry instanceof PerformanceResourceTiming ? entry.responseEnd : Infinity));
-    return { paint: performance.getEntriesByName('first-contentful-paint')[0]?.startTime ?? 0, ends };
-  });
+      .map((entry) => (entry instanceof PerformanceResourceTiming ? entry.responseEnd : Infinity)),
+  );
+  const timing = { paint, ends };
   expect(timing.ends).toHaveLength(2);
   for (const end of timing.ends) {
     expect(end).toBeLessThanOrEqual(timing.paint);
@@ -88,7 +107,7 @@ test('a deep link to a view that needs a place or a household points to that ste
     await expectClean(page, problems);
   }
   await page.getByRole('link', { name: 'Set your place' }).click();
-  await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
+  await expect(page.getByText('The official air reading for your place')).toBeFocused();
   await page.getByRole('textbox', { name: 'City, town or PIN code' }).fill(PIN);
   await page.getByRole('button', { name: 'Find' }).click();
   await expect(page.getByRole('article', { name: /Station reading/ })).toBeVisible();

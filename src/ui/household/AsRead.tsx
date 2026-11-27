@@ -29,7 +29,7 @@ export function AsRead({ entry }: { readonly entry: IntakeEntry }): ReactElement
       {response.outcome === 'parsed' ? (
         <p className="lede">{HOUSEHOLD.readLede}</p>
       ) : (
-        <StateMessage tone="status" glyph="model" title={HOUSEHOLD.downTitle} quiet>
+        <StateMessage tone="status" glyph="model" title={HOUSEHOLD.downTitle} quiet level={2}>
           <p>
             {MODEL_DOWN[response.reason]} {HOUSEHOLD.downNext}
           </p>

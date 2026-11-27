@@ -6,6 +6,14 @@ import WORDS from './words.json' with { type: 'json' };
 /** Strings of the sheet and the working. */
 export const TRACE = WORDS.trace;
 
+/** Reasons the model was never asked, so the facts made for it were not sent. */
+const NOT_ASKED: ReadonlySet<Trace['fallbackReason']> = new Set(['disabled', 'rate_limited', 'daily_cap']);
+
+/** True when the facts of this trace went to the model, false when they were only made for it. */
+export function factsWereSent(trace: Trace): boolean {
+  return !NOT_ASKED.has(trace.fallbackReason);
+}
+
 /** Who wrote the words, in a sentence. */
 export const MADE_BY: Readonly<Record<Trace['producedBy'], string>> = WORDS.madeBy;
 

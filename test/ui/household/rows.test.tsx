@@ -45,6 +45,6 @@ describe('row parts', () => {
 
   it('disables Add once the block is full', () => {
     render(<AddButton label="Add a room" full onAdd={vi.fn()} />);
-    expect(screen.getByRole('button', { name: 'Add a room' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Add a room' })).toHaveAttribute('aria-disabled', 'true');
   });
 });

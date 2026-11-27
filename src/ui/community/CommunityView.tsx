@@ -7,6 +7,7 @@ import { ViewHeading } from '../components/Navigation.js';
 import { RequestFailure } from '../components/RequestFailure.js';
 import { ModelChoice } from '../consent/ModelChoice.js';
 import { CONSENT } from '../consent/words.js';
+import { useRescueFocus } from '../hooks/focus.js';
 import { Missing } from '../plan/states.js';
 import { useAppState } from '../state/app-state.js';
 import { CommunityFormView } from './CommunityForm.js';
@@ -28,6 +29,7 @@ function Community({ location }: { readonly location: Location }): ReactElement 
   const [kind, setKind] = useState<CommunityKind>('housing_society');
   const notice = useCommunityNotice(location);
   const { state } = notice;
+  useRescueFocus(String(notice.choose));
   return (
     <div className="spread">
       <div className="page-left">
@@ -43,11 +45,9 @@ function Community({ location }: { readonly location: Location }): ReactElement 
       </div>
       <div className="page-right">
         {notice.choose ? <ModelChoice without={CONSENT.offNotice} onChoose={notice.chosen} /> : null}
-        {state.status === 'loading' ? (
-          <p className="status" role="status">
-            {COMMUNITY.busy}
-          </p>
-        ) : null}
+        <div role="status">
+          {state.status === 'loading' ? <p className="status">{COMMUNITY.busy}</p> : null}
+        </div>
         {state.status === 'failed' ? (
           <RequestFailure failure={state.failure} retry={notice.retry} level={2} />
         ) : null}

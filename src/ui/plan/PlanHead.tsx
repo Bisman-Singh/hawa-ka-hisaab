@@ -11,6 +11,7 @@ import { WrittenBy } from '../components/WrittenBy.js';
 import { useAppActions, useAppState } from '../state/app-state.js';
 import { HowMade } from '../trace/HowMade.js';
 import { AirBasisLine, type AirBasisLineProps } from './air-basis.js';
+import { Bulletin } from './PlanNotes.js';
 import { PLAN } from './words.js';
 
 /** Props of the plan head: the response, the air held on this page and the household the plan is for. */
@@ -70,6 +71,9 @@ export function PlanHead({ response, air, household }: PlanHeadProps): ReactElem
     <header className="plan-head">
       <ViewHeading>{PLAN.title}</ViewHeading>
       <ForLine response={response} air={air} household={household} />
+      {plan.dayKind === 'severe' && plan.band !== null ? (
+        <Bulletin band={plan.band} basis={response.airBasis} air={air} />
+      ) : null}
       <p className="lede" lang={plan.language}>
         {plan.headline}
       </p>

@@ -7,6 +7,7 @@ import type { Source } from '../../lib/types.js';
 import { Credit, factSource } from '../components/Credit.js';
 import { ViewHeading } from '../components/Navigation.js';
 import { Section } from '../components/Section.js';
+import { Lines } from './parts.js';
 import { citedSources } from './sources.js';
 import { ABOUT } from './words.js';
 
@@ -75,6 +76,9 @@ export function AboutDataView(): ReactElement {
           </p>
           <p>{ABOUT.modelledText}</p>
           <p>{ABOUT.figuresText}</p>
+        </Section>
+        <Section title={ABOUT.shortForms}>
+          <Lines lines={ABOUT.shortFormLines} />
         </Section>
         <Section title={ABOUT.advice}>
           <p>

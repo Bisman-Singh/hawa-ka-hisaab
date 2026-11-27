@@ -3,6 +3,7 @@
 import type { ReactElement } from 'react';
 import { SLOT_START_HOURS } from '../../config/limits.js';
 import type { Household } from '../../features/household/types.js';
+import { fill } from '../../lib/template.js';
 import { clockOf } from '../../lib/time.js';
 import type { Plan, Slot, WhatIfContext } from '../../features/planner/types.js';
 import { HINDI_ADVICE_NOTE } from '../../features/planner/words-lexicon.js';
@@ -20,7 +21,7 @@ const NEXT: Readonly<Record<Slot, Slot>> = { morning: 'afternoon', afternoon: 'e
 /** The clock hours a slot covers, such as "05:00 to 12:00". Hours before the morning count as evening. */
 export function slotHours(slot: Slot, language: Language = 'en'): string {
   const hour = (at: Slot): string => clockOf(SLOT_START_HOURS[at] * 60);
-  return `${hour(slot)} ${PLAN_LABELS[language].hoursTo} ${hour(NEXT[slot])}`;
+  return fill(PLAN_LABELS[language].hoursRange, { from: hour(slot), to: hour(NEXT[slot]) });
 }
 
 /** Props of the slots: the plan, the household it was made for and the forecast and time it was made with. */

@@ -40,7 +40,7 @@ describe('ForecastStrip', () => {
     expect(output).toHaveTextContent('15:00, PM2.5 120');
     expect(container.querySelector('.ds-now')).toHaveTextContent('planned at 06:40');
     expect(container.querySelector('.ds-win')).toHaveTextContent('airing window 14:00 to 15:00');
-    expect(container.querySelectorAll('table.vh tbody tr')).toHaveLength(19);
+    expect(container.querySelectorAll('div.vh > table tbody tr')).toHaveLength(19);
     expect(container.querySelectorAll('.ds-slots span')).toHaveLength(3);
     expect(await axeViolations(container)).toEqual([]);
   }, 30_000);
@@ -64,9 +64,17 @@ describe('ForecastStrip', () => {
     const { container, rerender } = render(
       <ForecastStrip plan={plan} basis={response.airBasis} whatIf={early} />,
     );
-    expect(screen.getByRole('button', { name: 'Later hour' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Later hour' })).toHaveAttribute('aria-disabled', 'true');
     await userEvent.click(screen.getByRole('button', { name: 'Earlier hour' }));
-    expect(screen.getByRole('button', { name: 'Earlier hour' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Earlier hour' })).toHaveAttribute('aria-disabled', 'true');
+    expect(screen.getByRole('button', { name: 'Earlier hour' })).toHaveFocus();
+    const reading = container.querySelector('output')?.textContent;
+    await userEvent.keyboard('{Enter}');
+    expect(screen.getByRole('button', { name: 'Earlier hour' })).toHaveFocus();
+    expect(container.querySelector('output')?.textContent).toBe(reading);
+    await userEvent.click(screen.getByRole('button', { name: 'Later hour' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Later hour' }));
+    expect(screen.getByRole('button', { name: 'Later hour' })).toHaveFocus();
     expect(container.querySelector('.ds-win')).toBeNull();
     expect(container.querySelector('.ds-now')).toBeNull();
     expect(container.querySelectorAll('.ds-slots span')).toHaveLength(1);

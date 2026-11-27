@@ -11,6 +11,10 @@
   color: var(--ink);
 }
 
+.made:focus-visible {
+  outline-offset: -3px;
+}
+
 .made::backdrop {
   background: var(--scrim);
 }

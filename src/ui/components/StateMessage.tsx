@@ -1,5 +1,5 @@
 // A message for a state of the page: empty, offline, stale, blocked, failed. Words and edge carry the state.
-// alert is for something that went wrong and needs action; status for news that can wait.
+// An alert is announced when it appears; a status is read in place, as a live region added full is unreliable.
 import type { ReactElement, ReactNode } from 'react';
 
 /** The drawn sign beside a message. Each is a plain line drawing; struck through means not working. */
@@ -38,7 +38,7 @@ export function StateMessage(props: StateMessageProps): ReactElement {
   const { tone, glyph, title, children, quiet = false, level = 3 } = props;
   const Heading = HEADINGS[level];
   return (
-    <div role={tone} className={quiet ? 'msg quiet' : 'msg'}>
+    <div role={tone === 'alert' ? 'alert' : undefined} className={quiet ? 'msg quiet' : 'msg'}>
       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
         {GLYPHS[glyph].map((path) => (
           <path key={path} d={path} fill="none" stroke="currentColor" strokeWidth="2" />

@@ -18,6 +18,9 @@ describe('CompareRow', () => {
     expect(screen.getByText('No travel change')).toBeInTheDocument();
     expect(screen.getByText(/Swaps follow how each household travels/)).toBeInTheDocument();
     expect(screen.getByText('The same for both households.')).toBeInTheDocument();
+    const sides = [...container.querySelectorAll('.cmp-cols p')].map((side) => side.textContent);
+    expect(sides).toEqual(['Yours. Take the bus', 'Sample. No travel change']);
+    expect(container.querySelector('h3')).toHaveTextContent('Travel changes: Differs');
     expect(container.querySelector('.differs')).toHaveTextContent('Differs');
     expect(container.querySelector('.same')).toHaveTextContent('Same');
   });

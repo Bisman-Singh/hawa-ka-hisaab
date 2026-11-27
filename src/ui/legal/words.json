@@ -52,8 +52,8 @@
     "restored": "Put back, except the typed description.",
     "model": "The model in this browser",
     "contact": "Contact",
-    "contactText": "For a question or a request about your data, open an issue on the",
-    "contactLink": "app's code repository"
+    "contactText": "For a question or a request about your data, open an issue on",
+    "contactLink": "the app's GitHub issue page"
   },
   "about": {
     "title": "About the data",
@@ -72,11 +72,34 @@
     "measuredText": "Station readings are measurements, published by CPCB every hour. The app shows CPCB's AQI as published and never works one out for a station. On the data.gov.in copy it uses CPCB's own rule:",
     "modelledText": "The forecast by hour, and the estimate shown when no station is within {radius} km, are model output from CAMS through Open-Meteo. They are not measurements and tend to read low in cities, so the plan uses the forecast to compare hours, not as a reading.",
     "figuresText": "Every figure in a plan is worked out in code from a published factor and shown as a change with a range, with its working and source one tap away. Where no measured factor exists, no figure is shown.",
+    "shortForms": "Short forms used here",
+    "shortFormLines": [
+      {
+        "label": "AQI",
+        "text": "Air quality index, a number from 0 to 500 that CPCB publishes for each station."
+      },
+      { "label": "CPCB", "text": "Central Pollution Control Board, which publishes the station readings." },
+      {
+        "label": "CAAQMS",
+        "text": "Continuous Ambient Air Quality Monitoring Stations, the network CPCB reads."
+      },
+      { "label": "PM2.5", "text": "Fine dust, particles smaller than 2.5 micrometres across." },
+      {
+        "label": "GRAP",
+        "text": "Graded Response Action Plan, the stages of action Delhi NCR takes on bad air days."
+      },
+      {
+        "label": "CAQM",
+        "text": "Commission for Air Quality Management in National Capital Region and Adjoining Areas, which orders the stages."
+      },
+      { "label": "NCR", "text": "National Capital Region, Delhi and the towns around it." },
+      { "label": "CADR", "text": "Clean air delivery rate, how much clean air a purifier makes in an hour." }
+    ],
     "advice": "General guidance, not medical advice",
     "adviceText": "This app gives general guidance and quotes the health ministry's advisory for each AQI band. It is not medical advice. For symptoms, medicines or a diagnosis, see a doctor. In an emergency, call",
     "samples": "Sample households",
     "samplesText": "The sample households and the sample society and school are made up. They describe no real family, society or school."
   },
   "geminiTermsUrl": "https://ai.google.dev/gemini-api/terms",
-  "issuesUrl": null
+  "issuesUrl": "https://github.com/Bisman-Singh/hawa-ka-hisaab/issues"
 }

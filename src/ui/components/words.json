@@ -25,7 +25,8 @@
     },
     "broken": {
       "title": "This part of the page stopped working.",
-      "body": "Your household and place are still saved."
+      "body": "Your household and place are still saved.",
+      "offline": "This page needs a connection to load. Try again when you are back online."
     },
     "notFound": {
       "title": "Page not found",
@@ -118,7 +119,7 @@
       "body": "Try again in a moment."
     },
     "rate_limited": {
-      "title": "Too many requests from this browser",
+      "title": "Too many requests from your network",
       "body": "Try again in {wait}."
     },
     "upstream_unavailable": {

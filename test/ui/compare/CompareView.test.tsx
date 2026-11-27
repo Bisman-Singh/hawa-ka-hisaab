@@ -8,6 +8,7 @@ import { comparePlans } from '../../../src/features/planner/compare.js';
 import { planRequestSchema } from '../../../src/features/planner/contract.js';
 import type { PlanResponse } from '../../../src/features/planner/types.js';
 import { CompareView } from '../../../src/ui/compare/CompareView.js';
+import { CONSENT } from '../../../src/ui/consent/words.js';
 import { Announcer } from '../../../src/ui/hooks/announcer.js';
 import { sample } from '../../support/plan-fixtures.js';
 import { axeViolations, renderInApp } from '../helpers.js';
@@ -115,7 +116,30 @@ describe('CompareView', () => {
     stubApi({ '/api/plan': () => new Promise<Response>(() => undefined) });
     await userEvent.click(screen.getByRole('button', { name: 'Compare' }));
     expect(screen.getByText('Making both plans')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Compare' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Compare' })).toHaveAttribute('aria-disabled', 'true');
+  });
+
+  it('keeps focus on the Compare button while it works and when the result is shown', async () => {
+    saveSample();
+    stubApi({
+      '/api/air': () => json(airResponse('poor')),
+      '/api/plan': (body) => planFor(body, planResponse(OTHER, 'poor')),
+    });
+    renderCompare();
+    const run = screen.getByRole('button', { name: 'Compare' });
+    await userEvent.click(run);
+    expect(run).toHaveFocus();
+    expect(await screen.findByRole('heading', { name: 'Sample household' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Compare' })).toHaveFocus();
+  });
+
+  it('moves focus to the heading when the model choice that was pressed goes away', async () => {
+    saveSample('family-car-asthma', 'en', null);
+    stubApi({ '/api/air': () => json(airResponse('poor')) });
+    renderCompare();
+    await userEvent.click(screen.getByRole('button', { name: CONSENT.off }));
+    expect(await screen.findByRole('button', { name: 'Compare' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1 })).toHaveFocus();
   });
 
   it('asks for a place and then a household first', () => {

@@ -1,7 +1,8 @@
 // The forecast strip drawing: a bar per hour, the airing window, the planning time, the hour axis and the parts of
 // the day. Sizes and positions reach the stylesheet as custom properties, as the page policy requires.
 import { type ReactElement, useRef } from 'react';
-import { clockOf, minutesOf } from '../../lib/time.js';
+import { fill } from '../../lib/template.js';
+import { minutesOf } from '../../lib/time.js';
 import { slotOf } from '../../features/planner/effects.js';
 import type { Plan } from '../../features/planner/types.js';
 import { useCssVars, type CssVars } from '../hooks/useCssVars.js';
@@ -99,7 +100,7 @@ export function Chart(
             '--from': minutesOf(airing.start) / 60 - first,
             '--to': minutesOf(airing.end) / 60 - first,
           }}
-          text={`${STRIP.airing} ${airing.start} ${PLAN.hoursTo} ${airing.end}`}
+          text={`${STRIP.airing} ${fill(PLAN.hoursRange, { from: airing.start, to: airing.end })}`}
         />
       )}
       <ol className="ds-bars">
@@ -109,28 +110,5 @@ export function Chart(
       </ol>
       <Axis hours={hours} selected={selected} language={plan.language} />
     </div>
-  );
-}
-
-/** Every hour and its value as a real table, for screen readers. */
-export function HourTable({ hours }: { readonly hours: readonly StripHour[] }): ReactElement {
-  return (
-    <table className="vh">
-      <caption>{STRIP.caption}</caption>
-      <thead>
-        <tr>
-          <th scope="col">{STRIP.hour}</th>
-          <th scope="col">{STRIP.pm25}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {hours.map((hour) => (
-          <tr key={hour.hour}>
-            <td>{clockOf(hour.hour * 60)}</td>
-            <td>{hour.pm25}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
   );
 }

@@ -13,7 +13,7 @@ import { Workings } from '../trace/Working.js';
 import { notesOf, rowsOf, sumsOf, sumsSentence, usableToggles, whatIfEffectsOf } from './plan-data.js';
 import type { Sum } from './plan-data.js';
 import { fixityOf, whoLine } from './plan-words.js';
-import { PLAN_LABELS } from './words.js';
+import { PLAN_LABELS, STOPS } from './words.js';
 
 /** Props of a plan item entry: the item, the household and plan context it was made from, and its language. */
 export interface ItemEntryProps {
@@ -77,7 +77,7 @@ export function ItemEntry({ item, household, ctx, language }: ItemEntryProps): R
   const choose = (id: string): void => {
     setChoice(id);
     const label = toggles.find((found) => found.id === id)?.label ?? words.asPlanned;
-    announce(`${label}. ${sumsSentence(sumsOf(effectsFor(id), mild, language))}`, language);
+    announce(`${label}${STOPS[language]}${sumsSentence(sumsOf(effectsFor(id), mild, language))}`, language);
   };
   const options = [
     { value: PLANNED, label: words.asPlanned },

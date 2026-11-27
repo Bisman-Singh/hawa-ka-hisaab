@@ -1,11 +1,12 @@
 // The states a plan screen shows before its plan is ready: no place or household yet, the model choice not made
 // yet, loading with its steps and skeleton entries, or a failed request with a retry.
-import type { ReactElement } from 'react';
+import { type ReactElement, useEffect } from 'react';
 import { ViewHeading, ViewLink } from '../components/Navigation.js';
 import { type ProgressStep, ProgressSteps, Skeleton } from '../components/Progress.js';
 import { RequestFailure } from '../components/RequestFailure.js';
 import { StateMessage } from '../components/StateMessage.js';
 import { ModelChoice } from '../consent/ModelChoice.js';
+import { useAnnounce } from '../hooks/announcer.js';
 import { CONSENT } from '../consent/words.js';
 import { PLAN } from './words.js';
 import type { DayPlan } from './useDayPlan.js';
@@ -38,14 +39,16 @@ export function PlanLoading({
   readonly airDone: boolean;
   readonly title: string;
 }): ReactElement {
+  const announce = useAnnounce();
+  useEffect(() => {
+    announce(PLAN.busy);
+  }, [announce]);
   const steps: ProgressStep[] = [{ label: PLAN.loadingSteps.air, state: airDone ? 'done' : 'now' }];
   return (
     <div className="page-right" aria-busy="true">
       <header className="plan-head">
         <ViewHeading>{title}</ViewHeading>
-        <p className="status" role="status">
-          {PLAN.busy}
-        </p>
+        <p className="status">{PLAN.busy}</p>
       </header>
       <ProgressSteps steps={airDone ? [...steps, { label: PLAN.loadingSteps.plan, state: 'now' }] : steps} />
       <ol className="ledger" aria-hidden="true">

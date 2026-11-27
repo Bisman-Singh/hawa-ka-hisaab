@@ -26,14 +26,39 @@ beforeEach(() => {
 });
 
 describe('IntakeBox', () => {
+  it('starts from the text that was read last, so changing it does not mean typing it again', () => {
+    setIntake({
+      text: 'Two adults and a child.',
+      response: {
+        outcome: 'parsed',
+        household: sampleHousehold(),
+        unplaced: [],
+        assumed: [],
+        trace: sampleTrace(),
+      },
+    });
+    renderInApp(<IntakeBox />);
+    expect(box()).toHaveValue('Two adults and a child.');
+  });
+
+  it('keeps focus in the page when the model is turned on: it moves to the read button', async () => {
+    saveState(window.localStorage, { ...loadState(window.localStorage), modelChoice: 'off' });
+    renderInApp(<IntakeBox />);
+    await userEvent.click(screen.getByRole('button', { name: 'Turn the model on' }));
+    expect(send()).toHaveFocus();
+  });
+
   it('shows the privacy note and three real samples, and copies a sample into the box', async () => {
     const { container } = renderInApp(<IntakeBox />);
-    expect(box()).toHaveAccessibleDescription(/Google's Gemini model/);
+    expect(box()).not.toHaveAccessibleDescription(/Gemini/);
+    expect(screen.getByRole('button', { name: 'Read it with the model' })).toHaveAccessibleDescription(
+      /Google's Gemini model/,
+    );
     const samples = container.querySelectorAll('.samples q');
     expect([...samples].map((quote) => quote.textContent)).toEqual(
       SAMPLE_HOUSEHOLDS.slice(0, 3).map((sample) => sample.description),
     );
-    await userEvent.click(screen.getAllByRole('button', { name: 'Use this' })[1] ?? document.body);
+    await userEvent.click(screen.getAllByRole('button', { name: 'Use this, 2 of 3' })[0] ?? document.body);
     expect(box()).toHaveValue(SAMPLE_HOUSEHOLDS[1]?.description);
     expect(box()).toHaveFocus();
     expect(await axeViolations(container)).toEqual([]);
@@ -41,10 +66,11 @@ describe('IntakeBox', () => {
 
   it('says what goes to the model and asks for no names, and its hint and note agree on conditions', () => {
     renderInApp(<IntakeBox />);
-    expect(box()).toHaveAccessibleDescription(/conditions as general flags such as asthma or pregnancy/);
-    expect(box()).toHaveAccessibleDescription(/Do not add names, record numbers/);
+    const read = screen.getByRole('button', { name: 'Read it with the model' });
+    expect(read).toHaveAccessibleDescription(/conditions as general flags such as asthma or pregnancy/);
+    expect(read).toHaveAccessibleDescription(/Do not add names, record numbers/);
     expect(box()).toHaveAccessibleDescription(/any condition such as asthma or a heart condition/);
-    expect(box()).toHaveAccessibleDescription(/Google may use what is sent to improve its products/);
+    expect(read).toHaveAccessibleDescription(/Google may use what is sent to improve its products/);
     expect(screen.getByRole('link', { name: 'More on the privacy page' })).toHaveAttribute(
       'href',
       '?view=privacy',

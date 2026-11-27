@@ -16,7 +16,7 @@ const CLASS = { main: 'btn', quiet: 'btn btn-quiet', link: 'linkbtn' } satisfies
   Record<NonNullable<ButtonProps['look']>, string>
 >;
 
-/** A button of type button, quiet unless asked otherwise. */
+/** A button of type button, quiet unless asked otherwise. A disabled one is marked, not switched off, so it keeps focus. */
 export function Button({
   children,
   onClick,
@@ -31,10 +31,10 @@ export function Button({
       className={CLASS[look]}
       type="button"
       id={id}
-      disabled={disabled}
+      aria-disabled={disabled === true ? true : undefined}
       aria-describedby={describedBy}
       aria-label={label}
-      onClick={onClick}
+      onClick={disabled === true ? undefined : onClick}
     >
       {children}
     </button>

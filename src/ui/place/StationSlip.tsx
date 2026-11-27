@@ -9,7 +9,7 @@ import { istClock, istDay } from '../../lib/time.js';
 import { ageWords, isStale } from './hours.js';
 import { StationSource } from './SourceLine.js';
 import { StationAqi, SubIndices } from './station-parts.js';
-import { AIR } from './words.js';
+import { AIR, feedProblemWords } from './words.js';
 
 /** Props of the station slip. where names the place the distance is from; children hold the GRAP note. */
 export interface StationSlipProps {
@@ -35,7 +35,7 @@ function OldReading({
   if (feed.fetch === 'failed') {
     return (
       <StateMessage tone="status" glyph="feed" title={AIR.down}>
-        <p>{fill(AIR.downBody, { hour: `${hour} IST` })}</p>
+        <p>{feedProblemWords(feed.problem, `${hour} IST`)}</p>
         <Button onClick={retry}>{AIR.retry}</Button>
       </StateMessage>
     );

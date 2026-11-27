@@ -43,6 +43,28 @@ describe('PlanView and the model choice', () => {
     expect(calls(fetcher)).toContain('/api/plan');
   }, 30_000);
 
+  it('keeps focus on the plan heading after the choice and again when the plan arrives', async () => {
+    saveSample('family-car-asthma', 'en', null);
+    stubApi({
+      '/api/air': () => json(airResponse('poor')),
+      '/api/plan': () => json(planResponse('family-car-asthma', 'poor')),
+    });
+    renderPlan();
+    await userEvent.click(await screen.findByRole('button', { name: CONSENT.use }));
+    expect(screen.getByRole('heading', { level: 1, name: "Today's plan" })).toHaveFocus();
+    expect(await screen.findByText('Walk in the park: go at 14:00 instead of 07:00')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: "Today's plan" })).toHaveFocus();
+  }, 30_000);
+
+  it('keeps focus on the plan heading when the model is turned off', async () => {
+    saveSample('family-car-asthma', 'en', null);
+    stubApi({ '/api/air': () => json(airResponse('poor')) });
+    renderPlan();
+    await userEvent.click(await screen.findByRole('button', { name: CONSENT.off }));
+    expect(await screen.findByText(CONSENT.madeHere)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: "Today's plan" })).toHaveFocus();
+  });
+
   it('with the model off makes the plan here from the air alone, labels it and offers the switch for questions', async () => {
     saveSample('family-car-asthma', 'en', 'off');
     const fetcher = stubApi({ '/api/air': () => json(airResponse('poor')) });

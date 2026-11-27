@@ -9,6 +9,7 @@ import { PlanView } from '../../../src/ui/plan/PlanView.js';
 import { axeViolations, fakeDialog, renderInApp } from '../helpers.js';
 import {
   airResponse,
+  announced,
   hindiPlanResponse,
   json,
   planResponse,
@@ -47,6 +48,7 @@ describe('PlanView when the model did not word the plan', () => {
     expect(screen.getByText('Walk in the park: go at 14:00 instead of 07:00')).toBeInTheDocument();
     expect(await axeViolations(container)).toEqual([]);
     await userEvent.click(screen.getByRole('button', { name: 'Try the model again' }));
+    expect(screen.getByRole('heading', { level: 1 })).toHaveFocus();
     await waitFor(() => {
       expect(fetcher.mock.calls.filter(([url]) => url === '/api/plan')).toHaveLength(2);
     });
@@ -77,6 +79,7 @@ describe('PlanView in Hindi', () => {
     expect(screen.getByText('Wording by Gemini')).toBeInTheDocument();
     expect(screen.getByText(/Every number in the wording matched a fact/)).toBeInTheDocument();
     await userEvent.click(screen.getByRole('radio', { name: 'English' }));
+    expect(screen.getByRole('heading', { level: 1 })).toHaveFocus();
     await waitFor(() => {
       expect(fetcher.mock.calls.filter(([url]) => url === '/api/plan')).toHaveLength(2);
     });
@@ -132,7 +135,8 @@ describe('PlanView before a plan', () => {
       '/api/plan': () => new Promise<Response>(() => undefined),
     });
     const { container } = renderPlan();
-    expect(screen.getByText('Making your plan')).toBeInTheDocument();
+    expect(screen.getByText('Making your plan', { selector: 'p.status' })).toBeInTheDocument();
+    expect(announced()).toBe('Making your plan');
     expect(await screen.findByText('Work out the figures in code, then word the steps')).toBeInTheDocument();
     expect(container.querySelector('[aria-busy="true"]')).not.toBeNull();
     expect(await axeViolations(container)).toEqual([]);
@@ -153,7 +157,9 @@ describe('PlanView before a plan', () => {
       await screen.findByRole('heading', { name: 'The server did not answer properly' }),
     ).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: 'Try again' }));
+    expect(screen.getByRole('heading', { level: 1 })).toHaveFocus();
     expect(await screen.findByText('Walk in the park: go at 14:00 instead of 07:00')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1 })).toHaveFocus();
   });
 
   it('says the plan on the page is the last one when the browser goes offline', async () => {

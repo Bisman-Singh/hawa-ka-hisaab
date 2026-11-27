@@ -11,6 +11,8 @@
     "busy": "Making both plans",
     "ready": "The comparison is ready.",
     "yours": "Your household",
+    "mineLead": "Yours.",
+    "theirsLead": "Sample.",
     "theirs": "Sample household",
     "differs": "Differs",
     "same": "Same",

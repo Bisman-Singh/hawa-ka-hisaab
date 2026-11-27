@@ -6,14 +6,14 @@ import { ViewLink } from '../components/Navigation.js';
 import { RequestFailure } from '../components/RequestFailure.js';
 import { useIntake } from '../data/api.js';
 import { useAnnounce } from '../hooks/announcer.js';
-import { useFocusLater } from '../hooks/focus.js';
+import { useFocusLater, useRescueFocus } from '../hooks/focus.js';
 import { CONSENT } from '../consent/words.js';
 import { ChoiceButton, ModelNote } from '../consent/ModelChoice.js';
 import { useRoute } from '../router.js';
 import { useAppActions, useAppState } from '../state/app-state.js';
 import { IntakeText, SampleList } from './intake-parts.js';
 import type { SampleHousehold } from '../../features/household/samples.js';
-import { setIntake } from './intake-store.js';
+import { readIntake, setIntake } from './intake-store.js';
 import { charsText, INTAKE } from './words.js';
 
 const problemOf = (text: string): string | null => {
@@ -25,9 +25,11 @@ const problemOf = (text: string): string | null => {
 
 /** The send button, or with the model off the way to turn it on, and the link to the hand form. */
 export function IntakeActions({
+  id,
   busy,
   off,
 }: {
+  readonly id: string;
   readonly busy: boolean;
   readonly off: boolean;
 }): ReactElement {
@@ -38,7 +40,13 @@ export function IntakeActions({
         {off ? (
           <ChoiceButton choice="on" />
         ) : (
-          <button className="btn" type="submit" aria-disabled={busy}>
+          <button
+            className="btn"
+            type="submit"
+            id={`${id}-read`}
+            aria-describedby={`${id}-privacy`}
+            aria-disabled={busy}
+          >
             {INTAKE.read}
           </button>
         )}
@@ -51,7 +59,7 @@ export function IntakeActions({
 /** The intake form. The text is sent only from the Read button, after the model note, which keeps the choice. */
 export function IntakeBox(): ReactElement {
   const id = useId();
-  const [text, setText] = useState('');
+  const [text, setText] = useState(() => readIntake()?.text ?? '');
   const [problem, setProblem] = useState<string | null>(null);
   const sent = useRef('');
   const { navigate } = useRoute();
@@ -59,6 +67,7 @@ export function IntakeBox(): ReactElement {
   const focusLater = useFocusLater();
   const { modelChoice } = useAppState();
   const { save } = useAppActions();
+  useRescueFocus(String(modelChoice), `${id}-read`);
   const intake = useIntake((response) => {
     setIntake({ text: sent.current, response });
     navigate('household');
@@ -92,7 +101,7 @@ export function IntakeBox(): ReactElement {
         {intake.state.status === 'failed' ? (
           <RequestFailure failure={intake.state.failure} retry={intake.retry} />
         ) : null}
-        <IntakeActions busy={busy} off={modelChoice === 'off'} />
+        <IntakeActions id={id} busy={busy} off={modelChoice === 'off'} />
       </form>
     </section>
   );

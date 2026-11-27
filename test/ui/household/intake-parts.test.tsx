@@ -18,13 +18,18 @@ describe('intake parts', () => {
       <IntakeText id="i" text="" problem="Write a few words about your household first." onText={onText} />,
     );
     expect(box).toHaveAttribute('aria-invalid', 'true');
-    expect(box).toHaveAttribute('aria-describedby', 'i-error i-hint i-count i-privacy');
+    expect(box).toHaveAttribute('aria-describedby', 'i-error i-hint i-count');
   });
 
   it('offers three samples, each described by its own sentence', async () => {
     const onUse = vi.fn<(sample: SampleHousehold) => void>();
     render(<SampleList title="Or start from a sample" heading="h3" use="Use this" count={3} onUse={onUse} />);
-    const buttons = screen.getAllByRole('button', { name: 'Use this' });
+    const buttons = screen.getAllByRole('button', { name: /^Use this, \d of 3$/ });
+    expect(buttons.map((button) => button.getAttribute('aria-label'))).toEqual([
+      'Use this, 1 of 3',
+      'Use this, 2 of 3',
+      'Use this, 3 of 3',
+    ]);
     expect(buttons).toHaveLength(3);
     await userEvent.click(buttons[2] ?? document.body);
     expect(onUse.mock.calls[0]?.[0]?.description).toMatch(/delivery rider/);

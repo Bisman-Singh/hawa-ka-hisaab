@@ -22,9 +22,13 @@ describe('StateMessage', () => {
     expect(await axeViolations(container)).toEqual([]);
   });
 
-  it('shows a quiet status at the level asked', () => {
-    render(<StateMessage tone="status" glyph="offline" title="You are offline" quiet level={2} />);
-    expect(screen.getByRole('status')).toHaveClass('msg', 'quiet');
+  it('shows a quiet status at the level asked, with no live region of its own', () => {
+    const { container } = render(
+      <StateMessage tone="status" glyph="offline" title="You are offline" quiet level={2} />,
+    );
+    expect(screen.queryByRole('status')).toBeNull();
+    expect(screen.queryByRole('alert')).toBeNull();
+    expect(container.firstElementChild).toHaveClass('msg', 'quiet');
     expect(screen.getByRole('heading', { level: 2, name: 'You are offline' })).toBeInTheDocument();
   });
 });

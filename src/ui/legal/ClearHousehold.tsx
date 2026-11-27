@@ -78,7 +78,7 @@ export function ClearHousehold({ id }: { readonly id: string }): ReactElement {
   if (step.at === 'cleared') {
     return (
       <div className="actions">
-        <p role="status">{PRIVACY.cleared}</p>
+        <p>{PRIVACY.cleared}</p>
         <Button id={`${id}-undo`} onClick={calling(undo, step.kept)}>
           {PRIVACY.undo}
         </Button>

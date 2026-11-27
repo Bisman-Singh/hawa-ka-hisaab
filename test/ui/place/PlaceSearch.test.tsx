@@ -65,6 +65,7 @@ describe('PlaceSearch', () => {
     });
     expect(field()).toHaveFocus();
     expect(field()).toHaveAttribute('aria-invalid', 'true');
+    expect(live()).toHaveTextContent('No place in India matches “Lukhnow”.');
     await userEvent.click(screen.getByRole('button', { name: 'Find' }));
     await waitFor(() => {
       expect(fetcher).toHaveBeenCalledTimes(2);
@@ -78,6 +79,21 @@ describe('PlaceSearch', () => {
     expect(field()).toHaveAccessibleDescription('Type a city, town or PIN code first. Any place in India.');
     expect(field()).toHaveFocus();
     expect(fetcher).not.toHaveBeenCalled();
+  });
+
+  it('says why nothing happened when Enter is pressed in the field, where focus does not move', async () => {
+    const fetcher = stubFetch(() => json({ places: [] }));
+    mount();
+    await userEvent.click(field());
+    await userEvent.keyboard('{Enter}');
+    expect(live()).toHaveTextContent('Type a city, town or PIN code first.');
+    expect(field()).toHaveFocus();
+    await userEvent.type(field(), 'Xyzzyqtown{Enter}');
+    await waitFor(() => {
+      expect(live()).toHaveTextContent('No place in India matches “Xyzzyqtown”.');
+    });
+    expect(field()).toHaveFocus();
+    expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
   it('says it is finding places, shows a failed search with a retry, and searches again', async () => {

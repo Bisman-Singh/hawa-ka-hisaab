@@ -11,6 +11,10 @@ describe('slots', () => {
     expect(slotHours('evening')).toBe('17:00 to 05:00');
   });
 
+  it('close a Hindi range with तक, as Hindi reads it', () => {
+    expect(slotHours('morning', 'hi')).toBe('05:00 से 12:00 तक');
+  });
+
   it('say so when a part of the day has nothing planned', () => {
     const { plan } = planResponse('older-couple-chulha', 'poor');
     const empty = { ...plan, slots: { morning: [], afternoon: [], evening: [] } };

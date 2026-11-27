@@ -2,7 +2,7 @@
 import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import type { FeedStatus, StationReading } from '../../../src/features/air/types.js';
+import type { FeedProblem, FeedStatus, StationReading } from '../../../src/features/air/types.js';
 import { StationSlip } from '../../../src/ui/place/StationSlip.js';
 import { axeViolations } from '../helpers.js';
 import { jnuReading } from './air-fixtures.js';
@@ -59,8 +59,67 @@ describe('StationSlip', () => {
   it('keeps the last good reading when the feed did not answer, with a retry', async () => {
     const retry = vi.fn();
     slip(jnuReading(), { fetch: 'failed', feedHour: '2026-11-24T22:00:00+05:30', stale: false }, retry);
-    expect(screen.getByRole('heading', { name: 'The CPCB feed did not answer' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'The station data is not current' })).toBeInTheDocument();
+    expect(
+      screen.getByText('The station data source did not answer. Try again in a minute.'),
+    ).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: 'Try again' }));
     expect(retry).toHaveBeenCalledTimes(1);
+  });
+
+  it.each<readonly [FeedProblem, string]>([
+    ['busy', 'The station data source is busy. Try again in a minute.'],
+    ['no_answer', 'The station data source did not answer. Try again in a minute.'],
+    ['unusable', 'The station data source sent something this app could not read. Try again later.'],
+    [
+      'updating',
+      'The station data is being updated at the source. Try again in a minute. This reading is from 22:00 IST.',
+    ],
+  ])('words the %s problem in its own line', (problem, line) => {
+    slip(jnuReading(), { fetch: 'failed', feedHour: '2026-11-24T22:00:00+05:30', stale: false, problem });
+    expect(screen.getByText(line)).toBeInTheDocument();
+  });
+
+  it('reads a copy saved before the problem was named as no answer', () => {
+    slip(jnuReading(), { fetch: 'failed', feedHour: '2026-11-24T22:00:00+05:30', stale: false });
+    expect(
+      screen.getByText('The station data source did not answer. Try again in a minute.'),
+    ).toBeInTheDocument();
+  });
+
+  it('says the sub-index is missing because the source gives averages only, on the data.gov.in copy', () => {
+    const rows: StationReading['pollutants'] = [
+      { pollutant: 'pm25', hourlySubIndex: null, avg: 110, min: 80, max: 140 },
+    ];
+    const { rerender } = slip(jnuReading({ provider: 'data_gov_in', pollutants: [...rows] }));
+    expect(
+      screen.getByText('This source gives averages only, so no hourly sub-index is shown.'),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/CPCB published no hourly sub-index/)).toBeNull();
+    rerender(
+      <StationSlip
+        reading={jnuReading({ provider: 'cpcb_feed', pollutants: [...rows] })}
+        feed={FRESH}
+        where="PIN 110067"
+        retry={vi.fn()}
+      />,
+    );
+    expect(screen.getByText('CPCB published no hourly sub-index for this station.')).toBeInTheDocument();
+    rerender(
+      <StationSlip
+        reading={{ ...jnuReading({ pollutants: [...rows] }), provider: undefined }}
+        feed={FRESH}
+        where="PIN 110067"
+        retry={vi.fn()}
+      />,
+    );
+    expect(screen.getByText('CPCB published no hourly sub-index for this station.')).toBeInTheDocument();
+  });
+
+  it('spells out AQI and PM2.5 once on the full card', () => {
+    slip(jnuReading());
+    expect(
+      screen.getByText('AQI is the air quality index CPCB publishes, from 0 to 500. PM2.5 is fine dust.'),
+    ).toBeInTheDocument();
   });
 });

@@ -2,7 +2,7 @@
 // Beside them, the household intake. A chosen place moves focus to the air card, and its reading is announced.
 import { type ReactElement, useCallback, useId } from 'react';
 import type { Location, Place } from '../../features/air/types.js';
-import { ViewHeading } from '../components/Navigation.js';
+import { ViewHeading, ViewLede } from '../components/Navigation.js';
 import { StateMessage } from '../components/StateMessage.js';
 import { useAir } from '../data/api.js';
 import { useAnnounce } from '../hooks/announcer.js';
@@ -39,7 +39,7 @@ export function HomeView(): ReactElement {
     <div className="spread">
       <div className="page-left">
         <ViewHeading hidden>{PLACE.title}</ViewHeading>
-        <p className="lede">{PLACE.lede}</p>
+        <ViewLede>{PLACE.lede}</ViewLede>
         <PlaceSearch onChoose={choose} />
         <section className="sec" aria-labelledby={`${id}-air`}>
           <div className="sec-head">

@@ -8,7 +8,7 @@ import { Section } from '../components/Section.js';
 import { Lines } from './parts.js';
 import { GEMINI_TERMS_URL, ISSUES_URL, PRIVACY } from './words.js';
 
-/** How to get in touch: the repository's issue page, linked once its address is set. */
+/** How to get in touch: the repository's issue page, linked when an address is given. */
 export function ContactLine({ url }: { readonly url: string | null }): ReactElement {
   return (
     <p>

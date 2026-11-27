@@ -3,16 +3,17 @@
 import { type ReactElement, type SubmitEvent, useId, useState } from 'react';
 import type { CommunityInput } from '../../features/community/types.js';
 import { Segmented } from '../components/Segmented.js';
+import { useAnnounce } from '../hooks/announcer.js';
+import { useFocusLater } from '../hooks/focus.js';
 import { type CommunityForm, EMPTY_FORM, type FormKey, readForm } from './community-form.js';
 import { Counts, type Kit, Sources, TextField } from './FormParts.js';
 import { Periods, SampleList } from './FormPeriods.js';
 import { COMMUNITY } from './words.js';
 
-const MESSAGE: Readonly<Partial<Record<FormKey, string>>> = {
-  count: COMMUNITY.countError,
-  periods: COMMUNITY.periodError,
-  assembly: COMMUNITY.timeError,
-};
+const COUNT_OF = { housing_society: 'homes', school: 'pupils' } satisfies Record<
+  CommunityInput['kind'],
+  'homes' | 'pupils'
+>;
 
 const KINDS: { value: CommunityInput['kind']; label: string }[] = [
   { value: 'housing_society', label: COMMUNITY.society },
@@ -31,6 +32,7 @@ function useFormKit(): {
   readonly refuse: (keys: readonly FormKey[]) => void;
 } {
   const own = useId();
+  const announce = useAnnounce();
   const [form, setForm] = useState<CommunityForm>(EMPTY_FORM);
   const [problems, setProblems] = useState<readonly FormKey[]>([]);
   const kit: Kit = {
@@ -42,11 +44,13 @@ function useFormKit(): {
       setForm((current) => ({ ...current, [key]: value }));
     },
     idOf: (key) => `${own}-${key}`,
-    errorOf: (key) => (problems.includes(key) ? { error: MESSAGE[key] ?? COMMUNITY.numberError } : {}),
+    errorOf: (key) =>
+      problems.includes(key) ? { error: COMMUNITY.errors[key === 'count' ? COUNT_OF[form.kind] : key] } : {},
   };
   const load = (next: CommunityForm): void => {
     setForm(next);
     setProblems([]);
+    announce(COMMUNITY.sampleLoaded);
   };
   return { kit, load, refuse: setProblems };
 }
@@ -54,21 +58,25 @@ function useFormKit(): {
 /** The whole form. onSend receives a checked input; busy disables the send button while a request runs. */
 export function CommunityFormView({ onSend, busy }: CommunityFormProps): ReactElement {
   const { kit, load, refuse } = useFormKit();
+  const focusLater = useFocusLater();
   const send = (event: SubmitEvent): void => {
     event.preventDefault();
     const read = readForm(kit.form);
     refuse('input' in read ? [] : read.problems);
     if ('input' in read) {
-      onSend(read.input);
+      if (!busy) {
+        onSend(read.input);
+      }
       return;
     }
     read.problems.slice(0, 1).forEach((key) => {
-      document.getElementById(kit.idOf(key))?.focus();
+      focusLater(kit.idOf(key));
     });
   };
   return (
     <>
       <SampleList onPick={load} />
+      <p className="small">{COMMUNITY.needed}</p>
       <form onSubmit={send} noValidate>
         <Segmented
           legend={COMMUNITY.kind}
@@ -84,7 +92,7 @@ export function CommunityFormView({ onSend, busy }: CommunityFormProps): ReactEl
           <TextField kit={kit} name="assembly" label={COMMUNITY.assembly} kind="time" />
         ) : null}
         <Periods kit={kit} />
-        <button className="btn" type="submit" disabled={busy}>
+        <button className="btn" type="submit" aria-disabled={busy}>
           {COMMUNITY.send}
         </button>
       </form>

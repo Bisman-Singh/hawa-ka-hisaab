@@ -2,6 +2,8 @@
 // and the station radius from the limits, never from the words.
 import { STATION_RADIUS_KM } from '../../config/limits.js';
 import type {
+  FeedProblem,
+  FeedStatus,
   GrapNotice,
   ModelledReading,
   StationProvider,
@@ -29,16 +31,25 @@ export const GRAP_STAGES: Readonly<Record<GrapNotice['stage'], string>> = WORDS.
 /** Pollutant names as CPCB writes them, with subscript digits. */
 export const POLLUTANT_NAME: Readonly<Record<PollutantId, string>> = WORDS.pollutants;
 
+/**
+ * Why the station data could not be read, in one line for each problem the server names. A copy saved before the
+ * server named one reads as no answer. When a reading is still shown, hour says which hour it is from.
+ */
+export function feedProblemWords(problem: FeedProblem | undefined, hour: string | null = null): string {
+  const line = WORDS.feedProblem[problem ?? 'no_answer'];
+  return problem === 'updating' && hour !== null ? `${line} ${fill(WORDS.readingFrom, { hour })}` : line;
+}
+
 /** Why the modelled path is used, in words. km is the nearest station of any kind, when known. */
-export function modelledWhy(reason: ModelledReading['reason'], km: number | null): string {
+export function modelledWhy(reason: ModelledReading['reason'], km: number | null, feed: FeedStatus): string {
   const words = WORDS.modelledWhy;
   const nearest = km === null ? '' : fill(words.nearest, { km: km.toFixed(0) });
-  return fill(words[reason], { ...RADIUS, nearest });
+  return fill(words[reason], { ...RADIUS, nearest, problem: feedProblemWords(feed.problem) });
 }
 
 /** Why neither a station nor the model answered, in words. */
-export function unavailableWhy(reason: UnavailableReading['reason']): string {
-  return fill(WORDS.unavailableWhy[reason], RADIUS);
+export function unavailableWhy(reason: UnavailableReading['reason'], feed: FeedStatus): string {
+  return fill(WORDS.unavailableWhy[reason], { ...RADIUS, problem: feedProblemWords(feed.problem) });
 }
 
 /** The problem and hint for a place not found, worded for a PIN code or for a town. */

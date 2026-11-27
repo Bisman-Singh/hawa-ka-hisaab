@@ -48,12 +48,17 @@
     "station": "Station reading",
     "cpcbAqi": "CPCB AQI",
     "main": "Main pollutant",
+    "aqiGloss": "AQI is the air quality index CPCB publishes, from 0 to 500. PM2.5 is fine dust.",
     "subHeading": "Hourly sub-index by pollutant",
     "subNote": "CPCB hourly sub-index, not the AQI.",
     "mainMark": ", main pollutant",
-    "noHourly": "CPCB published no hourly sub-index for this station.",
+    "noHourly": {
+      "cpcb_feed": "CPCB published no hourly sub-index for this station.",
+      "data_gov_in": "This source gives averages only, so no hourly sub-index is shown."
+    },
+    "ozonePeak": "Ozone, highest hour of the last 8",
     "stale": "This reading is stale",
-    "down": "The CPCB feed did not answer",
+    "down": "The station data is not current",
     "retry": "Try again",
     "modelled": "Modelled estimate",
     "modelledLabel": "Modelled estimate from CAMS via Open-Meteo. Not a measurement. It tends to read low in cities.",
@@ -61,15 +66,21 @@
     "orMore": "meaning 401 or more",
     "ledBy": "Led by",
     "modelHeading": "Model values behind the estimate",
-    "modelNote": "Trailing 24 hour means in µg/m³. Ozone and CO are 8 hour means, CO in mg/m³.",
+    "modelNote": "Trailing 24 hour means in µg/m³. Ozone and CO are 8 hour means, CO in mg/m³. Where ozone is marked as its highest hour, that hour is used instead of the mean.",
     "insufficient": "The model gave too few pollutants for an index, so none is shown.",
     "unavailable": "The air reading could not be fetched",
     "grapLead": "GRAP, Delhi NCR only.",
     "loading": "Reading the air for {where}",
     "staleBody": "It is for {hour}, {age} ago. CPCB has not published a newer one. The plan treats it as old.",
-    "downBody": "Showing the last good reading, from {hour}.",
     "leadsMark": ", leads the estimate"
   },
+  "feedProblem": {
+    "updating": "The station data is being updated at the source. Try again in a minute.",
+    "busy": "The station data source is busy. Try again in a minute.",
+    "no_answer": "The station data source did not answer. Try again in a minute.",
+    "unusable": "The station data source sent something this app could not read. Try again later."
+  },
+  "readingFrom": "This reading is from {hour}.",
   "noAqi": {
     "cpcb_feed": {
       "short": "CPCB published no AQI for this station this hour.",
@@ -88,13 +99,13 @@
     "IV": "Stages I to IV are in force"
   },
   "modelledWhy": {
-    "feed_unavailable": "The CPCB feed did not answer, and no earlier reading is saved for this place.",
+    "feed_unavailable": "{problem} No earlier reading is saved for this place.",
     "no_station_reading": "No CPCB station within {radius} km published a reading this hour.",
     "no_station_in_range": "No CPCB station within {radius} km.{nearest}",
     "nearest": " The nearest is {km} km away."
   },
   "unavailableWhy": {
-    "feed_and_model_down": "The CPCB feed and the model did not answer, and no earlier reading is saved.",
+    "feed_and_model_down": "{problem} The model did not answer either, and no earlier reading is saved.",
     "no_station_and_model_down": "No CPCB station is within {radius} km, and the model did not answer."
   },
   "pollutants": {

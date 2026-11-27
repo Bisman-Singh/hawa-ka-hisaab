@@ -7,6 +7,7 @@
 
 .masthead {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--s-3);
   padding: var(--s-4) 0 var(--s-3);
@@ -107,12 +108,21 @@
   gap: var(--s-3);
 }
 
+.actions > a,
+.abstract li > a,
+.sec > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target);
+}
+
 .abstract li b {
   font-weight: var(--w-mid);
   flex: 0 0 5.5rem;
 }
 
-.abstract li span {
+.abstract li span,
+.abstract li span a {
   min-width: 0;
   overflow-wrap: anywhere;
 }
@@ -168,6 +178,22 @@
     grid-row: 1;
     padding-left: var(--s-6);
     min-width: 0;
+  }
+
+  .spread.flip {
+    grid-template-columns: minmax(0, 1fr) minmax(21rem, 25rem);
+  }
+
+  .spread.flip > .page-right {
+    grid-column: 1;
+    padding: 0 var(--s-6) 0 0;
+  }
+
+  .spread.flip > .page-left {
+    grid-column: 2;
+    padding: 0 0 0 var(--s-6);
+    border-right: 0;
+    border-left: var(--bw-double) double var(--rule);
   }
 
   .spread.even {

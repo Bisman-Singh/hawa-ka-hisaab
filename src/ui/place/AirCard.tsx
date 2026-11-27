@@ -48,14 +48,14 @@ export function AirCard({ air, where, compact = false }: AirCardProps): ReactEle
       );
     case 'modelled':
       return (
-        <ModelledSlip reading={reading} {...slip}>
+        <ModelledSlip reading={reading} feed={feed} {...slip}>
           {note}
         </ModelledSlip>
       );
     case 'unavailable':
       return (
         <StateMessage tone="alert" glyph="feed" title={AIR.unavailable}>
-          <p>{unavailableWhy(reading.reason)}</p>
+          <p>{unavailableWhy(reading.reason, feed)}</p>
           <Button look="main" onClick={retry}>
             {AIR.retry}
           </Button>

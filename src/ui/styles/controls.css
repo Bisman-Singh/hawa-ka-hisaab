@@ -178,3 +178,11 @@ textarea {
   outline-offset: 2px;
   z-index: 1;
 }
+
+@media (forced-colors: active) {
+  .seg-opts label:has(input:checked) {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
+  }
+}

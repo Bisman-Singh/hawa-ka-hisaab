@@ -131,6 +131,13 @@
   visibility: hidden;
 }
 
+/* Under large text on a phone, every third hour is labelled so the labels never touch. */
+@media (max-width: 20rem) {
+  .ds-axis li:not(.sel):not(:nth-child(3n + 1)) {
+    visibility: hidden;
+  }
+}
+
 .ds-axis .sel {
   visibility: visible;
   color: var(--ink);

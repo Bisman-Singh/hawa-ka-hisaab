@@ -27,7 +27,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     }
     return (
       <StateMessage tone="alert" glyph="broken" title={UI.broken.title}>
-        <p>{UI.broken.body}</p>
+        <p>{navigator.onLine ? UI.broken.body : UI.broken.offline}</p>
         <Button
           onClick={() => {
             this.setState({ failed: false });

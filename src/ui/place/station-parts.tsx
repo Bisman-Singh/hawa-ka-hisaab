@@ -44,6 +44,7 @@ export function StationAqi(props: {
       </div>
       {compact ? null : (
         <>
+          <p className="small">{AIR.aqiGloss}</p>
           <BandScale value={value} band={band} label={AIR.cpcbAqi} />
           <BandLegend />
         </>
@@ -56,6 +57,7 @@ export function StationAqi(props: {
 export interface PollutantRow {
   readonly id: PollutantId;
   readonly value: string | number;
+  readonly name?: string;
 }
 
 /** Pollutants with their values, the main one marked in words and in bold. */
@@ -67,10 +69,10 @@ export function PollutantList(props: {
   const { rows, main, mark } = props;
   return (
     <dl>
-      {rows.map(({ id, value }) => (
+      {rows.map(({ id, value, name = POLLUTANT_NAME[id] }) => (
         <Fragment key={id}>
           <dt className={id === main ? 'main' : undefined}>
-            {POLLUTANT_NAME[id]}
+            {name}
             {id === main ? mark : ''}
           </dt>
           <dd className={id === main ? 'main' : undefined}>{value}</dd>
@@ -88,7 +90,9 @@ export function SubIndices({ reading }: { readonly reading: StationReading }): R
   return (
     <div className="subidx">
       <h3>{AIR.subHeading}</h3>
-      <p className="small">{rows.length === 0 ? AIR.noHourly : AIR.subNote}</p>
+      <p className="small">
+        {rows.length === 0 ? AIR.noHourly[reading.provider ?? 'cpcb_feed'] : AIR.subNote}
+      </p>
       <PollutantList rows={rows} main={reading.aqi?.predominant ?? null} mark={AIR.mainMark} />
     </div>
   );

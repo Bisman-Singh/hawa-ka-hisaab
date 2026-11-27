@@ -80,8 +80,6 @@ function replyFor(request: ModelRequest<unknown>, behaviour: Behaviour): Answer 
       return { reply: noticeData.parse(JSON.parse(request.data)).wording, calls: [] };
     case 'ask':
       return askReply(request);
-    case 'translate':
-      throw new Error('the journeys ask for no translation');
   }
 }
 

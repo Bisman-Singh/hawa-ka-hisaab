@@ -1,4 +1,5 @@
 {
+  "stops": { "en": ". ", "hi": "। " },
   "labels": {
     "en": {
       "fixed": "fixed",
@@ -22,7 +23,7 @@
         "afternoon": "Afternoon",
         "evening": "Evening"
       },
-      "hoursTo": "to",
+      "hoursRange": "{from} to {to}",
       "empty": "Nothing planned in this part of the day.",
       "reckoning": "The day's reckoning",
       "reckoningNote": "Each line is the change for one person against their usual day. Lines are not added across people or trips. Where no measured factor exists, no figure is shown.",
@@ -52,7 +53,7 @@
         "afternoon": "दोपहर",
         "evening": "शाम"
       },
-      "hoursTo": "से",
+      "hoursRange": "{from} से {to} तक",
       "empty": "दिन के इस हिस्से में कुछ तय नहीं है।",
       "reckoning": "दिन का हिसाब",
       "reckoningNote": "हर पंक्ति एक व्यक्ति के आम दिन के मुकाबले बदलाव है। अलग लोगों या सफर की पंक्तियाँ जोड़ी नहीं जातीं। जहाँ कोई मापा हुआ कारक नहीं है, वहाँ आँकड़ा नहीं दिखाया जाता।",

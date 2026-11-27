@@ -26,16 +26,21 @@ export function CompareRow({
   return (
     <li>
       <h3>
-        {TOPICS[topic].title}{' '}
+        {TOPICS[topic].title}
+        <span className="vh">:</span>{' '}
         <span className={found ? 'differs' : 'same'}>{found ? COMPARE.differs : COMPARE.same}</span>
       </h3>
       {found ? (
         <div className="cmp-cols">
           <div>
-            <p>{found.left}</p>
+            <p>
+              <span className="lbl">{COMPARE.mineLead}</span> {found.left}
+            </p>
           </div>
           <div>
-            <p>{found.right}</p>
+            <p>
+              <span className="lbl">{COMPARE.theirsLead}</span> {found.right}
+            </p>
           </div>
         </div>
       ) : (

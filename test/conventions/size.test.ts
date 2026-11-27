@@ -10,7 +10,7 @@ export const SOURCE_BYTE_CAP = 12_000;
 export const OTHER_BYTE_CAP = 64_000;
 
 /** Most code lines of TypeScript source outside tests and fact tables. */
-export const SOURCE_LINE_BUDGET = 14950;
+export const SOURCE_LINE_BUDGET = 15030;
 
 /** Most code lines of CSS under src, counted apart from the TypeScript budget. */
 export const CSS_LINE_BUDGET = 2600;

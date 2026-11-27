@@ -15,14 +15,14 @@ describe('Button', () => {
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
-  it('draws the main and link looks and carries its id, name, description and disabled state', () => {
+  it('draws the main and link looks and carries its id, name and description', () => {
     render(
       <>
         <p id="d">Why</p>
         <Button look="main" id="go" onClick={vi.fn()}>
           Go
         </Button>
-        <Button look="link" label="Remove Room 1" describedBy="d" disabled onClick={vi.fn()}>
+        <Button look="link" label="Remove Room 1" describedBy="d" onClick={vi.fn()}>
           Remove
         </Button>
       </>,
@@ -30,7 +30,29 @@ describe('Button', () => {
     expect(screen.getByRole('button', { name: 'Go' })).toHaveAttribute('class', 'btn');
     const remove = screen.getByRole('button', { name: 'Remove Room 1' });
     expect(remove).toHaveClass('linkbtn');
-    expect(remove).toBeDisabled();
     expect(remove).toHaveAccessibleDescription('Why');
+  });
+
+  it('marks a disabled button without removing it from the tab order, and ignores a press on it', async () => {
+    const onClick = vi.fn();
+    render(
+      <Button disabled onClick={onClick}>
+        Later hour
+      </Button>,
+    );
+    const button = screen.getByRole('button', { name: 'Later hour' });
+    expect(button).toHaveAttribute('aria-disabled', 'true');
+    expect(button).not.toBeDisabled();
+    await userEvent.tab();
+    expect(button).toHaveFocus();
+    await userEvent.keyboard('{Enter}');
+    await userEvent.click(button);
+    expect(onClick).not.toHaveBeenCalled();
+    expect(button).toHaveFocus();
+  });
+
+  it('leaves aria-disabled off a button that is enabled', () => {
+    render(<Button onClick={vi.fn()}>Go</Button>);
+    expect(screen.getByRole('button', { name: 'Go' })).not.toHaveAttribute('aria-disabled');
   });
 });

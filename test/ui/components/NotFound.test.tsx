@@ -9,7 +9,10 @@ describe('NOT_FOUND', () => {
     const View = NOT_FOUND.Component;
     const { container } = renderInApp(<View />);
     expect(screen.getByRole('heading', { level: 1, name: 'Page not found' })).toBeInTheDocument();
-    expect(screen.getByRole('status')).toHaveTextContent('There is no page at this address.');
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'There is no page at this address.' }),
+    ).toBeInTheDocument();
+    expect(screen.queryByRole('status')).toBeNull();
     expect(screen.getByRole('link', { name: 'Go to the start' })).toHaveAttribute('href', './');
     expect(await axeViolations(container)).toEqual([]);
   });

@@ -120,7 +120,7 @@ describe('PlanView with a plan', () => {
     expect(within(bulletin).getByRole('heading', { name: 'Very Poor air today' })).toBeInTheDocument();
     expect(bulletin).toHaveTextContent('Remain indoors and keep activity levels low');
     const heading = screen.getByRole('heading', { level: 1 });
-    expect(bulletin.compareDocumentPosition(heading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(heading.compareDocumentPosition(bulletin) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(bulletin).toHaveTextContent('AQI 342 at JNU, Delhi - DPCC');
     const plan = need(container.querySelector<HTMLElement>('.page-right'));
     expect(within(plan).getAllByText(/AQI/)).toHaveLength(1);

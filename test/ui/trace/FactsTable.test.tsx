@@ -40,6 +40,14 @@ describe('factRows', () => {
     ]);
   });
 
+  it('writes a count of one in the singular and other counts in the plural', () => {
+    const rows = factRows([
+      fact('p1', 'People at home', [1, 'people']),
+      fact('p2', 'People at home', [3, 'people']),
+    ]);
+    expect(rows.map((row) => row.value)).toEqual(['1 person', '3 people']);
+  });
+
   it('reads the real air facts without an hour or minute unit', () => {
     const rows = factRows(airFacts(stationReading('very_poor')).facts);
     expect(rows.map((row) => row.value)).not.toContainEqual(expect.stringMatching(/ (hour|minute)$/));
@@ -52,6 +60,11 @@ describe('FactsTable', () => {
     const facts = airFacts(stationReading('very_poor')).facts;
     const { container, rerender } = render(<FactsTable trace={{ ...rulesTrace(null), factsSent: facts }} />);
     expect(container.querySelectorAll('tbody tr')).toHaveLength(factRows(facts).length);
+    expect(screen.getByRole('table', { name: 'Facts sent, with value, unit and id' })).toBeInTheDocument();
+    rerender(<FactsTable trace={{ ...rulesTrace('disabled'), factsSent: facts }} />);
+    expect(
+      screen.getByRole('table', { name: 'Facts made for the model, with value, unit and id' }),
+    ).toBeInTheDocument();
     rerender(<FactsTable trace={rulesTrace(null)} />);
     expect(screen.getByText(/No facts were sent/)).toBeInTheDocument();
   });

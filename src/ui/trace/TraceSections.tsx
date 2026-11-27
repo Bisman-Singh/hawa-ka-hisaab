@@ -5,10 +5,7 @@ import type { GuardCheck, ToolCallRecord, Trace } from '../../lib/types.js';
 import { Section } from '../components/Section.js';
 import { WrittenBy } from '../components/WrittenBy.js';
 import { FactsTable } from './FactsTable.js';
-import { CALL_FAILURE, CHECK, FALLBACK, MADE_BY, refusalText, TRACE } from './words.js';
-
-/** Reasons the model was never asked, so the facts made for it were not sent. */
-const NOT_ASKED: ReadonlySet<Trace['fallbackReason']> = new Set(['disabled', 'rate_limited', 'daily_cap']);
+import { CALL_FAILURE, CHECK, factsWereSent, FALLBACK, MADE_BY, refusalText, TRACE } from './words.js';
 
 /** One calculator call: its name, the arguments it was given and what it returned or why it failed. */
 export function CallLine({ call }: { readonly call: ToolCallRecord }): ReactElement {
@@ -76,7 +73,7 @@ export function TraceSections({ trace }: { readonly trace: Trace }): ReactElemen
         )}
         <p className="small">{TRACE.checkNote}</p>
       </Section>
-      <Section level={3} title={NOT_ASKED.has(trace.fallbackReason) ? TRACE.factsNotSent : TRACE.facts}>
+      <Section level={3} title={factsWereSent(trace) ? TRACE.facts : TRACE.factsNotSent}>
         <FactsTable trace={trace} />
       </Section>
       <Reply trace={trace} />

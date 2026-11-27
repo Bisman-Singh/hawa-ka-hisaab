@@ -39,4 +39,26 @@ describe('ErrorBoundary', () => {
     expect(screen.getByText('Plan loaded')).toBeInTheDocument();
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
+
+  it('says a connection is needed when the browser is offline, and keeps the household words when online', () => {
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    state.broken = true;
+    const online = vi.spyOn(navigator, 'onLine', 'get').mockReturnValue(false);
+    const { unmount } = render(
+      <ErrorBoundary>
+        <Flaky />
+      </ErrorBoundary>,
+    );
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      'This page needs a connection to load. Try again when you are back online.',
+    );
+    unmount();
+    online.mockReturnValue(true);
+    render(
+      <ErrorBoundary>
+        <Flaky />
+      </ErrorBoundary>,
+    );
+    expect(screen.getByRole('alert')).toHaveTextContent('Your household and place are still saved.');
+  });
 });

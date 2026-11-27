@@ -148,6 +148,7 @@
 .leaders dd {
   margin: 0;
   text-align: right;
+  overflow-wrap: anywhere;
 }
 
 .sums .fig {
@@ -285,7 +286,7 @@
 }
 
 .working summary::before {
-  content: '+';
+  content: '+' / '';
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -297,10 +298,11 @@
 }
 
 .working[open] summary::before {
-  content: '\2212';
+  content: '\2212' / '';
 }
 
 .sheet {
+  overflow-wrap: anywhere;
   background: var(--leaf);
   border: var(--bw-rule) solid var(--ink-2);
   padding: var(--s-3) var(--s-4) var(--s-4);

@@ -65,6 +65,9 @@ describe('ItemEntry', () => {
       </Announcer>,
     );
     await userEvent.click(screen.getByRole('radio', { name: need(bus.whatIfs[0]).label }));
-    expect(document.querySelector('.vh[role="status"] p')).toHaveAttribute('lang', 'hi');
+    const said = document.querySelector('.vh[role="status"] p');
+    expect(said).toHaveAttribute('lang', 'hi');
+    expect(said?.textContent).toContain('। ');
+    expect(said?.textContent).not.toContain('. ');
   });
 });

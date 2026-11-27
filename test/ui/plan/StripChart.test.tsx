@@ -1,7 +1,7 @@
 // Tests for the strip drawing: one bar per hour with its value as a custom property, odd hours hidden on the axis.
 import { render } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import { Chart, HourTable } from '../../../src/ui/plan/StripChart.js';
+import { Chart } from '../../../src/ui/plan/StripChart.js';
 import { planResponse } from './fixtures.js';
 
 const hours = [
@@ -34,15 +34,5 @@ describe('Chart', () => {
     rerender(<Chart hours={hours} selected={0} plan={{ ...plan, language: 'hi' }} madeAt={null} />);
     expect(container.querySelector('.ds-slots')).toHaveTextContent('सुबह');
     expect(container.querySelector('.ds-slots')).toHaveAttribute('lang', 'hi');
-  });
-
-  it('lists every hour in the hidden table', () => {
-    const { container } = render(<HourTable hours={hours} />);
-    expect([...container.querySelectorAll('td')].map((cell) => cell.textContent)).toEqual([
-      '05:00',
-      '250',
-      '06:00',
-      '120.5',
-    ]);
   });
 });

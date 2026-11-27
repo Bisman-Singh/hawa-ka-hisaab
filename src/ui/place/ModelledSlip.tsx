@@ -2,7 +2,7 @@
 // the means behind the index and the source. compact leaves out the scale and the means beside the plan.
 import { Button } from '../components/Button.js';
 import { type ReactElement, type ReactNode, useId } from 'react';
-import type { ModelledReading } from '../../features/air/types.js';
+import type { FeedStatus, ModelledReading } from '../../features/air/types.js';
 import { BandLabel, BandScale } from '../components/Band.js';
 import { ModelledSource } from './SourceLine.js';
 import { PollutantList, type PollutantRow } from './station-parts.js';
@@ -13,6 +13,7 @@ type ComputedEstimate = Extract<ModelledReading['estimate'], { status: 'computed
 /** Props of the modelled slip. where names the place; children hold the GRAP note. */
 export interface ModelledSlipProps {
   readonly reading: ModelledReading;
+  readonly feed: FeedStatus;
   readonly where: string;
   readonly retry: () => void;
   readonly compact?: boolean;
@@ -54,6 +55,7 @@ function Estimate(props: {
 
 const meanRow = (row: ComputedEstimate['subIndices'][number]): PollutantRow => ({
   id: row.pollutant,
+  name: row.averagingHours === 1 ? AIR.ozonePeak : POLLUTANT_NAME[row.pollutant],
   value:
     row.unit === 'mg_m3'
       ? `${row.meanConcentration.toFixed(2)} mg/m³`
@@ -76,7 +78,7 @@ function Means({ estimate }: { readonly estimate: ComputedEstimate }): ReactElem
 
 /** The modelled slip. A feed that did not answer gets a retry, since a station reading may come back. */
 export function ModelledSlip(props: ModelledSlipProps): ReactElement {
-  const { reading, where, retry, compact = false, children } = props;
+  const { reading, feed, where, retry, compact = false, children } = props;
   const id = useId();
   return (
     <article className="slip modelled" aria-labelledby={`${id}-kind ${id}-name`}>
@@ -86,7 +88,7 @@ export function ModelledSlip(props: ModelledSlipProps): ReactElement {
       <p className="station" id={`${id}-name`}>
         {where.charAt(0).toUpperCase() + where.slice(1)}
       </p>
-      <p className="meta">{modelledWhy(reading.reason, reading.nearestStationKm)}</p>
+      <p className="meta">{modelledWhy(reading.reason, reading.nearestStationKm, feed)}</p>
       {reading.reason === 'feed_unavailable' ? <Button onClick={retry}>{AIR.retry}</Button> : null}
       <p>
         <b>{AIR.modelledLabel}</b>

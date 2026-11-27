@@ -12,6 +12,7 @@ import { RequestFailure } from '../components/RequestFailure.js';
 import { ModelChoice } from '../consent/ModelChoice.js';
 import { CONSENT } from '../consent/words.js';
 import type { RequestState } from '../data/request.js';
+import { useRescueFocus } from '../hooks/focus.js';
 import { useAppState } from '../state/app-state.js';
 import { useComparison } from './useComparison.js';
 import { Missing } from '../plan/states.js';
@@ -62,11 +63,7 @@ function Comparison({
       <Button look="main" onClick={run} disabled={busy}>
         {COMPARE.run}
       </Button>
-      {busy ? (
-        <p className="status" role="status">
-          {COMPARE.busy}
-        </p>
-      ) : null}
+      <div role="status">{busy ? <p className="status">{COMPARE.busy}</p> : null}</div>
       {failed === undefined ? null : <RequestFailure failure={failed.failure} retry={retry} />}
       {done === null
         ? null
@@ -85,6 +82,7 @@ function Comparison({
 /** The compare view. It needs a place, the person's own household and the model choice first. */
 export function CompareView(): ReactElement {
   const { household, location, modelChoice } = useAppState();
+  useRescueFocus(String(modelChoice));
   if (location === null || household === null) {
     return <Missing title={COMPARE.title} what={location === null ? 'no_place' : 'no_household'} />;
   }

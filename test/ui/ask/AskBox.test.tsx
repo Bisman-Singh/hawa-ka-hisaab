@@ -46,6 +46,22 @@ describe('AskBox', () => {
     expect(fetcher).not.toHaveBeenCalled();
   });
 
+  it('has the error in the description of the box at the moment focus lands on it', async () => {
+    stubApi({});
+    renderAsk();
+    const box = screen.getByLabelText('Your question');
+    const seen: string[] = [];
+    box.addEventListener('focus', () => {
+      const ids = (box.getAttribute('aria-describedby') ?? '').split(' ');
+      seen.push(ids.map((id) => document.getElementById(id)?.textContent ?? '').join(' | '));
+    });
+    await userEvent.click(screen.getByRole('button', { name: 'Ask' }));
+    expect(seen).toHaveLength(1);
+    expect(seen[0]).toMatch(/^Type a question first\./);
+    await userEvent.click(screen.getByRole('button', { name: 'Ask' }));
+    expect(seen).toHaveLength(2);
+  });
+
   it('shows the answer with every calculator call and announces it', async () => {
     const fetcher = stubApi({ '/api/ask': () => json(askAnswer()) });
     const { container } = renderAsk();
@@ -87,11 +103,18 @@ describe('AskBox', () => {
   });
 
   it('shows the waiting line and keeps the button off while the answer is worked out', async () => {
-    stubApi({ '/api/ask': () => new Promise<Response>(() => undefined) });
+    const fetcher = stubApi({ '/api/ask': () => new Promise<Response>(() => undefined) });
     renderAsk();
     await ask('Is the evening better?');
     expect(screen.getByText('Working out the answer')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Ask' })).toBeDisabled();
+    const button = screen.getByRole('button', { name: 'Ask' });
+    expect(button).toHaveAttribute('aria-disabled', 'true');
+    expect(button).toHaveFocus();
+    await userEvent.type(screen.getByLabelText('Your question'), ' again');
+    await userEvent.click(button);
+    expect(button).toHaveFocus();
+    expect(screen.getAllByText('Working out the answer')).toHaveLength(1);
+    expect(fetcher).toHaveBeenCalledTimes(1);
   });
 
   it('shows a failed request with a retry that asks again', async () => {

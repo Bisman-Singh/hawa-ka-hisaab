@@ -4,7 +4,7 @@ import { STATION_RADIUS_KM } from '../../config/limits.js';
 import { fill } from '../../lib/template.js';
 import WORDS from './words.json' with { type: 'json' };
 
-/** Where questions and requests about data go: the repository's issue page. Null until its address is set. */
+/** Where questions and requests about data go: the repository's issue page. */
 export const ISSUES_URL: string | null = WORDS.issuesUrl;
 
 /** Google's terms for the Gemini API, which the free tier statements are read from. */

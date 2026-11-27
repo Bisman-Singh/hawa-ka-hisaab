@@ -1,6 +1,6 @@
 // The question box under the plan: a question about today goes to the ask route with the household, and the
 // answer, a failure with a retry, or the waiting line shows below it.
-import { type ReactElement, type SubmitEvent, useRef, useState } from 'react';
+import { type ReactElement, type SubmitEvent, useId, useState } from 'react';
 import { MAX_QUESTION_CHARS } from '../../config/limits.js';
 import type { Location } from '../../features/air/types.js';
 import type { AskResponse } from '../../features/assistant/types.js';
@@ -14,6 +14,7 @@ import type { RequestState } from '../data/request.js';
 import { ChoiceButton } from '../consent/ModelChoice.js';
 import { CONSENT } from '../consent/words.js';
 import { useAnnounce } from '../hooks/announcer.js';
+import { useFocusLater } from '../hooks/focus.js';
 import { FixedReply, ModelAnswer } from './Answer.js';
 import { ASK } from './words.js';
 import { calling, texting } from '../handlers.js';
@@ -35,17 +36,10 @@ export function AskResult({
   readonly asked: string;
   readonly retry: () => void;
 }): ReactElement | null {
-  if (state.status === 'loading') {
-    return (
-      <p className="status" role="status">
-        {ASK.working}
-      </p>
-    );
-  }
   if (state.status === 'failed') {
     return <RequestFailure failure={state.failure} retry={retry} />;
   }
-  return state.status === 'idle' ? null : (
+  return state.status === 'idle' || state.status === 'loading' ? null : (
     <article className="qa" aria-label={ASK.asked}>
       <p className="q">
         <span>{ASK.asked}</span>
@@ -77,26 +71,27 @@ export function AskBox({ household, location, language }: AskBoxProps): ReactEle
   const [question, setQuestion] = useState('');
   const [asked, setAsked] = useState('');
   const [empty, setEmpty] = useState(false);
-  const box = useRef<HTMLTextAreaElement>(null);
+  const id = useId();
+  const focusLater = useFocusLater();
+  const busy = ask.state.status === 'loading';
   const send = (event: SubmitEvent): void => {
     event.preventDefault();
     const text = question.trim();
     setEmpty(text === '');
     if (text === '') {
-      box.current?.focus();
-      return;
+      focusLater(id);
+    } else if (!busy) {
+      setAsked(text);
+      ask.run({ question: text, household, location, language });
     }
-    setAsked(text);
-    ask.run({ question: text, household, location, language });
   };
   return (
     <Section title={ASK.title} className="ask">
       <form onSubmit={send} noValidate>
-        <Field label={ASK.label} hint={ASK.hint} {...(empty ? { error: ASK.empty } : {})}>
+        <Field id={id} label={ASK.label} hint={ASK.hint} {...(empty ? { error: ASK.empty } : {})}>
           {(control) => (
             <textarea
               {...control}
-              ref={box}
               rows={3}
               maxLength={MAX_QUESTION_CHARS}
               value={question}
@@ -104,10 +99,11 @@ export function AskBox({ household, location, language }: AskBoxProps): ReactEle
             />
           )}
         </Field>
-        <button className="btn" type="submit" disabled={ask.state.status === 'loading'}>
+        <button className="btn" type="submit" aria-disabled={busy}>
           {ASK.send}
         </button>
       </form>
+      <div role="status">{busy ? <p className="status">{ASK.working}</p> : null}</div>
       <AskResult state={ask.state} asked={asked} retry={ask.retry} />
     </Section>
   );

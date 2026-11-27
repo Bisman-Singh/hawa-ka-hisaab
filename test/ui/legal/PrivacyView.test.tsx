@@ -3,7 +3,7 @@
 import { render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 import { ContactLine, PrivacyView } from '../../../src/ui/legal/PrivacyView.js';
-import { GEMINI_TERMS_URL, PRIVACY } from '../../../src/ui/legal/words.js';
+import { GEMINI_TERMS_URL, ISSUES_URL, PRIVACY } from '../../../src/ui/legal/words.js';
 import { CONSENT } from '../../../src/ui/consent/words.js';
 import { axeViolations, renderInApp } from '../helpers.js';
 import { saveSample } from '../plan/fixtures.js';
@@ -28,6 +28,10 @@ describe('PrivacyView', () => {
       expect(screen.getByRole('heading', { level: 2, name: title })).toBeInTheDocument();
     }
     expect(screen.getByRole('link', { name: PRIVACY.googleLink })).toHaveAttribute('href', GEMINI_TERMS_URL);
+    expect(screen.getByRole('link', { name: "the app's GitHub issue page" })).toHaveAttribute(
+      'href',
+      ISSUES_URL,
+    );
     expect(screen.getByText(/Vercel, keeps request logs/)).toBeInTheDocument();
     expect(screen.getByText(CONSENT.state.on)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: PRIVACY.clearButton })).toBeInTheDocument();
@@ -36,10 +40,10 @@ describe('PrivacyView', () => {
 });
 
 describe('ContactLine', () => {
-  it('links the issue page once its address is set, and names it in words until then', () => {
+  it('links the issue page when an address is given, and names it in words without one', () => {
     const { rerender } = render(<ContactLine url={null} />);
     expect(screen.queryByRole('link')).toBeNull();
-    expect(screen.getByText(/open an issue on the app's code repository\./)).toBeInTheDocument();
+    expect(screen.getByText(/open an issue on the app's GitHub issue page\./)).toBeInTheDocument();
     rerender(<ContactLine url="https://example.org/issues" />);
     expect(screen.getByRole('link', { name: PRIVACY.contactLink })).toHaveAttribute(
       'href',

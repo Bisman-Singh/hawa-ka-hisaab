@@ -7,7 +7,8 @@ import { clockOf } from '../../lib/time.js';
 import { dayCurve } from '../../features/ledger/curve.js';
 import type { AirBasis, Plan, WhatIfContext } from '../../features/planner/types.js';
 import { Credit } from '../components/Credit.js';
-import { Chart, HourTable, type StripHour, type StripPartProps } from './StripChart.js';
+import { HourTable } from './HourTable.js';
+import { Chart, type StripHour, type StripPartProps } from './StripChart.js';
 import { STRIP } from './words.js';
 import { calling } from '../handlers.js';
 

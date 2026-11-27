@@ -8,13 +8,14 @@ import { activityName, capitalise } from '../../features/planner/text.js';
 import { AskBox, AskOff } from '../ask/AskBox.js';
 import { ViewLink } from '../components/Navigation.js';
 import type { Query } from '../data/request.js';
+import { useRescueFocus } from '../hooks/focus.js';
 import { useOnline } from '../hooks/useOnline.js';
 import { AirCardSlot } from '../place/AirCardSlot.js';
 import { placeWhere } from '../place/place-answer.js';
 import { useAppState } from '../state/app-state.js';
 import { ForecastStrip } from './ForecastStrip.js';
 import { PlanHead } from './PlanHead.js';
-import { Bulletin, LocalNote, ModelNote } from './PlanNotes.js';
+import { LocalNote, ModelNote } from './PlanNotes.js';
 import { PlanSlots, Reckoning } from './PlanSlots.js';
 import { otherAir } from './air-basis.js';
 import { whatIfOf } from './plan-data.js';
@@ -79,11 +80,8 @@ function PlanReady({ day }: { readonly day: Extract<DayPlan, { status: 'ready' }
   const { plan, airBasis } = day.response;
   const whatIf = whatIfOf(day.response);
   return (
-    <div className="spread">
+    <div className="spread flip">
       <div className="page-right">
-        {plan.dayKind === 'severe' && plan.band !== null ? (
-          <Bulletin band={plan.band} basis={airBasis} air={day.air} />
-        ) : null}
         <PlanHead response={day.response} air={day.air} household={day.household} />
         {day.local ? <LocalNote /> : <ModelNote response={day.response} again={day.again} />}
         {online ? null : <p className="small">{PLAN.offline}</p>}
@@ -104,5 +102,6 @@ function PlanReady({ day }: { readonly day: Extract<DayPlan, { status: 'ready' }
 /** The plan view, in whichever state it is in. */
 export function PlanView(): ReactElement {
   const day = useDayPlan();
+  useRescueFocus(day.status);
   return day.status === 'ready' ? <PlanReady day={day} /> : <NotReady day={day} title={PLAN.title} />;
 }

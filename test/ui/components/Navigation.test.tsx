@@ -4,7 +4,7 @@ import { fireEvent, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import type { ReactElement } from 'react';
 import { afterEach, describe, expect, it } from 'vitest';
-import { ViewHeading, ViewLink } from '../../../src/ui/components/Navigation.js';
+import { ViewHeading, ViewLede, ViewLink } from '../../../src/ui/components/Navigation.js';
 import { useRoute } from '../../../src/ui/router.js';
 import { axeViolations, renderInApp } from '../helpers.js';
 
@@ -19,7 +19,10 @@ function Views(): ReactElement {
       {view === 'plan' ? (
         <ViewHeading>{"Today's plan"}</ViewHeading>
       ) : (
-        <ViewHeading hidden>Your place</ViewHeading>
+        <>
+          <ViewHeading hidden>Your place</ViewHeading>
+          <ViewLede>The air where you are.</ViewLede>
+        </>
       )}
     </>
   );
@@ -34,6 +37,7 @@ describe('ViewLink and ViewHeading', () => {
     const { container } = renderInApp(<Views />);
     expect(screen.getByRole('heading', { level: 1, name: 'Your place' })).toHaveClass('vh');
     expect(screen.getByRole('heading', { level: 1 })).not.toHaveFocus();
+    expect(screen.getByText('The air where you are.')).not.toHaveFocus();
     const link = screen.getByRole('link', { name: "Today's plan" });
     expect(link).toHaveAttribute('href', '?view=plan');
     await userEvent.click(link);
@@ -41,6 +45,17 @@ describe('ViewLink and ViewHeading', () => {
     expect(screen.getByRole('heading', { level: 1, name: "Today's plan" })).toHaveFocus();
     expect(screen.getByRole('link', { name: 'Start' })).toHaveClass('wordmark');
     expect(await axeViolations(container)).toEqual([]);
+  });
+
+  it('puts focus on the visible opening line, not the hidden heading, when moving to a view without a title', async () => {
+    renderInApp(<Views />);
+    await userEvent.click(screen.getByRole('link', { name: "Today's plan" }));
+    await userEvent.click(screen.getByRole('link', { name: 'Start' }));
+    const lede = screen.getByText('The air where you are.');
+    expect(lede).toHaveFocus();
+    expect(lede).toHaveClass('lede');
+    expect(screen.getByRole('heading', { level: 1, name: 'Your place' })).not.toHaveFocus();
+    expect(screen.getByRole('heading', { level: 1, name: 'Your place' })).not.toHaveAttribute('tabindex');
   });
 
   it('leaves a modified click to the browser', () => {

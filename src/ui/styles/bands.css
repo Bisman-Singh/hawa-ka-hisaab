@@ -177,7 +177,11 @@
 
 @container (max-width: 30rem) {
   .legend-table thead {
-    display: none;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
   }
 
   .legend-table tr {
@@ -196,5 +200,16 @@
   .legend-table td:last-child {
     display: block;
     padding-top: var(--s-1);
+  }
+}
+
+@media (forced-colors: active) {
+  .g-sat::before,
+  .g-mod::before,
+  .g-poor::before,
+  .g-vpoor::before,
+  .g-severe {
+    forced-color-adjust: none;
+    background-color: CanvasText;
   }
 }

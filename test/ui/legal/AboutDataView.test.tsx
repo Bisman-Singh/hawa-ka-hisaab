@@ -1,6 +1,6 @@
 // Tests for the about-the-data page: each credit from the registry as a link with its licence, the dated data.gov.in
 // credit with the licence linked, every cited source listed, measured and modelled, 112, samples, and axe.
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { dataGovInCredit } from '../../../src/config/facts/air.js';
 import { factQuote, findFact } from '../../../src/config/facts/index.js';
@@ -26,6 +26,12 @@ describe('AboutDataView', () => {
     expect(screen.getByText(/The worst sub-index determines the overall AQI\./)).toBeInTheDocument();
     expect(screen.getByText(/It is not medical advice/)).toHaveTextContent('call 112.');
     expect(screen.getByText(ABOUT.samplesText)).toBeInTheDocument();
+    const short = screen.getByRole('heading', { level: 2, name: 'Short forms used here' });
+    const list = short.closest('section');
+    for (const form of ['AQI', 'CPCB', 'CAAQMS', 'PM2.5', 'GRAP', 'CAQM', 'NCR', 'CADR']) {
+      expect(within(list ?? container).getByText(form, { selector: 'b' })).toBeInTheDocument();
+    }
+    expect(list).toHaveTextContent('Graded Response Action Plan');
     expect(await axeViolations(container)).toEqual([]);
   }, 30_000);
 

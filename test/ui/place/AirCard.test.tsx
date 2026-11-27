@@ -74,4 +74,15 @@ describe('AirCard', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Try again' }));
     expect(retry).toHaveBeenCalledTimes(1);
   });
+
+  it('says why the station data could not be read, with the line for the problem the server named', () => {
+    const data = airResponse({
+      reading: { path: 'unavailable', reason: 'feed_and_model_down' },
+      feed: { fetch: 'failed', feedHour: null, stale: false, problem: 'updating' },
+    });
+    render(<AirCard air={{ state: { status: 'done', data }, retry: vi.fn() }} where="Leh" />);
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      'The station data is being updated at the source. Try again in a minute. The model did not answer either',
+    );
+  });
 });

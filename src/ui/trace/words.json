@@ -7,6 +7,7 @@
     "facts": "Facts sent to the model",
     "factsNotSent": "Facts made for the model, not sent because it was not asked",
     "factsCaption": "Facts sent, with value, unit and id",
+    "factsMadeCaption": "Facts made for the model, with value, unit and id",
     "factsHead": {
       "label": "Fact",
       "value": "Value",
@@ -41,7 +42,7 @@
     "timeout": "The model took too long to answer.",
     "invalid_reply": "The model replied in a shape the app does not accept.",
     "upstream": "The model service failed to answer.",
-    "rate_limited": "This browser asked the model too often in the last minute. Try again in a minute.",
+    "rate_limited": "Your network asked the model too often in the last minute. Try again in a minute.",
     "daily_cap": "The app has reached its daily limit of model calls.",
     "number_check_failed": "The model used a number that is not in the facts, so its wording was not used."
   },

@@ -6,9 +6,11 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { noticeToPlainText } from '../../../src/features/community/notice.js';
 import { noticeRequestSchema } from '../../../src/features/community/contract.js';
 import { CommunityView } from '../../../src/ui/community/CommunityView.js';
+import { CONSENT } from '../../../src/ui/consent/words.js';
 import { Announcer } from '../../../src/ui/hooks/announcer.js';
 import { axeViolations, fakeDialog, renderInApp } from '../helpers.js';
 import {
+  airResponse,
   announced,
   communityAt,
   DELHI,
@@ -45,7 +47,7 @@ describe('CommunityView', () => {
     const { container } = renderCommunity();
     const sample = communityAt(0);
     await userEvent.click(screen.getByRole('button', { name: /A housing society of 120 flats/ }));
-    expect(screen.getByLabelText('Homes')).toHaveValue('120');
+    expect(screen.getByLabelText('Homes (needed)')).toHaveValue('120');
     await userEvent.click(screen.getByRole('button', { name: 'Work out the facts' }));
     expect(
       await screen.findByRole('heading', { name: 'Facts for this housing society' }),
@@ -116,10 +118,10 @@ describe('CommunityView', () => {
     });
     renderCommunity();
     await userEvent.click(screen.getByRole('button', { name: 'Work out the facts' }));
-    const homes = screen.getByLabelText('Homes');
+    const homes = screen.getByLabelText('Homes (needed)');
     expect(homes).toHaveAttribute('aria-invalid', 'true');
     expect(document.activeElement).toBe(homes);
-    expect(screen.getByText(/A society needs its number of homes/)).toBeInTheDocument();
+    expect(screen.getByText('Enter the number of homes, from 1 to 10000.')).toBeInTheDocument();
     await userEvent.type(homes, '80');
     await userEvent.click(screen.getByRole('button', { name: 'Work out the facts' }));
     expect(
@@ -131,14 +133,73 @@ describe('CommunityView', () => {
     ).toBeInTheDocument();
   });
 
+  it('has the error in the description of the field at the moment focus lands on it', async () => {
+    saveSample();
+    stubApi({});
+    renderCommunity();
+    const homes = screen.getByLabelText('Homes (needed)');
+    const seen: string[] = [];
+    homes.addEventListener('focus', () => {
+      const ids = (homes.getAttribute('aria-describedby') ?? '').split(' ');
+      seen.push(ids.map((id) => document.getElementById(id)?.textContent ?? '').join(' | '));
+    });
+    await userEvent.click(screen.getByRole('button', { name: 'Work out the facts' }));
+    expect(seen).toHaveLength(1);
+    expect(seen[0]).toMatch(/^Enter the number of homes, from 1 to 10000\./);
+  });
+
+  it('names the pupils range for a school, and says what is needed and what is optional', async () => {
+    saveSample();
+    stubApi({});
+    renderCommunity();
+    expect(screen.getByText(/Fields marked needed must be filled in/)).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('radio', { name: 'School' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Work out the facts' }));
+    expect(screen.getByLabelText('Pupils (needed)')).toHaveAttribute('aria-invalid', 'true');
+    expect(screen.getByText('Enter the number of pupils, from 1 to 20000.')).toBeInTheDocument();
+  });
+
+  it('says so when a sample is loaded into the form', async () => {
+    saveSample();
+    stubApi({});
+    renderCommunity();
+    await userEvent.click(screen.getByRole('button', { name: /A housing society of 120 flats/ }));
+    expect(announced()).toBe('Sample loaded into the form.');
+  });
+
+  it('keeps the focus on the send button while a notice is worked out, and sends once', async () => {
+    saveSample();
+    const fetcher = stubApi({ '/api/notice': () => new Promise<Response>(() => undefined) });
+    renderCommunity();
+    await userEvent.type(screen.getByLabelText('Homes (needed)'), '80');
+    const send = screen.getByRole('button', { name: 'Work out the facts' });
+    await userEvent.click(send);
+    await userEvent.click(send);
+    expect(send).toHaveFocus();
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+
+  it('moves focus to the heading when the model choice that was pressed goes away', async () => {
+    saveSample('family-car-asthma', 'en', null);
+    stubApi({ '/api/air': () => json(airResponse()), '/api/notice': () => json(noticeResponse(0)) });
+    renderCommunity();
+    await userEvent.type(screen.getByLabelText('Homes (needed)'), '80');
+    await userEvent.click(screen.getByRole('button', { name: 'Work out the facts' }));
+    await userEvent.click(await screen.findByRole('button', { name: CONSENT.use }));
+    expect(screen.getByRole('heading', { level: 1, name: 'Society or school' })).toHaveFocus();
+  });
+
   it('shows the waiting line while the notice is worked out', async () => {
     saveSample();
     stubApi({ '/api/notice': () => new Promise<Response>(() => undefined) });
     renderCommunity();
-    await userEvent.type(screen.getByLabelText('Homes'), '80');
+    await userEvent.type(screen.getByLabelText('Homes (needed)'), '80');
     await userEvent.click(screen.getByRole('button', { name: 'Work out the facts' }));
     expect(screen.getByText('Working out the facts and the notice')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Work out the facts' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Work out the facts' })).toHaveAttribute(
+      'aria-disabled',
+      'true',
+    );
   });
 
   it('asks for a place first', () => {

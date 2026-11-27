@@ -12,10 +12,10 @@ describe('CommunityFormView', () => {
     const { container } = render(<CommunityFormView onSend={onSend} busy={false} />);
     await userEvent.click(screen.getByRole('radio', { name: 'School' }));
     expect(screen.queryByLabelText('Children living here')).toBeNull();
-    await userEvent.type(screen.getByLabelText('Pupils'), '300');
+    await userEvent.type(screen.getByLabelText('Pupils (needed)'), '300');
     await userEvent.type(screen.getByLabelText('Morning assembly outdoors at'), '07:45');
     await userEvent.click(screen.getByRole('radio', { name: 'Diesel' }));
-    await userEvent.type(screen.getByLabelText('Generator hours a day'), '3');
+    await userEvent.type(screen.getByLabelText('Generator hours a day (needed)'), '3');
     await userEvent.click(screen.getByRole('radio', { name: 'Often' }));
     expect(await axeViolations(container)).toEqual([]);
     await userEvent.click(screen.getByRole('button', { name: 'Work out the facts' }));
@@ -33,7 +33,7 @@ describe('CommunityFormView', () => {
   it('adds and removes outdoor periods and refuses a period that is too short', async () => {
     const onSend = vi.fn();
     render(<CommunityFormView onSend={onSend} busy={false} />);
-    await userEvent.type(screen.getByLabelText('Homes'), '50');
+    await userEvent.type(screen.getByLabelText('Homes (needed)'), '50');
     await userEvent.click(screen.getByRole('button', { name: 'Add an outdoor period' }));
     await userEvent.click(screen.getByRole('button', { name: 'Add an outdoor period' }));
     await userEvent.click(screen.getByRole('button', { name: 'Remove this period 2' }));
@@ -58,14 +58,17 @@ describe('CommunityFormView', () => {
     for (let count = 0; count < 12; count += 1) {
       await userEvent.click(add);
     }
-    expect(add).toBeDisabled();
-    expect(screen.getByRole('button', { name: 'Work out the facts' })).toBeDisabled();
+    expect(add).toHaveAttribute('aria-disabled', 'true');
+    expect(screen.getByRole('button', { name: 'Work out the facts' })).toHaveAttribute(
+      'aria-disabled',
+      'true',
+    );
   });
 
   it('names a bad number on its own field, and edits one period without touching another', async () => {
     const onSend = vi.fn();
     render(<CommunityFormView onSend={onSend} busy={false} />);
-    await userEvent.type(screen.getByLabelText('Homes'), '50');
+    await userEvent.type(screen.getByLabelText('Homes (needed)'), '50');
     await userEvent.type(screen.getByLabelText('Guards, sweepers and other outdoor staff'), 'nine');
     await userEvent.click(screen.getByRole('button', { name: 'Add an outdoor period' }));
     await userEvent.click(screen.getByRole('button', { name: 'Add an outdoor period' }));
@@ -74,7 +77,7 @@ describe('CommunityFormView', () => {
     await userEvent.type(screen.getByLabelText('Period 2, Starts at'), '17:00');
     await userEvent.type(screen.getByLabelText('Period 2, Minutes'), '45');
     await userEvent.click(screen.getByRole('button', { name: 'Work out the facts' }));
-    expect(screen.getByText(/Enter a number in the allowed range/)).toBeInTheDocument();
+    expect(screen.getByText('Enter a number from 0 to 2000, or leave it blank.')).toBeInTheDocument();
     expect(document.activeElement).toBe(screen.getByLabelText('Guards, sweepers and other outdoor staff'));
     await userEvent.clear(screen.getByLabelText('Guards, sweepers and other outdoor staff'));
     await userEvent.click(screen.getByRole('button', { name: 'Work out the facts' }));
